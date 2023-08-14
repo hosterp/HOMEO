@@ -819,7 +819,7 @@ class AccountInvoiceLine(models.Model):
 
     medicine_rack = fields.Many2one('product.medicine.types', 'Rack')
     product_of = fields.Many2one('product.medicine.responsible', 'Company')
-    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency',stockrequired=True)
+    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency',required=True)
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack', )
 
     # medicine_grp = fields.Many2one('product.medicine.group', 'GROUP',compute='_compute_taxes',readonly="0")
