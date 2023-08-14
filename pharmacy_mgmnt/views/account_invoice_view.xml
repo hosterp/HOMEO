@@ -77,12 +77,23 @@
                 <xpath expr="//field[@name='discount']" position="attributes">
                     <attribute name="readonly">0</attribute>
                 </xpath>
-                 <xpath expr="//field[@name='number']" position="before">
+                <xpath expr="//field[@name='number']" position="before">
 
-                    <h1  class="container">CASH/CREDIT TAX INVOICE </h1>
+                    <h1 class="container">CASH/CREDIT TAX INVOICE</h1>
                 </xpath>
                 <xpath expr="//field[@name='number']" position="before">
-                    <h1><field name="cus_inv_number" nolabel="1" readonly="1"/></h1>
+                    <group>
+                        <group>
+                            <h1>
+                                <field name="cus_inv_number" nolabel="1" readonly="1"/>
+                            </h1>
+                        </group>
+                        <group>
+                            <h1 class="payment_total_calculation">
+                                <field name="payment_total_calculation" nolabel="1" readonly="0"/>
+                            </h1>
+                        </group>
+                    </group>
                 </xpath>
 
 
@@ -96,11 +107,11 @@
                     <field name="cus_invoice_id" style="width:13%%" placeholder="Select customer"
                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
 
-<!--                    <field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
+                    <!--                    <field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
                     <button name="next_invoice" string="Next" type="object"
                             attrs="{'invisible': [('cus_invoice', '!=', True)]}" style="margin-left: 5px"/>
-                      <button name="onchange_cus_invoice_id" string="open customer invoice" type="object"
-                            attrs="{'invisible': [('cus_invoice', '!=', True)]}" />
+                    <button name="onchange_cus_invoice_id" string="open customer invoice" type="object"
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                     <group col="4">
                         <group name="discount">
                             <field name="discount_category" attrs="{'readonly': [('state', '!=', 'draft')]}"
