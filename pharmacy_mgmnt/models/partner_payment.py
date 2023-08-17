@@ -424,11 +424,11 @@ class PartnerPayment(models.Model):
     #                                      ])
     #             rec.invoice_ids = list
     #
-    # @api.multi
-    # def print_customer_payment_report(self):
-    #     assert len(self) == 1
-    #     self.sent = True
-    #     return self.env['report'].get_action(self, 'pharmacy_mgmnt.customer_payment_invoice')
+    @api.multi
+    def print_customer_payment_report(self):
+        assert len(self) == 1
+        self.sent = True
+        return self.env['report'].get_action(self, 'pharmacy_mgmnt.customer_payment_invoice')
 
     # @api.multi
     # @api.onchange("invoice_ids")
