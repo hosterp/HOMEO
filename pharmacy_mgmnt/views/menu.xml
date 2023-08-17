@@ -1094,7 +1094,6 @@
                             <field name="invoice_ids">
                                 <tree editable="bottom" string="Invoice">
                                     <field name="partner_id" readonly="1"/>
-                                    <field name="res_person" readonly="1"/>
                                     <field name="commercial_partner_id" invisible="1"/>
                                     <field name="date_invoice" readonly="1"/>
                                     <field name="number2" string="Number" readonly="1"/>
@@ -1114,6 +1113,7 @@
                                     <field name="amount_total" sum="Total Amount"/>
                                     <field name="state" readonly="1"/>
                                     <field name="type" invisible="context.get('type',True)"/>
+                                    <field name="res_person" readonly="1"/>
                                     <field name="select" readonly="0"/>
                                     <field name="invoice_id" invisible="1"/>
                                     <field name="account_id" invisible="1"/>
