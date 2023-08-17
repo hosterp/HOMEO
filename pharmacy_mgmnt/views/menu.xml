@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <tree string="Medicine Stock Report">
                     <field name="medicine_1"/>
-                    <field name="rack" />
+                    <field name="rack"/>
                     <field name="potency"/>
                     <field name="medicine_name_packing"/>
                     <field name="company"/>
@@ -17,7 +17,7 @@
                     <field name="mrp" type="char"/>
                     <field name="batch_2"/>
                     <field name="manf_date"/>
-                    <field name="expiry_date" />
+                    <field name="expiry_date"/>
                 </tree>
             </field>
         </record>
@@ -366,15 +366,15 @@
                 </p>
             </field>
         </record>
-         <record id="action_invoice_tree_search" model="ir.actions.act_window">
+        <record id="action_invoice_tree_search" model="ir.actions.act_window">
             <field name="name">Common Search</field>
             <field name="res_model">account.invoice</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph</field>
             <field eval="False" name="view_id"/>
-<!--            <field name="domain">[('type','=','in_invoice')]</field>-->
-<!--            <field name="context">{'default_type': 'in_invoice', 'type': 'in_invoice', 'journal_type': 'purchase'}-->
-<!--            </field>-->
+            <!--            <field name="domain">[('type','=','in_invoice')]</field>-->
+            <!--            <field name="context">{'default_type': 'in_invoice', 'type': 'in_invoice', 'journal_type': 'purchase'}-->
+            <!--            </field>-->
             <field name="search_view_id" ref="account.view_account_invoice_filter"/>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
@@ -582,11 +582,11 @@
                   name="Supplier Invoices"
                   sequence="2" parent="menu_med_features_1_child"/>
         <menuitem action="action_invoice_tree2" id="menu_search_invoices"
-                          name="Search"
-                          sequence="5" parent="menu_med_main"/>
+                  name="Search"
+                  sequence="5" parent="menu_med_main"/>
         <menuitem action="action_invoice_tree_search" id="menu_search_invoices_child"
-                                  name="Search"
-                                  sequence="1" parent="menu_search_invoices"/>
+                  name="Search"
+                  sequence="1" parent="menu_search_invoices"/>
 
 
         <!--TRANSACTION MENUS and ACTIONS AND VIEW-->
@@ -688,7 +688,7 @@
                         <group>
                             <group>
                                 <field name="name"/>
-                                <field name="cheque_amount"  readonly="1"/>
+                                <field name="cheque_amount" readonly="1"/>
                                 <field name="balance" readonly="1" invisible="1"/>
 
 
@@ -706,8 +706,8 @@
                         <group>
                             <group>
                                 <field name="invoice_ids" widget="many2many_tags"
-                                     domain = "[('state', '=', 'open'), ('type', '=', 'out_invoice'),('partner_id', 'ilike', name)]"
-                                        />
+                                       domain="[('state', '=', 'open'), ('type', '=', 'out_invoice'),('partner_id', 'ilike', name)]"
+                                />
                             </group>
                         </group>
 
@@ -1067,7 +1067,16 @@
                         <field name="state" widget="statusbar"/>
                     </header>
                     <h1>
-                        <field name="reference_number" nolabel="1" readonly="1"/>
+                        <group>
+                            <group>
+                                <field name="reference_number" nolabel="1" readonly="1"/>
+                            </group>
+                            <group>
+                                <h1 class="payment_total_calculation">
+                                    <field name="payment_total_calculation" nolabel="1" readonly="1"/>
+                                </h1>
+                            </group>
+                        </group>
                     </h1>
                     <group>
                         <group>
@@ -1078,8 +1087,8 @@
                         <group>
                             <!--                            <field name="journal_id" string="Payment Method"/>-->
                             <field name="payment_method" style="width:40%;"/>
-                            <field name="payment_amount"  string="Payment Amount" />
-                            <field name="advance_amount"  string="Advance Amount" />
+                            <field name="payment_amount" string="Payment Amount"/>
+                            <field name="advance_amount" string="Advance Amount"/>
                             <field name="cheque_no" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="cheque_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="deposit_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
@@ -1126,9 +1135,10 @@
                         <field name="remarks"/>
                     </group>
                     <group>
-                        <field name="total_amount" string="Total Amount" />
-                        <field name="balance_amount"  string="Balance Amount"/>
-                        <field name="calc_amount"  string="Available Balance"  attrs="{'invisible': [('state','=','paid')]}"/>
+                        <field name="total_amount" string="Total Amount"/>
+                        <field name="balance_amount" string="Balance Amount"/>
+                        <field name="calc_amount" string="Available Balance"
+                               attrs="{'invisible': [('state','=','paid')]}"/>
                     </group>
 
                 </form>

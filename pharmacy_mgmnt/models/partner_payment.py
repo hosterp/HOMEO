@@ -24,60 +24,61 @@ class InvoiceDetails(models.Model):
     @api.onchange("select")
     def onchange_select(self):
         payment_amt = 0
-        if self.partner_payment_id.calc_amount:
-            payment_amt = self.partner_payment_id.calc_amount
-        else:
-            payment_amt = self.partner_payment_id.payment_amount
-        for records in self._origin:
-            residual = records.residual
-            if residual < payment_amt:
-                ref = self.partner_payment_id.reference_number
-                data = self.env['partner.payment'].search([('reference_number', '=', ref)])
-                new_amount = data.payment_amount - records.residual
-                self._origin.write({
-                    'residual': 0,
-                    'state': 'paid',
-                })
-                data.write({
-                    'calc_amount': new_amount,
-                })
-                self.env.cr.commit()
-                # self.env.cr.commit(data)
-                return
+        if  self.partner_payment_id.payment_amount:
+            if self.partner_payment_id.calc_amount:
+                payment_amt = self.partner_payment_id.calc_amount
             else:
-                pass
-            if residual > payment_amt:
-                raise osv.except_osv(_('Warning!'), _("Press PAY button to complete the payment"))
-
-            # ref = self.partner_payment_id.reference_number
-                # residual = residual - payment_amt
-                # data = self.env['partner.payment'].search([('reference_number', '=', ref)])
-                # data.write({
-                #     'calc_amount': 0,
-                # })
-                # self.env.cr.commit()
-                # self._origin.write({
-                #     'residual': 0,
-                #     'state': 'open',
-                # })
-
-            else:
-                pass
-            if residual == payment_amt:
-                ref = self.partner_payment_id.reference_number
-                payment_amt = payment_amt - residual
-                data = self.env['partner.payment'].search([('reference_number', '=', ref)])
-                data.write({
-                    'calc_amount': 0,
-                    # 'account_id': 25,
-                })
-                self.env.cr.commit()
-                self._origin.write({
+                payment_amt = self.partner_payment_id.payment_amount
+            for records in self._origin:
+                residual = records.residual
+                if residual < payment_amt:
+                    ref = self.partner_payment_id.reference_number
+                    data = self.env['partner.payment'].search([('reference_number', '=', ref)])
+                    new_amount = data.payment_amount - records.residual
+                    self._origin.write({
                         'residual': 0,
                         'state': 'paid',
                     })
-            else:
-                pass
+                    data.write({
+                        'calc_amount': new_amount,
+                    })
+                    self.env.cr.commit()
+                    # self.env.cr.commit(data)
+                    return
+                else:
+                    pass
+                if residual > payment_amt:
+                    raise osv.except_osv(_('Warning!'), _("Press PAY button to complete the payment"))
+
+                # ref = self.partner_payment_id.reference_number
+                    # residual = residual - payment_amt
+                    # data = self.env['partner.payment'].search([('reference_number', '=', ref)])
+                    # data.write({
+                    #     'calc_amount': 0,
+                    # })
+                    # self.env.cr.commit()
+                    # self._origin.write({
+                    #     'residual': 0,
+                    #     'state': 'open',
+                    # })
+
+                else:
+                    pass
+                if residual == payment_amt:
+                    ref = self.partner_payment_id.reference_number
+                    payment_amt = payment_amt - residual
+                    data = self.env['partner.payment'].search([('reference_number', '=', ref)])
+                    data.write({
+                        'calc_amount': 0,
+                        # 'account_id': 25,
+                    })
+                    self.env.cr.commit()
+                    self._origin.write({
+                            'residual': 0,
+                            'state': 'paid',
+                        })
+                else:
+                    pass
 
 
 class PartnerPayment(models.Model):
@@ -111,6 +112,8 @@ class PartnerPayment(models.Model):
     #                               store=True)
     state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('paid', 'Paid')])
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
+    payment_total_calculation = fields.Float()
+
     @api.onchange('payment_amount')
     def onchange_payment_amount(self):
         self.calc_amount = self.payment_amount

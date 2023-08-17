@@ -1176,7 +1176,8 @@ class AccountInvoice(models.Model):
     cus_inv_number = fields.Char()
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     cus_invoice_id = fields.Many2one("account.invoice", domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
-    payment_total_calculation = fields.Float()
+
+
     @api.multi
     def previous_invoice(self):
         next_inv = self.env['account.invoice'].search(

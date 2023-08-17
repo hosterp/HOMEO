@@ -88,11 +88,6 @@
                                 <field name="cus_inv_number" nolabel="1" readonly="1"/>
                             </h1>
                         </group>
-                        <group>
-                            <h1 class="payment_total_calculation">
-                                <field name="payment_total_calculation" nolabel="1" readonly="0"/>
-                            </h1>
-                        </group>
                     </group>
                 </xpath>
 
