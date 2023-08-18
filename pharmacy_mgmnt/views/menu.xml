@@ -73,10 +73,11 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Stock Entry" editable="bottom">
+                <tree string="Stock Entry" editable="bottom"  colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &gt;= current_date">
                     <button name="call_function" string="Add" type="object" class="css_wizard_button oe_highlight"
                             help="calls python function" id="focushere"/>
                     <field name="s_no" invisible="1"/>
+                     <field name="expiry_alert_date" invisible="1" />
                     <field name="medicine_1"/>
                     <field name="potency"/>
                     <field name="medicine_name_packing"/>
@@ -108,10 +109,11 @@
             <field name="arch" type="xml">
                 <!--                <div id="my_div" class="my_tclass_div">-->
 
-                <tree string="Stock Entry" editable="bottom" id="stock_wizard_id" class="tree_class" name="tree_name">
+                <tree string="Stock Entry" editable="bottom" id="stock_wizard_id" class="tree_class" name="tree_name" colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &gt;= current_date">
                     <button name="call_function" string="Add" type="object" class="css_wizard_button oe_highlight"
                             help="calls python function" id="focushere"/>
                     <field name="s_no" invisible="1"/>
+                      <field name="expiry_alert_date" invisible="1"/>
                     <field name="medicine_1"/>
                     <field name="potency"/>
                     <field name="medicine_name_packing"/>
@@ -1056,7 +1058,12 @@
             <field name="model">partner.payment</field>
             <field name="arch" type="xml">
                 <form string="Payment Details">
+                        <style>
 
+                            td.oe_list_record_delete {
+                                display: none;
+                            }
+                        </style>
                     <header>
                         <button name="action_payment_all" string="Pay" type="object" class="oe_highlight"
                                 states="draft"/>
