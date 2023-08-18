@@ -1058,7 +1058,12 @@
             <field name="model">partner.payment</field>
             <field name="arch" type="xml">
                 <form string="Payment Details">
+                        <style>
 
+                            td.oe_list_record_delete {
+                                display: none;
+                            }
+                        </style>
                     <header>
                         <button name="action_payment_all" string="Pay" type="object" class="oe_highlight"
                                 states="draft"/>
