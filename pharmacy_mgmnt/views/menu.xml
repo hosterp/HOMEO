@@ -5,9 +5,8 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Medicine Stock Report" colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &gt;= current_date">
+                <tree string="Medicine Stock Report">
                     <field name="medicine_1"/>
-                      <field name="expiry_alert_date" invisible="1"/>
                     <field name="rack"/>
                     <field name="potency"/>
                     <field name="medicine_name_packing"/>
@@ -74,10 +73,11 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Stock Entry" editable="bottom">
+                <tree string="Stock Entry" editable="bottom"  colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &gt;= current_date">
                     <button name="call_function" string="Add" type="object" class="css_wizard_button oe_highlight"
                             help="calls python function" id="focushere"/>
                     <field name="s_no" invisible="1"/>
+                     <field name="expiry_alert_date" invisible="1" />
                     <field name="medicine_1"/>
                     <field name="potency"/>
                     <field name="medicine_name_packing"/>
