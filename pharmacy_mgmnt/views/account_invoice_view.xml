@@ -90,8 +90,6 @@
                         </group>
                     </group>
                 </xpath>
-
-
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
                     <field name="hold_invoice_id" style="width:13%%" placeholder="Select Hold Bill"
                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
@@ -101,8 +99,7 @@
                             attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                     <field name="cus_invoice_id" style="width:13%%" placeholder="Select customer"
                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
-
-                    <!--                    <field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
+                <!--<field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
                     <button name="next_invoice" string="Next" type="object"
                             attrs="{'invisible': [('cus_invoice', '!=', True)]}" style="margin-left: 5px"/>
                     <button name="onchange_cus_invoice_id" string="open customer invoice" type="object"

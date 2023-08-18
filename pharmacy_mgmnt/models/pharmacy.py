@@ -14,7 +14,6 @@ class Batches(models.Model):
             if len(old_record.ids) > 1:
                 raise models.ValidationError('Already Created records for the same Group')
 
-
     # _sql_constraints = [
     #     ('batch_name_uniq', 'unique(batch)', 'The name of batch must be unique !'),
     # ]
@@ -33,11 +32,10 @@ class MedicineRackSubcat(models.Model):
             if len(old_record.ids) > 1:
                 raise models.ValidationError('Potency Already Created')
 
-
-
     # _sql_constraints = [
     #     ('potency_name_uniq', 'unique(medicine_rack_subcat)', 'The Potency name must be unique !'),
     # ]
+
 
 # TAX-MED-POTENCY-COMBO-RELATION**********************************************************************
 
@@ -47,11 +45,11 @@ class MedPotencyCombo(models.Model):
     groups_id = fields.Many2one('product.medicine.group', string="Group ID")
     medicine = fields.Many2one('product.product', string="Product")
     potency = fields.Many2one('product.medicine.subcat', string='Potency', requiered=True,
-                              change_default=True,)
+                              change_default=True, )
     hsn = fields.Char(string='HSN')
     company = fields.Many2one('product.medicine.responsible', string="Company")
     tax = fields.Float(string='Tax')
-    
+
 
 class MedicineGroup(models.Model):
     _name = 'product.medicine.group'
@@ -64,7 +62,7 @@ class MedicineGroup(models.Model):
         string='Potency-Product Link',
         store=True,
     )
-    
+
     @api.constrains('med_grp')
     def _check_medicine_med_grp(self):
         for record in self:
@@ -72,11 +70,10 @@ class MedicineGroup(models.Model):
             if len(old_record.ids) > 1:
                 raise models.ValidationError('Group name Already Created')
 
-
-
     # _sql_constraints = [
     #     ('med_grp_name_uniq', 'unique(med_grp)', 'The name of Group must be unique !'),
     # ]
+
 
 # **********************************************************************************************************
 
@@ -98,7 +95,6 @@ class MedicineTypes(models.Model):
                 raise models.ValidationError('Group name Already Created')
 
 
-
 class MedicinePacking(models.Model):
     _name = 'product.medicine.packing'
     _rec_name = 'medicine_pack'
@@ -112,8 +108,6 @@ class MedicinePacking(models.Model):
             if len(old_record.ids) > 1:
                 raise models.ValidationError('Packing name Already Created')
 
-
-    
     # _sql_constraints = [
     #     ('medicine_pack_name_uniq', 'unique(medicine_pack)', 'The name of Packing already exists !'),
     # ]
@@ -132,10 +126,10 @@ class MedicineResponsible(models.Model):
             if len(old_record.ids) > 1:
                 raise models.ValidationError('Company Name Already Created')
 
-    
     # _sql_constraints = [
     #     ('name_responsible_name_uniq', 'unique(name_responsible)', 'The name of Company must be unique !'),
     # ]
+
 
 class CustomerDiscounts(models.Model):
     _name = 'cus.discount'
@@ -143,6 +137,7 @@ class CustomerDiscounts(models.Model):
 
     cus_dis = fields.Char(string="Discount Category", )
     percentage = fields.Float('Discount In Percentage(%)')
+
     #
     # _sql_constraints = [
     #     ('cus_dis_name_uniq', 'unique(cus_dis)', 'The name of Discount Category must be unique !'),
@@ -200,10 +195,6 @@ class TaxComboNew(models.Model):
 #     hsn = fields.Char(string='HSN')
 #     company = fields.Many2one('product.medicine.responsible', string="Company")
 #     tax_cat = fields.Selection([('rate_tax', 'RATE TAX'), ('mrp_tax', 'MRP TAX'), ], 'Type', default='rate_tax')
-
-
-
-
 
 
 # class FindRackMed(models.Model):
@@ -281,7 +272,7 @@ class NewStockEntry(models.Model):
     discount = fields.Float(string='Discount')
     price_subtotal = fields.Float(string='Price Subtotal')
     amount_amount = fields.Float()
-    qty_received = fields.Float('Qty Trasfer')
+    qty_received = fields.Float('Hold Qty')
     amount_w_tax = fields.Float()
     custom_qty = fields.Integer()
     invoice_line_id = fields.Many2one('account.invoice.line')
@@ -318,13 +309,23 @@ class NewStockEntry(models.Model):
                         'medicine_rack': rec.rack.id,
                         'invoice_line_tax_id4': rec.invoice_line_tax_id4,
                         'rack_qty': rec.qty,
-                        'quantity':rec.quantity_selected,
-
+                        'quantity': rec.quantity_selected,
                     }))
-                cus_invoice.write({'invoice_line': new_lines})
+                    cus_invoice.write({'invoice_line': new_lines})
+                if cus_invoice.hold_invoice == True:
+                    hold_qty = self.qty_received + self.quantity_selected
+                    if hold_qty >= 0:
+                        self.qty_received = hold_qty
+                    else:
+                        self.qty_received = 0
+                else:
+                    pass
+                self.quantity_selected = 0
             else:
                 pass
-        # self.quantity_selected=0
+
+
+    # self.quantity_selected=0
     @api.multi
     def call_function(self):
         # print("Active id",self.env.context.get('active_id'))
@@ -353,4 +354,3 @@ class NewStockEntry(models.Model):
             cus_invoice.write({'invoice_line': new_lines})
         else:
             pass
-
