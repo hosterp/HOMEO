@@ -1507,6 +1507,22 @@ class AccountInvoice(models.Model):
     @api.multi
     def import_to_invoice(self):
         for record in self:
+            for line in record.invoice_line:
+                domain = [('medicine_1','=',line.product_id.name),
+                    ('potency','=',line.medicine_name_subcat.id),
+                    ('medicine_name_packing','=',line.medicine_name_packing.id),
+                    ('company','=',line.product_of.id),
+                    ('medicine_grp1','=',line.medicine_grp.id),
+                    ('mrp','=',line.price_unit),
+                    ('manf_date','=',line.manf_date),
+                    ('expiry_date','=',line.expiry_date),
+                    ('rack','=',line.medicine_rack.id),
+                    ('hsn_code','=',line.hsn_code)]
+                stock = self.env['entry.stock'].search(domain)
+                stock.qty_received -= line.quantity
+                if stock.qty_received < 0:
+                    stock.qty_received = 0
+        for record in self:
             res = self.env['account.invoice'].search(
                 [('type', '=', 'out_invoice'), ('cus_invoice', '=', True)], limit=1)
             last_index = int(res.number2.split('/')[1]) + 1

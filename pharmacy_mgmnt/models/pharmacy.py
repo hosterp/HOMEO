@@ -272,7 +272,7 @@ class NewStockEntry(models.Model):
     discount = fields.Float(string='Discount')
     price_subtotal = fields.Float(string='Price Subtotal')
     amount_amount = fields.Float()
-    qty_received = fields.Float()
+    qty_received = fields.Float('Hold Qty')
     amount_w_tax = fields.Float()
     custom_qty = fields.Integer()
     invoice_line_id = fields.Many2one('account.invoice.line')
@@ -312,7 +312,15 @@ class NewStockEntry(models.Model):
                         'quantity': rec.quantity_selected,
                     }))
                     cus_invoice.write({'invoice_line': new_lines})
-
+                if cus_invoice.hold_invoice == True:
+                    hold_qty = self.qty_received + self.quantity_selected
+                    if hold_qty >= 0:
+                        self.qty_received = hold_qty
+                    else:
+                        self.qty_received = 0
+                else:
+                    pass
+                self.quantity_selected = 0
             else:
                 pass
 
