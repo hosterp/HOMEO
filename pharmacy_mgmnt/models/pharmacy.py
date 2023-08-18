@@ -355,6 +355,17 @@ class NewStockEntry(models.Model):
         else:
             pass
 
+    expiry_alert_date = fields.Date(compute='_compute_expiry_alert_date', string='Expiry Alert Date', store=True)
 
+    @api.depends('expiry_date')
+    def _compute_expiry_alert_date(self):
+        for record in self:
+            if record.expiry_date:
+                expiry_date = datetime.strptime(record.expiry_date, '%Y-%m-%d').date()
+                record.expiry_alert_date = expiry_date - timedelta(days=180)
+                print('hi', record.expiry_alert_date)
+                # print('hi')
+            else:
+                record.expiry_alert_date = False
 
 
