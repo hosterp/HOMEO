@@ -70,10 +70,11 @@
                         <attribute name="invisible">1</attribute>
                     </xpath>
 
+<!--                    <xpath expr="//field[@name='account_id']" position="after">-->
+<!--                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>-->
+<!--                    </xpath>-->
                     <xpath expr="//field[@name='account_id']" position="after">
-                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>
-                    </xpath>
-                    <xpath expr="//field[@name='account_id']" position="after">
+                         <field name="doctor_name_1" style="width:20%%"/>
                         <field name="address_new" style="height:50%%"/>
                     </xpath>
                     <xpath expr="//field[@name='date_invoice']" position="after">
@@ -82,7 +83,8 @@
 
                     </xpath>
                     <xpath expr="//field[@name='journal_id']" position="after">
-                        <field name="doctor_name_1" style="width:20%%"/>
+                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>
+
                         <field name="financial_year" placeholder="Financial Year" style="width:50%%" />
 
                         <field name="b2c" invisible="1"/>
@@ -181,7 +183,5 @@
               </p>
             </field>
         </record>
-
-
     </data>
 </openerp>
