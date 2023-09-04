@@ -93,11 +93,11 @@ $.shortcut('123', function() {
     }
 
 });
+
 $.shortcut('121', function() {
 	$('.oe_form_button_save').each(function() {
 		if($(this).parents('div:hidden').length == 0){
                 $(this).trigger('click');
-
 		}
 	});
 	$('.css_print').each(function() {
@@ -107,34 +107,39 @@ $.shortcut('121', function() {
 		}
 	});
 });
-//        let createButton = $(".oe_form_field .oe_form_field_many2one .oe_form_field_with_button .oe_form_required");
-//        let createButtonClicked = false;
-//
-//        $(document).on('click', createButton, function (event) {
-////            alert('click');
-//          if (!createButtonClicked) {
-//            createButtonClicked = true;
-//            setTimeout(function() {
-//              $(".oe_form_button_save").trigger("click");
-//                createButtonClicked = false;
-//            }, 1000);
-//          }
-//        });
-//$(document).ready(function() {
-//  check=$('td[data-field="select"] input[type="checkbox"]')
-//  $(document).on("change",check, function() {
-////      alert('checked');
-//      $(".oe_form_button_save").trigger('click');
-////      $('.oe_button oe_form_button_edit').trigger('click');
-//  });
-//});
+
+$(document).ready(function() {
+    $(window).on("hashchange", function() {
+        var urlHash = window.location.hash;
+        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=400')) {
+//            alert('ready');
+           $(document).on("click", ".oe_m2o_drop_down_button:eq(9)", function() {
+            setTimeout(function() {
+            $(".Hold_Bill").trigger('click');
+            }, 2000);
+           });
+        } else {
+            $(".oe_m2o_drop_down_button").off('click');
+        }
+    });
+});
 
 
-
-
-
-//            location.reload();
-
+$(document).ready(function() {
+    $(window).on("hashchange", function() {
+        var urlHash = window.location.hash;
+        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=400')) {
+//            alert('ready');
+           $(document).on("click", ".oe_m2o_drop_down_button:eq(10)", function() {
+            setTimeout(function() {
+            $(".open_customer").trigger('click');
+            }, 2000);
+           });
+        } else {
+            $(".oe_m2o_drop_down_button").off('click');
+        }
+    });
+});
 
 //console.log('f3');
      quantity=$('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]')
@@ -154,17 +159,6 @@ $.shortcut('121', function() {
             }
         });
 
-
-//    $(document).on('keydown','#oe-field-input-14',function(event){
-//        if(event.keyCode === 39){
-////            $('.oe_m2o_drop_down_button').trigger('click');
-//              $('oe_form_field_many2one .oe_m2o_drop_down_button img').css('visibility','visible');
-//
-//
-//
-//        }
-//
-//    });
 
 
     //For adding class to html tag
@@ -192,7 +186,6 @@ $.shortcut('121', function() {
             lastKeyPressTime = currentKeyPressTime;
 
             if (timeSinceLastKeyPress < doubleClickInterval) {
-                // Double click detected
                 $('.close').click();
             }
         }
@@ -227,24 +220,6 @@ $.shortcut('121', function() {
     });
 
 //END
-//        $(document).keydown(function(event) {
-//          if (event.keyCode === 39) { // Right arrow key
-//            event.preventDefault(); // Prevent default behavior
-//
-//            var $table = $('.oe_list_content');
-//            var $dropdownButton = $table.find('.oe_list_header_many2one .oe_list_field_cell');
-//
-//            if ($dropdownButton.length > 0) {
-//              $dropdownButton.each(function() {
-//                $(this).find('input').focus(); // Focus on the input field to display the dropdown list
-//              });
-//            }
-//          }
-//        });
-
-
-
-
 
 
 };
