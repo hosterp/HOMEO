@@ -103,9 +103,27 @@ $.shortcut('121', function() {
 	$('.css_print').each(function() {
 		if($(this).parents('div:hidden').length == 0){
 			$(this).trigger('click');
-                window.print()
+//                window.print()
 		}
 	});
+});
+$(document).ready(function(){
+$(document).on('click' , '.field_boolean', function(){
+    var q_bal = $(this).parent('span[data-fieldname="select"]').siblings('span.oe_form_field[data-fieldname="residual"]').children('span.oe_form_char_content').text();
+    var amount = $('.payment_total_calculation').children('span.oe_form_field_float').children('span.oe_form_char_content').text();
+    var add_balance = parseFloat(q_bal);
+    var balance = parseFloat(amount);
+    var isChecked = $(this).prop('checked');
+    if (isChecked === true) {
+        var total = balance + add_balance
+        $('.oe_form_char_content:eq(1)').text(total);
+        console.log('The checkbox is checked.');
+    } else {
+        var total = balance - add_balance
+        $('.oe_form_char_content:eq(1)').text(total);
+        console.log('The checkbox is not checked.');
+    }
+});
 });
 
 $(document).ready(function() {
@@ -145,19 +163,19 @@ $(document).ready(function() {
      quantity=$('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]')
 //    ROBIN'S CODE
     $( document ).ready(function() {
-         $(window).on("hashchange", function() {
-            var urlHash = window.location.hash;
-            if (urlHash.includes('model=partner.payment') && urlHash.includes('menu_id=346')) {
-    //            alert('ready');
-                $(document).on("change", function() {
-                    $(".oe_form_button_save").trigger('click');
-                });
-            }
-            else {
-
-                $(document).off("change");
-            }
-        });
+//         $(window).on("hashchange", function() {
+//            var urlHash = window.location.hash;
+//            if (urlHash.includes('model=partner.payment') && urlHash.includes('menu_id=346')) {
+//    //            alert('ready');
+//                $(document).on("change", function() {
+//                    $(".oe_form_button_save").trigger('click');
+//                });
+//            }
+//            else {
+//
+//                $(document).off("change");
+//            }
+//        });
 
 
 
