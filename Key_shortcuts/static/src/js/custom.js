@@ -108,22 +108,22 @@ $.shortcut('121', function() {
 	});
 });
 $(document).ready(function(){
-$(document).on('click' , '.field_boolean', function(){
-    var q_bal = $(this).parent('span[data-fieldname="select"]').siblings('span.oe_form_field[data-fieldname="residual"]').children('span.oe_form_char_content').text();
-    var amount = $('.payment_total_calculation').children('span.oe_form_field_float').children('span.oe_form_char_content').text();
-    var add_balance = parseFloat(q_bal);
-    var balance = parseFloat(amount);
-    var isChecked = $(this).prop('checked');
-    if (isChecked === true) {
-        var total = balance + add_balance
-        $('.oe_form_char_content:eq(1)').text(total);
-        console.log('The checkbox is checked.');
-    } else {
-        var total = balance - add_balance
-        $('.oe_form_char_content:eq(1)').text(total);
-        console.log('The checkbox is not checked.');
-    }
-});
+    $(document).on('click' , '.field_boolean', function(){
+        var q_bal = $(this).parent('span[data-fieldname="select"]').siblings('span.oe_form_field[data-fieldname="residual"]').children('span.oe_form_char_content').text();
+        var amount = $('.payment_total_calculation').children('span.oe_form_field_float').children('span.oe_form_char_content').text();
+        var add_balance = parseFloat(q_bal);
+        var balance = parseFloat(amount);
+        var isChecked = $(this).prop('checked');
+        if (isChecked === true) {
+            var total = balance + add_balance
+            $('.oe_form_char_content:eq(1)').text(total);
+            console.log('The checkbox is checked.');
+        } else {
+            var total = balance - add_balance
+            $('.oe_form_char_content:eq(1)').text(total);
+            console.log('The checkbox is not checked.');
+        }
+    });
 });
 
 $(document).ready(function() {
