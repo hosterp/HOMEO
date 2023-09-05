@@ -137,7 +137,7 @@ $(document).ready(function() {
             }, 2000);
            });
         } else {
-            $(".oe_m2o_drop_down_button").off('click');
+//            $(".oe_m2o_drop_down_button").off('click');
         }
     });
 });
@@ -154,7 +154,7 @@ $(document).ready(function() {
             }, 2000);
            });
         } else {
-            $(".oe_m2o_drop_down_button").off('click');
+//            $(".oe_m2o_drop_down_button").off('click');
         }
     });
 });
