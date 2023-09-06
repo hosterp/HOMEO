@@ -8,7 +8,8 @@
             <field name="name">Customer Invoice</field>
             <field name="code">customer.account.invoice</field>
             <field name="active">TRUE</field>
-            <field name="prefix">%(year)s/</field>
+<!--            <field name="prefix">%(year)s/</field>-->
+            <field name="suffix">/%(year)s</field>
             <field name="padding">4</field>
             <field name="number_increment">1</field>
         </record>
@@ -34,7 +35,8 @@
             <field name="name">Packing Slip</field>
             <field name="code">packing.slip.invoice</field>
             <field name="active">TRUE</field>
-            <field name="prefix">%(year)s/</field>
+<!--            <field name="prefix">%(year)s/</field>-->
+            <field name="suffix">/%(year)s</field>
             <field name="padding">4</field>
             <field name="number_increment">1</field>
         </record>
@@ -47,7 +49,8 @@
             <field name="name">Holding Invoice</field>
             <field name="code">holding.invoice</field>
             <field name="active">TRUE</field>
-            <field name="prefix">%(year)s/</field>
+              <field name="suffix">/%(year)s</field>
+<!--            <field name="prefix">%(year)s/</field>-->
             <field name="padding">4</field>
             <!--            <field name="number_next">1</field>-->
             <field name="number_increment">1</field>

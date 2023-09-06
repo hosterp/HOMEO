@@ -1296,9 +1296,14 @@ class AccountInvoice(models.Model):
             self.cus_inv_number = number
             self.seq = 1
             if res1:
-                last_index = int(res1.number2.split('/')[1]) + 1
-                self.number2 = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
-                self.cus_inv_number = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                # last_index = int(res1.number2.split('/')[1]) + 1
+                # self.number2 = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                # self.cus_inv_number = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                # self.seq = res1.seq + 1
+                last_index = int(res1.number2.split('/')[0]) + 1
+                print(last_index, 'last_index', res1)
+                self.number2 = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
+                self.cus_inv_number = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
                 self.seq = res1.seq + 1
             else:
                 pass
@@ -1310,9 +1315,10 @@ class AccountInvoice(models.Model):
             self.cus_inv_number = number
             self.seq = 1
             if res1:
-                last_index = int(res1.number2.split('/')[1]) + 1
-                self.number2 = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
-                self.cus_inv_number = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                last_index = int(res1.number2.split('/')[0]) + 1
+                print(last_index, 'last_index', res1)
+                self.number2 = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
+                self.cus_inv_number = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
                 self.seq = res1.seq + 1
             else:
                 pass
@@ -1324,9 +1330,10 @@ class AccountInvoice(models.Model):
             self.cus_inv_number = number
             self.seq = 1
             if res1:
-                last_index = int(res1.number2.split('/')[1]) + 1
-                self.number2 = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
-                self.cus_inv_number = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                last_index = int(res1.number2.split('/')[0]) + 1
+                print(last_index, 'last_index', res1)
+                self.number2 = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
+                self.cus_inv_number = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
                 self.seq = res1.seq + 1
             else:
                 pass
@@ -1525,8 +1532,9 @@ class AccountInvoice(models.Model):
         for record in self:
             res = self.env['account.invoice'].search(
                 [('type', '=', 'out_invoice'), ('cus_invoice', '=', True)], limit=1)
-            last_index = int(res.number2.split('/')[1]) + 1
-            record.number2 = res.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+            last_index = int(res.number2.split('/')[0]) + 1
+            record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+            record.cus_inv_number=str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
             record.seq = res.seq + 1
             record.packing_invoice = False
             record.hold_invoice = False
@@ -1612,12 +1620,14 @@ class AccountInvoice(models.Model):
                 [('type', '=', 'out_invoice'), ('cus_invoice', '=', True)], limit=1)
             number = self.env['ir.sequence'].get('customer.account.invoice')
             vals['number2'] = number
+            # print(vals['number2'],'number')
             vals['cus_inv_number'] = number
             vals['seq'] = 1
             if res1:
-                last_index = int(res1.number2.split('/')[1]) + 1
-                vals['number2'] = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
-                vals['cus_inv_number'] = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                last_index = int(res1.number2.split('/')[0]) + 1
+                print(last_index,'last_index',res1)
+                vals['number2'] = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
+                vals['cus_inv_number'] = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
                 vals['seq'] = res1.seq + 1
             else:
                 pass
@@ -1629,9 +1639,10 @@ class AccountInvoice(models.Model):
             vals['cus_inv_number'] = number
             vals['seq'] = 1
             if res2:
-                last_index = int(res2.number2.split('/')[1]) + 1
-                vals['number2'] = res2.number2.split('/')[0] + "/" + str(last_index).zfill(4)
-                vals['cus_inv_number'] = res2.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                last_index = int(res2.number2.split('/')[0]) + 1
+                print(last_index, 'last_index', res2)
+                vals['number2'] = str(last_index).zfill(4) + "/" + res2.number2.split('/')[1]
+                vals['cus_inv_number'] = str(last_index).zfill(4) + "/" + res2.number2.split('/')[1]
                 vals['seq'] = res2.seq + 1
             else:
                 pass
@@ -1643,9 +1654,10 @@ class AccountInvoice(models.Model):
             vals['cus_inv_number'] = number
             vals['seq'] = 1
             if res3:
-                last_index = int(res3.number2.split('/')[1]) + 1
-                vals['number2'] = res3.number2.split('/')[0] + "/" + str(last_index).zfill(4)
-                vals['cus_inv_number'] = res3.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                last_index = int(res3.number2.split('/')[0]) + 1
+                print(last_index, 'last_index', res3)
+                vals['number2'] = str(last_index).zfill(4) + "/" + res3.number2.split('/')[1]
+                vals['cus_inv_number'] = str(last_index).zfill(4) + "/" + res3.number2.split('/')[1]
                 vals['seq'] = res3.seq + 1
             else:
                 pass
