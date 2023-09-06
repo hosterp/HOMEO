@@ -27,3 +27,12 @@ max-width: 182px
 .payment_total_calculation{
     text-align:right;
 }
+.oe_form_label{
+    font-size: 14px;
+}
+.oe_form_label_help{
+    font-size: 14px;
+}
+.oe_sortable{
+    font-size: 14px;
+}
