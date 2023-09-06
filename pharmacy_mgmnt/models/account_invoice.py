@@ -1344,8 +1344,9 @@ class AccountInvoice(models.Model):
             self.number2 = number
             self.seq = 1
             if res1:
-                last_index = int(res1.number2.split('/')[1]) + 1
-                self.number2 = res1.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                last_index = int(res1.number2.split('/')[0]) + 1
+                self.number2 = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
+                self.cus_inv_number = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
                 self.seq = res1.seq + 1
             else:
                 pass
@@ -1608,10 +1609,12 @@ class AccountInvoice(models.Model):
             res4 = self.env['account.invoice'].search([('type', '=', 'in_invoice')], limit=1)
             number = self.env['ir.sequence'].get('supplier.account.invoice')
             vals['number2'] = number
+            vals['cus_inv_number']=number
             vals['seq'] = 1
             if res4:
-                last_index = int(res4.number2.split('/')[1]) + 1
-                vals['number2'] = res4.number2.split('/')[0] + "/" + str(last_index).zfill(4)
+                last_index = int(res4.number2.split('/')[0]) + 1
+                vals['number2'] =  str(last_index).zfill(4)+ "/" +res4.number2.split('/')[1]
+                vals['cus_inv_number'] = str(last_index).zfill(4) + "/" + res4.number2.split('/')[1]
                 vals['seq'] = res4.seq + 1
             else:
                 pass
