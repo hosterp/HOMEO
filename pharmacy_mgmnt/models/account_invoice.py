@@ -1931,8 +1931,8 @@ class AccountInvoice(models.Model):
                                                                              'view_vendor_receipt_dialog_form')
 
         inv = self.browse(cr, uid, ids[0], context=context)
-        if inv.type == "out_invoice":
-            inv.residual += inv.amount_discount + inv.amount_tax
+        # if inv.type == "out_invoice":
+        #     inv.residual += inv.amount_discount + inv.amount_tax
         return {
             'name': _("Pay Invoice"),
             'view_mode': 'form',
@@ -2058,8 +2058,10 @@ class AccountInvoice(models.Model):
             self.amount_tax = total_tax_amount
             self.amount_tax_custom = total_tax_amount
             self.amount_discount = total_discount
-            self.amount_total = round(amount_total_w_tax)
-            self.amount_residual = round(amount_total_w_tax)
+            self.amount_total = round(amount_untaxed)
+            self.amount_residual = round(amount_untaxed)
+            # self.amount_total = round(amount_total_w_tax)
+            # self.amount_residual = round(amount_total_w_tax)
 
     # @api.one
     # @api.depends('invoice_line.price_subtotal', 'tax_line.amount')
@@ -2212,16 +2214,11 @@ class AccountInvoice(models.Model):
                     partial_reconciliations_done.append(line.reconcile_partial_id.id)
                 record.residual += line_amount
             record.residual = max(record.residual, 0.0)
-            if record.type == "out_invoice":
-                record.residual -= record.amount_tax
-                record.residual = max(record.residual, 0.0)
+            # if record.type == "out_invoice":
+            #     record.residual -= record.amount_tax
+            #     record.residual = max(record.residual, 0.0)
             # else:
             #     record.residual = max(record.residual, 0.0)
-
-
-            # if record.type == 'out_invoice':
-            #     tax = record.amount_tax + record.amount_discount
-            #     record.residual -= tax
             if record.state == 'paid':
                 record.residual = 0.0
 
