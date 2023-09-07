@@ -693,6 +693,7 @@ class PartnerPayment(models.Model):
                 if rec.state == 'paid':
                     count = count + 1
         if count == record_count:
+            self.state = 'paid'
             print("all payments are done")
             customer_details = self.env['res.partner'].browse(self.partner_id.id)
             if customer_details:
@@ -704,7 +705,7 @@ class PartnerPayment(models.Model):
 
         else:
             print("there are payments to be completed")
-            # self.state = 'paid'
+            self.state = 'paid'
 
         return True
 
