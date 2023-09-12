@@ -79,7 +79,7 @@
                 </xpath>
                 <xpath expr="//field[@name='number']" position="before">
 
-                    <h1 class="container">CASH/CREDIT TAX INVOICE</h1>
+                    <h1 class="container"   attrs="{'invisible': [('cus_invoice', '!=', True)]}">CASH/CREDIT TAX INVOICE</h1>
                 </xpath>
                 <xpath expr="//field[@name='number']" position="before">
                     <group>

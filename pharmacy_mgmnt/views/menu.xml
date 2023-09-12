@@ -1090,16 +1090,19 @@
                             <field name="date" style="width:50%;"/>
                             <field name="partner_id" string="Customer" style="width:40%;"/>
                             <field name="res_person_id" string="Responsible Person" style="width:40%;"/>
+                            <field name="cheque_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
+                            <field name="deposit_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
+                            <field name="clearence_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
+                            <field name="remarks"/>
+
                         </group>
+
                         <group>
                             <!--                            <field name="journal_id" string="Payment Method"/>-->
                             <field name="payment_method" style="width:40%;"/>
                             <field name="payment_amount" string="Payment Amount"/>
                             <field name="advance_amount" string="Advance Amount"/>
                             <field name="cheque_no" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
-                            <field name="cheque_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
-                            <field name="deposit_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
-                            <field name="clearence_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="bank" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="branch" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="ifsc" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
@@ -1138,9 +1141,7 @@
                         </page>
                     </notebook>
                     <seprator/>
-                    <group>
-                        <field name="remarks"/>
-                    </group>
+
                     <group>
                         <field name="total_amount" string="Total Amount"/>
                         <field name="balance_amount" string="Balance Amount"/>

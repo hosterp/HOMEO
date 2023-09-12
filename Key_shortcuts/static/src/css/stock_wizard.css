@@ -36,3 +36,13 @@ max-width: 182px
 .oe_sortable{
     font-size: 14px;
 }
+.modal-content {
+    width: 1150px;
+    position: absolute;
+    top: 50%;
+    left: -15%;
+
+}
+.field_text{
+    height: 28px;
+}
