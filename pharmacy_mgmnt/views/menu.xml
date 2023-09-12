@@ -1145,7 +1145,7 @@
                         <field name="total_amount" string="Total Amount"/>
                         <field name="balance_amount" string="Balance Amount"/>
                         <field name="calc_amount" string="Available Balance"
-                               attrs="{'invisible': [('state','=','paid')]}"/>
+                               attrs="{'invisible': [('state','=','paid')]}" invisible="1"/>
                     </group>
 
                 </form>
