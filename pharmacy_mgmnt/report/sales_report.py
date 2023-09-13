@@ -38,7 +38,7 @@ class SalesReport(models.Model):
         if self.partner_id:
             domain += [('partner_id', '=', self.partner_id.id)]
         if self.res_person_id:
-            domain += [('res_person_id', '=', self.res_person_id.id)]
+            domain += [('res_person', '=', self.res_person_id.id)]
         # if self.product:
         #     domain += [('invoice_id.product', '=', self.product)]
         # if self.potency:
