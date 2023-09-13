@@ -535,9 +535,31 @@
         <menuitem id="menu_med_main"
                   name="Pharmacy Management"
                   sequence="1"/>
+        <menuitem id="menu_med_main_payments"
+                  name="Payments"
+                  sequence="5" />
+
+         <menuitem id="menu_med_main_payments_menu"
+                  name="Customer Payments"
+                  sequence="1" parent="menu_med_main_payments"/>
+        <menuitem id="menu_med_main_payments_menu_child1"  action="action_payment"
+                  name="Customer Payments"
+                  sequence="1" parent="menu_med_main_payments_menu"/>
+        <menuitem id="menu_med_main_payments_menu_2"
+                  name="Due Payments"
+                  sequence="2" parent="menu_med_main_payments"/>
+        <menuitem id="menu_med_main_payments_menu2_child1"   action="action_payment"
+                  name="Due Payments"
+                  sequence="1" parent="menu_med_main_payments_menu_2"/>
+
+
         <menuitem id="menu_med_main_supplier_invoice_1"
                   name="Supplier Invoices"
                   sequence="3"/>
+        <menuitem id="menu_med_main_supplier_invoice_5"
+                  name="Supplier Invoices"
+                  sequence="10"/>
+
 
         <menuitem id="menu_med_main_supp"
                   name="Supplier"
@@ -1094,6 +1116,8 @@
                             <field name="deposit_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="clearence_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="remarks"/>
+                            <button name="cheque_bounce_button" string="Cheque Bounce" class="oe_highlight" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
+                            <button name="cheque_bounce_button" string="Cheque Paid" class="oe_highlight" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
 
                         </group>
 
