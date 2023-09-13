@@ -43,6 +43,7 @@
         'report/packing_holding_history.xml',
         'report/tax_report_view.xml',
         'report/tax_report_excel.xml',
+        'report/sales_report.xml',
         'views/account_invoice_view.xml',
         'views/invoice_report.xml',
 

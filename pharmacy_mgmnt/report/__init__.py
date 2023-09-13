@@ -7,3 +7,4 @@ from . import purchase_report
 from . import tax_report
 from . import tax_report_excel
 from . import invoice_report
+from . import sales_report

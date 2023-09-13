@@ -1,0 +1,96 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="sales_report_xml_id">
+            <field name="name">Sales Report</field>
+            <field name="model">sales.report</field>
+            <field name="arch" type="xml">
+                <form string="Sales Report">
+                    <style>
+                        .ui-autocomplete-input{
+                        width: 38%;
+                        }
+                    </style>
+                    <header>
+                        <button name="get_all_sales" type="object" string="Get Sales"
+                                class="oe_highlight"/>
+                    </header>
+                    <!--                     <h1>-->
+                    <!--                        <group>-->
+                    <!--                            <group>-->
+                    <!--                                <h1 class="payment_total_calculation">-->
+                    <!--                                    SALES REPORT-->
+                    <!--                                </h1>-->
+                    <!--                            </group>-->
+                    <!--                        </group>-->
+                    <!--                    </h1>-->
+                    <group>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="res_person_id"/>
+<!--                                <field name="product"/>-->
+<!--                                <field name="company"/>-->
+                            </group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="state"/>
+<!--                                <field name="packing"/>-->
+<!--                                <field name="potency"/>-->
+                            </group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="invoices">
+                            <field name="invoice_ids">
+                                <tree editable="bottom" string="Invoice">
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="commercial_partner_id" invisible="1"/>
+                                    <field name="date_invoice" readonly="1"/>
+                                    <field name="number2" string="Number" readonly="1"/>
+                                    <field name="reference" invisible="1"/>
+                                    <field name="name" invisible="1"/>
+                                    <field name="journal_id" invisible="1"/>
+                                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
+                                    <field name="company_id" groups="base.group_multi_company" widget="selection"
+                                           readonly="1"/>
+                                    <!--                                    <field name="user_id" string="Responsible" readonly="1"/>-->
+                                    <field name="date_due" invisible="1"/>
+                                    <field name="origin" invisible="1"/>
+                                    <field name="currency_id" groups="base.group_multi_currency"/>
+                                    <field name="residual" sum="Residual Amount" invisible="0"/>
+                                    <field name="amount_untaxed" sum="Untaxed Amount" invisible="1"/>
+                                    <field name="amount_tax" sum="Tax Amount" invisible="1"/>
+                                    <field name="amount_total" sum="Total Amount"/>
+                                    <field name="state" readonly="1"/>
+                                    <field name="type" invisible="context.get('type',True)"/>
+                                    <field name="res_person" readonly="1"/>
+                                    <field name="invoice_id" invisible="1"/>
+                                    <field name="account_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        <record id="action_sales_report" model="ir.actions.act_window">
+            <field name="name">Sales report</field>
+            <field name="res_model">sales.report</field>
+            <!--            <field name="view_type">form</field>-->
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="sales_report_xml_id"/>
+            <!--            <field name="target">new</field>-->
+        </record>
+        <menuitem
+                id="sales_report_menu_id"
+                name="Sales Report"
+                sequence="5"
+                parent="pharmacy_mgmnt.menu_reports_0"/>
+        <menuitem
+                id="sales_menu_id"
+                name="Sale Report"
+                parent="sales_report_menu_id"
+                action="action_sales_report"/>
+    </data>
+</openerp>
