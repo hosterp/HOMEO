@@ -14,6 +14,7 @@ class InvoiceDetails(models.Model):
 class SalesReport(models.Model):
     _name = 'sales.report'
 
+    date=fields.Date(default=fields.Date.today)
     partner_id = fields.Many2one('res.partner', 'Customer')
     res_person_id = fields.Many2one('res.partner', 'Responsible Person')
     date_from = fields.Date('Date From')
@@ -27,6 +28,11 @@ class SalesReport(models.Model):
     invoice_ids = fields.One2many('sales.details', 'sales_details_id', readonly=False,
                                   store=True)
 
+    @api.multi
+    def print_sale_report(self):
+        assert len(self) == 1
+        self.sent = True
+        return self.env['report'].get_action(self, 'pharmacy_mgmnt.sales_report_id')
     @api.multi
     @api.model
     def get_all_sales(self):

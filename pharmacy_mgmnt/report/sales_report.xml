@@ -13,6 +13,9 @@
                     <header>
                         <button name="get_all_sales" type="object" string="Get Sales"
                                 class="oe_highlight"/>
+                        <button name="print_sale_report" type="object" string="Print"
+                                class="oe_highlight"/>
+
                     </header>
                     <!--                     <h1>-->
                     <!--                        <group>-->
@@ -26,6 +29,7 @@
                     <group>
                         <group>
                             <group>
+                                <field name="date"/>
                                 <field name="partner_id"/>
                                 <field name="res_person_id"/>
 <!--                                <field name="product"/>-->
