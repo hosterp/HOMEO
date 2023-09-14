@@ -1896,6 +1896,7 @@ class AccountInvoice(models.Model):
 
     def get_year(self):
         year = self.env['account.fiscalyear'].search([('state', '=', 'draft')])
+        print(year,'yearyear')
         if year:
             return year
 
