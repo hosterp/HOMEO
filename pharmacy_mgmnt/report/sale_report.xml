@@ -67,7 +67,7 @@
                             <div class="left-aligned-div">
 
                                 <div t-if="o.date">
-                                    <strong>Date:</strong>
+                                    <strong>    Date:</strong>
                                     <span t-field="o.date"/>
                                 </div>
                                 <div t-if="o.partner_id">
