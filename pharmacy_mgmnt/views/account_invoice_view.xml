@@ -94,18 +94,33 @@
                 </xpath>
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
                     <field name="hold_invoice_id" style="width:13%%" placeholder="Select Hold Bill"
-                           attrs="{'invisible': [('cus_invoice', '!=', True),('packing_invoice', '!=', True)]}"/>
+                           attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                     <button name="onchange_hold_invoice_id" string="Import Hold Bill" type="object" class="Hold_Bill" invisible="1"
-                            attrs="{'invisible': [('cus_invoice', '!=', True),('packing_invoice', '!=', True)]}"/>
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                     <button name="previous_invoice" string="Prev" type="object" style="margin-left: 20px"
-                            attrs="{'invisible': [('cus_invoice', '!=', True),('packing_invoice', '!=', True)]}"/>
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                     <field name="cus_invoice_id" style="width:13%%" placeholder="Select customer"
-                           attrs="{'invisible': [('cus_invoice', '!=', True),('packing_invoice', '!=', True)]}"/>
+                           attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                 <!--<field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
                     <button name="next_invoice" string="Next" type="object"
-                            attrs="{'invisible': [('cus_invoice', '!=', True),('packing_invoice', '!=', True)]}" style="margin-left: 5px"/>
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}" style="margin-left: 5px"/>
                     <button name="onchange_cus_invoice_id" string="open customer invoice" type="object" class="open_customer" invisible="1"
-                            attrs="{'invisible': [('cus_invoice', '!=', True),('packing_invoice', '!=', True)]}"/>
+                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
+
+                    <field name="cus_invoice_id" style="width:13%%" placeholder="Select customer"
+                           attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                    <button name="onchange_cus_invoice_id" string="Import customer" type="object" class="pack_customer"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                    <button name="previous_invoice" string="Prev" type="object" style="margin-left: 20px"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                    <field name="pack_invoice_id" style="width:13%%" placeholder="Select Packing slip"
+                           attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+                <!--<field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
+                    <button name="next_invoice" string="Next" type="object"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}" style="margin-left: 5px"/>
+                    <button name="onchange_packing_invoice_id" string="open packing slip" type="object" class="open_pack"
+                            attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
+
                     <group col="4">
                         <group name="discount">
                             <field name="discount_category" attrs="{'readonly': [('state', '!=', 'draft')]}"

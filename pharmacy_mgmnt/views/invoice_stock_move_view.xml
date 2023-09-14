@@ -65,8 +65,8 @@
                 </xpath>
                 <xpath expr="//field[@name='amount_w_tax']" position="after">
                     <field name="manf_date" invisible="1"/>
-                    <field name="expiry_date" readonly="1"/>
-                    <field name="medicine_rack" />
+                    <field name="expiry_date" readonly="1" invisible="1"/>
+                    <field name="medicine_rack" invisible="1"/>
                     <field name="rack_qty" invisible="1"/>
                     <field name="hsn_code" readonly="1"/>
                 </xpath>

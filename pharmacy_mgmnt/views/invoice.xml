@@ -112,6 +112,7 @@
                     <field name="product_id" string="Medicine"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
+                    <field name="expiry_date" readonly="1"/>
                     <field name="medicine_name_subcat"/>
                     <field name="batch_2"/>
                     <field name="medicine_name_packing"/>
