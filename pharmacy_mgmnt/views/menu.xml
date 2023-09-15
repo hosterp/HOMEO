@@ -1121,8 +1121,9 @@
                             <field name="deposit_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="clearence_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="remarks"/>
-                            <button name="cheque_bounce_button" string="Cheque Bounce" class="oe_highlight" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
-                            <button name="cheque_bounce_button" string="Cheque Paid" class="oe_highlight" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
+                            <button name="cheque_bounce_button" type="object" string="Cheque Bounce" class="oe_highlight" attrs="{'invisible': ['|',('payment_method','!=','cheque'),('click', '=', True)]}"/>
+                            <button name="cheque_paid_button" type="object"  string="Cheque Paid" class="oe_highlight" attrs="{'invisible': ['|',('payment_method','!=','cheque')]}"/>
+                            <field name="click" invisible="1"/>
 
                         </group>
 
