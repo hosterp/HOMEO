@@ -110,9 +110,10 @@ class PartnerPayment(models.Model):
                                   store=True)
     # invoice_ids = fields.One2many('invoice.details', 'partner_payment_id', compute='generate_lines', readonly=False,
     #                               store=True)
-    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('paid', 'Paid')])
+    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')])
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     payment_total_calculation = fields.Float()
+    click=fields.Boolean(string='clicked')
 
     @api.onchange('payment_amount')
     def onchange_payment_amount(self):
@@ -555,6 +556,31 @@ class PartnerPayment(models.Model):
     #     print("there are payments to be completed")
 
     # return True
+
+    @api.multi
+    def cheque_bounce_button(self):
+            if self.cheque_bounce_button:
+                if self.state == 'paid':
+                    self.state ='bounced'
+                    self.click = True
+
+
+                # else:
+                #     self.click = False
+                #     print('not satisfied')
+
+
+    @api.multi
+    def cheque_paid_button(self):
+        if self.cheque_bounce_button:
+            if self.state == 'bounced':
+                self.state = 'paid'
+                self.click = True
+            # else:
+            #     self.click=True
+
+
+
 
     @api.multi
     def action_payment_all(self, context=None):
