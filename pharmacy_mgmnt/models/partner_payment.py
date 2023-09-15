@@ -145,7 +145,7 @@ class PartnerPayment(models.Model):
                 rec.invoice_ids = []
                 list = []
                 invoices = self.env['account.invoice'].search(
-                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),
+                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit')
                      ])
                 if invoices:
                     for line in invoices:
@@ -181,7 +181,7 @@ class PartnerPayment(models.Model):
                     rec.invoice_ids = []
                     list = []
                     invoices = self.env['account.invoice'].search(
-                        [('partner_id', '=', rec.partner_id.id),
+                        [('partner_id', '=', rec.partner_id.id),('pay_mode', '=','credit')
                          ])
                     if invoices:
                         for line in invoices:
@@ -220,7 +220,7 @@ class PartnerPayment(models.Model):
                 rec.invoice_ids = []
                 list = []
                 invoices = self.env['account.invoice'].search(
-                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),
+                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit')
                      ])
                 if invoices:
                     for line in invoices:
@@ -255,7 +255,7 @@ class PartnerPayment(models.Model):
                     rec.invoice_ids = []
                     list = []
                     invoices = self.env['account.invoice'].search(
-                        [('res_person', '=', rec.res_person_id.id),
+                        [('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit')
                          ])
                     if invoices:
                         for line in invoices:

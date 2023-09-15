@@ -1078,6 +1078,7 @@
         <record model="ir.ui.view" id="partner_payment_view_form">
             <field name="name">Payment</field>
             <field name="model">partner.payment</field>
+            <field name="context">{'pay_mode': 'credit'}</field>
             <field name="arch" type="xml">
                 <form string="Payment Details">
                         <style>
