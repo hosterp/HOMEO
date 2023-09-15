@@ -1,6 +1,5 @@
 <openerp>
     <data>
-
         <record model="ir.ui.view" id="stock_report_medicine_tree_id">
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
@@ -538,6 +537,12 @@
         <menuitem id="menu_med_main_payments"
                   name="Payments"
                   sequence="5" />
+         <menuitem id="menu_med_payments_child"
+                  name="Cheque Details"
+                  sequence="10" parent="menu_med_main_payments"/>
+        <menuitem action="action_cheque_detail_entry" id="menu_med_payments_child_1"
+                  name="Cheque Detail"
+                  sequence="10" parent="menu_med_payments_child"/>
 
          <menuitem id="menu_med_main_payments_menu"
                   name="Customer Payments"
@@ -545,12 +550,12 @@
         <menuitem id="menu_med_main_payments_menu_child1"  action="action_payment"
                   name="Customer Payments"
                   sequence="1" parent="menu_med_main_payments_menu"/>
-        <menuitem id="menu_med_main_payments_menu_2"
-                  name="Due Payments"
-                  sequence="2" parent="menu_med_main_payments"/>
-        <menuitem id="menu_med_main_payments_menu2_child1"   action="action_payment"
-                  name="Due Payments"
-                  sequence="1" parent="menu_med_main_payments_menu_2"/>
+<!--        <menuitem id="menu_med_main_payments_menu_2"-->
+<!--                  name="Due Payments"-->
+<!--                  sequence="2" parent="menu_med_main_payments"/>-->
+<!--        <menuitem id="menu_med_main_payments_menu2_child1"   action="action_payment"-->
+<!--                  name="Due Payments"-->
+<!--                  sequence="1" parent="menu_med_main_payments_menu_2"/>-->
 
 
         <menuitem id="menu_med_main_supplier_invoice_1"
@@ -1078,7 +1083,6 @@
         <record model="ir.ui.view" id="partner_payment_view_form">
             <field name="name">Payment</field>
             <field name="model">partner.payment</field>
-            <field name="context">{'pay_mode': 'credit'}</field>
             <field name="arch" type="xml">
                 <form string="Payment Details">
                         <style>
@@ -1117,9 +1121,8 @@
                             <field name="deposit_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="clearence_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="remarks"/>
-                            <button name="cheque_bounce_button" type="object" string="Cheque Bounce" class="oe_highlight" attrs="{'invisible': ['|',('payment_method','!=','cheque'),('click', '=', True)]}"/>
-                            <button name="cheque_paid_button" type="object"  string="Cheque Paid" class="oe_highlight" attrs="{'invisible': ['|',('payment_method','!=','cheque')]}"/>
-                            <field name="click" invisible="1"/>
+                            <button name="cheque_bounce_button" string="Cheque Bounce" class="oe_highlight" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
+                            <button name="cheque_bounce_button" string="Cheque Paid" class="oe_highlight" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
 
                         </group>
 

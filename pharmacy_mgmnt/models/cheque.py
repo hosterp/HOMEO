@@ -14,8 +14,8 @@ class ChequeTransactions(models.Model):
     _name = 'cheque.entry'
     _rec_name = 's_no'
 
-    s_no = fields.Char('Serial Number', readonly=True, required=True, copy=False, default='New')
-    name = fields.Many2one('res.partner', 'Name', required=1)
+    s_no = fields.Char('Serial Number', readonly=True, required=False, copy=False, default='New')
+    name = fields.Many2one('res.partner', 'Name')
     t_date = fields.Date('Date',default=fields.Date.today)
     cheque_no = fields.Char('Cheque Number')
     cheque_date = fields.Date('Cheque Date')
@@ -23,7 +23,7 @@ class ChequeTransactions(models.Model):
     clearance_date = fields.Date('Clearance Date')
     cheque_amount = fields.Float('Cheque Amount',readonly=True,compute='cheque_amount_onchange')
     invoice_amount = fields.Float('Invoice Amount', compute="_get_balace_amt")
-    balance = fields.Float('Balance', compute="_get_balace_amt")
+    balance = fields.Float('Balance')
     bank = fields.Char('Bank')
     branch = fields.Char('Branch')
     ifsc = fields.Char('IFSC')
@@ -34,11 +34,14 @@ class ChequeTransactions(models.Model):
     @api.depends('invoice_ids')
     def cheque_amount_onchange(self):
         for rec in self:
-            if rec.invoice_ids:
-                rec.cheque_amount=sum(rec.invoice_ids.mapped('amount_total'))
+            if rec.cheque_amount == 0.0:
+                for rec in self:
+                    if rec.invoice_ids:
+                        rec.cheque_amount=sum(rec.invoice_ids.mapped('amount_total'))
+                    else:
+                        rec.cheque_amount = 0.0
             else:
-                rec.cheque_amount = 0.0
-
+                pass
 
     @api.depends('cheque_amount','invoice_ids')
     def _get_balace_amt(self):
@@ -131,7 +134,6 @@ class ChequeTransactions(models.Model):
         for rec in self:
             rec.balance = 0
             rec.write({'state': 'bounce'})
-
 
 
 

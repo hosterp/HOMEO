@@ -16,7 +16,6 @@ class InvoiceDetails(models.Model):
     de_residual = fields.Float()
     calc = fields.Float()
 
-
     # def onchange_de_residual(self):
     #     print('shooo')
 
@@ -91,7 +90,8 @@ class PartnerPayment(models.Model):
     partner_id = fields.Many2one('res.partner', domain=[('customer', '=', True), ('res_person_id', '=', False)])
     reference_number = fields.Char()
     date = fields.Date(default=fields.Date.today)
-    payment_method = fields.Selection([('cheque', 'Cheque'), ('cash', 'Cash'),('UPI', 'UPI')], string="Mode of Payment",default='cash')
+    payment_method = fields.Selection([('cheque', 'Cheque'), ('cash', 'Cash'), ('UPI', 'UPI')],
+                                      string="Mode of Payment", default='cash')
     cheque_no = fields.Char()
     cheque_date = fields.Date()
     deposit_date = fields.Date()
@@ -110,10 +110,9 @@ class PartnerPayment(models.Model):
                                   store=True)
     # invoice_ids = fields.One2many('invoice.details', 'partner_payment_id', compute='generate_lines', readonly=False,
     #                               store=True)
-    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')])
+    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('paid', 'Paid')])
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     payment_total_calculation = fields.Float()
-    click=fields.Boolean(string='clicked')
 
     @api.onchange('payment_amount')
     def onchange_payment_amount(self):
@@ -137,6 +136,7 @@ class PartnerPayment(models.Model):
     #             print(self.pays,'payspausysy')
     # modified code
     #
+
     @api.onchange('partner_id')
     def onchange_partner_id(self):
         if self.partner_id and self.res_person_id:
@@ -145,7 +145,7 @@ class PartnerPayment(models.Model):
                 rec.invoice_ids = []
                 list = []
                 invoices = self.env['account.invoice'].search(
-                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit')
+                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),
                      ])
                 if invoices:
                     for line in invoices:
@@ -181,7 +181,7 @@ class PartnerPayment(models.Model):
                     rec.invoice_ids = []
                     list = []
                     invoices = self.env['account.invoice'].search(
-                        [('partner_id', '=', rec.partner_id.id),('pay_mode', '=','credit')
+                        [('partner_id', '=', rec.partner_id.id),
                          ])
                     if invoices:
                         for line in invoices:
@@ -220,7 +220,7 @@ class PartnerPayment(models.Model):
                 rec.invoice_ids = []
                 list = []
                 invoices = self.env['account.invoice'].search(
-                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit')
+                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),
                      ])
                 if invoices:
                     for line in invoices:
@@ -255,7 +255,7 @@ class PartnerPayment(models.Model):
                     rec.invoice_ids = []
                     list = []
                     invoices = self.env['account.invoice'].search(
-                        [('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit')
+                        [('res_person', '=', rec.res_person_id.id),
                          ])
                     if invoices:
                         for line in invoices:
@@ -463,7 +463,7 @@ class PartnerPayment(models.Model):
             if record.total_amount and record.payment_amount:
                 difference = record.total_amount - record.payment_amount
                 # if difference < 0:
-                    # raise osv.except_osv(_('Warning!'), _("Total amount is less than payment amount."))
+                # raise osv.except_osv(_('Warning!'), _("Total amount is less than payment amount."))
                 record.balance_amount = max(difference, 0.0)
 
     # @api.multi
@@ -558,31 +558,6 @@ class PartnerPayment(models.Model):
     # return True
 
     @api.multi
-    def cheque_bounce_button(self):
-            if self.cheque_bounce_button:
-                if self.state == 'paid':
-                    self.state ='bounced'
-                    self.click = True
-
-
-                # else:
-                #     self.click = False
-                #     print('not satisfied')
-
-
-    @api.multi
-    def cheque_paid_button(self):
-        if self.cheque_bounce_button:
-            if self.state == 'bounced':
-                self.state = 'paid'
-                self.click = True
-            # else:
-            #     self.click=True
-
-
-
-
-    @api.multi
     def action_payment_all(self, context=None):
         payment_amount = self.payment_amount
         for record in self.invoice_ids:
@@ -647,7 +622,7 @@ class PartnerPayment(models.Model):
                     payment_amount = payment_amount - amount
                     # self.state = 'paid'
         if payment_amount != 0:
-            print(payment_amount,'after first Payment')
+            print(payment_amount, 'after first Payment')
             for record in self.invoice_ids:
                 if record.select != True:
                     amount = 0
@@ -756,13 +731,59 @@ class PartnerPayment(models.Model):
 
     @api.model
     def create(self, vals):
+        # print(vals)
         if not vals.get('reference_number'):
             vals['reference_number'] = self.env['ir.sequence'].next_by_code(
                 'partner.payment')
         vals.update({'state': 'draft'})
         vals.update({'account_id': 25})
         result = super(PartnerPayment, self).create(vals)
+        if result.payment_method == 'cheque':
+            vals = {
+                'name': result.partner_id.id,
+                'cheque_no': result.cheque_no,
+                't_date': result.date,
+                'cheque_amount': result.payment_amount,
+                'invoice_ids': result.invoice_ids,
+                'cheque_date': result.cheque_date,
+                'deposit_date': result.deposit_date,
+                'clearance_date': result.clearence_date,
+                'bank': result.bank,
+                'branch': result.branch,
+                'ifsc': result.ifsc,
+                'state': 'draft'
+            }
+            cheque = self.env['cheque.entry'].create(vals)
+        else:
+            pass
         return result
+
+
+# @api.model
+# def create(self, vals):
+#     if result.payment_method == 'cheque':
+#         print(result.payment_method, '............')
+#         # number = self.env['ir.sequence'].next_by_code('cheque.entry.sequence')
+#         # print(sequence,',,,,,,,,,,,,,,,,,,,,,,')
+#         # cheque = self.env['cheque.entry']
+#         vals = {
+#             # 's_no': number,
+#             'name': result.partner_id.id,
+#             'cheque_no': result.cheque_no,
+#             't_date': result.date,
+#             'cheque_amount': result.payment_amount,
+#             # 'invoice_ids': result.invoice_ids,
+#             'cheque_date': result.cheque_date,
+#             'deposit_date': result.deposit_date,
+#             'clearance_date': result.clearence_date,
+#             'bank': result.bank,
+#             'branch': result.branch,
+#             'ifsc': result.ifsc,
+#             'state': 'draft'
+#         }
+#         cheque = self.env['cheque.entry'].create(vals)
+
+# return super(PartnerPayment, self).create(vals)
 
 
 class AccountInvoiceRefund(models.TransientModel):
