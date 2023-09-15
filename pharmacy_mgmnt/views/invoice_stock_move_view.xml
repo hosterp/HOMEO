@@ -49,7 +49,7 @@
 
                 <xpath expr="//field[@name='price_subtotal']" position="after">
                     <!--                    <field name="rate_amtc"/>-->
-                    <field name="invoice_line_tax_id4" readonly="1"/>
+                    <field name="invoice_line_tax_id4"/>
 
 
                 </xpath>
@@ -68,7 +68,7 @@
                     <field name="expiry_date" readonly="1" invisible="1"/>
                     <field name="medicine_rack" invisible="1"/>
                     <field name="rack_qty" invisible="1"/>
-                    <field name="hsn_code" readonly="1"/>
+                    <field name="hsn_code"/>
                 </xpath>
                 <xpath expr="//field[@name='tax_line']" position="attributes">
                     <attribute name="invisible">1</attribute>
