@@ -686,7 +686,7 @@
                                 type="object" states="draft"/>
                         <button name="bounce" string="Bounce" class="oe_highlight"
                                 type="object" states="draft"/>
-                        <field name="state" nolabel="1" widget="statusbar" statusbar_visible="draft,post,bounce"/>
+                        <field name="state" nolabel="1" widget="statusbar" statusbar_visible="draft,post,bounce,paid"/>
                     </header>
 
                     <sheet>

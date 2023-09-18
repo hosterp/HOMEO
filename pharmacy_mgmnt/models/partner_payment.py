@@ -144,6 +144,11 @@ class PartnerPayment(models.Model):
             if self.state == 'paid':
                 self.state = 'bounced'
                 self.click = True
+                # status_update=self.env['cheque.entry'].search([('invoice_ids', '=',self.invoice_ids.invoice_id.id),('state','=','draft'),('deposit_date','=',self.deposit_date)])
+                status_update=self.env['cheque.entry'].search([('invoice_ids', '=',self.invoice_ids.invoice_id.id),('cheque_no', '=' , self.cheque_no)])
+                for record in status_update:
+                    record.state = 'bounce'
+                    print(record, 'status_update')
 
     @api.multi
     def cheque_paid_button(self):
@@ -151,6 +156,11 @@ class PartnerPayment(models.Model):
             if self.state == 'bounced':
                 self.state = 'paid'
                 self.click = True
+                status_update = self.env['cheque.entry'].search(
+                    [('invoice_ids', '=', self.invoice_ids.invoice_id.id), ('cheque_no', '=', self.cheque_no)])
+                for record in status_update:
+                    record.state = 'paid'
+                    print(status_update,'status_update_paidstatus_update_paid')
     @api.onchange('partner_id')
     def onchange_partner_id(self):
         if self.partner_id and self.res_person_id:
@@ -698,6 +708,8 @@ class PartnerPayment(models.Model):
                             })
                         payment_amount = payment_amount - amount
                         # self.state = 'paid'
+        else:
+            raise models.ValidationError('Please Enter payment Amount')
         payment_records = self.env['account.invoice'].search(
             [('partner_id', '=', self.partner_id.id), ('state', '!=', 'draft')])
         print("records invoice", payment_records)

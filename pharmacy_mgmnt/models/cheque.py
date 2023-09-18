@@ -17,7 +17,7 @@ class ChequeTransactions(models.Model):
     s_no = fields.Char('Serial Number', readonly=True, required=False, copy=False, default='New')
     name = fields.Many2one('res.partner', 'Name')
     t_date = fields.Date('Date',default=fields.Date.today)
-    cheque_no = fields.Char('Cheque Number')
+    cheque_no = fields.Char('Cheque Number',required=True)
     cheque_date = fields.Date('Cheque Date')
     deposit_date = fields.Date('Deposit Date')
     clearance_date = fields.Date('Clearance Date')
@@ -27,7 +27,7 @@ class ChequeTransactions(models.Model):
     bank = fields.Char('Bank')
     branch = fields.Char('Branch')
     ifsc = fields.Char('IFSC')
-    state = fields.Selection([('draft', 'Draft'), ('post', 'Posted'), ('bounce', 'Bounced'),]
+    state = fields.Selection([('draft', 'Draft'), ('post', 'Posted'), ('bounce', 'Bounced'),('paid', 'Paid'),]
                              , required=True, default='draft')
     invoice_ids = fields.Many2many('account.invoice', string="Select Invoices",)
 
