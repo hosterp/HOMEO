@@ -753,12 +753,14 @@ class PartnerPayment(models.Model):
         vals.update({'account_id': 25})
         result = super(PartnerPayment, self).create(vals)
         if result.payment_method == 'cheque':
+            print(result.invoice_ids.ids,'result.invoice_ids.ids..................')
+            print( (0, 0, [result.invoice_ids.ids]),'result.invoice_ids.ids..................1')
             vals = {
                 'name': result.partner_id.id,
                 'cheque_no': result.cheque_no,
                 't_date': result.date,
                 'cheque_amount': result.payment_amount,
-                'invoice_ids': result.invoice_ids,
+                'invoice_ids':  [(4, rec.invoice_id.id, 0) for rec in result.invoice_ids],
                 'cheque_date': result.cheque_date,
                 'deposit_date': result.deposit_date,
                 'clearance_date': result.clearence_date,
