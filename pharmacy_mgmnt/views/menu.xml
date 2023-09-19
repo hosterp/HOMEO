@@ -1140,7 +1140,7 @@
                     </group>
                     <notebook>
                         <page string="invoices">
-                            <field name="invoice_ids">
+                            <field name="invoice_ids" widget="one2many_clickable">
                                 <tree editable="bottom" string="Invoice">
                                     <field name="partner_id" readonly="1"/>
                                     <field name="commercial_partner_id" invisible="1"/>

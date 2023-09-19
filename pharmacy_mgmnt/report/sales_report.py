@@ -10,6 +10,19 @@ class InvoiceDetails(models.Model):
     invoice_id = fields.Many2one('account.invoice', required=True)
     sales_details_id = fields.Many2one('sales.report')
 
+    @api.multi
+    def open_invoice(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
+            base_url, self.invoice_id.id)
+        print('redirect_url', redirect_url)
+        print('self.invoice_ids.invoice_id.id', self.invoice_id.id)
+        return {
+            'type': 'ir.actions.act_url',
+            'url': redirect_url,
+            'target': 'self',
+        }
+
 
 class SalesReport(models.Model):
     _name = 'sales.report'
@@ -19,14 +32,15 @@ class SalesReport(models.Model):
     res_person_id = fields.Many2one('res.partner', 'Responsible Person')
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
-    # product = fields.Many2one('product.product', 'Product')
-    # potency = fields.Many2one('product.medicine.subcat', 'Potency')
-    # packing = fields.Many2one('product.medicine.packing', 'Packing')
-    # company = fields.Many2one('product.medicine.responsible', 'Company')
-    # group = fields.Many2one('tax.combo.new', 'Group')
+    product = fields.Many2one('product.product', 'Product')
+    potency = fields.Many2one('product.medicine.subcat', 'Potency')
+    packing = fields.Many2one('product.medicine.packing', 'Packing')
+    company = fields.Many2one('product.medicine.responsible', 'Company')
+    group = fields.Many2one('tax.combo.new', 'Group')
     state = fields.Selection([('open', 'Open'), ('draft', 'Draft'), ('paid', 'Paid')])
     invoice_ids = fields.One2many('sales.details', 'sales_details_id', readonly=False,
                                   store=True)
+
 
     @api.multi
     def print_sale_report(self):
@@ -45,16 +59,16 @@ class SalesReport(models.Model):
             domain += [('partner_id', '=', self.partner_id.id)]
         if self.res_person_id:
             domain += [('res_person', '=', self.res_person_id.id)]
-        # if self.product:
-        #     domain += [('invoice_id.product', '=', self.product)]
-        # if self.potency:
-        #     domain += [('invoice_id.potency', '=', self.potency)]
-        # if self.packing:
-        #     domain += [('invoice_id.packing', '=', self.packing)]
-        # if self.company:
-        #     domain += [('invoice_id.company', '=', self.company)]
-        # if self.group:
-        #     domain += [('invoice_id.group', '=', self.group)]
+        if self.product:
+            domain += [('invoice_line.product_id', '=', self.product.id)]
+        if self.potency:
+            domain += [('invoice_line.medicine_name_subcat', '=', self.potency.id)]
+        if self.packing:
+            domain += [('invoice_line.medicine_name_packing', '=', self.packing.id)]
+        if self.company:
+            domain += [('invoice_line.product_of', '=', self.company.id)]
+        if self.group:
+            domain += [('invoice_line.medicine_grp', '=', self.group.id)]
         if self.state:
             domain += [('state', '=', self.state)]
         for rec in self:

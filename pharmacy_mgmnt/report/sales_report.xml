@@ -32,15 +32,15 @@
                                 <field name="date"/>
                                 <field name="partner_id"/>
                                 <field name="res_person_id"/>
-<!--                                <field name="product"/>-->
-<!--                                <field name="company"/>-->
+                                <field name="product"/>
+                                <field name="company"/>
                             </group>
                             <group>
                                 <field name="date_from"/>
                                 <field name="date_to"/>
                                 <field name="state"/>
-<!--                                <field name="packing"/>-->
-<!--                                <field name="potency"/>-->
+                                <field name="packing"/>
+                                <field name="potency"/>
                             </group>
                         </group>
                     </group>
@@ -58,7 +58,7 @@
                                     <field name="period_id" invisible="1" groups="account.group_account_user"/>
                                     <field name="company_id" groups="base.group_multi_company" widget="selection"
                                            readonly="1"/>
-                                    <!--                                    <field name="user_id" string="Responsible" readonly="1"/>-->
+                                    <!--<field name="user_id" string="Responsible" readonly="1"/>-->
                                     <field name="date_due" invisible="1"/>
                                     <field name="origin" invisible="1"/>
                                     <field name="currency_id" groups="base.group_multi_currency"/>
@@ -71,6 +71,7 @@
                                     <field name="res_person" readonly="1"/>
                                     <field name="invoice_id" invisible="1"/>
                                     <field name="account_id" invisible="1"/>
+                                    <button name="open_invoice" type="object"  string="Open" class="oe_highlight" />
                                 </tree>
                             </field>
                         </page>
