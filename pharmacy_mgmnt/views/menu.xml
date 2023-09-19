@@ -686,7 +686,7 @@
                                 type="object" states="draft"/>
                         <button name="bounce" string="Bounce" class="oe_highlight"
                                 type="object" states="draft"/>
-                        <field name="state" nolabel="1" widget="statusbar" statusbar_visible="draft,post,bounce"/>
+                        <field name="state" nolabel="1" widget="statusbar" statusbar_visible="draft,post,bounce,paid"/>
                     </header>
 
                     <sheet>
@@ -1132,6 +1132,7 @@
                             <field name="payment_method" style="width:40%;"/>
                             <field name="payment_amount" string="Payment Amount"/>
                             <field name="advance_amount" string="Advance Amount"/>
+                            <field name="chekbox" string="Use Advance Amount?" style="width:40%;"/>
                             <field name="cheque_no" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="bank" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="branch" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
