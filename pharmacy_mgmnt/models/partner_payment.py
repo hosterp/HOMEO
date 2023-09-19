@@ -84,11 +84,12 @@ class PartnerPayment(models.Model):
     _inherits = {'account.voucher': 'voucher_relation_id'}
     _name = 'partner.payment'
     _rec_name = 'reference_number'
+    _order = 'reference_number desc'
 
     voucher_relation_id = fields.Many2one('account.voucher', required=True)
     res_person_id = fields.Many2one('res.partner', domain=[('res_person_id', '=', True)])
     partner_id = fields.Many2one('res.partner', domain=[('customer', '=', True), ('res_person_id', '=', False)])
-    reference_number = fields.Char()
+    reference_number = fields.Integer()
     date = fields.Date(default=fields.Date.today)
     payment_method = fields.Selection([('cheque', 'Cheque'), ('cash', 'Cash'), ('UPI', 'UPI')],
                                       string="Mode of Payment", default='cash')
@@ -114,21 +115,23 @@ class PartnerPayment(models.Model):
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     payment_total_calculation = fields.Float()
     click = fields.Boolean(string='clicked')
-    chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
+    # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
 
     @api.onchange('payment_amount')
     def onchange_payment_amount(self):
+        if self.advance_amount:
+            self.payment_amount+=self.advance_amount
         self.calc_amount = self.payment_amount
 
 
-    @api.onchange('chekbox')
-    def _advance_amount_calc(self):
-        for rec in self:
-            advance=self.advance_amount
-            if rec.chekbox == 'yes':
-                rec.payment_amount+=rec.advance_amount
-            else:
-               rec.payment_amount-=rec.advance_amount
+    # @api.onchange('chekbox')
+    # def _advance_amount_calc(self):
+    #     for rec in self:
+    #         advance=self.advance_amount
+    #         if rec.chekbox == 'yes':
+    #             rec.payment_amount+=rec.advance_amount
+    #         else:
+    #            rec.payment_amount-=rec.advance_amount
 
 
     # @api.onchange('balance_amount')
@@ -720,7 +723,7 @@ class PartnerPayment(models.Model):
                             })
                         payment_amount = payment_amount - amount
                         # self.state = 'paid'
-
+        self.advance_amount=payment_amount
         payment_records = self.env['account.invoice'].search(
             [('partner_id', '=', self.partner_id.id), ('state', '!=', 'draft')])
         print("records invoice", payment_records)
@@ -775,6 +778,8 @@ class PartnerPayment(models.Model):
         vals.update({'state': 'draft'})
         vals.update({'account_id': 25})
         result = super(PartnerPayment, self).create(vals)
+        if result.payment_amount==0 and self.advance_amount!=0:
+            result.payment_amount+=self.advance_amount
         if result.payment_method == 'cheque':
             print(result.invoice_ids.ids,'result.invoice_ids.ids..................')
             print( (0, 0, [result.invoice_ids.ids]),'result.invoice_ids.ids..................1')
