@@ -1260,6 +1260,32 @@ class AccountInvoice(models.Model):
             pass
 
     @api.multi
+    def onchange_pack_cus_invoice_id(self):
+        if self.cus_invoice_id:
+            # hold = self.env['account.invoice'].search([('id','=',self.hold_invoice_id.id),('hold_invoice','=',True),('type','=','out_invoice')])
+            # print(hold.hold_invoice,"hold")
+            # print(hold.id,"hold.id")
+            # print(self.hold_invoice_id.id,"self.hold_invoice_id")
+            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
+                base_url, self.cus_invoice_id.id)
+            return {
+                'type': 'ir.actions.act_url',
+                'url': redirect_url,
+                'target': 'self',
+            }
+            # return {
+            #     'name': _('Holding Invoice'),  # Title of the wizard
+            #     'view_mode': 'form',  # Display the wizard in form view
+            #     'res_id': self.hold_invoice_id.id,  # ID of the created wizard record
+            #     'res_model': 'account.invoice',  # Model of the wizard
+            #     'type': 'ir.actions.act_window',
+            #     'target': 'self',  # Open the wizard in a new window or tab
+            # }
+        else:
+            pass
+
+    @api.multi
     def onchange_hold_invoice_id(self):
         if self.hold_invoice_id:
             # hold = self.env['account.invoice'].search([('id','=',self.hold_invoice_id.id),('hold_invoice','=',True),('type','=','out_invoice')])

@@ -146,11 +146,30 @@ $(document).ready(function() {
         var urlHash = window.location.hash;
         if (urlHash.includes('model=account.invoice') && urlHash.includes('action=400')) {
 //            alert('ready');
-           $(document).on("click", ".oe_m2o_drop_down_button:eq(9)", function() {
-            setTimeout(function() {
-            $(".Hold_Bill").trigger('click');
-            }, 2000);
+           cus_hold=$(".oe_m2o_drop_down_button:eq(9)");
+           $(document).on("keyup",cus_hold, function() {
+            if (event.keyCode === 13) {
+                $(".Hold_Bill").trigger('click');
+            }
+
            });
+
+        } else {
+//            $(".oe_m2o_drop_down_button").off('click');
+        }
+    });
+     $(window).on("hashchange", function() {
+        var urlHash = window.location.hash;
+        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=409')) {
+//            alert('ready');
+           cus_hold=$(".oe_m2o_drop_down_button:eq(9)");
+           $(document).on("keyup",cus_hold, function() {
+            if (event.keyCode === 13) {
+                $(".pack_customer").trigger('click');
+            }
+
+           });
+
         } else {
 //            $(".oe_m2o_drop_down_button").off('click');
         }
@@ -163,15 +182,30 @@ $(document).ready(function() {
         var urlHash = window.location.hash;
         if (urlHash.includes('model=account.invoice') && urlHash.includes('action=400')) {
 //            alert('ready');
-           $(document).on("click", ".oe_m2o_drop_down_button:eq(10)", function() {
-            setTimeout(function() {
-            $(".open_customer").trigger('click');
-            }, 2000);
+           cus=$(".oe_m2o_drop_down_button:eq(10)");
+           $(document).on("keyup",cus , function() {
+            if (event.keyCode === 13) {
+//                alert('open customer')
+                $(".open_customer").trigger('click');
+               }
            });
-        } else {
-//            $(".oe_m2o_drop_down_button").off('click');
         }
     });
+    $(window).on("hashchange", function() {
+        var urlHash = window.location.hash;
+        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=409')) {
+//            alert('ready');
+           cus=$(".oe_m2o_drop_down_button:eq(10)");
+           $(document).on("keyup",cus , function() {
+            if (event.keyCode === 13) {
+//                alert('open customer')
+                $(".open_pack").trigger('click');
+               }
+           });
+        }
+    });
+
+
 });
 
 //console.log('f3');
