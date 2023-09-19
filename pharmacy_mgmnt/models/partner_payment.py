@@ -164,6 +164,8 @@ class PartnerPayment(models.Model):
                 for record in status_update:
                     record.state = 'bounce'
                     print(record, 'status_update')
+                for rec in self.invoice_ids:
+                    rec.state ='draft'
 
     @api.multi
     def cheque_paid_button(self):
@@ -175,6 +177,8 @@ class PartnerPayment(models.Model):
                     [('invoice_ids', '=', self.invoice_ids.invoice_id.id), ('cheque_no', '=', self.cheque_no)])
                 for record in status_update:
                     record.state = 'paid'
+                for rec in self.invoice_ids:
+                    rec.state = 'paid'
                     # print(status_update,'status_update_paidstatus_update_paid')
     @api.onchange('partner_id')
     def onchange_partner_id(self):
