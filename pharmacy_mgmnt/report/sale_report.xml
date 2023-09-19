@@ -10,10 +10,10 @@
                 name="pharmacy_mgmnt.sales_report_id"
                 attachment_use="True"
         />
-<!--        <record id="pharmacy_mgmnt.action_customer_payment_report"-->
-<!--                model="ir.actions.report.xml">-->
-<!--            <field name="paperformat_id" ref="report_paperformat"/>-->
-<!--        </record>-->
+        <!--        <record id="pharmacy_mgmnt.action_customer_payment_report"-->
+        <!--                model="ir.actions.report.xml">-->
+        <!--            <field name="paperformat_id" ref="report_paperformat"/>-->
+        <!--        </record>-->
         <template id="report_sales_template">
             <style>
                 table, th, td {
@@ -57,48 +57,12 @@
                                     </center>
                                     <center>
                                         <h4>
-<!--                                            <b>TAX INVOICE-->
-<!--                                            </b>-->
+                                            <!--                                            <b>TAX INVOICE-->
+                                            <!--                                            </b>-->
                                         </h4>
                                     </center>
                                 </div>
                                 <br></br>
-                                <div>
-                            <div class="left-aligned-div">
-
-                                <div t-if="o.date">
-                                    <strong>    Date:</strong>
-                                    <span t-field="o.date"/>
-                                </div>
-                                <div t-if="o.partner_id">
-                                    <strong>Customer Name:</strong>
-                                    <span t-field="o.partner_id.name"/>
-                                </div>
-                                <div t-if="o.res_person_id">
-                                    <strong>Customer Name:</strong>
-                                    <span t-field="o.res_person_id.name"/>
-                                </div>
-                            </div>
-
-                            <div class="right-aligned-div">
-                                <div t-if="o.date_from">
-                                        <strong>Date From:</strong>
-                                        <span t-field="o.date_from"/>
-                                </div>
-                                <div t-if="o.date_to">
-                                        <strong>Date To:</strong>
-                                        <span t-field="o.date_to"/>
-                                </div>
-                                 <div t-if="o.state">
-                                        <strong>Status:</strong>
-                                        <span t-field="o.state"/>
-                                </div>
-                            </div>
-                        </div>
-                        <br></br>
-                        <br></br>
-                        <br></br>
-
                                 <style>
                                     .right-aligned-div {
                                     text-align: left;
@@ -112,7 +76,60 @@
                                     text-align: center;
 
                                     }
+                                    .container {
+                                    display: grid;
+                                    grid-template-columns: 1fr 1fr 1fr;
+                                    <!--                                    gap: 10px; /* Adjust the gap as needed */-->
+                                    }
+
                                 </style>
+                                <div class="container">
+                                    <div class="left-aligned-div">
+                                        <div t-if="o.date">
+                                            <strong>Date:</strong>
+                                            <span t-field="o.date"/>
+                                        </div>
+                                        <div t-if="o.partner_id">
+                                            <strong>Customer Name:</strong>
+                                            <span t-field="o.partner_id.name"/>
+                                        </div>
+                                        <div t-if="o.res_person_id">
+                                            <strong>Responsible Person:</strong>
+                                            <span t-field="o.res_person_id.name"/>
+                                        </div>
+                                        <div t-if="o.potency">
+                                            <strong>Potency:</strong>
+                                            <span t-field="o.potency"/>
+                                        </div>
+                                        <div t-if="o.company">
+                                            <strong>Company:</strong>
+                                            <span t-field="o.company"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="right-aligned-div">
+                                        <div t-if="o.date_from">
+                                            <strong>Date From:</strong>
+                                            <span t-field="o.date_from"/>
+                                        </div>
+                                        <div t-if="o.date_to">
+                                            <strong>Date To:</strong>
+                                            <span t-field="o.date_to"/>
+                                        </div>
+                                        <div t-if="o.state">
+                                            <strong>Status:</strong>
+                                            <span t-field="o.state"/>
+                                        </div>
+                                        <div t-if="o.product">
+                                            <strong>Product:</strong>
+                                            <span t-field="o.product"/>
+                                        </div>
+                                        <div t-if="o.packing">
+                                            <strong>Packing:</strong>
+                                            <span t-field="o.packing"/>
+                                        </div>
+                                    </div>
+                                </div>
                                 <table class="table table-bordered">
                                     <div style="border:1px solid black;">
                                         <thead>
@@ -132,13 +149,13 @@
                                                 <td>
                                                     <span t-field="l.partner_id.name"/>
                                                 </td>
-                                                   <td>
+                                                <td>
                                                     <span t-field="l.date_invoice"/>
                                                 </td>
                                                 <td>
                                                     <span t-field="l.number2"/>
                                                 </td>
-                                                 <td>
+                                                <td>
                                                     <span t-field="l.residual"/>
                                                 </td>
                                                 <td>
