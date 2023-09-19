@@ -124,7 +124,22 @@ $(document).ready(function(){
             console.log('The checkbox is not checked.');
         }
     });
+
 });
+//$(document).ready(function(){
+//    $(document).on('click','span.oe_form_char_content',function(){
+//        var nearestparent = $(this).parent('span.oe_form_field').closest('span.oe_form_field[data-fieldname="test"]');
+//        if (!$(nearestparent).hasClass("testidddd")){
+//            $(nearestparent).addClass('testidddd');
+//        }
+//        var idspan = nearestparent.children('span.oe_form_char_content');
+//        var testid = idspan.text();
+//        var id = parseInt(testid);
+//        window.location.assign("/web#id="+id+"&view_type=form&model=account.invoice&action=400");
+//    });
+//});
+//class="oe_list oe_view oe_list_editable oe_editing"
+
 
 $(document).ready(function() {
     $(window).on("hashchange", function() {

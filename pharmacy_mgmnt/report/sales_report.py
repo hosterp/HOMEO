@@ -9,6 +9,7 @@ class InvoiceDetails(models.Model):
 
     invoice_id = fields.Many2one('account.invoice', required=True)
     sales_details_id = fields.Many2one('sales.report')
+    test = fields.Integer()
 
     @api.multi
     def open_invoice(self):
@@ -26,7 +27,9 @@ class InvoiceDetails(models.Model):
 
 class SalesReport(models.Model):
     _name = 'sales.report'
+    _order = 'date desc'
 
+    name = fields.Char()
     date=fields.Date(default=fields.Date.today)
     partner_id = fields.Many2one('res.partner', 'Customer')
     res_person_id = fields.Many2one('res.partner', 'Responsible Person')
@@ -41,6 +44,16 @@ class SalesReport(models.Model):
     invoice_ids = fields.One2many('sales.details', 'sales_details_id', readonly=False,
                                   store=True)
 
+    @api.model
+    def create(self, vals):
+        print('hello')
+        if not vals.get('name'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('sales.report.sequence')
+            result = super(SalesReport,self).create(vals)
+            print('hello1',result.name)
+            return result
+        else:
+            pass
 
     @api.multi
     def print_sale_report(self):
@@ -82,6 +95,7 @@ class SalesReport(models.Model):
                 for line in invoices:
                     list.append([0, 0, {'partner_id': line.partner_id.id,
                                         'name': line.name,
+                                        'test': line.id,
                                         'reference': line.reference,
                                         'type': line.type,
                                         'state': line.state,
