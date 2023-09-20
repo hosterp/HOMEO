@@ -43,6 +43,7 @@ class SalesReport(models.Model):
     state = fields.Selection([('open', 'Open'), ('draft', 'Draft'), ('paid', 'Paid')])
     invoice_ids = fields.One2many('sales.details', 'sales_details_id', readonly=False,
                                   store=True)
+    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'),('upi', 'UPI'),], 'Payment Mode',)
 
     @api.model
     def create(self, vals):
@@ -84,6 +85,8 @@ class SalesReport(models.Model):
             domain += [('invoice_line.medicine_grp', '=', self.group.id)]
         if self.state:
             domain += [('state', '=', self.state)]
+        if self.pay_mode:
+            domain += [('pay_mode', '=', self.pay_mode)]
         for rec in self:
             if rec.invoice_ids:
                rec.invoice_ids = [(5, 0, 0)]
@@ -113,7 +116,8 @@ class SalesReport(models.Model):
                                         'date_due': line.date_due,
                                         'number2': line.number2,
                                         'account_id': line.account_id.id,
-                                        'invoice_id': line.id
+                                        'invoice_id': line.id,
+                                        'pay_mode':line.pay_mode,
                                         }
                                  ])
             rec.invoice_ids = list
