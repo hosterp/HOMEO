@@ -85,6 +85,11 @@ $.shortcut('123', function() {
 			$(this).trigger('click');
         }
     });
+    $('.supplier_validate').each(function() {
+        if($(this).parents('div:hidden').length == 0){
+            $(this).trigger('click');
+        }
+    });
 
     $('.oe_form_button_save').each(function() {
         if($(this).parents('div:hidden').length == 0){
