@@ -45,9 +45,8 @@
                                 <field name="date_from"/>
                                 <field name="date_to"/>
                                 <field name="state"/>
-                                <field name="packing"/>
                                 <field name="potency"/>
-
+                                <field name="packing"/>
                             </group>
                         </group>
                     </group>
