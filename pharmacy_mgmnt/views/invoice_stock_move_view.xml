@@ -25,7 +25,8 @@
                             attrs="{'invisible':[('cus_invoice', '=', True)]}"
                     />
                 </xpath>
-                 <xpath expr="//button[@name='invoice_open']" position="attributes">
+                 <xpath expr="//button[@name='invoice_open']" position="attributes" >
+                     <attribute name="class">cus_validate</attribute>
                      <attribute name="attrs">{'invisible':['|',('packing_invoice', '=', True),('hold_invoice', '=',
                         True)]}
                     </attribute>
