@@ -104,10 +104,10 @@
                 <!--<field name="number2" style="width:2%%; margin-left: 10px" readonly="1"/>-->
                     <button name="next_invoice" string="Next" type="object"
                             attrs="{'invisible': [('cus_invoice', '!=', True)]}" style="margin-left: 5px"/>
-                    <button name="onchange_cus_invoice_id" string="open customer invoice" type="object" class="open_customer"
+                    <button name="open_customer_invoice" string="Open Customer Invoice" type="object" class="open_customer"
                             attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
 
-                    <field name="cus_invoice_id" style="width:13%%" placeholder="Select customer"
+                    <field name="pack_open_cus_invoice_id" style="width:13%%" placeholder="Select customer"
                            attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
                     <button name="onchange_pack_cus_invoice_id" string="Import customer" type="object" class="pack_customer"
                             attrs="{'invisible': [('packing_invoice', '!=', True)]}"/>
