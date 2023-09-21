@@ -23,12 +23,6 @@ class ResPartner(models.Model):
     cus_title = fields.Many2one('customer.title', "Customer Type")
     cust_area = fields.Many2one('customer.area', "Customer Area")
     advance_amount=fields.Float('Advance Amount')
-<<<<<<< HEAD
-    # @api.onchange('name')
-    # def onchange_name(self):
-    #     self.use_parent_address == True
-
-=======
     select_state=fields.Selection([('ap','Andhra Pradesh'),('aruna','Arunachal Pradesh'),('assam','Assam'),
                                    ('bihar', 'Bihar'),('chhattisgarh','Chhattisgarh'),('goa','Goa'),
                                    ('gujarat', 'Gujarat'),('haryana','Haryana'),('hp','Himachal Pradesh'),
@@ -40,7 +34,7 @@ class ResPartner(models.Model):
                                    ('tripura', 'Tripura'),('up','Uttar Pradesh'),('uttarakhand','Uttarakhand'),
                                    ('wb', 'West Bengal')
                                    ])
->>>>>>> b685c8ed42269172c1b67aed30cc21be73afaf92
+
 
     # @api.constrains('name')
     # def _check_name_product(self):

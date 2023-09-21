@@ -1539,8 +1539,8 @@ class AccountInvoice(models.Model):
             record.cus_invoice = False
             record.state = "draft"
         return{
-            'type':'ir.actions.client',
-            'tag':'reload',
+            'type': 'ir.actions.client',
+            'tag': 'history_back',
         }
         # return {
         #     'name': _('Customer Invoices'),
