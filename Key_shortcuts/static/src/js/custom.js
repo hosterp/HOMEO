@@ -80,17 +80,34 @@ $.shortcut('16', function() {
 //	});
 //});
 $.shortcut('123', function() {
-    if (confirm("if you want to save?")) {
-        $('.oe_form_button_save').each(function() {
-            if($(this).parents('div:hidden').length == 0){
-                    $(this).trigger('click');
+     $('.cus_validate').each(function() {
+        if($(this).parents('div:hidden').length == 0){
+			$(this).trigger('click');
+        }
+    });
+    $('.supplier_validate').each(function() {
+        if($(this).parents('div:hidden').length == 0){
+            $(this).trigger('click');
+        }
+    });
 
-            }
-        });
-        txt = "You pressed OK!";
-    } else {
-      txt = "You pressed Cancel!";
-    }
+    $('.oe_form_button_save').each(function() {
+        if($(this).parents('div:hidden').length == 0){
+			$(this).trigger('click');
+        }
+    });
+
+//    if (confirm("if you want to save?")) {
+//        $('.oe_form_button_save').each(function() {
+//            if($(this).parents('div:hidden').length == 0){
+//                    $(this).trigger('click');
+//
+//            }
+//        });
+//        txt = "You pressed OK!";
+//    } else {
+//      txt = "You pressed Cancel!";
+//    }
 
 });
 

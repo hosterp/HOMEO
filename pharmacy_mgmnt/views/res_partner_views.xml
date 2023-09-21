@@ -53,6 +53,7 @@
                 <field name="b2c" attrs="{'invisible': [('customer','=',False)]}"/>
                 <field name="b2b" attrs="{'invisible': [('customer','=',False)]}" readonly="0"/>
                 <field name="interstate_customer" attrs="{'invisible': [('customer','=',False)]}"/>
+                <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
                 <field name="local_customer" attrs="{'invisible': [('customer','=',False)]}"/>
             </xpath>
         </field>

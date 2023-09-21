@@ -2089,7 +2089,7 @@ class AccountInvoice(models.Model):
     cus_title_1 = fields.Many2one('customer.title', "Customer Type", related="partner_id.cus_title")
     cust_area = fields.Many2one('customer.area', "Customer Area", related="partner_id.cust_area")
     paid_bool = fields.Boolean('Invoice Paid?')
-    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ], 'Payment Mode', default='cash')
+    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'),('upi', 'UPI'),], 'Payment Mode', default='cash')
 
     @api.depends('amount_total')
     def _compute_amount_tax(self):

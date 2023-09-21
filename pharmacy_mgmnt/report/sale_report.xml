@@ -105,6 +105,10 @@
                                             <strong>Company:</strong>
                                             <span t-field="o.company"/>
                                         </div>
+                                         <div t-if="o.pay_mode">
+                                            <strong>Payment Mode:</strong>
+                                            <span t-field="o.pay_mode"/>
+                                        </div>
                                     </div>
 
                                     <div class="right-aligned-div">

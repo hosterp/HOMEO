@@ -25,7 +25,8 @@
                             attrs="{'invisible':[('cus_invoice', '=', True)]}"
                     />
                 </xpath>
-                 <xpath expr="//button[@name='invoice_open']" position="attributes">
+                 <xpath expr="//button[@name='invoice_open']" position="attributes" >
+                     <attribute name="class">cus_validate</attribute>
                      <attribute name="attrs">{'invisible':['|',('packing_invoice', '=', True),('hold_invoice', '=',
                         True)]}
                     </attribute>
@@ -81,6 +82,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='invoice_open']" position="attributes" >
+                     <attribute name="class">supplier_validate</attribute>
+                </xpath>
                 <xpath expr="//button[@name='invoice_open']" position="after">
                     <button name="invoice_print" string="Print Invoice" type="object" class="oe_highlight"
                             attrs="{'invisible':[('type','!=','in_invoice')]}"/>
