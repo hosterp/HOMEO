@@ -23,6 +23,10 @@ class ResPartner(models.Model):
     cus_title = fields.Many2one('customer.title', "Customer Type")
     cust_area = fields.Many2one('customer.area', "Customer Area")
     advance_amount=fields.Float('Advance Amount')
+    # @api.onchange('name')
+    # def onchange_name(self):
+    #     self.use_parent_address == True
+
 
     # @api.constrains('name')
     # def _check_name_product(self):

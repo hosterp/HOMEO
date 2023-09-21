@@ -207,6 +207,9 @@
                     <button name="invoice_print" string="Print Invoice(F10)" type="object"
                             attrs="{'invisible':[('type','=','in_invoice'),('state', 'in', ['packing_slip','holding_invoice','draft'])]}"
                             class="css_print"/>
+                    <button name="move_to_holding_invoice" string="Save As Hold Bill" type="object"
+                            attrs="{'invisible':['|','|',('type','=','in_invoice'),('hold_invoice','=',True),('state', '=', 'paid')]}"
+                            class="save_as_holding_invoice"/>
                 </xpath>
 
 

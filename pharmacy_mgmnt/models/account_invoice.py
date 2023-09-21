@@ -1528,10 +1528,31 @@ class AccountInvoice(models.Model):
     @api.multi
     def move_to_holding_invoice(self):
         for record in self:
-            record.holding_invoice = True
-            record.state = 'holding_invoice'
-            record.number2 = self.env['ir.sequence'].next_by_code('holding.invoice')
-        return
+            res = self.env['account.invoice'].search(
+                [('type', '=', 'out_invoice'), ('hold_invoice', '=', True)], limit=1)
+            last_index = int(res.number2.split('/')[0]) + 1
+            record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+            record.cus_inv_number=str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+            record.seq = res.seq + 1
+            record.packing_invoice = False
+            record.hold_invoice = True
+            record.cus_invoice = False
+            record.state = "draft"
+        return{
+            'type':'ir.actions.client',
+            'tag':'reload',
+        }
+        # return {
+        #     'name': _('Customer Invoices'),
+        #     'view_type': 'tree',
+        #     'view_mode': 'tree',
+        #     'view_id': self.env.ref('account.invoice_tree').id,
+        #     'res_model': 'account.invoice',
+        #     'context': "{'type':'out_invoice'}",
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'main',
+        # }
+
 
     # @api.multi
     # def move_to_holding_invoice(self):
