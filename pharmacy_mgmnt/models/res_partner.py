@@ -23,16 +23,19 @@ class ResPartner(models.Model):
     cus_title = fields.Many2one('customer.title', "Customer Type")
     cust_area = fields.Many2one('customer.area', "Customer Area")
     advance_amount=fields.Float('Advance Amount')
-    select_state=fields.Selection([('ap','Andhra Pradesh'),('aruna','Arunachal Pradesh'),('assam','Assam'),
-                                   ('bihar', 'Bihar'),('chhattisgarh','Chhattisgarh'),('goa','Goa'),
-                                   ('gujarat', 'Gujarat'),('haryana','Haryana'),('hp','Himachal Pradesh'),
-                                   ('jharkhand', 'Jharkhand'),('karnataka','Karnataka'),('kerala','Kerala'),
-                                   ('mp', 'Madhya Pradesh'),('maharashtra','Maharashtra'),('manipur','Manipur'),
-                                   ('meghalaya', 'Meghalaya'),('mizoram','Mizoram'),('nagaland','Nagaland'),
-                                   ('odisha', 'Odisha'),('punjab','Punjab'),('rajasthan','Rajasthan'),
-                                   ('sikkim', 'Sikkim'),('tamil nadu','Tamil Nadu'),('telangana','Telangana'),
-                                   ('tripura', 'Tripura'),('up','Uttar Pradesh'),('uttarakhand','Uttarakhand'),
-                                   ('wb', 'West Bengal')
+    select_state=fields.Selection([('Jammu & Kashmir-01','Jammu & Kashmir-01'),('Himachal Pradesh-02','Himachal Pradesh-02'),('Punjab-03','Punjab-03'),
+                                   ('Chandigarh-04', 'Chandigarh-04'),('Uttarakhand-05','Uttarakhand-05'),('Haryana-06','Haryana-06'),
+                                   ('Delhi-07', 'Delhi-07'),('Rajasthan-08','Rajasthan-08'),('Uttar Pradesh-09','Uttar Pradesh-09'),
+                                   ('Bihar-10', 'Bihar-10'),('Sikkim-11','Sikkim-11'),('Arunachal Pradesh-12','Arunachal Pradesh-12'),
+                                   ('Nagaland-13', 'Nagaland-13'),('Manipur-14','Manipur-14'),('Mizoram-15','Mizoram-15'),
+                                   ('Tripura-16', 'Tripura-16'),('Meghalaya-17','Meghalaya-17'),('Assam-18','Assam-18'),
+                                   ('West Bengal-19', 'West Bengal-19'),('Jharkhand-20','Jharkhand-20'),('Orissa-21','Orissa-21'),
+                                   ('Chhattisgarh-22', 'Chhattisgarh-22'),('Madhya Pradesh-23','Madhya Pradesh-23'),('Gujarat-24','Gujarat-24'),
+                                   ('Daman & Diu-25', 'Daman & Diu-25'),('Dadra & Nagar Haveli-26','Dadra & Nagar Haveli-26'),('Maharashtra-27','Maharashtra-27'),
+                                   ('Andhra Pradesh (Old)-28', 'Andhra Pradesh (Old)-28'),('Andhra Pradesh (New)-37','Andhra Pradesh (New)-37'),('Karnataka-29','Karnataka-29'),
+                                   ('Goa-30', 'Goa-30'),('Lakshadweep-31','Lakshadweep-31'),('Kerala-32','Kerala-32'),
+                                   ('Tamil Nadu-33', 'Tamil Nadu-33'),('Puducherry-34','Puducherry-34'),('Andaman & Nicobar Islands-35','Andaman & Nicobar Islands-35'),
+                                   ('Telengana-36','Telengana-36'),('LADAKH (NEWLY ADDED)-38','LADAKH (NEWLY ADDED)-38'),('OTHER TERRITORY-97','OTHER TERRITORY-97'), ('CENTRE JURISDICTION-99','CENTRE JURISDICTION-99')
                                    ])
 
 
@@ -92,6 +95,219 @@ class ResPartner(models.Model):
     address_new = fields.Text('Address')
     res_person_id = fields.Boolean('Sale Responsible Person ?')
 
+
+    @api.model
+    def create(self, vals):
+        res = super(ResPartner, self).create(vals)
+        if 'select_state' in vals:
+            # self._add_address_select_state()
+            if self.select_state == 'Kerala-32':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Jammu & Kashmir-01':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Himachal Pradesh-02':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_stateel
+            elif self.select_state == 'Punjab-03':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Chandigarh-04':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Uttarakhand-05':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Haryana-06':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Delhi-07':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Rajasthan-08':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Uttar Pradesh-09':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Bihar-10':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Sikkim-11':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Arunachal Pradesh-12':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Nagaland-13':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Manipur-14':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Mizoram-15':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Tripura-16':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Meghalaya-17':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Assam-18':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'West Bengal-19':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Jharkhand-20':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Orissa-21':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Chhattisgarh-22':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Madhya Pradesh-23':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Gujarat-24':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Daman & Diu-25':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Dadra & Nagar Haveli-26':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Maharashtra-27':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Andhra Pradesh (Old)-28':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Andhra Pradesh (New)-37':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Karnataka-29':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Goa-30':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Lakshadweep-31':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+
+            elif self.select_state == 'Tamil Nadu-33':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Puducherry-34':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+
+            elif self.select_state == 'Andaman & Nicobar Islands-35':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'Telengana-36':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'LADAKH (NEWLY ADDED)-38':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'OTHER TERRITORY-97':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            elif self.select_state == 'CENTRE JURISDICTION-99':
+                if self.address_new:
+                    self.address_new += "," + self.select_state
+                else:
+                    self.address_new = self.select_state
+            res.address_new = vals['select_state'] if not res.address_new else res.address_new + ',' + vals[
+                'select_state']
+        print(res,'res,res')
+        return res
     @api.onchange('gst_no')
     def b2c_field(self):
         if self.gst_no:
