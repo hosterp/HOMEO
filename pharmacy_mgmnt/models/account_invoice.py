@@ -1505,9 +1505,9 @@ class AccountInvoice(models.Model):
     #     self.env['ir.sequence'].next_by_code('customer.account.invoice'))
     duplicate = fields.Boolean()
     seq = fields.Integer()
-    holding_invoice = fields.Boolean()
-    packing_slip = fields.Boolean()
-    packing_slip_new = fields.Boolean()
+    holding_invoice = fields.Boolean() #NOT WORKING IN SOME CONDITION USE holding_invoice
+    packing_slip = fields.Boolean() #NOT WORKING IN SOME CONDITION  USE packing_slip
+    packing_slip_new = fields.Boolean() #NOT WORKING IN SOME CONDITION 
 
     @api.multi
     def invoice_print(self):
