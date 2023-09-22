@@ -369,28 +369,27 @@ class AccountInvoiceLine(models.Model):
                 for rec in record:
                     if rec.rate_amtc == 0:
                         if rec.rate_amtc < rec.price_subtotal:
-                            if rec.rate_amtc == 0:
+                            # if rec.rate_amtc == 0:
                                 # print("NORMAL TAX")
                                 rate_amount = rec.price_subtotal
                                 perce = rec.invoice_line_tax_id4
-                                tax = rate_amount * (perce / 100)
-                                rec.amt_tax = round(tax)
-                                total = rate_amount - round(tax)
+                                # tax_amount = (rec.price_subtotal * rec.invoice_line_tax_id4)/ 100
+                                tax_amount = rec.invoice_line_tax_id4 * 100 / (rec.invoice_line_tax_id4 + 100)
+                                tax = rec.quantity * tax_amount
+                                # tax = rate_amount * (perce / 100)
+                                # rec.amt_tax = round(tax)
+                                # total = rate_amount - round(tax)
+                                total = rate_amount + tax
                                 rec.amt_w_tax = total
                                 rec.amount_residual = total
                                 rec.amount_residual_currency = total
 
                     else:
-
-                        print("DIFFERENT TAX")
                         perce = rec.invoice_line_tax_id4
                         new_rate = rec.rate_amtc
-                        print("rate_amt...", new_rate)
                         tax = new_rate * (perce / 100)
-                        print("tax.....", tax)
                         rec.amt_tax = round(tax)
                         total = new_rate + round(tax)
-                        print("this total", total)
                         rec.amt_w_tax = total
 
     @api.one
@@ -1236,8 +1235,6 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def open_customer_invoice(self):
-        print(self.cus_invoice_id.id,'self.cus_invoice_id.id')
-        print(self.cus_invoice_id,'self.cus_invoice_id.id........')
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
             base_url, self.cus_invoice_id.id)
@@ -1927,7 +1924,6 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_discount(self):
-        print("record id", self.id)
         prev_rec = self.env['group.discount'].search([])
         if prev_rec:
             for rec in prev_rec:
@@ -2125,26 +2121,25 @@ class AccountInvoice(models.Model):
 
 
         if self.partner_id.customer:
-
+            # print(amount_untaxed,'first')
             amount_untaxed = sum(self.invoice_line.mapped('price_subtotal'))
+            print(amount_untaxed,'second')
             amount_total_w_tax = sum(self.invoice_line.mapped('amt_w_tax'))
+            print(amount_total_w_tax,'secondsecond')
             if amount_total_w_tax <= 0:
                 amount_total_w_tax = sum(self.invoice_line.mapped('grand_total'))
             total_price_amount = sum(self.invoice_line.mapped(lambda l: l.quantity * l.price_unit))
             # total_tax_amount = sum(self.invoice_line.mapped('amt_tax'))
             # total_discount = sum(self.invoice_line.mapped(lambda l: l.dis1 + l.dis2))
             total_tax_amount = abs(amount_total_w_tax - amount_untaxed)
-            # total_tax_amount = sum(self.invoice_line.mapped('invoice_line_tax_id4'))
-
             total_discount = total_price_amount - amount_untaxed
             self.amount_untaxed = total_price_amount
-            self.amount_tax = total_tax_amount
+            self.amount_tax = round(total_tax_amount)
             self.amount_tax_custom = total_tax_amount
             self.amount_discount = total_discount
-            self.amount_total = round(amount_untaxed)
-            self.amount_residual = round(amount_untaxed)
-            # self.amount_total = round(amount_total_w_tax)
-            # self.amount_residual = round(amount_total_w_tax)
+            self.amount_total = round(amount_total_w_tax)
+            self.amount_residual = round(amount_total_w_tax)
+
 
     # @api.one
     # @api.depends('invoice_line.price_subtotal', 'tax_line.amount')
@@ -2297,8 +2292,8 @@ class AccountInvoice(models.Model):
                     partial_reconciliations_done.append(line.reconcile_partial_id.id)
                 record.residual += line_amount
             record.residual = max(record.residual, 0.0)
-            # if record.type == "out_invoice":
-            #     record.residual -= record.amount_tax
+            if record.type == "out_invoice" and record.residual != 0:
+                record.residual += round(record.amount_tax)
             #     record.residual = max(record.residual, 0.0)
             # else:
             #     record.residual = max(record.residual, 0.0)

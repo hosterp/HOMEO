@@ -115,12 +115,15 @@ class PartnerPayment(models.Model):
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     payment_total_calculation = fields.Float()
     click = fields.Boolean(string='clicked')
+    cheque_balance = fields.Float('Check Balance')
+
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
 
     @api.onchange('payment_amount')
     def onchange_payment_amount(self):
-        if self.advance_amount:
-            self.payment_amount+=self.advance_amount
+        if self.payment_amount != 0:
+            if self.advance_amount and self.payment_method != 'cheque':
+                self.payment_amount+=self.advance_amount
         self.calc_amount = self.payment_amount
 
 
@@ -169,6 +172,8 @@ class PartnerPayment(models.Model):
 
     @api.multi
     def cheque_paid_button(self):
+        self.advance_amount += self.cheque_balance
+        self.cheque_balance = 0
         if self.cheque_bounce_button:
             if self.state == 'bounced':
                 self.state = 'paid'
@@ -727,7 +732,10 @@ class PartnerPayment(models.Model):
                             })
                         payment_amount = payment_amount - amount
                         # self.state = 'paid'
-        self.advance_amount=payment_amount
+        if self.payment_method != "cheque":
+            self.advance_amount=payment_amount
+        else:
+            self.cheque_balance = payment_amount
         payment_records = self.env['account.invoice'].search(
             [('partner_id', '=', self.partner_id.id), ('state', '!=', 'draft')])
         print("records invoice", payment_records)
