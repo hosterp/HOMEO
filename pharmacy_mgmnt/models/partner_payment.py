@@ -116,7 +116,6 @@ class PartnerPayment(models.Model):
     payment_total_calculation = fields.Float()
     click = fields.Boolean(string='clicked')
     cheque_balance = fields.Float('Check Balance')
-
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
 
     @api.onchange('payment_amount')
@@ -163,27 +162,24 @@ class PartnerPayment(models.Model):
                 self.state = 'bounced'
                 self.click = True
                 # status_update=self.env['cheque.entry'].search([('invoice_ids', '=',self.invoice_ids.invoice_id.id),('state','=','draft'),('deposit_date','=',self.deposit_date)])
-                status_update=self.env['cheque.entry'].search([('invoice_ids', '=',self.invoice_ids.invoice_id.id),('cheque_no', '=' , self.cheque_no)])
+                status_update= self.env['cheque.entry'].search([('cheque_no', '=' , self.cheque_no)])
                 for record in status_update:
                     record.state = 'bounce'
-                    print(record, 'status_update')
                 for rec in self.invoice_ids:
-                    rec.state ='draft'
+                    rec.state ='open'
 
     @api.multi
     def cheque_paid_button(self):
         self.advance_amount += self.cheque_balance
         self.cheque_balance = 0
-        if self.cheque_bounce_button:
-            if self.state == 'bounced':
-                self.state = 'paid'
-                self.click = True
-                status_update = self.env['cheque.entry'].search(
-                    [('invoice_ids', '=', self.invoice_ids.invoice_id.id), ('cheque_no', '=', self.cheque_no)])
-                for record in status_update:
-                    record.state = 'paid'
-                for rec in self.invoice_ids:
-                    rec.state = 'paid'
+        self.click = True
+        # if self.cheque_bounce_button:
+        if self.state == 'paid':
+            status_update = self.env['cheque.entry'].search([('cheque_no', '=', self.cheque_no)])
+            for record in status_update:
+                record.state = 'paid'
+            for rec in self.invoice_ids:
+                rec.state = 'paid'
                     # print(status_update,'status_update_paidstatus_update_paid')
     @api.onchange('partner_id')
     def onchange_partner_id(self):
@@ -793,13 +789,11 @@ class PartnerPayment(models.Model):
         if result.payment_amount==0 and self.advance_amount!=0:
             result.payment_amount+=self.advance_amount
         if result.payment_method == 'cheque':
-            print(result.invoice_ids.ids,'result.invoice_ids.ids..................')
-            print( (0, 0, [result.invoice_ids.ids]),'result.invoice_ids.ids..................1')
             vals = {
                 'name': result.partner_id.id,
                 'cheque_no': result.cheque_no,
                 't_date': result.date,
-                'cheque_amount': result.payment_amount,
+                'cheque_amt': result.payment_amount,
                 'invoice_ids':  [(4, rec.invoice_id.id, 0) for rec in result.invoice_ids],
                 'cheque_date': result.cheque_date,
                 'deposit_date': result.deposit_date,

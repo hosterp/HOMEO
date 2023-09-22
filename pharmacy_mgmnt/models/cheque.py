@@ -21,15 +21,17 @@ class ChequeTransactions(models.Model):
     cheque_date = fields.Date('Cheque Date')
     deposit_date = fields.Date('Deposit Date')
     clearance_date = fields.Date('Clearance Date')
-    cheque_amount = fields.Float('Cheque Amount',readonly=True,compute='cheque_amount_onchange')
+    cheque_amount = fields.Float('Total Amount',readonly=True,compute='cheque_amount_onchange')
     invoice_amount = fields.Float('Invoice Amount', compute="_get_balace_amt")
     balance = fields.Float('Balance')
+    cheque_amt = fields.Float('Cheque Amount')
     bank = fields.Char('Bank')
     branch = fields.Char('Branch')
     ifsc = fields.Char('IFSC')
     state = fields.Selection([('draft', 'Draft'), ('post', 'Posted'), ('bounce', 'Bounced'),('paid', 'Paid'),]
                              , required=True, default='draft')
     invoice_ids = fields.Many2many('account.invoice', string="Select Invoices",)
+
 
     @api.depends('invoice_ids')
     def cheque_amount_onchange(self):
@@ -39,7 +41,7 @@ class ChequeTransactions(models.Model):
                     if rec.invoice_ids:
                         rec.cheque_amount=sum(rec.invoice_ids.mapped('amount_total'))
                     else:
-                        rec.cheque_amount = 0.0
+                        pass
             else:
                 pass
 
