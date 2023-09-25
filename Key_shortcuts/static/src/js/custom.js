@@ -159,71 +159,31 @@ $(document).ready(function(){
 
 
 $(document).ready(function() {
-    $(window).on("hashchange", function() {
-        var urlHash = window.location.hash;
-        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=400')) {
-//            alert('ready');
-           cus_hold=$(".oe_m2o_drop_down_button:eq(9)");
-           $(document).on("keyup",cus_hold, function() {
-            if (event.keyCode === 13) {
-                $(".Hold_Bill").trigger('click');
-            }
-
-           });
-
-        } else {
-//            $(".oe_m2o_drop_down_button").off('click');
+    $(document).on('keydown', 'input[type="text"][placeholder="Select customer"]', function(event) {
+        if (event.keyCode === 13) {
+            $(".open_customer").trigger('click');
         }
     });
-     $(window).on("hashchange", function() {
-        var urlHash = window.location.hash;
-        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=409')) {
-//            alert('ready');
-           cus_hold=$(".oe_m2o_drop_down_button:eq(9)");
-           $(document).on("keyup",cus_hold, function() {
-            if (event.keyCode === 13) {
-                $(".pack_customer").trigger('click');
-            }
-
-           });
-
-        } else {
-//            $(".oe_m2o_drop_down_button").off('click');
+    $(document).on('keydown', 'input[type="text"][placeholder="Select Hold Bill"]', function(event) {
+        if (event.keyCode === 13) {
+            $(".Hold_Bill").trigger('click');
+        }
+    });
+    $(document).on('keydown', 'input[type="text"][placeholder="Select Packing slip"]', function(event) {
+        if (event.keyCode === 13) {
+            $(".open_pack").trigger('click');
+        }
+    });
+    $(document).on('keydown', 'input[type="text"][placeholder="Select customer"]', function(event) {
+        if (event.keyCode === 13) {
+            $(".pack_customer").trigger('click');
         }
     });
 });
 
 
-$(document).ready(function() {
-    $(window).on("hashchange", function() {
-        var urlHash = window.location.hash;
-        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=400')) {
-//            alert('ready');
-           cus=$(".oe_m2o_drop_down_button:eq(10)");
-           $(document).on("keyup",cus , function() {
-            if (event.keyCode === 13) {
-//                alert('open customer')
-                $(".open_customer").trigger('click');
-               }
-           });
-        }
-    });
-    $(window).on("hashchange", function() {
-        var urlHash = window.location.hash;
-        if (urlHash.includes('model=account.invoice') && urlHash.includes('action=409')) {
-//            alert('ready');
-           cus=$(".oe_m2o_drop_down_button:eq(10)");
-           $(document).on("keyup",cus , function() {
-            if (event.keyCode === 13) {
-//                alert('open customer')
-                $(".open_pack").trigger('click');
-               }
-           });
-        }
-    });
 
 
-});
 
 //console.log('f3');
      quantity=$('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]')
