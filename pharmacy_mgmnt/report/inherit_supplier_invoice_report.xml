@@ -47,20 +47,17 @@
                             float: left;
                             }
                             .center {
-                              text-align: center;
+                            text-align: center;
 
                             }
                         </style>
-                          <div class="center" >
-                                <div t-if="o.address_new">
-                                    <strong>Address:</strong>
-                                    <span t-field="o.address_new"/>
-                                </div>
-<!--                                <div t-if="o.partner_id.phone">-->
-<!--                                        <strong>Phone Number:</strong>-->
-<!--                                        <span t-field="o.partner_id.phone"/>-->
-<!--                                </div>-->
-                          </div>
+                        <div class="center">
+
+                            <!--                                <div t-if="o.partner_id.phone">-->
+                            <!--                                        <strong>Phone Number:</strong>-->
+                            <!--                                        <span t-field="o.partner_id.phone"/>-->
+                            <!--                                </div>-->
+                        </div>
                         <div>
                             <div class="left-aligned-div">
                                 <div>
@@ -75,12 +72,16 @@
                                     <strong>Customer Name:</strong>
                                     <span t-field="o.partner_id.name"/>
                                 </div>
+                                <div t-if="o.address_new">
+                                    <strong>Address:</strong>
+                                    <span t-field="o.address_new"/>
+                                </div>
                             </div>
 
                             <div class="right-aligned-div">
                                 <div t-if="o.partner_id.mobile">
-                                        <strong>Mobile:</strong>
-                                        <span t-field="o.partner_id.mobile"/>
+                                    <strong>Mobile:</strong>
+                                    <span t-field="o.partner_id.mobile"/>
                                 </div>
                                 <div t-if="o.partner_id.gst_no">
                                     <strong>GST NO:</strong>
@@ -93,8 +94,9 @@
                             </div>
                         </div>
                         <br></br>
-                         <br></br>
-                         <br></br>
+                        <br></br>
+                        <br></br>
+                        <br></br>
                         <table class="table table-bordered">
                             <div style="border:1px solid black;">
                                 <thead>
@@ -229,13 +231,28 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            <strong>SGST</strong>
-                                        </td>
-                                        <td class="text-right">
-                                            <span t-esc="o.amount_tax/2"
-                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                        </td>
+                                        <t t-if="not o.partner_id.interstate_customer">
+                                            <td>
+                                                <strong>SGST</strong>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="o.amount_tax/2"
+                                                      t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <t t-if="o.partner_id.interstate_customer">
+                                            <td>
+                                                <strong>IGST</strong>
+                                            </td>
+                                            <td class="text-right">
+
+                                                <span t-esc="o.amount_tax/2"
+                                                      t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+
+                                            </td>
+                                        </t>
                                     </tr>
                                     <tr class="border-black">
                                         <td>
