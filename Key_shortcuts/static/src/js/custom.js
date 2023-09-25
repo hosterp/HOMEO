@@ -174,7 +174,7 @@ $(document).ready(function() {
             $(".open_pack").trigger('click');
         }
     });
-    $(document).on('keydown', 'input[type="text"][placeholder="Select customer"]', function(event) {
+    $(document).on('keydown', 'input[type="text"][placeholder="Select customer_invoice"]', function(event) {
         if (event.keyCode === 13) {
             $(".pack_customer").trigger('click');
         }
