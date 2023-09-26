@@ -206,14 +206,14 @@
 
                         </table>
                         <div class="row">
-                            <div class="col-xs-6 pull-left">
+                            <div class="col-xs-4 pull-left">
                                 <table class="table table-condensed">
                                     <t t-set="found_5" t-value="False"/>
                                     <t t-set="found_18" t-value="False"/>
                                     <t t-set="found_12" t-value="False"/>
+                                    <t t-set="total_amt_w_tax" t-value="0.0"/>
                                     <tr t-foreach="o.invoice_line" t-as="l">
                                         <t t-if="l.invoice_line_tax_id4 == 5 and l.invoice_line_tax_id4 == 18 and l.invoice_line_tax_id4 == 12">
-                                            <!--                                            <t t-set="printed" t-value="True"/>-->
                                             <tr>
                                                 <td>
                                                     <strong>CGST@Tax2.5%</strong>
@@ -306,7 +306,73 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-xs-6 pull-right">
+                            <div class="col-xs-4 pull-center">
+                                <table class="table table-condensed">
+                                    <t t-set="found_5" t-value="False"/>
+                                    <t t-set="found_18" t-value="False"/>
+                                    <t t-set="found_12" t-value="False"/>
+                                    <tr t-foreach="o.invoice_line" t-as="l">
+                                        <t t-if="l.invoice_line_tax_id4 == 12">
+                                            <t t-if="o.type == 'out_invoice'">
+                                                <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
+                                            </t>
+
+                                        </t>
+                                    </tr>
+                                    <td class="text-right">
+                                        <span t-esc="total_amt_w_tax/2"
+                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                    <tr>
+                                        <td class="text-right">
+                                        <span t-esc="total_amt_w_tax/2"
+                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                    </tr>
+
+                                    <t t-set="total_amt_w_tax" t-value="0.0"/>
+                                    <tr t-foreach="o.invoice_line" t-as="l">
+                                        <t t-if="l.invoice_line_tax_id4 == 5">
+                                            <t t-if="o.type == 'out_invoice'">
+                                                <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
+                                            </t>
+
+                                        </t>
+                                    </tr>
+                                    <td class="text-right">
+                                        <span t-esc="total_amt_w_tax/2"
+                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                    <tr>
+                                         <td class="text-right">
+                                        <span t-esc="total_amt_w_tax/2"
+                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                    </tr>
+
+                                    <t t-set="total_amt_w_tax" t-value="0.0"/>
+                                    <tr t-foreach="o.invoice_line" t-as="l">
+                                        <t t-if="l.invoice_line_tax_id4 == 18">
+                                            <t t-if="o.type == 'out_invoice'">
+                                                <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
+                                            </t>
+
+                                        </t>
+                                    </tr>
+                                    <td class="text-right">
+                                        <span t-esc="total_amt_w_tax/2"
+                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                    <tr>
+                                        <td class="text-right">
+                                        <span t-esc="total_amt_w_tax/2"
+                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                    </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="col-xs-4 pull-right">
                                 <table class="table table-condensed">
                                     <tr class="border-black">
                                         <td>
