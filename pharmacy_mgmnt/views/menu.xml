@@ -4,7 +4,7 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Medicine Stock Report">
+                <tree string="Medicine Stock Report" colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <field name="medicine_1"/>
                     <field name="rack"/>
                     <field name="potency"/>
@@ -17,6 +17,7 @@
                     <field name="batch_2"/>
                     <field name="manf_date"/>
                     <field name="expiry_date"/>
+                     <field name="expiry_alert_date" invisible="1"/>
                 </tree>
             </field>
         </record>
