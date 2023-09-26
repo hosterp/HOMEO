@@ -60,14 +60,6 @@
                         </div>
                         <div>
                             <div class="left-aligned-div">
-                                <div>
-                                    <strong>Invoice No:</strong>
-                                    <span t-field="o.number"/>
-                                </div>
-                                <div t-if="o.date_invoice">
-                                    <strong>Invoice Date:</strong>
-                                    <span t-field="o.date_invoice"/>
-                                </div>
                                 <div t-if="o.partner_id">
                                     <strong>Customer Name:</strong>
                                     <span t-field="o.partner_id.name"/>
@@ -76,17 +68,26 @@
                                     <strong>Address:</strong>
                                     <span t-field="o.address_new"/>
                                 </div>
-                            </div>
-
-                            <div class="right-aligned-div">
-                                <div t-if="o.partner_id.mobile">
-                                    <strong>Mobile:</strong>
-                                    <span t-field="o.partner_id.mobile"/>
-                                </div>
                                 <div t-if="o.partner_id.gst_no">
                                     <strong>GST NO:</strong>
                                     <span t-field="o.partner_id.gst_no"/>
                                 </div>
+                                <div t-if="o.partner_id.mobile">
+                                    <strong>Mobile:</strong>
+                                    <span t-field="o.partner_id.mobile"/>
+                                </div>
+                            </div>
+
+                            <div class="right-aligned-div">
+                                <div>
+                                    <strong>Invoice No:</strong>
+                                    <span t-field="o.number"/>
+                                </div>
+                                <div t-if="o.date_invoice">
+                                    <strong>Invoice Date:</strong>
+                                    <span t-field="o.date_invoice"/>
+                                </div>
+
                                 <div t-if="o.partner_id.drug_license_number">
                                     <strong>Drug License Number:</strong>
                                     <span t-field="o.partner_id.drug_license_number"/>
@@ -204,9 +205,108 @@
                             </div>
 
                         </table>
-
                         <div class="row">
-                            <div class="col-xs-4 pull-right">
+                            <div class="col-xs-6 pull-left">
+                                <table class="table table-condensed">
+                                    <t t-set="found_5" t-value="False"/>
+                                    <t t-set="found_18" t-value="False"/>
+                                    <t t-set="found_12" t-value="False"/>
+                                    <tr t-foreach="o.invoice_line" t-as="l">
+                                        <t t-if="l.invoice_line_tax_id4 == 5 and l.invoice_line_tax_id4 == 18 and l.invoice_line_tax_id4 == 12">
+                                            <!--                                            <t t-set="printed" t-value="True"/>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax2.5%</strong>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax2.5%</strong>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax9.0%</strong>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax9.0%</strong>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax6.0%</strong>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax6.0%</strong>
+                                                </td>
+
+                                            </tr>
+
+                                        </t>
+                                        <t t-if="l.invoice_line_tax_id4 == 18 and not found_18">
+                                            <t t-set="found_18" t-value="True"/>
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax9.0%</strong>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax9.0%</strong>
+                                                </td>
+
+                                            </tr>
+
+                                        </t>
+                                        <t t-if="l.invoice_line_tax_id4 == 5 and not found_5">
+                                            <t t-set="found_5" t-value="True"/>
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax2.5%</strong>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax2.5%</strong>
+                                                </td>
+
+                                            </tr>
+
+                                        </t>
+                                        <t t-if="l.invoice_line_tax_id4 == 12 and not found_12">
+                                            <t t-set="found_12" t-value="True"/>
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax6.0%</strong>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax6.0%</strong>
+                                                </td>
+
+                                            </tr>
+
+                                        </t>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-xs-6 pull-right">
                                 <table class="table table-condensed">
                                     <tr class="border-black">
                                         <td>
