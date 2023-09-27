@@ -81,7 +81,7 @@
                             <div class="right-aligned-div">
                                 <div>
                                     <strong>Invoice No:</strong>
-                                    <span t-field="o.number"/>
+                                    <span t-field="o.number2"/>
                                 </div>
                                 <div t-if="o.date_invoice">
                                     <strong>Invoice Date:</strong>
@@ -167,7 +167,6 @@
                                                 <span t-esc="l.amount_w_tax"/>
                                             </td>
                                         </t>
-
                                     </tr>
                                     <t t-set="qty_total" t-value="0"/>
                                     <p t-foreach="o.invoice_line" t-as="line">
@@ -218,7 +217,6 @@
                                                     <td>
                                                         <strong>CGST@Tax2.5%</strong>
                                                     </td>
-
                                                 </tr>
 
                                                 <tr>
@@ -300,7 +298,6 @@
                                                         <strong>SGST@Tax6.0%</strong>
                                                     </td>
                                                 </tr>
-
                                             </t>
                                         </tr>
                                     </table>
@@ -466,7 +463,6 @@
                                                         <strong>IGST@Tax6.0%</strong>
                                                     </td>
                                                 </tr>
-
                                             </t>
                                         </tr>
                                     </table>
@@ -513,10 +509,8 @@
                                                 <strong>IGST</strong>
                                             </td>
                                             <td class="text-right">
-
                                                 <span t-esc="o.amount_tax/2"
                                                       t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-
                                             </td>
                                         </t>
                                     </tr>
