@@ -109,6 +109,7 @@
                                         <th>Expiry</th>
                                         <th>Quantity</th>
                                         <th class="text-right">MRP</th>
+<!--                                        <th class="text-right">GST</th>-->
                                         <th class="text-right">Unit Price</th>
                                         <th class="text-right">GST%</th>
                                         <!--                        <th class="text-right">Gross Amount</th>-->
@@ -146,6 +147,7 @@
                                         <td class="text-right">
                                             <span t-field="l.price_unit"/>
                                         </td>
+
                                         <td>
                                             <span t-field="l.price_subtotal"/>
                                         </td>
@@ -200,178 +202,276 @@
                                         </td>
                                     </tr>
                                 </tbody>
-
-
                             </div>
-
                         </table>
                         <div class="row">
-                            <div class="col-xs-4 pull-left">
-                                <table class="table table-condensed">
-                                    <t t-set="found_5" t-value="False"/>
-                                    <t t-set="found_18" t-value="False"/>
-                                    <t t-set="found_12" t-value="False"/>
-                                    <t t-set="total_amt_w_tax" t-value="0.0"/>
-                                    <tr t-foreach="o.invoice_line" t-as="l">
-                                        <t t-if="l.invoice_line_tax_id4 == 5 and l.invoice_line_tax_id4 == 18 and l.invoice_line_tax_id4 == 12">
-                                            <tr>
-                                                <td>
-                                                    <strong>CGST@Tax2.5%</strong>
-                                                </td>
+                            <t t-if="not o.partner_id.interstate_customer">
+                                <div class="col-xs-4 pull-left">
+                                    <table class="table table-condensed">
+                                        <t t-set="found_5" t-value="False"/>
+                                        <t t-set="found_18" t-value="False"/>
+                                        <t t-set="found_12" t-value="False"/>
+                                        <t t-set="total_amt_w_tax" t-value="0.0"/>
+                                        <tr t-foreach="o.invoice_line" t-as="l">
+                                            <t t-if="l.invoice_line_tax_id4 == 5 and l.invoice_line_tax_id4 == 18 and l.invoice_line_tax_id4 == 12">
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax2.5%</strong>
+                                                    </td>
 
-                                            </tr>
+                                                </tr>
 
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax2.5%</strong>
-                                                </td>
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax2.5%</strong>
+                                                    </td>
 
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>CGST@Tax9.0%</strong>
-                                                </td>
-                                            </tr>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax9.0%</strong>
+                                                    </td>
+                                                </tr>
 
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax9.0%</strong>
-                                                </td>
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax9.0%</strong>
+                                                    </td>
 
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <strong>CGST@Tax6.0%</strong>
-                                                </td>
-                                            </tr>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax6.0%</strong>
+                                                    </td>
+                                                </tr>
 
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax6.0%</strong>
-                                                </td>
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax6.0%</strong>
+                                                    </td>
 
-                                            </tr>
+                                                </tr>
 
-                                        </t>
-                                        <t t-if="l.invoice_line_tax_id4 == 18 and not found_18">
-                                            <t t-set="found_18" t-value="True"/>
-                                            <tr>
-                                                <td>
-                                                    <strong>CGST@Tax9.0%</strong>
-                                                </td>
-
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax9.0%</strong>
-                                                </td>
-
-                                            </tr>
-
-                                        </t>
-                                        <t t-if="l.invoice_line_tax_id4 == 5 and not found_5">
-                                            <t t-set="found_5" t-value="True"/>
-                                            <tr>
-                                                <td>
-                                                    <strong>CGST@Tax2.5%</strong>
-                                                </td>
-
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax2.5%</strong>
-                                                </td>
-
-                                            </tr>
-
-                                        </t>
-                                        <t t-if="l.invoice_line_tax_id4 == 12 and not found_12">
-                                            <t t-set="found_12" t-value="True"/>
-                                            <tr>
-                                                <td>
-                                                    <strong>CGST@Tax6.0%</strong>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax6.0%</strong>
-                                                </td>
-
-                                            </tr>
-
-                                        </t>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-xs-4 pull-center">
-                                <table class="table table-condensed">
-                                    <t t-set="found_5" t-value="False"/>
-                                    <t t-set="found_18" t-value="False"/>
-                                    <t t-set="found_12" t-value="False"/>
-                                    <tr t-foreach="o.invoice_line" t-as="l">
-                                        <t t-if="l.invoice_line_tax_id4 == 12">
-                                            <t t-if="o.type == 'out_invoice'">
-                                                <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
                                             </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 18 and not found_18">
+                                                <t t-set="found_18" t-value="True"/>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax9.0%</strong>
+                                                    </td>
 
-                                        </t>
-                                    </tr>
-                                    <td class="text-right">
-                                        <span t-esc="total_amt_w_tax/2"
-                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    </td>
-                                    <tr>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax9.0%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 5 and not found_5">
+                                                <t t-set="found_5" t-value="True"/>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax2.5%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax2.5%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 12 and not found_12">
+                                                <t t-set="found_12" t-value="True"/>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax6.0%</strong>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>SGST@Tax6.0%</strong>
+                                                    </td>
+                                                </tr>
+
+                                            </t>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-xs-4 pull-center">
+                                    <table class="table table-condensed">
+                                        <t t-set="found_5" t-value="False"/>
+                                        <t t-set="found_18" t-value="False"/>
+                                        <t t-set="found_12" t-value="False"/>
+                                        <tr t-foreach="o.invoice_line" t-as="l">
+                                            <t t-if="l.invoice_line_tax_id4 == 18">
+                                                <t t-if="o.type == 'out_invoice'">
+                                                    <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
+                                                </t>
+
+                                            </t>
+                                        </tr>
                                         <td class="text-right">
-                                        <span t-esc="total_amt_w_tax/2"
-                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    </td>
-                                    </tr>
+                                            <strong><span t-esc="total_amt_w_tax/2"
+                                                          t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/></strong>
+                                        </td>
+                                        <tr>
+                                            <td class="text-right">
+                                             <strong><span t-esc="total_amt_w_tax/2"
+                                                           t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/></strong>
+                                        </td>
+                                        </tr>
 
-                                    <t t-set="total_amt_w_tax" t-value="0.0"/>
-                                    <tr t-foreach="o.invoice_line" t-as="l">
-                                        <t t-if="l.invoice_line_tax_id4 == 5">
-                                            <t t-if="o.type == 'out_invoice'">
-                                                <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
+                                        <t t-set="total_amt_w_tax" t-value="0.0"/>
+                                        <tr t-foreach="o.invoice_line" t-as="l">
+                                            <t t-if="l.invoice_line_tax_id4 == 5">
+                                                <t t-if="o.type == 'out_invoice'">
+                                                    <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
+                                                </t>
                                             </t>
-
-                                        </t>
-                                    </tr>
-                                    <td class="text-right">
-                                        <span t-esc="total_amt_w_tax/2"
-                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    </td>
-                                    <tr>
-                                         <td class="text-right">
-                                        <span t-esc="total_amt_w_tax/2"
-                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    </td>
-                                    </tr>
-
-                                    <t t-set="total_amt_w_tax" t-value="0.0"/>
-                                    <tr t-foreach="o.invoice_line" t-as="l">
-                                        <t t-if="l.invoice_line_tax_id4 == 18">
-                                            <t t-if="o.type == 'out_invoice'">
-                                                <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
-                                            </t>
-
-                                        </t>
-                                    </tr>
-                                    <td class="text-right">
-                                        <span t-esc="total_amt_w_tax/2"
-                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    </td>
-                                    <tr>
+                                        </tr>
                                         <td class="text-right">
-                                        <span t-esc="total_amt_w_tax/2"
-                                              t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                    </td>
-                                    </tr>
+                                             <strong><span t-esc="total_amt_w_tax/2"
+                                                           t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/></strong>
+                                        </td>
+                                        <tr>
+                                             <td class="text-right">
+                                            <strong><span t-esc="total_amt_w_tax/2"
+                                                          t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/></strong>
+                                        </td>
+                                        </tr>
 
-                                </table>
-                            </div>
+                                        <t t-set="total_amt_w_tax" t-value="0.0"/>
+                                        <tr t-foreach="o.invoice_line" t-as="l">
+                                            <t t-if="l.invoice_line_tax_id4 == 12">
+                                                <t t-if="o.type == 'out_invoice'">
+                                                    <t t-set="total_amt_w_tax" t-value="total_amt_w_tax + l.amt_w_tax"/>
+                                                </t>
+
+                                            </t>
+                                        </tr>
+                                        <td class="text-right">
+                                            <strong><span t-esc="total_amt_w_tax/2"
+                                                          t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/></strong>
+                                        </td>
+                                        <tr>
+                                            <td class="text-right">
+                                            <strong><span t-esc="total_amt_w_tax/2"
+                                                          t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/></strong>
+                                        </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </t>
+                            <t t-if="o.partner_id.interstate_customer">
+                                <div class="col-xs-4 pull-left">
+                                    <table class="table table-condensed">
+                                        <t t-set="found_5" t-value="False"/>
+                                        <t t-set="found_18" t-value="False"/>
+                                        <t t-set="found_12" t-value="False"/>
+                                        <t t-set="total_amt_w_tax" t-value="0.0"/>
+                                        <tr t-foreach="o.invoice_line" t-as="l">
+                                            <t t-if="l.invoice_line_tax_id4 == 5 and l.invoice_line_tax_id4 == 18 and l.invoice_line_tax_id4 == 12">
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax2.5%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax2.5%</strong>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax9.0%</strong>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax9.0%</strong>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax6.0%</strong>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax6.0%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 18 and not found_18">
+                                                <t t-set="found_18" t-value="True"/>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax9.0%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax9.0%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 5 and not found_5">
+                                                <t t-set="found_5" t-value="True"/>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax2.5%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax2.5%</strong>
+                                                    </td>
+
+                                                </tr>
+
+                                            </t>
+                                            <t t-if="l.invoice_line_tax_id4 == 12 and not found_12">
+                                                <t t-set="found_12" t-value="True"/>
+                                                <tr>
+                                                    <td>
+                                                        <strong>CGST@Tax6.0%</strong>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <strong>IGST@Tax6.0%</strong>
+                                                    </td>
+                                                </tr>
+
+                                            </t>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </t>
                             <div class="col-xs-4 pull-right">
                                 <table class="table table-condensed">
                                     <tr class="border-black">
