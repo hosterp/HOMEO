@@ -34,6 +34,7 @@ class AccountInvoiceLine(models.Model):
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
     invoice_id = fields.Many2one('account.invoice',required=False)
+    product_tax = fields.Float()
 
 
     @api.model
@@ -376,6 +377,7 @@ class AccountInvoiceLine(models.Model):
                                 # tax_amount = (rec.price_subtotal * rec.invoice_line_tax_id4)/ 100
                                 tax_amount = rec.invoice_line_tax_id4 * 100 / (rec.invoice_line_tax_id4 + 100)
                                 tax = rec.quantity * tax_amount
+                                rec.product_tax = tax
                                 # tax = rate_amount * (perce / 100)
                                 # rec.amt_tax = round(tax)
                                 # total = rate_amount - round(tax)
