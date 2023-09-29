@@ -184,11 +184,16 @@ class TaxReportWizard(models.TransientModel):
             lists = []
             pay_amt = 0
             tax_amt = 0
+            interstate=invoice.partner_id.interstate_customer
             for rec in invoice.invoice_line:
+                # print(invoice.partner_id.name,'customerrrrr')
+                # print(rec.partner_id.name,'reccccccc')
+                # print(rec,'reccccccccccccccccccccc')
                 if rec.invoice_line_tax_id4 == self.tax:
                     pay_amt += rec.amt_w_tax
                     tax_amt += rec.product_tax
                     main = {
+                        'interstate':interstate,
                         'date_invoice': invoice.date_invoice,
                         'number2': invoice.number2,
                         'customer': invoice.partner_id.name,
@@ -197,6 +202,7 @@ class TaxReportWizard(models.TransientModel):
                         'tax_amt': tax_amt,
                     }
             lists.append(main)
+
             tax_5 = invoice.invoice_line.filtered(lambda l: l.invoice_line_tax_id4 == 5)
             tax_12 = invoice.invoice_line.filtered(lambda l: l.invoice_line_tax_id4 == 12)
             tax_18 = invoice.invoice_line.filtered(lambda l: l.invoice_line_tax_id4 == 18)

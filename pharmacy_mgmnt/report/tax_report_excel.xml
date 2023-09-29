@@ -191,6 +191,12 @@
                             <t t-set="sl_no" t-value="1"/>
                             <t t-set="total_tax" t-value="0"/>
                             <t t-set="total_amt" t-value="0"/>
+                            <t t-set="igst_5" t-value="0"/>
+                            <t t-set="igst_12" t-value="0"/>
+                            <t t-set="igst_18" t-value="0"/>
+                            <t t-set="sgst_18" t-value="0"/>
+                            <t t-set="sgst_12" t-value="0"/>
+                            <t t-set="sgst_5" t-value="0"/>
                             <t t-foreach="o.get_b2b_tax_invoices()" t-as="val">
                                 <t t-foreach="val['tax_data']" t-as="line">
                                     <tr>
@@ -216,16 +222,34 @@
                                             <td style='font-size:20px'>
                                                 <span t-esc="line['tax_p']"/>
                                             </td>
+                                            <t t-if="line['interstate']">
+                                                 <t t-set="igst_5" t-value="igst_5+line['tax_amt']"/>
+                                            </t>
+                                            <t t-if="line['interstate']== False">
+                                                 <t t-set="sgst_5" t-value="sgst_5+line['tax_amt']"/>
+                                            </t>
                                         </t>
                                         <t t-if="o.tax == 12">
                                             <td style='font-size:20px'>
                                                 <span t-esc="line['tax_p']"/>
                                             </td>
+                                            <t t-if="line['interstate']">
+                                                 <t t-set="igst_12" t-value="igst_12+line['tax_amt']"/>
+                                            </t>
+                                            <t t-if="line['interstate']== False">
+                                                 <t t-set="sgst_12" t-value="sgst_12+line['tax_amt']"/>
+                                            </t>
                                         </t>
                                         <t t-if="o.tax == 18">
                                             <td style='font-size:20px'>
                                                 <span t-esc="line['tax_p']"/>
                                             </td>
+                                            <t t-if="line['interstate']">
+                                                 <t t-set="igst_18" t-value="igst_18+line['tax_amt']"/>
+                                            </t>
+                                            <t t-if="line['interstate']== False">
+                                                 <t t-set="sgst_18" t-value="sgst_18+line['tax_amt']"/>
+                                            </t>
                                         </t>
                                         <td style='font-size:20px'>
                                             <span t-esc="line['pay_amt']"/>
@@ -269,18 +293,33 @@
                                                 <!--                                                    </td>-->
                                             </td>
                                         </tr>
+                                        <t t-if="sgst_5!=0">
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax2.5%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="round(sgst_5)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                        <tr>
-                                            <td>
-                                                <strong>SGST@Tax2.5%</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <!--                                                    <td style='font-size:20px'>-->
-                                                <strong t-esc="round(total_tax)/2"/>
-                                                <!--                                                    </td>-->
-                                            </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="igst_5 !=0">
+                                            <tr>
+                                                <td>
+                                                    <strong>IGST@Tax2.5%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(igst_5)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                        </tr>
+                                            </tr>
+
+                                        </t>
                                     </t>
                                     <t t-if="o.tax == 12">
                                         <tr>
@@ -294,16 +333,33 @@
                                             </td>
                                         </tr>
 
-                                        <tr>
-                                            <td>
-                                                <strong>SGST@Tax6.0%</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <!--                                                    <td style='font-size:20px'>-->
-                                                <strong t-esc="round(total_tax)/2"/>
-                                                <!--                                                    </td>-->
-                                            </td>
-                                        </tr>
+                                        <t t-if="sgst_12!=0">
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax6.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(sgst_12)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                        <t t-if="igst_12 !=0">
+                                            <tr>
+                                                <td>
+                                                    <strong>IGST@Tax6.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(igst_12)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
+
+                                            </tr>
+
+                                        </t>
                                     </t>
                                     <t t-if="o.tax == 18">
                                         <tr>
@@ -316,18 +372,33 @@
                                                 <!--                                                    </td>-->
                                             </td>
                                         </tr>
+                                        <t t-if="sgst_18!=0">
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax9.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(sgst_18)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                        <tr>
-                                            <td>
-                                                <strong>SGST@Tax9.0%</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <!--                                                    <td style='font-size:20px'>-->
-                                                <strong t-esc="round(total_tax)/2"/>
-                                                <!--                                                    </td>-->
-                                            </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="igst_18 !=0">
+                                            <tr>
+                                                <td>
+                                                    <strong>IGST@Tax9.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(igst_18)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                        </tr>
+                                            </tr>
+
+                                        </t>
                                     </t>
                                 </table>
                             </div>
@@ -337,6 +408,5 @@
             </t>
             <!--            </t>-->
         </template>
-
     </data>
 </openerp>
