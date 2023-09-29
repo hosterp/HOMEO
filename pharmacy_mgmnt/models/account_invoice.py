@@ -34,7 +34,7 @@ class AccountInvoiceLine(models.Model):
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
     invoice_id = fields.Many2one('account.invoice',required=False)
-    product_tax = fields.Float()
+    product_tax = fields.Float(compute='_compute_customer_tax')
 
 
     @api.model
