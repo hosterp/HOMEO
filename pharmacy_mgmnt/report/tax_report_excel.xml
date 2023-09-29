@@ -13,9 +13,9 @@
                             <field name="tax" required="1"/>
                         </group>
                         <group>
-                            <field name="b2c" string="B2C"/>
-                            <field name="b2b" string="B2B"/>
-                            <field name="by_hsn" string="B2B BY HSN CODE"/>
+                            <field name="b2c" string="B2C" invisible="1"/>
+                            <field name="b2b" string="B2B" invisible="1"/>
+                            <field name="by_hsn" string="B2B BY HSN CODE" invisible="1"/>
                         </group>
                     </group>
                     <footer>
@@ -103,11 +103,12 @@
         <template id="b2b_tax_report_template">
             <t t-call="report.html_container">
                 <t t-call="report.external_layout">
+
                     <t t-foreach="docs" t-as="o">
                         <div class="page">
                             <div class="col-xs-12" style='font-size:20px'>
                                 <center>
-                                    <b>TAX REPORT BY BILL</b>
+                                    <b>GST TAX REPORT</b>
                                 </center>
                             </div>
                             <table class="table table-bordered">
@@ -231,12 +232,21 @@
                                                 <td>
                                                     <strong>CGST@Tax2.5%</strong>
                                                 </td>
-
+                                                <td class="text-right">
+<!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="round(total_tax)/2"/>
+<!--                                                    </td>-->
+                                                </td>
                                             </tr>
 
                                             <tr>
                                                 <td>
                                                     <strong>SGST@Tax2.5%</strong>
+                                                </td>
+                                                <td class="text-right">
+<!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="round(total_tax)/2"/>
+<!--                                                    </td>-->
                                                 </td>
 
                                             </tr>
@@ -246,11 +256,21 @@
                                                 <td>
                                                     <strong>CGST@Tax6.0%</strong>
                                                 </td>
+                                                <td class="text-right">
+<!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="round(total_tax)/2"/>
+<!--                                                    </td>-->
+                                                </td>
                                             </tr>
 
                                             <tr>
                                                 <td>
                                                     <strong>SGST@Tax6.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+<!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="round(total_tax)/2"/>
+<!--                                                    </td>-->
                                                 </td>
                                             </tr>
                                         </t>
@@ -259,12 +279,21 @@
                                                 <td>
                                                     <strong>CGST@Tax9.0%</strong>
                                                 </td>
-
+                                                <td class="text-right">
+<!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="round(total_tax)/2"/>
+<!--                                                    </td>-->
+                                                </td>
                                             </tr>
 
                                             <tr>
                                                 <td>
                                                     <strong>SGST@Tax9.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+<!--                                                    <td style='font-size:20px'>-->
+                                                        <strong t-esc="round(total_tax)/2"/>
+<!--                                                    </td>-->
                                                 </td>
 
                                             </tr>
