@@ -1,4 +1,5 @@
 # import dateutil.utils
+from num2words import num2words
 
 from openerp import api, models, fields
 from openerp.osv import osv
@@ -2089,11 +2090,21 @@ class AccountInvoice(models.Model):
     paid_bool = fields.Boolean('Invoice Paid?')
     pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'),('upi', 'UPI'),], 'Payment Mode', default='cash')
 
+    amount_in_words = fields.Char('Amount in Words', compute='_compute_amount_in_words')
+
+    @api.depends('amount_total')
+    def _compute_amount_in_words(self):
+        for invoice in self:
+            print(invoice.amount_total,'total')
+            invoice.amount_in_words = num2words(invoice.amount_total, lang='en').title()
+            print(invoice.amount_in_words,'words')
+
     @api.depends('amount_total')
     def _compute_amount_tax(self):
         for rec in self:
             rec.amount_tax_custom = rec.amount_total - (rec.amount_untaxed - rec.amount_discount)
             rec.amount_tax = rec.amount_tax_custom
+
 
     @api.one
     @api.depends('invoice_line.price_subtotal', 'tax_line.amount')
