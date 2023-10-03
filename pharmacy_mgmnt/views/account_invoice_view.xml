@@ -127,7 +127,7 @@
                                    style="width:20%%"/>
                             <field name="discount_type" style="width:20%%" readonly="1"/>
                             <field name="discount_rate" style="width:20%%"/>
-                             <field name="amount_in_words" readonly="1"/>
+                             <field name="amount_in_words" readonly="1" invisible="1"/>
 
                         </group>
                         <group class="oe_subtotal_footer oe_right">
