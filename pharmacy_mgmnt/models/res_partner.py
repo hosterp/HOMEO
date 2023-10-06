@@ -18,7 +18,7 @@ class CustomerTypes(models.Model):
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
-
+    local_area_customer = fields.Char('Local Area')
     discount_category = fields.Many2one('cus.discount','Discount Category')
     cus_title = fields.Many2one('customer.title', "Customer Type")
     cust_area = fields.Many2one('customer.area', "Customer Area")
@@ -107,6 +107,9 @@ class ResPartner(models.Model):
     @api.model
     def create(self, vals):
         res = super(ResPartner, self).create(vals)
+        if res.local_area_customer:
+            res.name += "," + res.local_area_customer
+            print(res.name, ' res.name res.name')
         if vals.get(self.interstate_customer, True):
             # res = super(ResPartner, self).create(vals)
             if 'select_state' in vals:

@@ -44,7 +44,11 @@
             <xpath expr="//label[@string='Address']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <xpath expr="//field[@name='website']" position="after">
+                <field name="local_area_customer" attrs="{'invisible': [('customer','=',False)]}"/>
                 <field name="interstate_customer" attrs="{'invisible': [('customer','=',False)]}"/>
                 <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
                 <field name="address_new"/>
