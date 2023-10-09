@@ -79,8 +79,8 @@
                 </xpath>
                 <xpath expr="//field[@name='number']" position="before">
 
-                    <h1 class="container"   attrs="{'invisible': [('cus_invoice', '!=', True)]}">CASH/CREDIT TAX INVOICE</h1>
-                    <h1 class="container"   attrs="{'invisible': [('packing_invoice', '!=', True)]}">CASH/CREDIT TAX INVOICE-PACKING</h1>
+                    <h1 class="container" style="color:red;" attrs="{'invisible': [('cus_invoice', '!=', True)]}">CASH/CREDIT TAX INVOICE</h1>
+                    <h1 class="container" style="color:MediumSeaGreen;"  attrs="{'invisible': [('packing_invoice', '!=', True)]}">CASH/CREDIT TAX INVOICE-PACKING</h1>
                     <h1 class="container"   attrs="{'invisible': [('hold_invoice', '!=', True)]}">CASH/CREDIT TAX INVOICE-HOLD BILL</h1>
                 </xpath>
                 <xpath expr="//field[@name='number']" position="before">
