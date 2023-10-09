@@ -13,9 +13,9 @@
                             <field name="tax" required="1"/>
                         </group>
                         <group>
-                            <field name="b2c" string="B2C" invisible="1"/>
-                            <field name="b2b" string="B2B" invisible="1"/>
-                            <field name="by_hsn" string="B2B BY HSN CODE" invisible="1"/>
+                            <field name="b2c" string="B2C" />
+                            <field name="b2b" string="B2B" />
+                            <field name="by_hsn" string="B2B BY HSN CODE" />
                         </group>
                     </group>
                     <footer>
