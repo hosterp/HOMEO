@@ -34,7 +34,7 @@
                     <group>
                         <group>
                             <group>
-                                <field name="date"/>
+                                <field name="date" invisible="1"/>
                                 <field name="partner_id"/>
                                 <field name="res_person_id"/>
                                 <field name="product"/>

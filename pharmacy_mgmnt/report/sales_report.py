@@ -33,7 +33,7 @@ class SalesReport(models.Model):
     date=fields.Date(default=fields.Date.today)
     partner_id = fields.Many2one('res.partner', 'Customer')
     res_person_id = fields.Many2one('res.partner', 'Responsible Person')
-    date_from = fields.Date('Date From')
+    date_from = fields.Date('Date From',default=fields.Date.today)
     date_to = fields.Date('Date To')
     product = fields.Many2one('product.product', 'Product')
     potency = fields.Many2one('product.medicine.subcat', 'Potency')

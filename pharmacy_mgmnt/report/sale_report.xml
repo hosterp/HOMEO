@@ -85,10 +85,10 @@
                                 </style>
                                 <div class="container">
                                     <div class="left-aligned-div">
-                                        <div t-if="o.date">
-                                            <strong>Date:</strong>
-                                            <span t-field="o.date"/>
-                                        </div>
+<!--                                        <div t-if="o.date">-->
+<!--                                            <strong>Date:</strong>-->
+<!--                                            <span t-field="o.date"/>-->
+<!--                                        </div>-->
                                         <div t-if="o.partner_id">
                                             <strong>Customer Name:</strong>
                                             <span t-field="o.partner_id.name"/>
