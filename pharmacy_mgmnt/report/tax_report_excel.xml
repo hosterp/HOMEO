@@ -16,6 +16,7 @@
                             <field name="b2c" string="B2C" />
                             <field name="b2b" string="B2B" />
                             <field name="by_hsn" string="B2B BY HSN CODE" />
+                            <field name="b2c_by_hsn" string="B2C BY HSN CODE" />
                         </group>
                     </group>
                     <footer>

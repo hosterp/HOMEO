@@ -17,6 +17,7 @@ class TaxReportWizard(models.TransientModel):
     b2c = fields.Boolean()
     b2b = fields.Boolean()
     by_hsn = fields.Boolean()
+    b2c_by_hsn = fields.Boolean()
     tax = fields.Selection([(5, '5%'), (12, '12%'), (18, '18%')])
 
     @api.onchange('by_hsn')
@@ -29,17 +30,26 @@ class TaxReportWizard(models.TransientModel):
         if self.b2c:
             self.by_hsn = False
             self.b2b = False
+            self.b2c_by_hsn=False
     @api.onchange('by_hsn')
     def onchange_by_hsn(self):
         if self.by_hsn:
             self.b2c = False
             self.b2b = False
+            self.b2c_by_hsn=False
     @api.onchange('b2b')
     def onchange_b2b(self):
         if self.b2b:
             self.by_hsn = False
             self.b2c = False
+            self.b2c_by_hsn=False
 
+    @api.onchange('b2c_by_hsn')
+    def onchange_by_hsn(self):
+        if self.b2c_by_hsn:
+            self.b2c = False
+            self.b2b = False
+            self.by_hsn = False
     @api.multi
     def view_tax_report(self):
         datas = {
@@ -113,6 +123,20 @@ class TaxReportWizard(models.TransientModel):
                     'datas': datas,
                     'report_type': 'qweb-pdf',
                 }
+        elif self.b2c_by_hsn:
+            datas = {
+                'ids': self._ids,
+                'model': self._name,
+                'form': self.read(),
+                'context': self._context,
+            }
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'pharmacy_mgmnt.b2b_hsn_tax_report_template',
+                'datas': datas,
+                'report_type': 'qweb-pdf',
+            }
+
 
         # excel not working in offline so created PDF for Offline
         # data = {}
@@ -146,6 +170,20 @@ class TaxReportWizard(models.TransientModel):
             ('partner_id', 'in', partner_ids.ids),
             ('packing_slip','=',False),
             ('holding_invoice','=',False),
+            ('type', '=', 'out_invoice')])
+        return invoice_ids
+
+    @api.multi
+    def get_b2c_hsn_tax_invoices(self):
+        partner_ids = self.env['res.partner'].search([
+            ('b2c', '=', True), ])
+        print(partner_ids,'b2c by hsn')
+        invoice_ids = self.env['account.invoice'].search([
+            ('date_invoice', '>=', self.from_date),
+            ('date_invoice', '<=', self.to_date),
+            ('partner_id', 'in', partner_ids.ids),
+            ('packing_slip', '=', False),
+            ('holding_invoice', '=', False),
             ('type', '=', 'out_invoice')])
         return invoice_ids
 
