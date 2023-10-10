@@ -128,7 +128,7 @@
                     <attribute name="string">Product</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
-                    <attribute name="string">Rate</attribute>
+                    <attribute name="string"> UnitPrice</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='avail_qty']" position="attributes">
                     <attribute name="string">Stock</attribute>
