@@ -10,13 +10,11 @@
                         <group>
                             <field name="from_date" required="1"/>
                             <field name="to_date" required="1"/>
-                            <field name="tax" required="1"/>
                         </group>
                         <group>
-                            <field name="b2c" string="B2C" />
-                            <field name="b2b" string="B2B" />
-                            <field name="by_hsn" string="B2B BY HSN CODE" />
-                            <field name="b2c_by_hsn" string="B2C BY HSN CODE" />
+                            <field name="b2c" string="B2C"/>
+                            <field name="b2b" string="B2B"/>
+                            <field name="by_hsn" string="B2B BY HSN CODE"/>
                         </group>
                     </group>
                     <footer>
@@ -58,337 +56,202 @@
                 model="tax.report.wizard"
                 report_type="qweb-html"
                 name="pharmacy_mgmnt.b2b_tax_report_template"/>
-        <!--        <template id="report_gst_report_pdf_template">-->
-        <!--            <div class="header">-->
-        <!--                <div class="row" style="report_header_style">-->
-        <!--                    <div style="border:1px solid black;">-->
-        <!--                        <center>-->
-        <!--                            <h3>-->
-        <!--                                <b>TRAVANCORE HOMEO MEDICALS</b>-->
-        <!--                            </h3>-->
-        <!--                        </center>-->
-        <!--                        <center>-->
-        <!--                            <h5>-->
-        <!--                                <b>TC 25/1613(1) SS KOVIL ROAD THAMPANOOR</b>-->
-        <!--                            </h5>-->
-        <!--                        </center>-->
-        <!--                        <center>-->
-        <!--                            <h5>-->
-        <!--                                <b>TRIVANDRUM - 695001, KERALA-32,PH:0471-4010102,2335863 and-->
-        <!--                                    travancorehomeo@gmail.com-->
-        <!--                                </b>-->
-        <!--                            </h5>-->
-        <!--                        </center>-->
-        <!--                        <center>-->
-        <!--                            <h4>-->
-        <!--                                <b>GSTIN : 32AYAPS1856Q1ZY , DLNO:TVM-111350,TVM-111351 [20C 20D]</b>-->
-        <!--                            </h4>-->
-        <!--                        </center>-->
-        <!--                        <center>-->
-        <!--                            <h4>-->
-        <!--                            </h4>-->
-        <!--                        </center>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--            &lt;!&ndash;        <div class="article o_report_layout_standard">&ndash;&gt;-->
-        <!--            &lt;!&ndash;            <t t-out="0"/>&ndash;&gt;-->
-        <!--            &lt;!&ndash;        </div>&ndash;&gt;-->
-        <!--            &lt;!&ndash;        <div class="footer">&ndash;&gt;-->
-        <!--            &lt;!&ndash;            <div class="row" style="footer o_standard_footer">&ndash;&gt;-->
-        <!--            &lt;!&ndash;                <img src='/driver_roaster/static/sa.png' style="your custom style" width="1200"/>&ndash;&gt;-->
-        <!--            &lt;!&ndash;            </div>&ndash;&gt;-->
-        <!--            &lt;!&ndash;        </div>&ndash;&gt;-->
-        <!--        </template>-->
+
 
         <template id="b2b_tax_report_template">
             <t t-call="report.html_container">
-                <!--                <t t-call="report.external_layout">-->
-                <t t-foreach="docs" t-as="o">
-                    <div class="page">
-                        <div style="border:1px solid black;">
-                            <center>
-                                <h3>
-                                    <b>TRAVANCORE HOMEO MEDICALS</b>
-                                </h3>
-                            </center>
-                            <center>
-                                <h5>
-                                    <b>TC 25/1613(1) SS KOVIL ROAD THAMPANOOR</b>
-                                </h5>
-                            </center>
-                            <center>
-                                <h5>
-                                    <b>TRIVANDRUM - 695001, KERALA-32,PH:0471-4010102,2335863 and
-                                        travancorehomeo@gmail.com
-                                    </b>
-                                </h5>
-                            </center>
-                            <center>
-                                <h4>
-                                    <b>GSTIN : 32AYAPS1856Q1ZY , DLNO:TVM-111350,TVM-111351 [20C 20D]</b>
-                                </h4>
-                            </center>
-                            <center>
-                                <h4>
-                                    <b>GST TAX REPORT</b>
-                                    <!--                                    <b>TAX INVOICE(<span t-field="o.financial_year"/>)-->
-                                    <!--                                    </b>-->
-                                </h4>
-                            </center>
-                        </div>
-                        <br/>
-                        <div class="col-xs-12" style='font-size:20px'>
-                            <center>
-
-                            </center>
-                        </div>
-                        <table class="table table-bordered">
-                            <tr>
-                                <td style='font-size:20px'>
-                                    <b>Sl No</b>
-                                </td>
-                                <td style='font-size:20px'>
-                                    <b>Bill Date</b>
-                                </td>
-                                <td style='font-size:20px'>
-                                    <b>Bill No</b>
-                                </td>
-                                <td style='font-size:20px'>
-                                    <b>Customer</b>
-                                </td>
-                                <t t-if="o.b2b">
-                                    <td style='font-size:20px'>
-                                        <b>GST NO</b>
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <div class="col-xs-12" style='font-size:20px'>
+                                <center>
+                                    <b>TAX REPORT BY BILL</b>
+                                </center>
+                            </div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td style='font-size:15px'>
+                                        <b>Sl No</b>
                                     </td>
-                                </t>
-                                <t t-if="o.tax == 5">
-                                    <td style='font-size:20px'>
+                                    <td style='font-size:15px'>
+                                        <b>Bill Date</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Bill No</b>
+                                    </td>
+                                    <t t-if="not o.b2c">
+                                        <td style='font-size:15px'>
+                                            <b>Customer</b>
+                                        </td>
+                                        <td style='font-size:15px'>
+                                            <b>GST NO</b>
+                                        </td>
+                                    </t>
+                                    <td style='font-size:15px'>
                                         <b>Sales5%</b>
                                     </td>
-                                </t>
-                                <t t-if="o.tax == 12">
-                                    <td style='font-size:20px'>
+                                    <td style='font-size:15px'>
+                                        <b>CGST</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>SGST</b>
+                                    </td>
+                                    <td style='font-size:15px'>
                                         <b>Sales12%</b>
                                     </td>
-                                </t>
-                                <t t-if="o.tax == 18">
-                                    <td style='font-size:20px'>
+                                    <td style='font-size:15px'>
+                                        <b>CGST</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>SGST</b>
+                                    </td>
+                                    <td style='font-size:15px'>
                                         <b>Sales18%</b>
                                     </td>
-                                </t>
-                                <td style='font-size:20px'>
-                                    <b>Amount</b>
-                                </td>
-                                <td style='font-size:20px'>
-                                    <b>TAX</b>
-                                </td>
-                                <t t-if="o.b2c">
-                                    <td style='font-size:20px'>
-                                        <b>Total</b>
+                                    <td style='font-size:15px'>
+                                        <b>CGST</b>
                                     </td>
-                                </t>
-                            </tr>
-                            <t t-set="sl_no" t-value="1"/>
-                            <t t-set="total_tax" t-value="0"/>
-                            <t t-set="total_amt" t-value="0"/>
-                            <t t-set="igst_5" t-value="0"/>
-                            <t t-set="igst_12" t-value="0"/>
-                            <t t-set="igst_18" t-value="0"/>
-                            <t t-set="sgst_18" t-value="0"/>
-                            <t t-set="sgst_12" t-value="0"/>
-                            <t t-set="sgst_5" t-value="0"/>
-                            <t t-foreach="o.get_b2b_tax_invoices()" t-as="val">
-                                <t t-foreach="val['tax_data']" t-as="line">
+                                    <td style='font-size:15px'>
+                                        <b>SGST</b>
+                                    </td>
+                                    <t t-if="o.b2c">
+                                        <td style='font-size:15px'>
+                                            <b>Total</b>
+                                        </td>
+                                    </t>
+                                </tr>
+                                <t t-set="sl_no" t-value="1"/>
+                                <t t-set="tax_total_5" t-value="0"/>
+                                <t t-set="tax_total_12" t-value="0"/>
+                                <t t-set="tax_total_18" t-value="0"/>
+                                <t t-set="total_amount_cgst_5" t-value="0"/>
+                                <t t-set="total_amount_sgst_5" t-value="0"/>
+                                <t t-set="total_amount_cgst_12" t-value="0"/>
+                                <t t-set="total_amount_sgst_12" t-value="0"/>
+                                <t t-set="total_amount_cgst_18" t-value="0"/>
+                                <t t-set="total_amount_sgst_18" t-value="0"/>
+                                <t t-set="total_amount_wo_tax" t-value="0"/>
+
+                                <t t-foreach="o.get_b2b_tax_invoices()" t-as="line">
                                     <tr>
-                                        <td style='font-size:20px'>
+                                        <td style='font-size:15px'>
                                             <span t-esc="sl_no"/>
-                                            <t t-set="sl_no" t-value="sl_no+1"/>
                                         </td>
-                                        <td style='font-size:20px'>
-                                            <span t-esc="line['date_invoice']"/>
+                                        <t t-set="sl_no" t-value="sl_no+1"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['invoice'].date_invoice"/>
                                         </td>
-                                        <td style='font-size:20px'>
-                                            <span t-esc="line['number2']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['invoice'].number2"/>
                                         </td>
-                                        <td style='font-size:20px'>
-                                            <span t-esc="line['customer']"/>
-                                        </td>
-                                        <t t-if="o.b2b">
-                                            <td style='font-size:20px'>
-                                                <span t-esc="line['']"/>
+                                        <t t-if="not o.b2c">
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['invoice'].partner_id.name"/>
+                                            </td>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['invoice'].partner_id.gst_no"/>
                                             </td>
                                         </t>
-                                        <t t-if="o.tax == 5">
-                                            <td style='font-size:20px'>
-                                                <span t-esc="line['tax_p']"/>
-                                            </td>
-                                            <t t-if="line['interstate']">
-                                                 <t t-set="igst_5" t-value="igst_5+line['tax_amt']"/>
-                                            </t>
-                                            <t t-if="line['interstate']== False">
-                                                 <t t-set="sgst_5" t-value="sgst_5+line['tax_amt']"/>
-                                            </t>
-                                        </t>
-                                        <t t-if="o.tax == 12">
-                                            <td style='font-size:20px'>
-                                                <span t-esc="line['tax_p']"/>
-                                            </td>
-                                            <t t-if="line['interstate']">
-                                                 <t t-set="igst_12" t-value="igst_12+line['tax_amt']"/>
-                                            </t>
-                                            <t t-if="line['interstate']== False">
-                                                 <t t-set="sgst_12" t-value="sgst_12+line['tax_amt']"/>
-                                            </t>
-                                        </t>
-                                        <t t-if="o.tax == 18">
-                                            <td style='font-size:20px'>
-                                                <span t-esc="line['tax_p']"/>
-                                            </td>
-                                            <t t-if="line['interstate']">
-                                                 <t t-set="igst_18" t-value="igst_18+line['tax_amt']"/>
-                                            </t>
-                                            <t t-if="line['interstate']== False">
-                                                 <t t-set="sgst_18" t-value="sgst_18+line['tax_amt']"/>
-                                            </t>
-                                        </t>
-                                        <td style='font-size:20px'>
-                                            <span t-esc="line['pay_amt']"/>
-                                            <t t-set="total_amt" t-value="total_amt+line['pay_amt']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['tax_5_sum']"/>
                                         </td>
-                                        <td style='font-size:20px'>
-                                            <span t-esc="line['tax_amt']"/>
-                                            <t t-set="total_tax" t-value="total_tax+line['tax_amt']"/>
+                                        <t t-set="tax_total_5" t-value="tax_total_5+line['tax_5_sum']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['total_amount_cgst_5']"/>
                                         </td>
+                                        <t t-set="total_amount_cgst_5"
+                                           t-value="total_amount_cgst_5+line['total_amount_cgst_5']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['total_amount_sgst_5']"/>
+                                        </td>
+                                        <t t-set="total_amount_sgst_5"
+                                           t-value="total_amount_sgst_5+line['total_amount_sgst_5']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['tax_12_sum']"/>
+                                        </td>
+                                        <t t-set="tax_total_12" t-value="tax_total_12+line['tax_12_sum']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['total_amount_cgst_12']"/>
+                                        </td>
+                                        <t t-set="total_amount_cgst_12"
+                                           t-value="total_amount_cgst_12+line['total_amount_cgst_12']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['total_amount_sgst_12']"/>
+                                        </td>
+                                        <t t-set="total_amount_sgst_12"
+                                           t-value="total_amount_sgst_12+line['total_amount_sgst_12']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['tax_18_sum']"/>
+                                        </td>
+                                        <t t-set="tax_total_18" t-value="tax_total_18+line['tax_18_sum']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['total_amount_cgst_18']"/>
+                                        </td>
+                                        <t t-set="total_amount_cgst_18"
+                                           t-value="total_amount_cgst_18+line['total_amount_cgst_18']"/>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['total_amount_sgst_18']"/>
+                                        </td>
+                                        <t t-set="total_amount_sgst_18"
+                                           t-value="total_amount_sgst_18+line['total_amount_sgst_18']"/>
                                         <t t-if="o.b2c">
-                                            <td style='font-size:20px'>
-                                                <span t-esc="line['']"/>
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['invoice'].amount_total - line['invoice'].amount_tax"/>
                                             </td>
+                                            <t t-set="total_amount_wo_tax"
+                                               t-value="total_amount_wo_tax+line['invoice'].amount_total - line['invoice'].amount_tax"/>
                                         </t>
                                     </tr>
                                 </t>
-                            </t>
-                            <tr>
-                                <td style='font-size:20px' colspan="5">
-                                    <strong>Total</strong>
-                                </td>
-                                <td style='font-size:20px'>
-                                    <strong t-esc="round(total_amt)"/>
-                                </td>
-                                <td style='font-size:20px'>
-                                    <strong t-esc="round(total_tax)"/>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="row">
-                            <div class="col-xs-4 pull-left">
-                                <table class="table table-condensed">
-                                    <t t-if="o.tax == 5">
-                                        <tr>
-                                            <td>
-                                                <strong>CGST@Tax2.5%</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <strong t-esc="round(total_tax)/2"/>
-                                            </td>
-                                        </tr>
-                                        <t t-if="sgst_5!=0">
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax2.5%</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <strong t-esc="round(sgst_5)/2"/>
-                                                </td>
-
-                                            </tr>
-                                        </t>
-                                        <t t-if="igst_5 !=0">
-                                            <tr>
-                                                <td>
-                                                    <strong>IGST@Tax2.5%</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <strong t-esc="round(igst_5)/2"/>
-                                                </td>
-
-                                            </tr>
-
-                                        </t>
+                                <tr>
+                                    <td style='font-size:15px'>
+                                        <b>Total</b>
+                                    </td>
+                                    <td/>
+                                    <td/>
+                                    <t t-if="not o.b2c">
+                                        <td/>
+                                        <td/>
                                     </t>
-                                    <t t-if="o.tax == 12">
-                                        <tr>
-                                            <td>
-                                                <strong>CGST@Tax6.0%</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <strong t-esc="round(total_tax)/2"/>
-                                            </td>
-                                        </tr>
-
-                                        <t t-if="sgst_12!=0">
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax6.0%</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <strong t-esc="round(sgst_12)/2"/>
-                                                </td>
-
-                                            </tr>
-                                        </t>
-                                        <t t-if="igst_12 !=0">
-                                            <tr>
-                                                <td>
-                                                    <strong>IGST@Tax6.0%</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <strong t-esc="round(igst_12)/2"/>
-                                                </td>
-
-                                            </tr>
-
-                                        </t>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="tax_total_5"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="total_amount_cgst_5"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="total_amount_sgst_5"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="tax_total_12"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="total_amount_cgst_12"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="total_amount_sgst_12"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="tax_total_18"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="total_amount_cgst_18"/>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <span t-esc="total_amount_sgst_18"/>
+                                    </td>
+                                    <t t-if="o.b2c">
+                                        <td style='font-size:15px'>
+                                            <span t-esc="total_amount_wo_tax"/>
+                                        </td>
                                     </t>
-                                    <t t-if="o.tax == 18">
-                                        <tr>
-                                            <td>
-                                                <strong>CGST@Tax9.0%</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <strong t-esc="round(total_tax)/2"/>
-                                            </td>
-                                        </tr>
-                                        <t t-if="sgst_18!=0">
-                                            <tr>
-                                                <td>
-                                                    <strong>SGST@Tax9.0%</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <strong t-esc="round(sgst_18)/2"/>
-                                                </td>
-
-                                            </tr>
-                                        </t>
-                                        <t t-if="igst_18 !=0">
-                                            <tr>
-                                                <td>
-                                                    <strong>IGST@Tax9.0%</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <strong t-esc="round(igst_18)/2"/>
-                                                </td>
-
-                                            </tr>
-
-                                        </t>
-                                    </t>
-                                </table>
-                            </div>
+                                </tr>
+                            </table>
                         </div>
-                    </div>
+                    </t>
                 </t>
             </t>
         </template>
+
     </data>
 </openerp>
