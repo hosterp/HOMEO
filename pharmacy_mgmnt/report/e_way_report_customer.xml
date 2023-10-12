@@ -1,0 +1,63 @@
+<openerp>
+    <data>
+        <template id="e_way_cus_report_template">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <div class="col-xs-12" style='font-size:20px'>
+                                <center>
+                                    <b>HSN TAX REPORT OF BILL</b>
+                                    <b></b>
+                                   <strong><span t-esc="o.number2"/></strong>
+                                </center>
+                            </div>
+                            <table class="table table-bordered">
+                                <th>
+                                    <td style='font-size:15px'>
+                                        <b>HSN</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Qty</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Tax</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>TaxAmt</b>
+                                    </td>
+                                    <td style='font-size:15px'>
+                                        <b>Total</b>
+                                    </td>
+                                    <tr>
+                                        <t t-foreach="o.invoice_line" t-as="line">
+                                                <tr>
+                                                    <td style='font-size:15px'>
+                                                        <span t-esc="line.hsn_code"/>
+                                                    </td>
+                                                    <td style='font-size:15px'>
+                                                        <span t-esc="line.quantity"/>
+                                                    </td>
+                                                    <td style='font-size:15px'>
+                                                        <span t-esc="line.invoice_line_tax_id4"/>
+                                                    </td>
+
+                                                </tr>
+                                        </t>
+                                    </tr>
+
+                                </th>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <report
+                id="e_way_cus_report_id"
+                string="E-Way Report"
+                model="account.invoice"
+                report_type="qweb-html"
+                name="pharmacy_mgmnt.e_way_cus_report_template"/>
+    </data>
+</openerp>

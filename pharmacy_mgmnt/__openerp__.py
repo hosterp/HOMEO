@@ -39,6 +39,7 @@
         'report/customer_payment_report.xml',
 
         'report/inherit_supplier_invoice_report.xml',
+        'report/e_way_report_customer.xml',
 
         'report/packing_holding_history.xml',
         'report/tax_report_view.xml',
