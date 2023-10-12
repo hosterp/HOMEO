@@ -17,6 +17,7 @@ class TaxReportWizard(models.TransientModel):
     b2c = fields.Boolean()
     b2b = fields.Boolean()
     by_hsn = fields.Boolean()
+    b2c_hsn=fields.Boolean()
 
     @api.onchange('by_hsn')
     def onchange_by_hsn(self):
@@ -114,6 +115,20 @@ class TaxReportWizard(models.TransientModel):
                     'datas': datas,
                     'report_type': 'qweb-pdf',
                 }
+        elif self.b2c_hsn:
+            datas = {
+                'ids': self._ids,
+                'model': self._name,
+                'form': self.read(),
+                'context': self._context,
+            }
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'pharmacy_mgmnt.b2c_hsn_tax_report_template',
+                'datas': datas,
+                'report_type': 'qweb-pdf',
+            }
+
 
         # excel not working in offline so created PDF for Offline
         # data = {}
@@ -136,6 +151,18 @@ class TaxReportWizard(models.TransientModel):
                 'report_type': 'qweb-pdf',
             }
 
+    @api.multi
+    def get_b2c_hsn_tax_invoices(self):
+        partner_ids = self.env['res.partner'].search([
+            ('b2c', '=', True), ])
+        invoice_ids = self.env['account.invoice'].search([
+            ('date_invoice', '>=', self.from_date),
+            ('date_invoice', '<=', self.to_date),
+            ('packing_slip', '=', False),
+            ('holding_invoice', '=', False),
+            ('type', '=', 'out_invoice')])
+        # print(invoice_ids,'invoice_idsinvoice_ids')
+        return invoice_ids
     @api.multi
     def get_b2b_hsn_tax_invoices(self):
         partner_ids = self.env['res.partner'].search([
@@ -186,12 +213,12 @@ class TaxReportWizard(models.TransientModel):
             tax_5_sum = sum(tax_5.mapped('amt_w_tax'))
             tax_12_sum = sum(tax_12.mapped('amt_w_tax'))
             tax_18_sum = sum(tax_18.mapped('amt_w_tax'))
-            print(tax_5_sum, 'tax_5')
+
 
             total_amount_sgst_5 = (tax_5_sum*0.05 )/ 2
             total_amount_sgst_12 = (tax_12_sum*0.12 ) / 2
             total_amount_sgst_18 = (tax_18_sum*0.18 ) / 2
-            print(total_amount_sgst_5, 'total_amount_sgst_5')
+
             total_amount_cgst_5 = (tax_5_sum*0.05 ) / 2
             total_amount_cgst_12 = (tax_12_sum*0.12 ) / 2
             total_amount_cgst_18 = (tax_18_sum*0.18) / 2
