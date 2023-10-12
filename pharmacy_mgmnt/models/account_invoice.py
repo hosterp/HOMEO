@@ -35,8 +35,8 @@ class AccountInvoiceLine(models.Model):
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
     invoice_id = fields.Many2one('account.invoice',required=False)
-    product_tax = fields.Float(compute='_compute_customer_tax')
-
+    product_tax = fields.Float(compute="_compute_customer_tax")
+    unit_price = fields.Float(string='Unit price',compute="_compute_customer_tax")
 
     @api.model
     def create(self, vals):
@@ -308,10 +308,10 @@ class AccountInvoiceLine(models.Model):
     def _compute_mass_discount(self):
         if self.invoice_id.discount_rate == 0:
             pass
-        else:
-            if self.discount == 0:
-                discount_rate = self.invoice_id.discount_rate
-                self.discount = discount_rate
+        # else:
+        #     if self.discount == 0:
+        #         discount_rate = self.invoice_id.discount_rate
+        #         self.discount = discount_rate
 
     @api.model
     def move_line_get_item(self, line):
@@ -364,36 +364,48 @@ class AccountInvoiceLine(models.Model):
 
     # CUSTOMER TAX CALCULATION
     @api.model
-    @api.depends('amt_w_tax', 'invoice_line_tax_id4', 'price_subtotal', 'amount_amount1', 'price_unit', 'rate_amtc')
+    @api.depends('amt_w_tax', 'invoice_line_tax_id4', 'price_subtotal', 'amount_amount1', 'price_unit', 'rate_amtc','product_tax','unit_price')
     def _compute_customer_tax(self):
         for record in self:
             if record.partner_id.customer:
                 for rec in record:
                     if rec.rate_amtc == 0:
                         if rec.rate_amtc < rec.price_subtotal:
-                            # if rec.rate_amtc == 0:
-                                # print("NORMAL TAX")
+                            if rec.rate_amtc == 0:
                                 rate_amount = rec.price_subtotal
+                                quantity = rec.quantity
+                                per_product = rate_amount/ quantity
                                 perce = rec.invoice_line_tax_id4
-                                # tax_amount = (rec.price_subtotal * rec.invoice_line_tax_id4)/ 100
-                                tax_amount = rec.invoice_line_tax_id4 * 100 / (rec.invoice_line_tax_id4 + 100)
-                                tax = rec.quantity * tax_amount
-                                rec.product_tax = tax
+                                tax_amount = perce * 100 / (perce + 100)
+                                tax = per_product * tax_amount/100
+                                rec.product_tax = tax * quantity
+                                rec.unit_price = per_product - tax
                                 # tax = rate_amount * (perce / 100)
-                                # rec.amt_tax = round(tax)
+                                rec.amt_tax = round(rec.product_tax)
                                 # total = rate_amount - round(tax)
-                                total = rate_amount + tax
-                                rec.amt_w_tax = total
-                                rec.amount_residual = total
-                                rec.amount_residual_currency = total
+                                rec.amt_w_tax = rec.price_subtotal
+                                rec.amount_residual = rec.price_subtotal
+                                rec.amount_residual_currency = rec.price_subtotal
 
                     else:
+                        rate_amount = rec.price_subtotal
+                        quantity = rec.quantity
+                        per_product = rate_amount / quantity
                         perce = rec.invoice_line_tax_id4
-                        new_rate = rec.rate_amtc
-                        tax = new_rate * (perce / 100)
-                        rec.amt_tax = round(tax)
-                        total = new_rate + round(tax)
-                        rec.amt_w_tax = total
+                        tax_amount = perce * 100 / (perce + 100)
+                        tax = per_product * tax_amount / 100
+                        rec.product_tax = tax * quantity
+                        rec.unit_price = per_product - tax
+                        rec.amt_tax = round(rec.product_tax)
+                        rec.amt_w_tax = rec.price_subtotal
+                        rec.amount_residual = rec.price_subtotal
+                        rec.amount_residual_currency = rec.price_subtotal
+                        # perce = rec.invoice_line_tax_id4
+                        # new_rate = rec.rate_amtc
+                        # tax = new_rate * (perce / 100)
+                        # rec.amt_tax = round(tax)
+                        # total = new_rate + round(tax)
+                        # rec.amt_w_tax = total
 
     @api.one
     @api.depends('product_id', 'medicine_name_subcat', 'medicine_grp', 'medicine_name_subcat', 'discount2',
@@ -2141,14 +2153,15 @@ class AccountInvoice(models.Model):
             print(amount_total_w_tax,'secondsecond')
             if amount_total_w_tax <= 0:
                 amount_total_w_tax = sum(self.invoice_line.mapped('grand_total'))
+            total_products_tax = sum(self.invoice_line.mapped('product_tax'))
             total_price_amount = sum(self.invoice_line.mapped(lambda l: l.quantity * l.price_unit))
             # total_tax_amount = sum(self.invoice_line.mapped('amt_tax'))
             # total_discount = sum(self.invoice_line.mapped(lambda l: l.dis1 + l.dis2))
             total_tax_amount = abs(amount_total_w_tax - amount_untaxed)
             total_discount = total_price_amount - amount_untaxed
             self.amount_untaxed = total_price_amount
-            self.amount_tax = round(total_tax_amount)
-            self.amount_tax_custom = total_tax_amount
+            self.amount_tax = round(total_products_tax)
+            self.amount_tax_custom = total_products_tax
             self.amount_discount = total_discount
             self.amount_total = round(amount_total_w_tax)
             self.amount_residual = round(amount_total_w_tax)
@@ -2305,8 +2318,8 @@ class AccountInvoice(models.Model):
                     partial_reconciliations_done.append(line.reconcile_partial_id.id)
                 record.residual += line_amount
             record.residual = max(record.residual, 0.0)
-            if record.type == "out_invoice" and record.residual != 0:
-                record.residual += round(record.amount_tax)
+            # if record.type == "out_invoice" and record.residual != 0:
+            #     record.residual += round(record.amount_tax)
             #     record.residual = max(record.residual, 0.0)
             # else:
             #     record.residual = max(record.residual, 0.0)
