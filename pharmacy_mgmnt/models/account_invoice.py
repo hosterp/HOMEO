@@ -1536,6 +1536,23 @@ class AccountInvoice(models.Model):
                 self.invoice_validate()
         return super(AccountInvoice, self).invoice_print()
 
+    @api.multi
+    def print_e_way_report(self):
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'pharmacy_mgmnt.e_way_cus_report_template',
+            'datas': datas,
+            'report_type': 'qweb-pdf',
+            #
+        }
+
+
 
     @api.multi
     def move_to_holding_invoice(self):
@@ -2103,6 +2120,8 @@ class AccountInvoice(models.Model):
     pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'),('upi', 'UPI'),], 'Payment Mode', default='cash')
 
     amount_in_words = fields.Char('Amount in Words', compute='_compute_amount_in_words')
+
+
 
     @api.depends('amount_total')
     def _compute_amount_in_words(self):

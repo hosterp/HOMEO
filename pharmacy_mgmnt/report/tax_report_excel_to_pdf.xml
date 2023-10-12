@@ -9,7 +9,7 @@
 						<div class="page">
 							<div class="col-xs-12" style='font-size:20px'>
 								<center><b>TRAVANCORE HOMEO MEDICALS, GSTIN :32AYAPS1856Q1ZY</b></center>
-								<center><b>GST BtoB HSN Report by BIll <t tesc="o.from_date"/>to<t tesc="o.to_date"/></b></center>
+								<center><b>GST BtoB HSN Report by BIll</b><b></b><span tesc="o.from_date"/>to<span tesc="o.to_date"/></center>
 							</div>
 							<table class="table table-bordered">
 								<tr>
