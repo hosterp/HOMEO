@@ -29,18 +29,27 @@ class TaxReportWizard(models.TransientModel):
         if self.b2c:
             self.by_hsn = False
             self.b2b = False
+            self.b2c_hsn=False
 
     @api.onchange('by_hsn')
     def onchange_by_hsn(self):
         if self.by_hsn:
             self.b2c = False
             self.b2b = False
+            self.b2c_hsn=False
 
     @api.onchange('b2b')
     def onchange_b2b(self):
         if self.b2b:
             self.by_hsn = False
             self.b2c = False
+            self.b2c_hsn=False
+    @api.onchange('b2c_hsn')
+    def onchange_b2c_hsn(self):
+        if self.b2c_hsn:
+            self.b2c=False
+            self.b2b=False
+            self.by_hsn=False
 
     @api.multi
     def view_tax_report(self):
