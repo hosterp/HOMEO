@@ -17,8 +17,7 @@ class TaxReportWizard(models.TransientModel):
     b2c = fields.Boolean()
     b2b = fields.Boolean()
     by_hsn = fields.Boolean()
-    b2c_by_hsn = fields.Boolean()
-    tax = fields.Selection([(5, '5%'), (12, '12%'), (18, '18%')])
+    b2c_hsn=fields.Boolean()
 
     @api.onchange('by_hsn')
     def onchange_by_hsn(self):
@@ -30,26 +29,19 @@ class TaxReportWizard(models.TransientModel):
         if self.b2c:
             self.by_hsn = False
             self.b2b = False
-            self.b2c_by_hsn=False
+
     @api.onchange('by_hsn')
     def onchange_by_hsn(self):
         if self.by_hsn:
             self.b2c = False
             self.b2b = False
-            self.b2c_by_hsn=False
+
     @api.onchange('b2b')
     def onchange_b2b(self):
         if self.b2b:
             self.by_hsn = False
             self.b2c = False
-            self.b2c_by_hsn=False
 
-    @api.onchange('b2c_by_hsn')
-    def onchange_by_hsn(self):
-        if self.b2c_by_hsn:
-            self.b2c = False
-            self.b2b = False
-            self.by_hsn = False
     @api.multi
     def view_tax_report(self):
         datas = {
@@ -123,7 +115,7 @@ class TaxReportWizard(models.TransientModel):
                     'datas': datas,
                     'report_type': 'qweb-pdf',
                 }
-        elif self.b2c_by_hsn:
+        elif self.b2c_hsn:
             datas = {
                 'ids': self._ids,
                 'model': self._name,
@@ -132,7 +124,7 @@ class TaxReportWizard(models.TransientModel):
             }
             return {
                 'type': 'ir.actions.report.xml',
-                'report_name': 'pharmacy_mgmnt.b2b_hsn_tax_report_template',
+                'report_name': 'pharmacy_mgmnt.b2c_hsn_tax_report_template',
                 'datas': datas,
                 'report_type': 'qweb-pdf',
             }
@@ -140,11 +132,11 @@ class TaxReportWizard(models.TransientModel):
 
         # excel not working in offline so created PDF for Offline
         # data = {}
-                # data['form'] = self.read(['from_date', 'to_date'])
-                # return {'type': 'ir.actions.report.xml',
-                #         'report_name': 'pharmacy_mgmnt.report_tax_excel.xlsx',
-                #         'datas': data
-                #         }
+        # data['form'] = self.read(['from_date', 'to_date'])
+        # return {'type': 'ir.actions.report.xml',
+        #         'report_name': 'pharmacy_mgmnt.report_tax_excel.xlsx',
+        #         'datas': data
+        #         }
         else:
             datas = {
                 'ids': self._ids,
@@ -160,24 +152,22 @@ class TaxReportWizard(models.TransientModel):
             }
 
     @api.multi
-    def get_b2b_hsn_tax_invoices(self):
-        partner_ids = self.env['res.partner'].search([
-            ('b2b', '=', True),])
-        
-        invoice_ids = self.env['account.invoice'].search([
-            ('date_invoice', '>=', self.from_date),
-            ('date_invoice', '<=', self.to_date),
-            ('partner_id', 'in', partner_ids.ids),
-            ('packing_slip','=',False),
-            ('holding_invoice','=',False),
-            ('type', '=', 'out_invoice')])
-        return invoice_ids
-
-    @api.multi
     def get_b2c_hsn_tax_invoices(self):
         partner_ids = self.env['res.partner'].search([
             ('b2c', '=', True), ])
-        print(partner_ids,'b2c by hsn')
+        invoice_ids = self.env['account.invoice'].search([
+            ('date_invoice', '>=', self.from_date),
+            ('date_invoice', '<=', self.to_date),
+            ('packing_slip', '=', False),
+            ('holding_invoice', '=', False),
+            ('type', '=', 'out_invoice')])
+        # print(invoice_ids,'invoice_idsinvoice_ids')
+        return invoice_ids
+    @api.multi
+    def get_b2b_hsn_tax_invoices(self):
+        partner_ids = self.env['res.partner'].search([
+            ('b2b', '=', True), ])
+
         invoice_ids = self.env['account.invoice'].search([
             ('date_invoice', '>=', self.from_date),
             ('date_invoice', '<=', self.to_date),
@@ -191,82 +181,61 @@ class TaxReportWizard(models.TransientModel):
     def get_b2b_tax_invoices(self):
         if self.b2c:
             partner_ids = self.env['res.partner'].search([
-                ('b2c', '=', True),('b2b', '=', False) ])
+                ('b2c', '=', True), ('b2b', '=', False)])
 
             invoices = self.env['account.invoice'].search(
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
                  ('partner_id.customer', '=', True), ('partner_id', 'in', partner_ids.ids),
-                 ('packing_slip','=',False),('holding_invoice','=',False),
-                 ('type', '=', 'out_invoice'),('invoice_line.invoice_line_tax_id4', '=', self.tax),
-                 ('state', '=', 'paid')])
+                 ('packing_slip', '=', False), ('holding_invoice', '=', False),
+                 ('type', '=', 'out_invoice')])
         elif self.b2b:
             partner_ids = self.env['res.partner'].search([
                 ('b2b', '=', True), ('b2c', '=', False)])
             invoices = self.env['account.invoice'].search(
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
                  ('partner_id.customer', '=', True), ('partner_id', 'in', partner_ids.ids),
-                 ('packing_slip','=',False), ('holding_invoice','=',False),
-                 ('type', '=', 'out_invoice'),('invoice_line.invoice_line_tax_id4', '=', self.tax),
-                 ('state', '=', 'paid')])
+                 ('packing_slip', '=', False), ('holding_invoice', '=', False),
+                 ('type', '=', 'out_invoice')])
         else:
             invoices = self.env['account.invoice'].search(
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
                  ('partner_id.customer', '=', True),
                  ('packing_slip', '=', False), ('holding_invoice', '=', False),
-                 ('type', '=', 'out_invoice'), ('invoice_line.invoice_line_tax_id4', '=', self.tax),
-                 ('state', '=', 'paid')])
+                 ('type', '=', 'out_invoice')])
 
         data_list = []
         for invoice in invoices:
-            main = {}
-            lists = []
-            pay_amt = 0
-            tax_amt = 0
-            interstate=invoice.partner_id.interstate_customer
-            for rec in invoice.invoice_line:
-                # print(invoice.partner_id.name,'customerrrrr')
-                # print(rec.partner_id.name,'reccccccc')
-                # print(rec,'reccccccccccccccccccccc')
-                if rec.invoice_line_tax_id4 == self.tax:
-                    pay_amt += rec.amt_w_tax
-                    tax_amt += rec.product_tax
-                    main = {
-                        'interstate':interstate,
-                        'date_invoice': invoice.date_invoice,
-                        'number2': invoice.number2,
-                        'customer': invoice.partner_id.name,
-                        'tax_p': self.tax,
-                        'pay_amt': pay_amt,
-                        'tax_amt': tax_amt,
-                    }
-            lists.append(main)
-
             tax_5 = invoice.invoice_line.filtered(lambda l: l.invoice_line_tax_id4 == 5)
             tax_12 = invoice.invoice_line.filtered(lambda l: l.invoice_line_tax_id4 == 12)
             tax_18 = invoice.invoice_line.filtered(lambda l: l.invoice_line_tax_id4 == 18)
 
-            tax_5_sum = sum(tax_5.mapped('amt_tax'))
-            tax_12_sum = sum(tax_12.mapped('amt_tax'))
-            tax_18_sum = sum(tax_18.mapped('amt_tax'))
 
-            total_amount_sgst_5 = tax_5_sum/2
-            total_amount_sgst_12 = tax_12_sum/2
-            total_amount_sgst_18 = tax_18_sum/2
+            tax_5_sum = sum(tax_5.mapped('amt_w_tax'))
+            tax_12_sum = sum(tax_12.mapped('amt_w_tax'))
+            tax_18_sum = sum(tax_18.mapped('amt_w_tax'))
 
-            total_amount_cgst_5 = tax_5_sum/2
-            total_amount_cgst_12 = tax_12_sum/2
-            total_amount_cgst_18 = tax_18_sum/2
-            print(lists,"datasss")
+
+            total_amount_sgst_5 = (tax_5_sum*0.05 )/ 2
+            total_amount_sgst_12 = (tax_12_sum*0.12 ) / 2
+            total_amount_sgst_18 = (tax_18_sum*0.18 ) / 2
+
+            total_amount_cgst_5 = (tax_5_sum*0.05 ) / 2
+            total_amount_cgst_12 = (tax_12_sum*0.12 ) / 2
+            total_amount_cgst_18 = (tax_18_sum*0.18) / 2
+
             vals = {'invoice': invoice,
-                    'tax_data': lists,
+
                     'tax_5_sum': tax_5_sum,
                     'tax_12_sum': tax_12_sum,
                     'tax_18_sum': tax_18_sum,
+
                     'total_amount_sgst_5': total_amount_sgst_5,
                     'total_amount_sgst_12': total_amount_sgst_12,
                     'total_amount_sgst_18': total_amount_sgst_18,
+
                     'total_amount_cgst_5': total_amount_cgst_5,
                     'total_amount_cgst_12': total_amount_cgst_12,
                     'total_amount_cgst_18': total_amount_cgst_18}
             data_list.append(vals)
+            print(data_list, 'data_listdata_list')
         return data_list
