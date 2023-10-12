@@ -160,7 +160,9 @@ class TaxReportWizard(models.TransientModel):
             ('date_invoice', '<=', self.to_date),
             ('packing_slip', '=', False),
             ('holding_invoice', '=', False),
-            ('type', '=', 'out_invoice')])
+            ('type', '=', 'out_invoice'),
+            ('state', '=', 'paid')
+            ])
         # print(invoice_ids,'invoice_idsinvoice_ids')
         return invoice_ids
     @api.multi
@@ -174,7 +176,9 @@ class TaxReportWizard(models.TransientModel):
             ('partner_id', 'in', partner_ids.ids),
             ('packing_slip', '=', False),
             ('holding_invoice', '=', False),
-            ('type', '=', 'out_invoice')])
+            ('type', '=', 'out_invoice'),
+            ('state', '=', 'paid')
+            ])
         return invoice_ids
 
     @api.multi
@@ -187,7 +191,7 @@ class TaxReportWizard(models.TransientModel):
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
                  ('partner_id.customer', '=', True), ('partner_id', 'in', partner_ids.ids),
                  ('packing_slip', '=', False), ('holding_invoice', '=', False),
-                 ('type', '=', 'out_invoice')])
+                 ('type', '=', 'out_invoice'), ('state','=','paid')])
         elif self.b2b:
             partner_ids = self.env['res.partner'].search([
                 ('b2b', '=', True), ('b2c', '=', False)])
@@ -195,7 +199,8 @@ class TaxReportWizard(models.TransientModel):
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
                  ('partner_id.customer', '=', True), ('partner_id', 'in', partner_ids.ids),
                  ('packing_slip', '=', False), ('holding_invoice', '=', False),
-                 ('type', '=', 'out_invoice')])
+                 ('type', '=', 'out_invoice'),
+                 ('state','=','paid')])
         else:
             invoices = self.env['account.invoice'].search(
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
