@@ -18,6 +18,7 @@ class TaxReportWizard(models.TransientModel):
     b2b = fields.Boolean()
     by_hsn = fields.Boolean()
     b2c_hsn=fields.Boolean()
+    type = fields.Selection([('interstate','INTERSTATE'),('local','LOCAL')])
 
     @api.onchange('by_hsn')
     def onchange_by_hsn(self):
@@ -162,10 +163,18 @@ class TaxReportWizard(models.TransientModel):
 
     @api.multi
     def get_b2c_hsn_tax_invoices(self):
-        partner_ids = self.env['res.partner'].search([
-            ('b2c', '=', True), ])
+        if self.type == 'interstate':
+            partner_ids = self.env['res.partner'].search([
+                ('b2c', '=', True),('interstate_customer', '=', True) ])
+        elif self.type == 'local':
+            partner_ids = self.env['res.partner'].search([
+                ('b2c', '=', True), ('interstate_customer', '=', False)])
+        else:
+            partner_ids = self.env['res.partner'].search([
+                ('b2c', '=', True)])
         invoice_ids = self.env['account.invoice'].search([
             ('date_invoice', '>=', self.from_date),
+            ('partner_id', 'in', partner_ids.ids),
             ('date_invoice', '<=', self.to_date),
             ('packing_slip', '=', False),
             ('holding_invoice', '=', False),
@@ -176,8 +185,15 @@ class TaxReportWizard(models.TransientModel):
         return invoice_ids
     @api.multi
     def get_b2b_hsn_tax_invoices(self):
-        partner_ids = self.env['res.partner'].search([
-            ('b2b', '=', True), ])
+        if self.type == 'interstate':
+            partner_ids = self.env['res.partner'].search([
+                ('b2b', '=', True), ('interstate_customer', '=', True)])
+        elif self.type == 'local':
+            partner_ids = self.env['res.partner'].search([
+                ('b2b', '=', True), ('interstate_customer', '=', False)])
+        else:
+            partner_ids = self.env['res.partner'].search([
+                ('b2b', '=', True)])
 
         invoice_ids = self.env['account.invoice'].search([
             ('date_invoice', '>=', self.from_date),
@@ -193,8 +209,17 @@ class TaxReportWizard(models.TransientModel):
     @api.multi
     def get_b2b_tax_invoices(self):
         if self.b2c:
-            partner_ids = self.env['res.partner'].search([
-                ('b2c', '=', True), ('b2b', '=', False)])
+            if self.type == 'interstate':
+                partner_ids = self.env['res.partner'].search([
+                    ('b2c', '=', True), ('interstate_customer', '=', True)])
+            elif self.type == 'local':
+                partner_ids = self.env['res.partner'].search([
+                    ('b2c', '=', True) ,('interstate_customer', '=', False)])
+            else:
+                partner_ids = self.env['res.partner'].search([
+                    ('b2c', '=', True)])
+            # partner_ids = self.env['res.partner'].search([
+            #     ('b2c', '=', True), ('b2b', '=', False)])
 
             invoices = self.env['account.invoice'].search(
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
@@ -202,8 +227,17 @@ class TaxReportWizard(models.TransientModel):
                  ('packing_slip', '=', False), ('holding_invoice', '=', False),
                  ('type', '=', 'out_invoice'), ('state','=','paid')])
         elif self.b2b:
-            partner_ids = self.env['res.partner'].search([
-                ('b2b', '=', True), ('b2c', '=', False)])
+            if self.type == 'interstate':
+                partner_ids = self.env['res.partner'].search([
+                    ('b2b', '=', True), ('interstate_customer', '=', True)])
+            elif self.type == 'local':
+                partner_ids = self.env['res.partner'].search([
+                    ('b2b', '=', True), ('interstate_customer', '=', False)])
+            else:
+                partner_ids = self.env['res.partner'].search([
+                    ('b2b', '=', True)])
+            # partner_ids = self.env['res.partner'].search([
+            #     ('b2b', '=', True), ('b2c', '=', False)])
             invoices = self.env['account.invoice'].search(
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
                  ('partner_id.customer', '=', True), ('partner_id', 'in', partner_ids.ids),
@@ -211,9 +245,17 @@ class TaxReportWizard(models.TransientModel):
                  ('type', '=', 'out_invoice'),
                  ('state','=','paid')])
         else:
+            if self.type == 'interstate':
+                partner_ids = self.env['res.partner'].search([
+                   ('interstate_customer', '=', True)])
+            elif self.type == 'local':
+                partner_ids = self.env['res.partner'].search([
+                   ('interstate_customer', '=', False)])
+            else:
+                partner_ids = self.env['res.partner'].search([])
             invoices = self.env['account.invoice'].search(
                 [("date_invoice", ">=", self.from_date), ("date_invoice", "<=", self.to_date),
-                 ('partner_id.customer', '=', True),
+                 ('partner_id.customer', '=', True),('partner_id', 'in', partner_ids.ids),
                  ('packing_slip', '=', False), ('holding_invoice', '=', False),
                  ('type', '=', 'out_invoice')])
 
@@ -251,5 +293,5 @@ class TaxReportWizard(models.TransientModel):
                     'total_amount_cgst_12': total_amount_cgst_12,
                     'total_amount_cgst_18': total_amount_cgst_18}
             data_list.append(vals)
-            print(data_list, 'data_listdata_list')
+            # print(data_list, 'data_listdata_list')
         return data_list
