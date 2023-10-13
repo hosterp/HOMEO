@@ -183,6 +183,7 @@ class TaxReportWizard(models.TransientModel):
             ])
         # print(invoice_ids,'invoice_idsinvoice_ids')
         return invoice_ids
+
     @api.multi
     def get_b2b_hsn_tax_invoices(self):
         if self.type == 'interstate':
