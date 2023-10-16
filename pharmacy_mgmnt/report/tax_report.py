@@ -377,9 +377,7 @@ class TaxReportWizard(models.TransientModel):
                     'total_amount_cgst_5':values['total_amount_cgst_5'],
                     'total_amount_cgst_12':values['total_amount_cgst_12'],
                     'total_amount_cgst_18':values['total_amount_cgst_18'],
-
                 })
-
             return data_list
 
         elif self.b2b:
