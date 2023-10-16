@@ -2126,9 +2126,7 @@ class AccountInvoice(models.Model):
     @api.depends('amount_total')
     def _compute_amount_in_words(self):
         for invoice in self:
-            print(invoice.amount_total,'total')
             invoice.amount_in_words = num2words(invoice.amount_total, lang='en').title()
-            print(invoice.amount_in_words,'words')
 
     @api.depends('amount_total')
     def _compute_amount_tax(self):

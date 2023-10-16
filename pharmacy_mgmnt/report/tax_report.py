@@ -152,17 +152,92 @@ class TaxReportWizard(models.TransientModel):
                 'report_type': 'qweb-pdf',
             }
 
+    # @api.multi
+    # def get_b2c_hsn_tax_invoices(self):
+    #     if self.type == 'interstate':
+    #         partner_ids = self.env['res.partner'].search([
+    #             ('b2c', '=', True),('interstate_customer', '=', True) ])
+    #     elif self.type == 'local':
+    #         partner_ids = self.env['res.partner'].search([
+    #             ('b2c', '=', True), ('interstate_customer', '=', False)])
+    #     else:
+    #         partner_ids = self.env['res.partner'].search([
+    #             ('b2c', '=', True)])
+    #     invoice_ids = self.env['account.invoice'].search([
+    #         ('date_invoice', '>=', self.from_date),
+    #         ('partner_id', 'in', partner_ids.ids),
+    #         ('date_invoice', '<=', self.to_date),
+    #         ('packing_slip', '=', False),
+    #         ('holding_invoice', '=', False),
+    #         ('type', '=', 'out_invoice'),
+    #         ('state', '=', 'paid')
+    #         ])
+    #     data_list = []
+    #     for invoice in invoice_ids:
+    #         main = {}
+    #         lists = []
+    #         for rec in invoice.invoice_line:
+    #             # if not lists:
+    #             hsn_code = rec.hsn_code
+    #             invoice_line_tax_id4 = rec.invoice_line_tax_id4
+    #             if data_list:
+    #                 for record in data_list:
+    #                     for recs in record['invoice_data'] :
+    #                     # if record['invoice_data'][0]['hsn_code'] == hsn_code and record['invoice_data'][0][
+    #                     #     'invoice_line_tax_id4'] == invoice_line_tax_id4:
+    #                     #     print(record['invoice_data'][0]['hsn_code'])
+    #                     #     print(recs['hsn_code'],'JSN_CODE')
+    #                     #     print(hsn_code,'hsn_code')
+    #                     #     print(type(recs['hsn_code']),'JSN_CODE')
+    #                     #     print(type(hsn_code),'hsn_code')
+    #                         if recs['hsn_code'] == hsn_code and recs['invoice_line_tax_id4'] == invoice_line_tax_id4:
+    #                             recs['quantity'] += rec.quantity
+    #                             recs['product_tax'] += rec.product_tax
+    #                             recs['amt_w_tax'] += rec.amt_w_tax
+    #                             print(recs['quantity'],'quantity')
+    #                             print(recs['product_tax'],'product_tax')
+    #                             print(recs['amt_w_tax'],'amt_w_tax')
+    #                         # else:
+    #                         #     print('hai')
+    #                         else:
+    #                             print('hai')
+    #                             main = {
+    #                                 'hsn_code': rec.hsn_code,
+    #                                 'quantity': rec.quantity,
+    #                                 'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+    #                                 'product_tax': rec.product_tax,
+    #                                 'amt_w_tax': rec.amt_w_tax,
+    #                             }
+    #                             lists.append(main)
+    #                             # print(lists,'list')
+    #                             vals = {
+    #                                 'invoice_data': lists
+    #                             }
+    #                             data_list.append(vals)
+    #             else:
+    #                 main = {
+    #                     'hsn_code': rec.hsn_code,
+    #                     'quantity': rec.quantity,
+    #                     'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+    #                     'product_tax': rec.product_tax,
+    #                     'amt_w_tax': rec.amt_w_tax,
+    #                 }
+    #                 lists.append(main)
+    #                 vals = {
+    #                     'invoice_data': lists
+    #                 }
+    #                 data_list.append(vals)
+    #     print(data_list, 'data_list')
+
     @api.multi
     def get_b2c_hsn_tax_invoices(self):
+        partner_ids = self.env['res.partner'].search([('b2c', '=', True)])
+
         if self.type == 'interstate':
-            partner_ids = self.env['res.partner'].search([
-                ('b2c', '=', True),('interstate_customer', '=', True) ])
+            partner_ids = partner_ids.filtered(lambda p: p.interstate_customer)
         elif self.type == 'local':
-            partner_ids = self.env['res.partner'].search([
-                ('b2c', '=', True), ('interstate_customer', '=', False)])
-        else:
-            partner_ids = self.env['res.partner'].search([
-                ('b2c', '=', True)])
+            partner_ids = partner_ids.filtered(lambda p: not p.interstate_customer)
+
         invoice_ids = self.env['account.invoice'].search([
             ('date_invoice', '>=', self.from_date),
             ('partner_id', 'in', partner_ids.ids),
@@ -171,9 +246,28 @@ class TaxReportWizard(models.TransientModel):
             ('holding_invoice', '=', False),
             ('type', '=', 'out_invoice'),
             ('state', '=', 'paid')
-            ])
-        # print(invoice_ids,'invoice_idsinvoice_ids')
-        return invoice_ids
+        ])
+
+        data_dict = {}
+        for invoice in invoice_ids:
+            for rec in invoice.invoice_line:
+                hsn_code = rec.hsn_code
+                invoice_line_tax_id4 = rec.invoice_line_tax_id4
+                key = (hsn_code, invoice_line_tax_id4)
+                if key in data_dict:
+                    data_dict[key]['quantity'] += rec.quantity
+                    data_dict[key]['product_tax'] += rec.product_tax
+                    data_dict[key]['amt_w_tax'] += rec.amt_w_tax
+                else:
+                    data_dict[key] = {
+                        'hsn_code': hsn_code,
+                        'invoice_line_tax_id4': invoice_line_tax_id4,
+                        'quantity': rec.quantity,
+                        'product_tax': rec.product_tax,
+                        'amt_w_tax': rec.amt_w_tax,
+                    }
+        data_list = [{'invoice_data': [vals]} for vals in data_dict.values()]
+        return data_list
     @api.multi
     def get_b2b_hsn_tax_invoices(self):
         if self.type == 'interstate':
@@ -284,5 +378,4 @@ class TaxReportWizard(models.TransientModel):
                     'total_amount_cgst_12': total_amount_cgst_12,
                     'total_amount_cgst_18': total_amount_cgst_18}
             data_list.append(vals)
-            # print(data_list, 'data_listdata_list')
         return data_list
