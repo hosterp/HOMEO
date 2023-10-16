@@ -62,7 +62,7 @@
 
         <template id="b2b_tax_report_template">
             <t t-call="report.html_container">
-                <t t-call="report.external_layout">
+<!--                <t t-call="report.external_layout">-->
                     <t t-foreach="docs" t-as="o">
                         <div class="page">
                             <div class="col-xs-12" style='font-size:20px'>
@@ -78,9 +78,12 @@
                                     <td style='font-size:15px'>
                                         <b>Bill Date</b>
                                     </td>
-                                    <td style='font-size:15px'>
-                                        <b>Bill No</b>
-                                    </td>
+                                    <t t-if="o.b2b">
+                                        <td style='font-size:15px'>
+                                            <b>Bill No</b>
+                                        </td>
+                                    </t>
+
                                     <t t-if="not o.b2c">
                                         <td style='font-size:15px'>
                                             <b>Customer</b>
@@ -116,11 +119,11 @@
                                     <td style='font-size:15px'>
                                         <b>SGST</b>
                                     </td>
-                                    <t t-if="o.b2c">
-                                        <td style='font-size:15px'>
-                                            <b>Total</b>
-                                        </td>
-                                    </t>
+<!--                                    <t t-if="o.b2c">-->
+<!--                                        <td style='font-size:15px'>-->
+<!--                                            <b>Total</b>-->
+<!--                                        </td>-->
+<!--                                    </t>-->
                                 </tr>
                                 <t t-set="sl_no" t-value="1"/>
                                 <t t-set="tax_total_5" t-value="0"/>
@@ -140,12 +143,23 @@
                                             <span t-esc="sl_no"/>
                                         </td>
                                         <t t-set="sl_no" t-value="sl_no+1"/>
-                                        <td style='font-size:15px'>
-                                            <span t-esc="line['invoice'].date_invoice"/>
-                                        </td>
-                                        <td style='font-size:15px'>
-                                            <span t-esc="line['invoice'].number2"/>
-                                        </td>
+                                        <t t-if="o.b2b">
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['invoice'].date_invoice"/>
+                                            </td>
+                                        </t>
+                                        <t t-if="not o.b2b">
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['date']"/>
+                                            </td>
+                                        </t>
+
+                                        <t t-if="o.b2b">
+                                            <td style='font-size:15px'>
+                                                <span t-esc="line['invoice'].number2"/>
+                                            </td>
+                                        </t>
+
                                         <t t-if="not o.b2c">
                                             <td style='font-size:15px'>
                                                 <span t-esc="line['invoice'].partner_id.name"/>
@@ -197,11 +211,11 @@
                                         <t t-set="total_amount_sgst_18"
                                            t-value="total_amount_sgst_18+line['total_amount_sgst_18']"/>
                                         <t t-if="o.b2c">
-                                            <td style='font-size:15px'>
-                                                <span t-esc="line['invoice'].amount_total - line['invoice'].amount_tax"/>
-                                            </td>
-                                            <t t-set="total_amount_wo_tax"
-                                               t-value="total_amount_wo_tax+line['invoice'].amount_total - line['invoice'].amount_tax"/>
+<!--                                            <td style='font-size:15px'>-->
+<!--                                                <span t-esc="line['invoice'].amount_total - line['invoice'].amount_tax"/>-->
+<!--                                            </td>-->
+<!--                                            <t t-set="total_amount_wo_tax"-->
+<!--                                               t-value="total_amount_wo_tax+line['invoice'].amount_total - line['invoice'].amount_tax"/>-->
                                         </t>
                                     </tr>
                                 </t>
@@ -209,10 +223,9 @@
                                     <td style='font-size:15px'>
                                         <b>Total</b>
                                     </td>
-                                    <td/>
+
                                     <td/>
                                     <t t-if="not o.b2c">
-                                        <td/>
                                         <td/>
                                     </t>
                                     <td style='font-size:15px'>
@@ -243,15 +256,15 @@
                                         <span t-esc="total_amount_sgst_18"/>
                                     </td>
                                     <t t-if="o.b2c">
-                                        <td style='font-size:15px'>
-                                            <span t-esc="total_amount_wo_tax"/>
-                                        </td>
+<!--                                        <td style='font-size:15px'>-->
+<!--                                            <span t-esc="total_amount_wo_tax"/>-->
+<!--                                        </td>-->
                                     </t>
                                 </tr>
                             </table>
                         </div>
                     </t>
-                </t>
+<!--                </t>-->
             </t>
         </template>
 
