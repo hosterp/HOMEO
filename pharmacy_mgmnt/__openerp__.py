@@ -12,7 +12,7 @@
     'website': "https://www.hiworthsolutions.com",
     'category': 'Accounting',
     'depends': ['base', 'account', 'stock', 'purchase', 'sale','report',
-                'report_xlsx',
+                'report_xlsx','report_custom_filename',
                 'account_accountant', 'product_expiry', 'product_expiry_simple', 'Key_shortcuts',],
     'data': [
         'security/security.xml',

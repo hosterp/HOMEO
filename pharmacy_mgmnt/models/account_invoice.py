@@ -1544,12 +1544,15 @@ class AccountInvoice(models.Model):
             'form': self.read(),
             'context': self._context,
         }
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'account.invoice'), ('report_name', '=', 'pharmacy_mgmnt.e_way_cus_report_template',)])
+        data.download_filename = 'E-way report.pdf'
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'pharmacy_mgmnt.e_way_cus_report_template',
+            'file': 'filename',
             'datas': datas,
             'report_type': 'qweb-pdf',
-            #
         }
 
 
