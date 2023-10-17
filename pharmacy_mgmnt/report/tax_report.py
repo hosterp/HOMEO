@@ -102,6 +102,9 @@ class TaxReportWizard(models.TransientModel):
             'form': self.read(),
             'context': self._context,
         }
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'tax.report.wizard'), ('report_name', '=', 'pharmacy_mgmnt.tax_report_template',)])
+        data.download_filename = 'Tax report.pdf'
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'pharmacy_mgmnt.tax_report_template',
@@ -122,6 +125,9 @@ class TaxReportWizard(models.TransientModel):
                     'form': self.read(),
                     'context': self._context,
                 }
+                data = self.env['ir.actions.report.xml'].search(
+                    [('model', '=', 'tax.report.wizard'), ('report_name', '=', 'pharmacy_mgmnt.b2b_hsn_tax_report_template',)])
+                data.download_filename = 'B2B BY HSN report.pdf'
                 return {
                     'type': 'ir.actions.report.xml',
                     'report_name': 'pharmacy_mgmnt.b2b_hsn_tax_report_template',
@@ -135,6 +141,10 @@ class TaxReportWizard(models.TransientModel):
                 'form': self.read(),
                 'context': self._context,
             }
+            data = self.env['ir.actions.report.xml'].search(
+                [('model', '=', 'tax.report.wizard'),
+                 ('report_name', '=', 'pharmacy_mgmnt.b2c_hsn_tax_report_template',)])
+            data.download_filename = 'B2C BY HSN report.pdf'
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'pharmacy_mgmnt.b2c_hsn_tax_report_template',
@@ -157,6 +167,21 @@ class TaxReportWizard(models.TransientModel):
                 'form': self.read(),
                 'context': self._context,
             }
+            if self.b2b:
+                data = self.env['ir.actions.report.xml'].search(
+                    [('model', '=', 'tax.report.wizard'),
+                     ('report_name', '=', 'pharmacy_mgmnt.b2b_tax_report_template',)])
+                data.download_filename = 'B2B Tax report.pdf'
+            elif self.b2c:
+                data = self.env['ir.actions.report.xml'].search(
+                    [('model', '=', 'tax.report.wizard'),
+                     ('report_name', '=', 'pharmacy_mgmnt.b2b_tax_report_template',)])
+                data.download_filename = 'B2C Tax report.pdf'
+            else:
+                data = self.env['ir.actions.report.xml'].search(
+                    [('model', '=', 'tax.report.wizard'),
+                     ('report_name', '=', 'pharmacy_mgmnt.b2b_tax_report_template',)])
+                data.download_filename = 'GST Tax report.pdf'
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'pharmacy_mgmnt.b2b_tax_report_template',
