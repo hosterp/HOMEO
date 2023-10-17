@@ -4,7 +4,7 @@
 
         <template id="b2b_hsn_tax_report_template">
             <t t-call="report.html_container">
-                <t t-call="report.external_layout">
+<!--                <t t-call="report.external_layout">-->
                     <t t-foreach="docs" t-as="o">
                         <div class="page">
                             <div class="col-xs-12" style='font-size:20px'>
@@ -126,7 +126,7 @@
                             </table>
                         </div>
                     </t>
-                </t>
+<!--                </t>-->
             </t>
         </template>
         <report

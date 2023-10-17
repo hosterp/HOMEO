@@ -73,6 +73,9 @@
                                 <t t-if="o.b2b">
                                     <b>TRAVANCORE BTOB TAX REPORT BY BILL</b>
                                 </t>
+                                <t t-if="not o.b2b and not o.b2c">
+                                    <b>TRAVANCORE GST TAX REPORT BY BILL</b>
+                                </t>
                             </center>
                         </div>
                         <table class="table table-bordered">
