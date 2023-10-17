@@ -474,6 +474,9 @@ class PartnerPayment(models.Model):
     #
     @api.multi
     def print_customer_payment_report(self):
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'partner.payment'), ('report_name', '=', 'pharmacy_mgmnt.customer_payment_invoice',)])
+        data.download_filename = 'customer payment report.pdf'
         assert len(self) == 1
         self.sent = True
         return self.env['report'].get_action(self, 'pharmacy_mgmnt.customer_payment_invoice')
