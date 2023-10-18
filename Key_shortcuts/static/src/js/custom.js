@@ -120,7 +120,7 @@ $.shortcut('121', function() {
 	$('.css_print').each(function() {
 		if($(this).parents('div:hidden').length == 0){
 			$(this).trigger('click');
-//                window.print()
+                window.print()
 		}
 	});
 });
