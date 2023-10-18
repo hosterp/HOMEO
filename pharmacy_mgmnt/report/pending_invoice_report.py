@@ -19,7 +19,9 @@ class PendingInvoiceReport(models.TransientModel):
             'form': self.read(),
             'context': self._context,
         }
-
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'pending.invoice.report'), ('report_name', '=', 'pharmacy_mgmnt.report_pending_invoice_template_new',)])
+        data.download_filename = 'customer pending payment report.pdf'
         return {
             'name': 'Pending Invoice Report',
             'type': 'ir.actions.report.xml',

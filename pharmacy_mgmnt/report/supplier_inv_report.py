@@ -18,7 +18,10 @@ class SupplierInvoiceReport(models.TransientModel):
             'form': self.read(),
             'context': self._context,
         }
-
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'supplier.invoice.report'),
+             ('report_name', '=', 'pharmacy_mgmnt.report_supplier_invoice_template_new',)])
+        data.download_filename = 'Supplier invoice report.pdf'
         return {
             'name': 'Supplier Invoice Report',
             'type': 'ir.actions.report.xml',

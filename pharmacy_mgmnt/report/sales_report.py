@@ -60,6 +60,10 @@ class SalesReport(models.Model):
     def print_sale_report(self):
         assert len(self) == 1
         self.sent = True
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'sales.report'),
+             ('report_name', '=', 'pharmacy_mgmnt.sales_report_id',)])
+        data.download_filename = 'Sales report.pdf'
         return self.env['report'].get_action(self, 'pharmacy_mgmnt.sales_report_id')
     @api.multi
     @api.model
