@@ -308,6 +308,13 @@
         </record>
 
         <template id="account.report_invoice_document">
+             <script type="text/javascript">
+
+                       if (location.pathname.includes('/report/html/account.report_invoice/')) {
+                       window.print();
+                       }
+
+             </script>
             <t t-call="report.external_layout">
                 <div class="page">
                     <div class="row">
