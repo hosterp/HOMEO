@@ -12,11 +12,10 @@
                                     <b>TRAVANCORE HOMEO MEDICALS, GSTIN :32AYAPS1856Q1ZY</b>
                                 </center>
                                 <center>
-                                    <b>GST BtoB HSN Report by BIll</b>
-                                    <b></b>
-                                    <span t-esc="o.from_date"/>
+                                    <b>GST BtoB HSN Report by Bill (
+                                    <b><span t-esc="o.from_date"/></b>
 									<b>to</b>
-                                    <span t-esc="o.to_date"/>
+                                        <b><span t-esc="o.to_date"/></b>)</b>
                                 </center>
                             </div>
                             <table class="table table-bordered">
