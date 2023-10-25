@@ -119,6 +119,14 @@ class PartnerPayment(models.Model):
     cheque_balance = fields.Float('Check Balance')
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
 
+    @api.constrains('deposit_date', 'clearence_date')
+    def _check_deposit_and_const(self):
+        for record in self:
+            if record.deposit_date and record.deposit_date < record.cheque_date:
+                raise ValidationError("The deposit date cannot be earlier than the cheque date.")
+            if record.clearence_date and record.clearence_date < record.deposit_date:
+                raise ValidationError("The clearence date cannot be earlier than the deposit date.")
+
     @api.onchange('payment_amount')
     def onchange_payment_amount(self):
         if self.payment_amount != 0:
@@ -133,6 +141,7 @@ class PartnerPayment(models.Model):
                 raise ValidationError("The deposit date cannot be earlier than the cheque date.")
             if record.clearence_date and record.clearence_date < record.deposit_date:
                 raise ValidationError("The clearence date cannot be earlier than the deposit date.")
+
 
 
     # @api.onchange('chekbox')
