@@ -126,7 +126,7 @@ class PartnerPayment(models.Model):
                 self.payment_amount+=self.advance_amount
         self.calc_amount = self.payment_amount
 
-    @api.constrains('deposit_date', 'clearence_date')
+    @api.onchange('deposit_date', 'clearence_date')
     def _check_deposit_and_clearence_dates(self):
         for record in self:
             if record.deposit_date and record.deposit_date < record.cheque_date:
