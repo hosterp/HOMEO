@@ -2,7 +2,7 @@ import datetime
 from openerp import api, models, fields, _
 from openerp.exceptions import Warning
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime,date
 
 
 class TaxReportWizard(models.TransientModel):
@@ -63,6 +63,10 @@ class TaxReportWizard(models.TransientModel):
             'form': self.read(),
             'context': self._context,
         }
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'tax.report.wizard'), ('report_name', '=', 'pharmacy_mgmnt.tax_report_template',)])
+        if data.download_filename:
+            data.download_filename = ''
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'pharmacy_mgmnt.tax_report_template',
@@ -78,7 +82,7 @@ class TaxReportWizard(models.TransientModel):
         if self.to_date:
             domain += [('invoice_id.date_invoice', '<=', self.to_date)]
         if not self.to_date:
-            domain += [('invoice_id.date_invoice', '<=', datetime.datetime.today())]
+            domain += [('invoice_id.date_invoice', '<=', date.today())]
         if self.customer:
             domain += [('invoice_id.partner_id', '=', self.customer.id)]
         if self.product:
