@@ -73,7 +73,7 @@
 
             <t t-call="report.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="report.external_layout">
+<!--                    <t t-call="report.external_layout">-->
                         <div class="page">
 
                             <center>
@@ -272,7 +272,7 @@
                                 </center>
                             </div>
                         </div>
-                    </t>
+<!--                    </t>-->
                 </t>
             </t>
         </template>
