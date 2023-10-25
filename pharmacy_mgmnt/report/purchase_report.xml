@@ -51,7 +51,7 @@ th, td {
 
 			<t t-call="report.html_container">
 				<t t-foreach="docs" t-as="o">
-					<t t-call="report.external_layout">
+<!--					<t t-call="report.external_layout">-->
 						<div class="page">
 
 							<center><b><h1>Purchase Report </h1></b></center><br/>
@@ -107,7 +107,7 @@ th, td {
 								</center>
 							</div>
 						</div>
-					</t>
+<!--					</t>-->
 				</t>
 			</t>
 </template>
