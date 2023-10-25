@@ -1,4 +1,5 @@
 from openerp import models, fields, api, _
+from openerp.exceptions import ValidationError
 from openerp.osv import osv
 from openerp.tools import safe_eval
 from datetime import datetime
@@ -94,7 +95,7 @@ class PartnerPayment(models.Model):
     payment_method = fields.Selection([('cheque', 'Cheque'), ('cash', 'Cash'), ('UPI', 'UPI')],
                                       string="Mode of Payment", default='cash')
     cheque_no = fields.Char()
-    cheque_date = fields.Date()
+    cheque_date = fields.Date(default=date.today())
     deposit_date = fields.Date()
     clearence_date = fields.Date()
     remarks = fields.Text()
@@ -124,6 +125,14 @@ class PartnerPayment(models.Model):
             if self.advance_amount and self.payment_method != 'cheque':
                 self.payment_amount+=self.advance_amount
         self.calc_amount = self.payment_amount
+
+    @api.constrains('deposit_date', 'clearence_date')
+    def _check_deposit_and_clearence_dates(self):
+        for record in self:
+            if record.deposit_date and record.deposit_date < record.cheque_date:
+                raise ValidationError("The deposit date cannot be earlier than the cheque date.")
+            if record.clearence_date and record.clearence_date < record.deposit_date:
+                raise ValidationError("The clearence date cannot be earlier than the deposit date.")
 
 
     # @api.onchange('chekbox')
