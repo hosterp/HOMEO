@@ -14,7 +14,7 @@
                             <field name="potency"/>
                         </group>
                         <group>
-                            <field name="to_date"/>
+                            <field name="to_date" required="1"/>
                             <field name="company"/>
                             <field name="group"/>
                             <field name="packing"/>
