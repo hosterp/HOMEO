@@ -624,72 +624,10 @@ class PartnerPayment(models.Model):
 
     @api.multi
     def action_payment_all(self, context=None):
-        payment_amount = self.payment_amount
-        for record in self.invoice_ids:
-            if record.select == True:
-                amount = 0
-                invoice = record.invoice_id
-                if payment_amount > 0:
-                    if invoice.residual < payment_amount:
-                        amount = invoice.residual
-                    else:
-                        amount = payment_amount
-                    self.voucher_relation_id.amount = self.payment_amount
-                    if amount == invoice.residual:
-                        invoice.state = 'paid'
-                        invoice.paid_bool = True
-                    else:
-
-                        move = self.env['account.move']
-                        move_line = self.env['account.move.line']
-
-                        values5 = {
-                            'journal_id': 9,
-                            'date': self.date,
-                            'tds_id': invoice.id
-                            # 'period_id': self.period_id.id,623393
-                        }
-                        move_id = move.create(values5)
-                        balance_amount = invoice.residual - payment_amount
-                        balance_amount += invoice.amount_tax
-                        values4 = {
-                            'account_id': 25,
-                            'name': 'payment for invoice No ' + str(invoice.number),
-                            'debit': 0.0,
-                            'credit': balance_amount,
-                            'move_id': move_id.id,
-                            'cheque_no': self.cheque_no,
-                            'invoice_no_id2': invoice.id,
-                        }
-                        line_id1 = move_line.create(values4)
-
-                        values6 = {
-                            'account_id': invoice.account_id.id,
-                            'name': 'Payment For invoice No ' + str(invoice.number),
-                            'debit': balance_amount,
-                            'credit': 0.0,
-                            'move_id': move_id.id,
-                            'cheque_no': self.cheque_no,
-                            # 'invoice_no_id2': line.bill_no.id,
-                        }
-                        line_id2 = move_line.create(values6)
-
-                        invoice.move_id = move_id.id
-                        invoice.move_lines = move_id.line_id.ids
-                        move_id.button_validate()
-                        move_id.post()
-                        name = move_id.name
-                        self.voucher_relation_id.write({
-                            'move_id': move_id.id,
-                            'state': 'posted',
-                            'number': name,
-                        })
-                    payment_amount = payment_amount - amount
-                    # self.state = 'paid'
-        if payment_amount != 0:
-            print(payment_amount, 'after first Payment')
+        if self.payment_amount and self.invoice_ids:
+            payment_amount = self.payment_amount
             for record in self.invoice_ids:
-                if record.select != True:
+                if record.select == True:
                     amount = 0
                     invoice = record.invoice_id
                     if payment_amount > 0:
@@ -749,35 +687,100 @@ class PartnerPayment(models.Model):
                             })
                         payment_amount = payment_amount - amount
                         # self.state = 'paid'
-        if self.payment_method != "cheque":
-            self.advance_amount=payment_amount
-        else:
-            self.cheque_balance = payment_amount
-        payment_records = self.env['account.invoice'].search(
-            [('partner_id', '=', self.partner_id.id), ('state', '!=', 'draft')])
-        print("records invoice", payment_records)
-        record_count = len(payment_records)
-        count = 0
-        if payment_records:
-            for rec in payment_records:
-                if rec.state == 'paid':
-                    count = count + 1
-        if count == record_count:
-            self.state = 'paid'
-            print("all payments are done")
-            customer_details = self.env['res.partner'].browse(self.partner_id.id)
-            if customer_details:
-                date_today = self.date
-                x = datetime.strptime(date_today, '%Y-%m-%d')
-                next_date = x + relativedelta(days=customer_details.days_credit_limit)
-                cal_date = datetime.strftime(next_date, '%Y-%m-%d')
-                customer_details.write({'credit_end_date': cal_date})
+            if payment_amount != 0:
+                print(payment_amount, 'after first Payment')
+                for record in self.invoice_ids:
+                    if record.select != True:
+                        amount = 0
+                        invoice = record.invoice_id
+                        if payment_amount > 0:
+                            if invoice.residual < payment_amount:
+                                amount = invoice.residual
+                            else:
+                                amount = payment_amount
+                            self.voucher_relation_id.amount = self.payment_amount
+                            if amount == invoice.residual:
+                                invoice.state = 'paid'
+                                invoice.paid_bool = True
+                            else:
 
-        else:
-            print("there are payments to be completed")
-            self.state = 'paid'
+                                move = self.env['account.move']
+                                move_line = self.env['account.move.line']
 
-        return True
+                                values5 = {
+                                    'journal_id': 9,
+                                    'date': self.date,
+                                    'tds_id': invoice.id
+                                    # 'period_id': self.period_id.id,623393
+                                }
+                                move_id = move.create(values5)
+                                balance_amount = invoice.residual - payment_amount
+                                balance_amount += invoice.amount_tax
+                                values4 = {
+                                    'account_id': 25,
+                                    'name': 'payment for invoice No ' + str(invoice.number),
+                                    'debit': 0.0,
+                                    'credit': balance_amount,
+                                    'move_id': move_id.id,
+                                    'cheque_no': self.cheque_no,
+                                    'invoice_no_id2': invoice.id,
+                                }
+                                line_id1 = move_line.create(values4)
+
+                                values6 = {
+                                    'account_id': invoice.account_id.id,
+                                    'name': 'Payment For invoice No ' + str(invoice.number),
+                                    'debit': balance_amount,
+                                    'credit': 0.0,
+                                    'move_id': move_id.id,
+                                    'cheque_no': self.cheque_no,
+                                    # 'invoice_no_id2': line.bill_no.id,
+                                }
+                                line_id2 = move_line.create(values6)
+
+                                invoice.move_id = move_id.id
+                                invoice.move_lines = move_id.line_id.ids
+                                move_id.button_validate()
+                                move_id.post()
+                                name = move_id.name
+                                self.voucher_relation_id.write({
+                                    'move_id': move_id.id,
+                                    'state': 'posted',
+                                    'number': name,
+                                })
+                            payment_amount = payment_amount - amount
+                            # self.state = 'paid'
+            if self.payment_method != "cheque":
+                self.advance_amount=payment_amount
+            else:
+                self.cheque_balance = payment_amount
+            payment_records = self.env['account.invoice'].search(
+                [('partner_id', '=', self.partner_id.id), ('state', '!=', 'draft')])
+            print("records invoice", payment_records)
+            record_count = len(payment_records)
+            count = 0
+            if payment_records:
+                for rec in payment_records:
+                    if rec.state == 'paid':
+                        count = count + 1
+            if count == record_count:
+                self.state = 'paid'
+                print("all payments are done")
+                customer_details = self.env['res.partner'].browse(self.partner_id.id)
+                if customer_details:
+                    date_today = self.date
+                    x = datetime.strptime(date_today, '%Y-%m-%d')
+                    next_date = x + relativedelta(days=customer_details.days_credit_limit)
+                    cal_date = datetime.strftime(next_date, '%Y-%m-%d')
+                    customer_details.write({'credit_end_date': cal_date})
+
+            else:
+                print("there are payments to be completed")
+                self.state = 'paid'
+
+            return True
+        else:
+            raise ValidationError("Invoice-line or the Payment-Amount is empty!! ")
 
     @api.multi
     def open_tree_view_history(self, context=None):
