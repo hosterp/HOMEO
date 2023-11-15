@@ -44,9 +44,9 @@
 		<menuitem id="menu_med_main_stock_report"
                   name="Stock Report"
                   sequence="13"/>
-		<menuitem id="rack_information_list_report_main"  name="Stock Report" sequence="1" parent="menu_med_main_stock_report"/>
-		<menuitem id="rack_information_list_report" action="action_rack_stock_report" name="Rack Stock Details" sequence="1" parent="rack_information_list_report_main"/>
-		<menuitem id="medicine_information_list_report" action="action_medicine_stock_report" name="Medicine Stock Details" sequence="2" parent="rack_information_list_report_main"/>
+<!--		<menuitem id="rack_information_list_report_main"  name="Stock Report" sequence="1" parent="menu_med_main_stock_report"/>-->
+<!--		<menuitem id="rack_information_list_report" action="action_rack_stock_report" name="Rack Stock Details" sequence="1" parent="rack_information_list_report_main"/>-->
+<!--		<menuitem id="medicine_information_list_report" action="action_medicine_stock_report" name="Medicine Stock Details" sequence="2" parent="rack_information_list_report_main"/>-->
 		<menuitem id="menu_his_0" name="View History" sequence="1" parent="menu_med_main_history"/>
 		<menuitem action="action_customer_invoice_his" id="menu_his_1"
                       name="Customer Invoice"
