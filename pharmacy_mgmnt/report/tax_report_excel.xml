@@ -165,7 +165,7 @@
                                     </t>
                                     <t t-if="o.b2c and not o.b2b">
                                         <td style='font-size:15px'>
-                                            <span t-esc="line['date']"/>
+                                            <span t-esc="line['date'].strftime('%d-%m-%Y')"/>
                                         </td>
                                     </t>
 
