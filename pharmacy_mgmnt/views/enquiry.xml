@@ -21,7 +21,7 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="name"/>
+                                <field name="name" required="1"/>
                                 <field name="phone_no"/>
                             </group>
                             <group>
@@ -31,7 +31,7 @@
                         <field name="medicine_ids" string="Medicine">
                             <tree editable="bottom">
                                 <field name="medicine_line_id" invisible="1"/>
-                                <field name="medicine_id"/>
+                                <field name="medicine_id" required="1"/>
                                 <field name="group_id"/>
                                 <field name="potency_id"/>
                                 <field name="packing_id"/>
