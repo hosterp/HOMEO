@@ -9,3 +9,4 @@ from . import res_partner
 from . import product
 from . import cheque
 from . import stockpicking
+from . import enquiry
