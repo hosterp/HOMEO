@@ -65,7 +65,9 @@
                                         <b><span t-esc="invoice.number2"/></b>
                                     </td>
                                     <td colspan='1' style='font-size:15px'>
-                                        <b><span t-esc="invoice.date_invoice"/></b>
+                                        <b>
+                                            <span t-esc="invoice.date_invoice[8:10] + '-' + invoice.date_invoice[5:7] + '-' + invoice.date_invoice[0:4]"/>
+                                        </b>
                                     </td>
                                     <td style='font-size:15px'>
                                         <!--                                            <span t-esc="invoice.amount_tax"/>-->
