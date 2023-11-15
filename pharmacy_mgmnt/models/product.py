@@ -24,6 +24,7 @@ class Medicines(models.Model):
     batch = fields.Char("Batch")
     tax_ids = fields.Many2many('account.tax', 'name', 'Tax')
     hsn_code = fields.Char('HSN', )
+    made_in = fields.Selection([('indian', 'Indian'), ('german', 'German')], default='indian', string="Made In")
     # tax_combo = fields.Many2one('tax.combo', 'Tax')
 
     @api.constrains('name')
