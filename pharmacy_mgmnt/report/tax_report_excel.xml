@@ -132,6 +132,11 @@
                                         <b>BILL AMOUNT</b>
                                     </td>
                                 </t>
+                                <t t-if="o.b2c">
+                                    <td style='font-size:15px'>
+                                        <b>BILL AMOUNT</b>
+                                    </td>
+                                </t>
 
                                 <!--                                    <t t-if="o.b2c">-->
                                 <!--                                        <td style='font-size:15px'>-->
@@ -151,6 +156,8 @@
                             <t t-set="total_amount_sgst_18" t-value="0"/>
                             <t t-set="total_amount_wo_tax" t-value="0"/>
                             <t t-set="amount_total" t-value="0"/>
+                            <t t-set="bill_amount_total" t-value="0"/>
+                            <t t-set="bill_total" t-value="0"/>
 
                             <t t-foreach="o.get_b2b_tax_invoices()" t-as="line">
                                 <tr>
@@ -233,7 +240,15 @@
                                         </td>
 
                                     </t>
+
+                                    <t t-set="bill_amount_total" t-value="line['tax_5_sum']+line['total_amount_cgst_5']+line['total_amount_sgst_5']+line['total_amount_sgst_12']+line['tax_12_sum']+line['total_amount_cgst_12']
+                                                +line['tax_18_sum']+line['total_amount_cgst_18']+line['total_amount_sgst_18']"/>
+                                     <t t-set="bill_total" t-value="bill_total+bill_amount_total"/>
                                     <t t-if="o.b2c">
+                                        <td style='font-size:15px'>
+                                            <span t-esc="bill_amount_total"/>
+                                        </td>
+
                                         <!--                                            <td style='font-size:15px'>-->
                                         <!--                                                <span t-esc="line['invoice'].amount_total - line['invoice'].amount_tax"/>-->
                                         <!--                                            </td>-->
@@ -294,6 +309,11 @@
                                             <strong t-esc="round(amount_total)"/>
                                         </td>
                                     </t>
+                                <t t-if="o.b2c">
+                                    <td style='font-size:15px'>
+                                        <strong t-esc="round(bill_total)"/>
+                                    </td>
+                                </t>
 
                             </tr>
                         </table>
