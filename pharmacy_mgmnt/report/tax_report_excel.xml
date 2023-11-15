@@ -167,7 +167,7 @@
                                     <t t-set="sl_no" t-value="sl_no+1"/>
                                     <t t-if="o.b2b or not o.b2c">
                                         <td style='font-size:15px'>
-                                            <span t-esc="line['invoice'].date_invoice"/>
+                                            <span t-esc="line['invoice'].date_invoice[8:10]+ '-' +line['invoice'].date_invoice[5:7]+ '-' +line['invoice'].date_invoice[0:4]"/>
                                         </td>
                                     </t>
                                     <t t-if="o.b2c and not o.b2b">
@@ -191,44 +191,44 @@
                                         </td>
                                     </t>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['tax_5_sum']"/>
+                                        <span t-esc="round(line['tax_5_sum'],2)"/>
                                     </td>
                                     <t t-set="tax_total_5" t-value="tax_total_5+line['tax_5_sum']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['total_amount_cgst_5']"/>
+                                        <span t-esc="round(line['total_amount_cgst_5'],2)"/>
                                     </td>
                                     <t t-set="total_amount_cgst_5"
                                        t-value="total_amount_cgst_5+line['total_amount_cgst_5']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['total_amount_sgst_5']"/>
+                                        <span t-esc="round(line['total_amount_sgst_5'],2)"/>
                                     </td>
                                     <t t-set="total_amount_sgst_5"
                                        t-value="total_amount_sgst_5+line['total_amount_sgst_5']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['tax_12_sum']"/>
+                                        <span t-esc="round(line['tax_12_sum'],2)"/>
                                     </td>
                                     <t t-set="tax_total_12" t-value="tax_total_12+line['tax_12_sum']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['total_amount_cgst_12']"/>
+                                        <span t-esc="round(line['total_amount_cgst_12'],2)"/>
                                     </td>
                                     <t t-set="total_amount_cgst_12"
                                        t-value="total_amount_cgst_12+line['total_amount_cgst_12']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['total_amount_sgst_12']"/>
+                                        <span t-esc="round(line['total_amount_sgst_12'],2)"/>
                                     </td>
                                     <t t-set="total_amount_sgst_12"
                                        t-value="total_amount_sgst_12+line['total_amount_sgst_12']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['tax_18_sum']"/>
+                                        <span t-esc="round(line['tax_18_sum'],2)"/>
                                     </td>
                                     <t t-set="tax_total_18" t-value="tax_total_18+line['tax_18_sum']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['total_amount_cgst_18']"/>
+                                        <span t-esc="round(line['total_amount_cgst_18'],2)"/>
                                     </td>
                                     <t t-set="total_amount_cgst_18"
                                        t-value="total_amount_cgst_18+line['total_amount_cgst_18']"/>
                                     <td style='font-size:15px'>
-                                        <span t-esc="line['total_amount_sgst_18']"/>
+                                        <span t-esc="round(line['total_amount_sgst_18'],2)"/>
                                     </td>
                                     <t t-set="total_amount_sgst_18"
                                        t-value="total_amount_sgst_18+line['total_amount_sgst_18']"/>
@@ -236,7 +236,7 @@
                                         <t t-set="amount_total"
                                            t-value="amount_total+line['invoice'].amount_total"/>
                                         <td style='font-size:15px'>
-                                            <span t-esc="line['invoice'].amount_total"/>
+                                            <span t-esc="round(line['invoice'].amount_total, 2)"/>
                                         </td>
 
                                     </t>
@@ -246,7 +246,7 @@
                                      <t t-set="bill_total" t-value="bill_total+bill_amount_total"/>
                                     <t t-if="o.b2c">
                                         <td style='font-size:15px'>
-                                            <span t-esc="bill_amount_total"/>
+                                            <span t-esc="round(bill_amount_total,2)"/>
                                         </td>
 
                                         <!--                                            <td style='font-size:15px'>-->
@@ -278,42 +278,42 @@
                                     <td/>
                                 </t>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(tax_total_5)"/>
+                                    <strong t-esc="round(tax_total_5,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(total_amount_cgst_5)"/>
+                                    <strong t-esc="round(total_amount_cgst_5,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(total_amount_sgst_5)"/>
+                                    <strong t-esc="round(total_amount_sgst_5,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(tax_total_12)"/>
+                                    <strong t-esc="round(tax_total_12,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(total_amount_cgst_12)"/>
+                                    <strong t-esc="round(total_amount_cgst_12,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(total_amount_sgst_12)"/>
+                                    <strong t-esc="round(total_amount_sgst_12,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(tax_total_18)"/>
+                                    <strong t-esc="round(tax_total_18,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(total_amount_cgst_18)"/>
+                                    <strong t-esc="round(total_amount_cgst_18,2)"/>
                                 </td>
                                 <td style='font-size:15px'>
-                                    <strong t-esc="round(total_amount_sgst_18)"/>
+                                    <strong t-esc="round(total_amount_sgst_18,2)"/>
                                 </td>
                                     <t t-if="o.b2b">
                                         <td style='font-size:15px'>
-                                            <strong t-esc="round(amount_total)"/>
+                                            <strong t-esc="round(amount_total,2)"/>
                                         </td>
                                     </t>
                                 <t t-if="o.b2c">
-                                    <td style='font-size:15px'>
-                                        <strong t-esc="round(bill_total)"/>
-                                    </td>
-                                </t>
+                                        <td style='font-size:15px'>
+                                            <strong t-esc="round(bill_total,2)"/>
+                                        </td>
+                                    </t>
 
                             </tr>
                         </table>
