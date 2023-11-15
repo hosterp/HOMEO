@@ -167,7 +167,7 @@
                                     <t t-set="sl_no" t-value="sl_no+1"/>
                                     <t t-if="o.b2b or not o.b2c">
                                         <td style='font-size:15px'>
-                                            <span t-esc="line['invoice'].date_invoice"/>
+                                            <span t-esc="line['invoice'].date_invoice[8:10]+ '-' +line['invoice'].date_invoice[5:7]+ '-' +line['invoice'].date_invoice[0:4]"/>
                                         </td>
                                     </t>
                                     <t t-if="o.b2c and not o.b2b">
