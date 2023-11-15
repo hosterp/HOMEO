@@ -82,6 +82,7 @@ class MedicineTypes(models.Model):
     _rec_name = 'medicine_type'
 
     medicine_type = fields.Char(string="Position/Rack")
+    rack_space = fields.Integer(string="Rack Space")
 
     # _sql_constraints = [
     #     ('medicine_type_name_uniq', 'unique(medicine_type)', 'The name of Position/Rack must be unique !'),

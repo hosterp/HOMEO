@@ -4,7 +4,8 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Medicine Stock Report" colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
+                <tree string="Medicine Stock Report"
+                      colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <field name="medicine_1"/>
                     <field name="rack"/>
                     <field name="potency"/>
@@ -17,7 +18,7 @@
                     <field name="batch_2"/>
                     <field name="manf_date"/>
                     <field name="expiry_date"/>
-                     <field name="expiry_alert_date" invisible="1"/>
+                    <field name="expiry_alert_date" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -73,11 +74,12 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Stock Entry" editable="bottom"  colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
+                <tree string="Stock Entry" editable="bottom"
+                      colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <button name="call_function" string="Add" type="object" class="css_wizard_button oe_highlight"
                             help="calls python function" id="focushere"/>
                     <field name="s_no" invisible="1"/>
-                     <field name="expiry_alert_date" invisible="1"/>
+                    <field name="expiry_alert_date" invisible="1"/>
                     <field name="medicine_1"/>
                     <field name="potency"/>
                     <field name="medicine_name_packing"/>
@@ -109,11 +111,12 @@
             <field name="arch" type="xml">
                 <!--                <div id="my_div" class="my_tclass_div">-->
 
-                <tree string="Stock Entry" editable="bottom" id="stock_wizard_id" class="tree_class" name="tree_name" colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &lt;= current_date ">
+                <tree string="Stock Entry" editable="bottom" id="stock_wizard_id" class="tree_class" name="tree_name"
+                      colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &lt;= current_date ">
                     <button name="call_function" string="Add" type="object" class="css_wizard_button oe_highlight"
                             help="calls python function" id="focushere"/>
                     <field name="s_no" invisible="1"/>
-                      <field name="expiry_alert_date" invisible="1"/>
+                    <field name="expiry_alert_date" invisible="1"/>
                     <field name="medicine_1"/>
                     <field name="potency"/>
                     <field name="medicine_name_packing"/>
@@ -537,26 +540,26 @@
                   sequence="1"/>
         <menuitem id="menu_med_main_payments"
                   name="Payments"
-                  sequence="5" />
-         <menuitem id="menu_med_payments_child"
+                  sequence="5"/>
+        <menuitem id="menu_med_payments_child"
                   name="Cheque Details"
                   sequence="10" parent="menu_med_main_payments"/>
         <menuitem action="action_cheque_detail_entry" id="menu_med_payments_child_1"
                   name="Cheque Detail"
                   sequence="10" parent="menu_med_payments_child"/>
 
-         <menuitem id="menu_med_main_payments_menu"
+        <menuitem id="menu_med_main_payments_menu"
                   name="Customer Payments"
                   sequence="1" parent="menu_med_main_payments"/>
-        <menuitem id="menu_med_main_payments_menu_child1"  action="action_payment"
+        <menuitem id="menu_med_main_payments_menu_child1" action="action_payment"
                   name="Customer Payments"
                   sequence="1" parent="menu_med_main_payments_menu"/>
-<!--        <menuitem id="menu_med_main_payments_menu_2"-->
-<!--                  name="Due Payments"-->
-<!--                  sequence="2" parent="menu_med_main_payments"/>-->
-<!--        <menuitem id="menu_med_main_payments_menu2_child1"   action="action_payment"-->
-<!--                  name="Due Payments"-->
-<!--                  sequence="1" parent="menu_med_main_payments_menu_2"/>-->
+        <!--        <menuitem id="menu_med_main_payments_menu_2"-->
+        <!--                  name="Due Payments"-->
+        <!--                  sequence="2" parent="menu_med_main_payments"/>-->
+        <!--        <menuitem id="menu_med_main_payments_menu2_child1"   action="action_payment"-->
+        <!--                  name="Due Payments"-->
+        <!--                  sequence="1" parent="menu_med_main_payments_menu_2"/>-->
 
 
         <menuitem id="menu_med_main_supplier_invoice_1"
@@ -590,12 +593,37 @@
                   name="Stock Entry"
                   sequence="9"/>
         <menuitem id="r2"
-                  name="Products Stock Entry" parent="r1"
+                  name="Products Stock Entry"
+                  parent="r1"
                   sequence="1"/>
 
-        <menuitem action="action_create_stock_return_1" id="r3"
-                  name="Products" parent="r2"
+        <menuitem action="action_create_stock_return_1"
+                  id="r3"
+                  name="Stock"
+                  parent="r2"
                   sequence="4"/>
+
+        <menuitem action="action_rack_stock_transfer"
+                  id="menu_stock_change_rack_under_stock_menu"
+                  name="Full Stock Transfer"
+                  sequence="7"
+                  parent="r2"/>
+        <menuitem action="action_rack_stock_transfer_partial"
+                  id="menu_stock_change_rack_partial_under_stock_menu"
+                  name="Partial Stock Transfer"
+                  sequence="8"
+                  parent="r2"/>
+
+		<menuitem id="medicine_information_list_report"
+                  action="action_medicine_stock_report"
+                  name="Medicine Stock Details"
+                  sequence="9"
+                  parent="r2"/>
+         <menuitem id="rack_information_list_report"
+                  action="action_rack_stock_report"
+                  name="Rack Stock Details"
+                  sequence="10"
+                  parent="r2"/>
 
 
         <menuitem id="menu_med_features_1"
@@ -632,7 +660,7 @@
             <field name="active">TRUE</field>
             <field name="prefix">CHQ</field>
             <field name="padding">6</field>
-<!--            <field name="number_next">1</field>-->
+            <!--            <field name="number_next">1</field>-->
             <field name="number_increment">1</field>
         </record>
 
@@ -659,7 +687,7 @@
             <field name="name">Payment</field>
             <field name="code">partner.payment</field>
             <field name="active">TRUE</field>
-<!--            <field name="prefix"></field>-->
+            <!--            <field name="prefix"></field>-->
             <field name="padding">1</field>
             <field name="number_increment">1</field>
         </record>
@@ -1087,12 +1115,12 @@
             <field name="model">partner.payment</field>
             <field name="arch" type="xml">
                 <form string="Payment Details">
-                        <style>
+                    <style>
 
-                            td.oe_list_record_delete {
-                                display: none;
-                            }
-                        </style>
+                        td.oe_list_record_delete {
+                        display: none;
+                        }
+                    </style>
                     <header>
                         <button name="action_payment_all" string="Pay" type="object" class="oe_highlight"
                                 states="draft"/>
@@ -1123,8 +1151,11 @@
                             <field name="deposit_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="clearence_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="remarks"/>
-                            <button name="cheque_bounce_button" type="object" string="Cheque Bounce" class="oe_highlight" attrs="{'invisible': ['|',('payment_method','!=','cheque'),('click', '=', True)]}"/>
-                            <button name="cheque_paid_button" type="object"  string="Cheque Paid" class="oe_highlight" attrs="{'invisible': ['|','|',('payment_method','!=','cheque'),('state','=','bounced'),('click','=',True)]}"/>
+                            <button name="cheque_bounce_button" type="object" string="Cheque Bounce"
+                                    class="oe_highlight"
+                                    attrs="{'invisible': ['|',('payment_method','!=','cheque'),('click', '=', True)]}"/>
+                            <button name="cheque_paid_button" type="object" string="Cheque Paid" class="oe_highlight"
+                                    attrs="{'invisible': ['|','|',('payment_method','!=','cheque'),('state','=','bounced'),('click','=',True)]}"/>
                             <field name="click" invisible="1"/>
 
                         </group>
@@ -1134,7 +1165,7 @@
                             <field name="payment_method" style="width:40%;"/>
                             <field name="payment_amount" string="Payment Amount"/>
                             <field name="advance_amount" string="Advance Amount"/>
-<!--                            <field name="chekbox" string="Use Advance Amount?" style="width:40%;"/>-->
+                            <!--                            <field name="chekbox" string="Use Advance Amount?" style="width:40%;"/>-->
                             <field name="cheque_no" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="bank" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
                             <field name="branch" attrs="{'invisible': [('payment_method','!=','cheque')]}"/>
