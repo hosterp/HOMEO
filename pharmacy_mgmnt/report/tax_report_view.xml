@@ -45,11 +45,11 @@
                 parent="pharmacy_mgmnt.menu_reports_0"/>
 
 
-        <menuitem
-                id="tax_report_menu_id"
-                name="Tax Report"
-                parent="menu_tax_reports"
-                action="action_tax_report"/>
+<!--        <menuitem-->
+<!--                id="tax_report_menu_id"-->
+<!--                name="Tax Report"-->
+<!--                parent="menu_tax_reports"-->
+<!--                action="action_tax_report"/>-->
 
 
         <report
