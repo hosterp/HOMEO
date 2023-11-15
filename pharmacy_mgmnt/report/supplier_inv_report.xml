@@ -84,16 +84,16 @@ th, td {
 															<t t-set="sl_no" t-value="sl_no+1" /></center>
 													</td>
 													<td>
-														<center><span t-esc="line['date']"/></center>
+														<center><span t-esc="line['date'][8:10] + '-' + line['date'][5:7] + '-' + line['date'][0:4]" /></center>
 													</td>
 													<td>
 														<center><span t-esc="line['medicine']"/></center>
 													</td>
 													<td>
-														<center><span t-esc="line['exp']"/></center>
+														<center><span t-esc="line['exp'][8:10] + '-' + line['exp'][5:7] + '-' + line['exp'][0:4]" /></center>
 													</td>
 													<td>
-														<center><span t-esc="line['mfd']"/></center>
+														<center><span t-esc="line['mfd'][8:10] + '-' + line['mfd'][5:7] + '-' + line['mfd'][0:4]" /></center>
 													</td>
 													<td>
 														<center><span t-esc="line['amount']"/></center>

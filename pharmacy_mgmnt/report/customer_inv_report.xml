@@ -199,7 +199,7 @@
                                                     </td>
                                                     <td>
                                                         <center>
-                                                            <span t-esc="line['date']"/>
+                                                             <span t-esc="line['date'][8:10] + '-' + line['date'][5:7] + '-' + line['date'][0:4]" />
                                                         </center>
                                                     </td>
                                                     <td>
