@@ -17,7 +17,24 @@ class MedicineEnquiry(models.Model):
             self.address = self.name.address_new
             self.phone_no = self.name.mobile
 
-
+    @api.multi
+    def print_enquiry_report(self):
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'medicine.enquiry'), ('report_name', '=', 'pharmacy_mgmnt.report_enquiry_template',)])
+        data.download_filename = 'Enquiry report.pdf'
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'pharmacy_mgmnt.report_enquiry_template',
+            'file': 'filename',
+            'datas': datas,
+            'report_type': 'qweb-pdf',
+        }
 class MedicineEnquiryLine(models.Model):
     _name = "medicine.enquiry.line"
     _description = 'Medicine Enquiry Line'

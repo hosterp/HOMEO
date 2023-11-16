@@ -17,6 +17,10 @@
             <field name="model">medicine.enquiry</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
+                <header>
+                    <button name="print_enquiry_report" string="Print Report" type="object"
+                            class="oe_highlight"/>
+                </header>
                 <form string="medicines">
                     <sheet>
                         <group>
