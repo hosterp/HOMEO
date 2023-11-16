@@ -365,6 +365,7 @@ class TaxReportWizard(models.TransientModel):
                 'total_amount_cgst_5':0,
                 'total_amount_cgst_12':0,
                 'total_amount_cgst_18':0,
+                'invoice_numbers': [],
             })
 
             for invoice in invoices:
@@ -380,6 +381,7 @@ class TaxReportWizard(models.TransientModel):
                 tax_18_sum = sum(tax_18.mapped('amt_w_tax'))
 
                 # Accumulate values in the dictionary
+                merged_data[date]['invoice_numbers'].append(invoice.number2)
                 merged_data[date]['tax_5_sum'] += tax_5_sum
                 merged_data[date]['tax_12_sum'] += tax_12_sum
                 merged_data[date]['tax_18_sum'] += tax_18_sum
@@ -406,7 +408,15 @@ class TaxReportWizard(models.TransientModel):
                     'total_amount_cgst_5':values['total_amount_cgst_5'],
                     'total_amount_cgst_12':values['total_amount_cgst_12'],
                     'total_amount_cgst_18':values['total_amount_cgst_18'],
+                    'first_invoice_number': values['invoice_numbers'][0] if values['invoice_numbers'] else None,
+                    'last_invoice_number': values['invoice_numbers'][-1] if values['invoice_numbers'] else None,
                 })
+                for entry in data_list:
+                    date = entry['date']
+                    invoice_numbers = merged_data[date]['invoice_numbers']
+                    entry['invoice_numbers'] = invoice_numbers
+
+                print(data_list,'data')
             return data_list
 
         elif self.b2b:
