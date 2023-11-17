@@ -10,6 +10,8 @@ class MedicineEnquiry(models.Model):
     phone_no = fields.Char(string="Phone Number")
     address = fields.Char(string="Address")
     medicine_ids = fields.One2many("medicine.enquiry.line", "medicine_line_id")
+    state = fields.Selection([('draft', 'Draft'), ('order', 'Order'), ('purchased', 'Purchased')]
+                             , required=True, default='draft')
 
     @api.onchange("name")
     def onchange_name(self):
@@ -19,6 +21,9 @@ class MedicineEnquiry(models.Model):
 
     @api.multi
     def print_enquiry_report(self):
+        if self.state=='draft':
+            self.state='order'
+
         datas = {
             'ids': self._ids,
             'model': self._name,
@@ -35,6 +40,14 @@ class MedicineEnquiry(models.Model):
             'datas': datas,
             'report_type': 'qweb-pdf',
         }
+    @api.multi
+    def purchase_button(self):
+        if self.state=='order':
+            self.state='purchased'
+
+
+
+
 class MedicineEnquiryLine(models.Model):
     _name = "medicine.enquiry.line"
     _description = 'Medicine Enquiry Line'

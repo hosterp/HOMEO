@@ -20,6 +20,9 @@
                 <header>
                     <button name="print_enquiry_report" string="Print Report" type="object"
                             class="oe_highlight"/>
+                    <button name="purchase_button" string="Purchased" type="object"
+                            class="oe_highlight"/>
+                     <field name="state" nolabel="1" widget="statusbar" statusbar_visible="draft,order,purchased"/>
                 </header>
                 <form string="medicines">
                     <sheet>
