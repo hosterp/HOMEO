@@ -46,3 +46,7 @@ max-width: 182px
 .field_text{
     height: 28px;
 }
+.openerp .oe_application .oe_breadcrumb_title > * {
+         font-size: 14px;
+
+}

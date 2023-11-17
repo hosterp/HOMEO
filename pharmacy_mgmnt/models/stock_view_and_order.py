@@ -4,7 +4,9 @@ from openerp.osv import osv
 class StockViewOrder(models.TransientModel):
     _name = "stock.view.order"
     _description = 'Stock View'
+    _rec_name = 'sl_no'
 
+    sl_no=fields.Char(string='sl no')
     name = fields.Many2one("res.partner", string="Supplier", domain="[('supplier', '=', True)]")
     med_category = fields.Selection([('indian', 'Indian'), ('german', 'German')],string="Made In")
     group_id = fields.Many2one("product.medicine.group", string="Group")
@@ -17,6 +19,14 @@ class StockViewOrder(models.TransientModel):
     stock_view_ids = fields.One2many("stock.view.order.lines", "stock_view_line_id")
     order_ids = fields.One2many("stock.order.lines", "stock_order_line_id")
 
+    @api.model
+    def create(self, vals):
+        if vals.get('sl_no', 'New') == 'New':
+            vals['sl_no'] = self.env['ir.sequence'].next_by_code(
+                'stock.order') or 'New'
+            print(vals,'valsssssssssssssssssssssssssss')
+        result = super( StockViewOrder, self).create(vals)
+        return result
     @api.multi
     def print_stock_order_report(self):
         datas = {

@@ -1,5 +1,18 @@
 <openerp>
     <data>
+          <record id="sequence_type_stock_order_type_id" model="ir.sequence.type">
+            <field name="name">Stock Order Sequence Type</field>
+            <field name="code">stock.order</field>
+        </record>
+        <record id="sequence_stock_order_id" model="ir.sequence">
+            <field name="name">Stock Order Sequence</field>
+            <field name="code">stock.order</field>
+            <field name="active">TRUE</field>
+            <field name="prefix"></field>
+<!--            <field name="suffix">/%(year)s</field>-->
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+        </record>
         <!-- View for the Form -->
         <record model="ir.ui.view" id="view_stock_view_order_form">
             <field name="name">Stock View Form</field>
@@ -8,11 +21,13 @@
             <field name="arch" type="xml">
                 <form string="Medicines">
                     <header>
+<!--                        <field name="sl_no" readonly="1"/>-->
                         <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
                         <button name="print_stock_order_report" string="Print order" type="object" class="oe_highlight"/>
                     </header>
                     <group>
                         <group>
+
                             <field name="name" required="0"/>
                             <field name="company_id"/>
                             <field name="med_category" string="Category"/>
