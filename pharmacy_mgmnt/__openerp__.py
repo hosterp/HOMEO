@@ -29,6 +29,7 @@
         'views/stockpicking.xml',
         'views/master_menu.xml',
         'views/enquiry.xml',
+        'views/stock_view_and_order.xml',
         'expiry_manage/expiry_manage_view.xml',
         'report/customer_inv_report.xml',
         'report/supplier_inv_report.xml',

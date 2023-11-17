@@ -251,6 +251,7 @@ class NewStockEntry(models.Model):
     _rec_name = 's_no'
     _order = 'id desc'
 
+    supplier_id = fields.Many2one("res.partner", domain="[('supplier', '=', True)]")
     expiry_date = fields.Date(string='Expiry Date')
     manf_date = fields.Date(string='Manufacturing Date')
     alert_date = fields.Date(string='Alert Date')
@@ -278,6 +279,7 @@ class NewStockEntry(models.Model):
     custom_qty = fields.Integer()
     invoice_line_id = fields.Many2one('account.invoice.line')
     quantity_selected = fields.Float(string="Item Qty")
+    med_category = fields.Selection([('indian', 'Indian'), ('german', 'German')], default='indian', string="Made In")
 
     @api.model
     def create(self, vals):

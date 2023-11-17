@@ -4,6 +4,9 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
+<!--                <header>-->
+<!--                    <field name="med_category"/>-->
+<!--                </header>-->
                 <tree string="Medicine Stock Report"
                       colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <field name="medicine_1"/>
@@ -602,6 +605,11 @@
                   name="Stock"
                   parent="r2"
                   sequence="4"/>
+        <menuitem id="menu_view_order"
+                  action="action_stock_view_order"
+                  name="Create Order"
+                  parent="r2"
+                  sequence="5"/>
 
         <menuitem action="action_rack_stock_transfer"
                   id="menu_stock_change_rack_under_stock_menu"

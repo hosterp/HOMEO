@@ -65,6 +65,7 @@ class AccountInvoiceLine(models.Model):
         result = super(AccountInvoiceLine, self).create(vals)
         if result.invoice_id.type == 'in_invoice' and result.quantity != 0:
             vals = {
+                'supplier_id': result.invoice_id.partner_id.id,
                 'expiry_date': result.expiry_date,
                 'manf_date': result.manf_date,
                 'company': result.product_of.id,
