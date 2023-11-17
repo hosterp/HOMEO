@@ -10,12 +10,42 @@ class MedicineEnquiry(models.Model):
     phone_no = fields.Char(string="Phone Number")
     address = fields.Char(string="Address")
     medicine_ids = fields.One2many("medicine.enquiry.line", "medicine_line_id")
+    state = fields.Selection([('draft', 'Draft'), ('order', 'Order'), ('purchased', 'Purchased')]
+                             , required=True, default='draft')
 
     @api.onchange("name")
     def onchange_name(self):
         if self.name:
             self.address = self.name.address_new
             self.phone_no = self.name.mobile
+
+    @api.multi
+    def print_enquiry_report(self):
+        if self.state=='draft':
+            self.state='order'
+
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'medicine.enquiry'), ('report_name', '=', 'pharmacy_mgmnt.report_enquiry_template',)])
+        data.download_filename = 'Enquiry report.pdf'
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'pharmacy_mgmnt.report_enquiry_template',
+            'file': 'filename',
+            'datas': datas,
+            'report_type': 'qweb-pdf',
+        }
+    @api.multi
+    def purchase_button(self):
+        if self.state=='order':
+            self.state='purchased'
+
+
 
 
 class MedicineEnquiryLine(models.Model):

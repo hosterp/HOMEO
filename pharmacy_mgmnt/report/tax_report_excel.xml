@@ -136,6 +136,9 @@
                                     <td style='font-size:15px'>
                                         <b>BILL AMOUNT</b>
                                     </td>
+                                     <td style='font-size:15px'>
+                                        <b>BILL No</b>
+                                    </td>
                                 </t>
 
                                 <!--                                    <t t-if="o.b2c">-->
@@ -248,6 +251,9 @@
                                         <td style='font-size:15px'>
                                             <span t-esc="round(bill_amount_total,2)"/>
                                         </td>
+                                        <td style='font-size:15px'>
+                                            <span t-esc="line['last_invoice_number']"/>~<span t-esc="line['first_invoice_number']"/>
+                                        </td>
 
                                         <!--                                            <td style='font-size:15px'>-->
                                         <!--                                                <span t-esc="line['invoice'].amount_total - line['invoice'].amount_tax"/>-->
@@ -313,7 +319,8 @@
                                         <td style='font-size:15px'>
                                             <strong t-esc="round(bill_total,2)"/>
                                         </td>
-                                    </t>
+                                </t>
+                                <td></td>
 
                             </tr>
                         </table>
