@@ -40,6 +40,7 @@
         'report/tax_report_excel_to_pdf.xml',
         'report/customer_payment_report.xml',
         'report/enquiry_report.xml',
+        'report/stock_order_report.xml',
 
         'report/inherit_supplier_invoice_report.xml',
         'report/e_way_report_customer.xml',

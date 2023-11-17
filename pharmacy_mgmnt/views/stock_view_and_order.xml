@@ -9,6 +9,7 @@
                 <form string="Medicines">
                     <header>
                         <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
+                        <button name="print_stock_order_report" string="Print order" type="object" class="oe_highlight"/>
                     </header>
                     <group>
                         <group>

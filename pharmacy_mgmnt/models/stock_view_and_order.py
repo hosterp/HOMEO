@@ -17,6 +17,24 @@ class StockViewOrder(models.TransientModel):
     stock_view_ids = fields.One2many("stock.view.order.lines", "stock_view_line_id")
     order_ids = fields.One2many("stock.order.lines", "stock_order_line_id")
 
+    @api.multi
+    def print_stock_order_report(self):
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'stock.view.order'), ('report_name', '=', 'pharmacy_mgmnt.report_stock_order_template',)])
+        data.download_filename = 'Stock order report.pdf'
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'pharmacy_mgmnt.report_stock_order_template',
+            'file': 'filename',
+            'datas': datas,
+            'report_type': 'qweb-pdf',
+        }
 
     @api.multi
     def stock_load(self):
