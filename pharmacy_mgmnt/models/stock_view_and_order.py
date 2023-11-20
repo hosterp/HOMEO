@@ -109,7 +109,7 @@ class StockViewOrder(models.Model):
         if self.name:
             domain += [('supplier_id', '=', self.name.id)]
         if self.med_category:
-            domain += [('medicine_1.med_category', '=', self.med_category)]
+            domain += [('medicine_1.made_in', '=', self.med_category)]
         if self.group_id:
             domain += [('medicine_grp1', '=', self.group_id.id)]
         if self.potency_id:
