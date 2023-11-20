@@ -1,6 +1,7 @@
 from openerp import api, models, fields
 from openerp.osv import osv
-from datetime import date,datetime
+from datetime import datetime, timedelta
+
 
 class StockViewOrder(models.Model):
     _name = "stock.view.order"
@@ -148,7 +149,6 @@ class StockViewOrder(models.Model):
             rec.stock_view_ids = list
             domain = []
 
-
 class StockViewOrderLine(models.Model):
     _name = "stock.view.order.lines"
     _description = 'Stock View Line'
@@ -160,6 +160,18 @@ class StockViewOrderLine(models.Model):
     medicine_id = fields.Many2one('product.product', string="Medicine")
     number_of_order = fields.Integer("New Order")
 
+    expiry_alert_date = fields.Date(compute='_compute_expiry_alert_date', string='Expiry Alert Date', store=True)
+
+    @api.depends('expiry_date')
+    def _compute_expiry_alert_date(self):
+        for record in self:
+            if record.expiry_date:
+                expiry_date = datetime.strptime(record.expiry_date, '%Y-%m-%d').date()
+                record.expiry_alert_date = expiry_date - timedelta(days=180)
+                print('hello', record.expiry_alert_date)
+                # print('hi')
+            else:
+                record.expiry_alert_date = False
 
 class StockOrderLine(models.Model):
     _name = "stock.order.lines"

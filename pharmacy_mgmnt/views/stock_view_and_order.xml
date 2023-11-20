@@ -55,9 +55,9 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Stock">
+                        <page string="Stock" >
                             <field name="stock_view_ids" widget="one2many_list">
-                                <tree editable="bottom">
+                                <tree editable="bottom"    colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &lt;= current_date">
                                     <field name="medicine_1" invisible="1"/>
                                     <field name="medicine_id" readonly="1"/>
                                     <field name="rack" readonly="1"/>
@@ -69,6 +69,7 @@
                                     <field name="manf_date" readonly="1"/>
                                     <field name="expiry_date" readonly="1"/>
                                     <field name="number_of_order" style="color:red;"/>
+                                    <field name="expiry_alert_date" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
