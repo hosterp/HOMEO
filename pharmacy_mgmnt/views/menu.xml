@@ -30,7 +30,7 @@
             <field name="name">Rack Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Stock Report" group_by="rack">
+                <tree string="Stock Report" group_by="rack" colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <field name="rack"/>
                     <field name="medicine_1"/>
                     <field name="potency"/>
@@ -43,6 +43,7 @@
                     <field name="batch_2"/>
                     <field name="manf_date"/>
                     <field name="expiry_date"/>
+                    <field name="expiry_alert_date" invisible="1"/>
                 </tree>
             </field>
         </record>
