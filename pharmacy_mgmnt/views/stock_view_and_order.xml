@@ -13,6 +13,20 @@
             <field name="padding">4</field>
             <field name="number_increment">1</field>
         </record>
+
+        <record model="ir.ui.view" id="view_stock_view_order_tree">
+            <field name="name">Stock View Tree</field>
+            <field name="model">stock.view.order</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Orders">
+                    <field name="sl_no" string="Order Id"/>
+                    <field name="date_field" string="Created Date"/>
+                    <field name="state" widget="statusbar"/>
+                </tree>
+            </field>
+        </record>
+
         <!-- View for the Form -->
         <record model="ir.ui.view" id="view_stock_view_order_form">
             <field name="name">Stock View Form</field>
@@ -21,13 +35,13 @@
             <field name="arch" type="xml">
                 <form string="Medicines">
                     <header>
-<!--                        <field name="sl_no" readonly="1"/>-->
                         <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
                         <button name="print_stock_order_report" string="Print order" type="object" class="oe_highlight"/>
+                        <button name="order_purchased" string="Order Purchased" attrs="{'invisible': [('state', '!=','order' )]}"  type="object" class="oe_highlight"/>
+                        <field name="state" string="Status" widget="statusbar"/>
                     </header>
                     <group>
                         <group>
-
                             <field name="name" required="0"/>
                             <field name="company_id"/>
                             <field name="med_category" string="Category"/>
@@ -84,116 +98,11 @@
         <record id="action_stock_view_order" model="ir.actions.act_window">
             <field name="name">Stock View Order</field>
             <field name="res_model">stock.view.order</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="view_stock_view_order_form"/>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_view_order_tree"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>
-            <field name="target">current</field>
+<!--            <field name="target">current</field>-->
         </record>
-
-        <!-- Menuitem to Open the View -->
-        <!--        <menuitem id="menu_stock_view_order"-->
-        <!--                  name="Stock View Order"-->
-        <!--                  action="action_stock_view_order"-->
-        <!--                  parent="your_parent_menu_id"-->
-        <!--                  sequence="10"/>-->
     </data>
 </openerp>
-
-        <!--<openerp>-->
-        <!--    <data>-->
-        <!--        &lt;!&ndash;        <record model="ir.ui.view" id="action_stock_view_order_tree">&ndash;&gt;-->
-        <!--        &lt;!&ndash;            <field name="name">Stock View Tree</field>&ndash;&gt;-->
-        <!--        &lt;!&ndash;            <field name="model">stock.view.order</field>&ndash;&gt;-->
-        <!--        &lt;!&ndash;            <field name="type">tree</field>&ndash;&gt;-->
-        <!--        &lt;!&ndash;            <field name="arch" type="xml">&ndash;&gt;-->
-        <!--        &lt;!&ndash;                <tree string="medicines" version="7.0">&ndash;&gt;-->
-        <!--        &lt;!&ndash;                    <field name="name"/>&ndash;&gt;-->
-        <!--        &lt;!&ndash;                    <field name="phone_no"/>&ndash;&gt;-->
-        <!--        &lt;!&ndash;                    <field name="address"/>&ndash;&gt;-->
-        <!--        &lt;!&ndash;                </tree>&ndash;&gt;-->
-        <!--        &lt;!&ndash;            </field>&ndash;&gt;-->
-        <!--        &lt;!&ndash;        </record>&ndash;&gt;-->
-        <!--        <record model="ir.ui.view" id="action_stock_view_order_form">-->
-        <!--            <field name="name">Stock View Form</field>-->
-        <!--            <field name="model">stock.view.order</field>-->
-        <!--            <field name="type">form</field>-->
-        <!--            <field name="arch" type="xml">-->
-        <!--                <header>-->
-        <!--                    <button name="stock_load" string="Stock Load" type="object" class="css_wizard_button oe_highlight"-->
-        <!--                            help="calls python function" id="focushere"/>-->
-        <!--                </header>-->
-        <!--                <form string="medicines">-->
-        <!--                    <group>-->
-        <!--                        <group>-->
-        <!--                            <field name="name" required="0"/>-->
-        <!--                            <field name="company_id"/>-->
-        <!--                            <field name="med_category" string="Category"/>-->
-        <!--                            <field name="medicine_id"/>-->
-        <!--                        </group>-->
-        <!--                        <group>-->
-        <!--                            <field name="group_id"/>-->
-        <!--                            <field name="potency_id"/>-->
-        <!--                            <field name="date_from"/>-->
-        <!--                            <field name="date_to"/>-->
-        <!--                        </group>-->
-        <!--                    </group>-->
-        <!--                    &lt;!&ndash;                    <field name="stock_view_ids" string="Medicine">&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                        <tree editable="bottom">&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="medicine_1" invisible="1"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="medicine_id"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="rack"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="potency"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="company"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="medicine_grp1"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="qty" type="char"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="mrp" type="char"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="manf_date"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                            <field name="expiry_date"/>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                        </tree>&ndash;&gt;-->
-        <!--                    &lt;!&ndash;                    </field>&ndash;&gt;-->
-        <!--                    <notebook>-->
-        <!--                        <page string="Stock">-->
-        <!--                            <group col="1">-->
-        <!--                                <tree editable="bottom">-->
-        <!--                                    <field name="medicine_1" invisible="1"/>-->
-        <!--                                    <field name="medicine_id"/>-->
-        <!--                                    <field name="rack"/>-->
-        <!--                                    <field name="potency"/>-->
-        <!--                                    <field name="company"/>-->
-        <!--                                    <field name="medicine_grp1"/>-->
-        <!--                                    <field name="qty" type="char"/>-->
-        <!--                                    <field name="mrp" type="char"/>-->
-        <!--                                    <field name="manf_date"/>-->
-        <!--                                    <field name="expiry_date"/>-->
-        <!--                                </tree>-->
-        <!--                            </group>-->
-        <!--                        </page>-->
-        <!--                    </notebook>-->
-        <!--                </form>-->
-        <!--            </field>-->
-        <!--        </record>-->
-        <!--        <record id="action_stock_view_order" model="ir.actions.act_window">-->
-        <!--            <field name="name">stock view order</field>-->
-        <!--            <field name="res_model">stock.view.order</field>-->
-        <!--            <field name="view_mode">form</field>-->
-        <!--            <field name="view_id" ref="action_stock_view_order_form"/>-->
-        <!--            <field name="domain">[]</field>-->
-        <!--            <field name="context">{}</field>-->
-        <!--            <field name="target">current</field>-->
-        <!--        </record>-->
-
-        <!--        &lt;!&ndash;        <menuitem id="menu_view_order_main"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  name="view_order"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  sequence="15"/>&ndash;&gt;-->
-        <!--        &lt;!&ndash;        <menuitem id="menu_view_order_root"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  name="Product Enquiry"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  parent="menu_view_order_main"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  sequence="1"/>&ndash;&gt;-->
-        <!--        &lt;!&ndash;        <menuitem id="menu_view_order"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  action="action_stock_view_order"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  name="Enquiries"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  parent="menu_view_order_root"&ndash;&gt;-->
-        <!--        &lt;!&ndash;                  sequence="1"/>&ndash;&gt;-->
-        <!--    </data>-->
-        <!--</openerp>-->

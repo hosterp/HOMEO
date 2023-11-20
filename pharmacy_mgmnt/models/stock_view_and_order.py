@@ -1,12 +1,13 @@
 from openerp import api, models, fields
 from openerp.osv import osv
+from datetime import date,datetime
 
-class StockViewOrder(models.TransientModel):
+class StockViewOrder(models.Model):
     _name = "stock.view.order"
     _description = 'Stock View'
     _rec_name = 'sl_no'
 
-    sl_no=fields.Char(string='sl no')
+    sl_no = fields.Char(string='sl no')
     name = fields.Many2one("res.partner", string="Supplier", domain="[('supplier', '=', True)]")
     med_category = fields.Selection([('indian', 'Indian'), ('german', 'German')],string="Made In")
     group_id = fields.Many2one("product.medicine.group", string="Group")
@@ -18,6 +19,9 @@ class StockViewOrder(models.TransientModel):
     date_to = fields.Date(string="Date To")
     stock_view_ids = fields.One2many("stock.view.order.lines", "stock_view_line_id")
     order_ids = fields.One2many("stock.order.lines", "stock_order_line_id")
+    date_field = fields.Date(string='Date', default=fields.Date.today)
+    state = fields.Selection([('draft', 'Draft'), ('order', 'Order'), ('purchased', 'Purchased')]
+                             , required=True, default='draft')
 
     @api.model
     def create(self, vals):
@@ -28,7 +32,13 @@ class StockViewOrder(models.TransientModel):
         result = super( StockViewOrder, self).create(vals)
         return result
     @api.multi
+    def order_purchased(self):
+        if self.state == "order":
+            self.state = "purchased"
+    @api.multi
     def print_stock_order_report(self):
+        if self.state == "draft":
+            self.state = "order"
         datas = {
             'ids': self._ids,
             'model': self._name,
@@ -86,6 +96,10 @@ class StockViewOrder(models.TransientModel):
             domain += [('company', '=', self.company_id.id)]
         if self.medicine_id:
             domain += [('medicine_1', '=', self.medicine_id.id)]
+        if self.date_from:
+            domain += [('stock_date', '>=', self.date_from)]
+        if self.date_to:
+            domain += [('stock_date', '<=', self.date_to)]
         for rec in self:
             if rec.stock_view_ids:
                 rec.stock_view_ids = [(5, 0, 0)]
@@ -113,7 +127,7 @@ class StockViewOrder(models.TransientModel):
             domain = []
 
 
-class StockViewOrderLine(models.TransientModel):
+class StockViewOrderLine(models.Model):
     _name = "stock.view.order.lines"
     _description = 'Stock View Line'
     _inherits = {'entry.stock': 'medicine_1'}
@@ -125,7 +139,7 @@ class StockViewOrderLine(models.TransientModel):
     number_of_order = fields.Integer("New Order")
 
 
-class StockOrderLine(models.TransientModel):
+class StockOrderLine(models.Model):
     _name = "stock.order.lines"
     _description = 'Stock Order Line'
     _inherits = {'entry.stock': 'medicine_1'}

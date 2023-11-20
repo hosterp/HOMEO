@@ -279,6 +279,7 @@ class NewStockEntry(models.Model):
     custom_qty = fields.Integer()
     invoice_line_id = fields.Many2one('account.invoice.line')
     quantity_selected = fields.Float(string="Item Qty")
+    stock_date = fields.Date(string="stock date")
     med_category = fields.Selection([('indian', 'Indian'), ('german', 'German')], default='indian', string="Made In")
 
     @api.model

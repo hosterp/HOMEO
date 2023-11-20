@@ -21,8 +21,8 @@ class MedicineEnquiry(models.Model):
 
     @api.multi
     def print_enquiry_report(self):
-        if self.state=='draft':
-            self.state='order'
+        if self.state == 'draft':
+            self.state = 'order'
 
         datas = {
             'ids': self._ids,

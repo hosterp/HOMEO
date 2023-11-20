@@ -80,6 +80,7 @@ class AccountInvoiceLine(models.Model):
                 'hsn_code': result.hsn_code,
                 'discount': result.discount,
                 'invoice_line_tax_id4': result.invoice_line_tax_id4,
+                'stock_date': result.date_invoice,
             }
             stock_entry = self.env['entry.stock'].create(vals)
             result.stock_entry_id = stock_entry.id
