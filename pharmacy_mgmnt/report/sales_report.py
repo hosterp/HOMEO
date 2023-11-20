@@ -30,7 +30,7 @@ class SalesReport(models.Model):
     _order = 'date desc'
 
     name = fields.Char()
-    date=fields.Date(default=fields.Date.today)
+    date = fields.Date(default=fields.Date.today)
     partner_id = fields.Many2one('res.partner', 'Customer')
     res_person_id = fields.Many2one('res.partner', 'Responsible Person')
     date_from = fields.Date('Date From',default=fields.Date.today)

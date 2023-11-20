@@ -6,6 +6,7 @@ class StockViewOrder(models.Model):
     _name = "stock.view.order"
     _description = 'Stock View'
     _rec_name = 'sl_no'
+    _order = 'sl_no desc'
 
     sl_no = fields.Char(string='sl no')
     name = fields.Many2one("res.partner", string="Supplier", domain="[('supplier', '=', True)]")
