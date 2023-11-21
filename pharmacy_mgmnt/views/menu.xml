@@ -4,9 +4,9 @@
             <field name="name">Medicine Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-<!--                <header>-->
-<!--                    <field name="med_category"/>-->
-<!--                </header>-->
+                <!--                <header>-->
+                <!--                    <field name="med_category"/>-->
+                <!--                </header>-->
                 <tree string="Medicine Stock Report"
                       colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <field name="medicine_1"/>
@@ -30,7 +30,8 @@
             <field name="name">Rack Stocks Entry List</field>
             <field name="model">entry.stock</field>
             <field name="arch" type="xml">
-                <tree string="Stock Report" group_by="rack" colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
+                <tree string="Stock Report" group_by="rack"
+                      colors="red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <field name="rack"/>
                     <field name="medicine_1"/>
                     <field name="potency"/>
@@ -54,6 +55,21 @@
             <field name="context">{'group_by':['rack']}</field>
             <field name="view_id" ref="stock_report_rack_tree_id"/>
         </record>
+        <record model="ir.ui.view" id="view_search_medicine_stock_report">
+            <field name="name">Medicine Search</field>
+            <field name="model">entry.stock</field>
+            <field name="arch" type="xml">
+                <search string="Medicine Search Filter">
+                    <field name="medicine_1"/>
+                    <field name="rack"/>
+                    <field name="potency"/>
+                    <field name="medicine_name_packing"/>
+                    <field name="company"/>
+                    <field name="medicine_grp1"/>
+                </search>
+            </field>
+        </record>
+
         <record id="action_medicine_stock_report" model="ir.actions.act_window">
             <field name="name">Rack Stock Report List</field>
             <field name="res_model">entry.stock</field>
@@ -61,8 +77,8 @@
             <field name="domain">[('qty','!=','0')]</field>
             <field name="context">{'group_by':['medicine_1']}</field>
             <field name="view_id" ref="stock_report_medicine_tree_id"/>
+            <field name="search_view_id" ref="view_search_medicine_stock_report"/>
         </record>
-
         <record id="stock_search_view" model="ir.ui.view">
             <field name="name">stock.search.view</field>
             <field name="model">entry.stock</field>
@@ -623,12 +639,12 @@
                   sequence="8"
                   parent="r2"/>
 
-		<menuitem id="medicine_information_list_report"
+        <menuitem id="medicine_information_list_report"
                   action="action_medicine_stock_report"
                   name="Medicine Stock Details"
                   sequence="9"
                   parent="r2"/>
-         <menuitem id="rack_information_list_report"
+        <menuitem id="rack_information_list_report"
                   action="action_rack_stock_report"
                   name="Rack Stock Details"
                   sequence="10"
