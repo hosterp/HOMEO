@@ -1,6 +1,6 @@
 <openerp>
     <data>
-          <record id="sequence_type_stock_order_type_id" model="ir.sequence.type">
+        <record id="sequence_type_stock_order_type_id" model="ir.sequence.type">
             <field name="name">Stock Order Sequence Type</field>
             <field name="code">stock.order</field>
         </record>
@@ -9,7 +9,7 @@
             <field name="code">stock.order</field>
             <field name="active">TRUE</field>
             <field name="prefix"></field>
-<!--            <field name="suffix">/%(year)s</field>-->
+            <!--            <field name="suffix">/%(year)s</field>-->
             <field name="padding">4</field>
             <field name="number_increment">1</field>
         </record>
@@ -36,8 +36,11 @@
                 <form string="Medicines">
                     <header>
                         <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
-                        <button name="print_stock_order_report" string="Print order" type="object" class="oe_highlight"/>
-                        <button name="order_purchased" string="Order Purchased" attrs="{'invisible': [('state', '!=','order' )]}"  type="object" class="oe_highlight"/>
+                        <button name="print_stock_order_report" string="Print order" type="object"
+                                class="oe_highlight"/>
+                        <button name="order_purchased" string="Order Purchased"
+                                attrs="{'invisible': [('state', '!=','order' )]}" type="object" class="oe_highlight"/>
+                        <button name="get_sales" string="Get Sales" type="object" class="oe_highlight"/>
                         <field name="state" string="Status" widget="statusbar"/>
                     </header>
                     <group>
@@ -55,9 +58,10 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Stock" >
+                        <page string="Stock">
                             <field name="stock_view_ids" widget="one2many_list">
-                                <tree editable="bottom"    colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &lt;= current_date">
+                                <tree editable="bottom"
+                                      colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &lt;= current_date">
                                     <field name="medicine_1" invisible="1"/>
                                     <field name="medicine_id" readonly="1"/>
                                     <field name="rack" readonly="1"/>
@@ -68,12 +72,27 @@
                                     <field name="mrp" type="char" readonly="1"/>
                                     <field name="manf_date" readonly="1"/>
                                     <field name="expiry_date" readonly="1"/>
-                                    <field name="number_of_order" style="color:red;"/>
+                                    <field name="get_sales"/>
+                                    <field name="number_of_order" colors="blue;"/>
                                     <field name="expiry_alert_date" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
-                        <page string="Order">
+                        <page string="Sales">
+                            <field name="sales_order_ids" readonly="1">
+                                <tree editable="bottom">
+                                    <field name="number2" readonly="1"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="date_invoice" readonly="1"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="medicine_name_subcat" readonly="1"/>
+                                    <field name="medicine_grp" readonly="1"/>
+                                    <field name="product_of" readonly="1"/>
+                                    <field name="quantity" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Orders">
                             <field name="order_ids" widget="one2many_list">
                                 <tree editable="bottom">
                                     <field name="medicine_1" invisible="1"/>
@@ -103,7 +122,7 @@
             <field name="view_id" ref="view_stock_view_order_tree"/>
             <field name="domain">[]</field>
             <field name="context">{}</field>
-<!--            <field name="target">current</field>-->
+            <!--            <field name="target">current</field>-->
         </record>
     </data>
 </openerp>

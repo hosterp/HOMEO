@@ -21,6 +21,7 @@ class StockViewOrder(models.Model):
     date_to = fields.Date(string="Date To")
     stock_view_ids = fields.One2many("stock.view.order.lines", "stock_view_line_id")
     order_ids = fields.One2many("stock.order.lines", "stock_order_line_id")
+    sales_order_ids = fields.One2many("sales.order.lines" ,"sales_order_line_id")
     date_field = fields.Date(string='Date', default=fields.Date.today)
     state = fields.Selection([('draft', 'Draft'), ('order', 'Order'), ('purchased', 'Purchased')]
                              , required=True, default='draft')
@@ -43,7 +44,6 @@ class StockViewOrder(models.Model):
             new_lines = []
             for rec in self.stock_view_ids:
                 if rec.number_of_order != 0:
-                    # for rec in res:
                     new_lines.append((0, 0, {
                         'medicine_1': rec.medicine_1.id,
                         'medicine_id': rec.medicine_id.id,
@@ -86,7 +86,6 @@ class StockViewOrder(models.Model):
             new_lines = []
             for rec in self.stock_view_ids:
                 if rec.number_of_order != 0:
-                    # for rec in res:
                     new_lines.append((0, 0, {
                         'medicine_1': rec.medicine_1.id,
                         'medicine_id': rec.medicine_id.id,
@@ -150,6 +149,49 @@ class StockViewOrder(models.Model):
             rec.stock_view_ids = list
             domain = []
 
+    @api.multi
+    def get_sales(self):
+        domain = []
+        for rec in self.stock_view_ids:
+            if rec.get_sales == True:
+                # domain = [('type', '=', 'out_invoice')]
+                if rec.medicine_id.id:
+                    domain += [('product_id', '=', rec.medicine_id.id)]
+                if rec.medicine_id.id:
+                    domain += [('medicine_name_subcat', '=', rec.potency.id)]
+                if rec.medicine_id.id:
+                    domain += [('product_of', '=', rec.company.id)]
+                if rec.medicine_id.id:
+                    domain += [('medicine_grp', '=', rec.medicine_grp1.id)]
+                if rec.medicine_id.id:
+                    domain += [('expiry_date', '=', rec.expiry_date)]
+                if rec.medicine_id.id:
+                    domain += [('manf_date', '=', rec.manf_date)]
+        for rec in self:
+            if rec.sales_order_ids:
+               rec.sales_order_ids = [(5, 0, 0)]
+            # rec.account_id = 25
+            # rec.sales_order_ids = []
+            list = []
+            invoices = self.env['account.invoice.line'].search(domain)
+            if invoices:
+                for line in invoices:
+                    if line.invoice_id.state == 'paid':
+                        list.append([0, 0, {
+                                            'number2': line.invoice_id.number2,
+                                            'partner_id': line.invoice_id.partner_id.id,
+                                            'date_invoice': line.invoice_id.date_invoice,
+                                            'quantity': line.quantity,
+                                            'product_id': line.product_id.id,
+                                            'product_of': line.product_of.id,
+                                            'medicine_grp': line.medicine_grp.id,
+                                            'medicine_name_subcat': line.medicine_name_subcat.id,
+                                            }
+                        ])
+            rec.sales_order_ids = list
+            domain = []
+
+
 class StockViewOrderLine(models.Model):
     _name = "stock.view.order.lines"
     _description = 'Stock View Line'
@@ -160,7 +202,7 @@ class StockViewOrderLine(models.Model):
     medicine_1 = fields.Many2one('entry.stock')
     medicine_id = fields.Many2one('product.product', string="Medicine")
     number_of_order = fields.Integer("New Order")
-
+    get_sales = fields.Boolean(default=False,string="Get Sales")
     expiry_alert_date = fields.Date(compute='_compute_expiry_alert_date', string='Expiry Alert Date', store=True)
 
     @api.depends('expiry_date')
@@ -184,6 +226,22 @@ class StockOrderLine(models.Model):
     medicine_1 = fields.Many2one('entry.stock')
     medicine_id = fields.Many2one('product.product', string="Medicine")
     new_order = fields.Integer(string="New Order")
+
+
+class SalesOrderLine(models.Model):
+    _name = "sales.order.lines"
+    _description = 'Sales Order Line'
+
+
+    sales_order_line_id = fields.Many2one("stock.view.order", string="Medicine Entry")
+    number2 = fields.Char("Invoice Number")
+    partner_id = fields.Many2one("res.partner","Customer")
+    date_invoice = fields.Date("Date")
+    quantity = fields.Integer("quantity")
+    product_id = fields.Many2one("product.product")
+    product_of = fields.Many2one("product.medicine.responsible")
+    medicine_grp = fields.Many2one("product.medicine.group")
+    medicine_name_subcat = fields.Many2one("product.medicine.subcat")
 
 
 
