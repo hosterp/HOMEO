@@ -622,11 +622,7 @@
                   name="Stock"
                   parent="r2"
                   sequence="4"/>
-        <menuitem id="menu_view_order"
-                  action="action_stock_view_order"
-                  name="Create Order"
-                  parent="r2"
-                  sequence="5"/>
+
 
         <menuitem action="action_rack_stock_transfer"
                   id="menu_stock_change_rack_under_stock_menu"
