@@ -66,6 +66,7 @@
                     <field name="medicine_name_packing"/>
                     <field name="company"/>
                     <field name="medicine_grp1"/>
+                    <field name="qty"/>
                 </search>
             </field>
         </record>
