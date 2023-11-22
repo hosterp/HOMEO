@@ -670,23 +670,19 @@
 
 
         <!--TRANSACTION MENUS and ACTIONS AND VIEW-->
-
-
         <record id="sequence_type_cheque_lot" model="ir.sequence.type">
             <field name="name">Cheque Entry Sequence</field>
             <field name="code">cheque.entry.sequence</field>
         </record>
         <record id="sequence_cheque_self_service" model="ir.sequence">
-            <field name="name">Cheque</field>
+            <field name="active">True</field>
             <field name="code">cheque.entry.sequence</field>
-            <field name="active">TRUE</field>
-            <field name="prefix">CHQ</field>
-            <field name="padding">6</field>
-            <!--            <field name="number_next">1</field>-->
+            <field name="name">Cheque</field>
             <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">6</field>
+            <field name="prefix">CHQ</field>
         </record>
-
-
         <record id="sequence_type_stock_lot" model="ir.sequence.type">
             <field name="name">Stock Entry Sequence</field>
             <field name="code">stock.entry.sequence</field>
