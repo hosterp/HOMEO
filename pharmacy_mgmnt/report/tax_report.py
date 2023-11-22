@@ -416,7 +416,7 @@ class TaxReportWizard(models.TransientModel):
                     invoice_numbers = merged_data[date]['invoice_numbers']
                     entry['invoice_numbers'] = invoice_numbers
 
-                print(data_list,'data')
+
             return data_list
 
         elif self.b2b:
