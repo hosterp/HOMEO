@@ -57,4 +57,5 @@ class MedicineEnquiryLine(models.Model):
     group_id = fields.Many2one("product.medicine.group", string="Group")
     potency_id = fields.Many2one("product.medicine.subcat", string="Potency")
     packing_id = fields.Many2one("product.medicine.packing", string="Packing")
+    qty = fields.Integer(string="Quantity")
 

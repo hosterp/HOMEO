@@ -42,6 +42,7 @@
                                 <field name="group_id"/>
                                 <field name="potency_id"/>
                                 <field name="packing_id"/>
+                                <field name="qty"/>
                             </tree>
                         </field>
                     </sheet>

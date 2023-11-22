@@ -58,6 +58,7 @@
                                             <th>Group</th>
                                             <th>Potency</th>
                                             <th>Packing</th>
+                                            <th>Quantity</th>
                                         </tr>
                                     </thead>
                                     <tbody class="invoice_tbody">
@@ -73,6 +74,9 @@
                                             </td>
                                             <td>
                                                 <span t-field="l.packing_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="l.qty"/>
                                             </td>
                                         </tr>
                                     </tbody>

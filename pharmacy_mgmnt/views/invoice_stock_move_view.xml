@@ -26,10 +26,15 @@
                     />
                 </xpath>
                  <xpath expr="//button[@name='invoice_open']" position="attributes" >
+<!--                     <attribute name="class">cus_validate</attribute>-->
+<!--                     <attribute name="attrs">{'invisible':['|','|','|',('packing_slip', '=', True),('hold_invoice', '=',-->
+<!--                        True),('state', '!=' , 'draft')]}-->
+<!--                    </attribute>-->
                      <attribute name="class">cus_validate</attribute>
-                     <attribute name="attrs">{'invisible':['|','|',('packing_slip', '=', True),('holding_invoice', '=',
-                        True),('state', '!=' , 'draft')]}
-                    </attribute>
+                     <attribute name="attrs">{'invisible':['|','|',('hold_invoice', '=',
+                         True),('state', '!=' , 'draft')]}
+                     </attribute>
+
                  </xpath>
                 <xpath expr="//button[@name='action_invoice_sent']" position="attributes" >
                      <attribute name="invisible">1</attribute>
