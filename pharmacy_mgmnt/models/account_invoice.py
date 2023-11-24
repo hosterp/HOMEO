@@ -264,7 +264,7 @@ class AccountInvoiceLine(models.Model):
                     'discount': rec.discount,
                     'invoice_line_tax_id4': rec.invoice_line_tax_id4,
                 }
-                result = rec.stock_entry_id.update(vals)
+                result = rec.stock_entry_id.write(vals)
             return res
 
     @api.multi
@@ -1464,15 +1464,11 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def load(self):
-        inv_obj = self.env['account.invoice'].browse(self.invoices_id.id)
-        if inv_obj:
-            print("yes")
-        else:
-            print("no")
-        for rec in inv_obj:
-            new_lines = []
-            for line in rec.invoice_line:
-                new_lines.append((0, 0, {
+        # inv_obj = self.env['account.invoice'].browse(['|',('id', '=', self.invoices_id.id),('type', '=', "in_invoice")])
+        new_lines = []  # Moved the new_lines list outside of the loop
+        if self.invoices_id:
+            for line in self.invoices_id.invoice_line:
+                new_lines.append([0, 0, {
                     'name': line.name,
                     'product_id': line.product_id.id,
                     'medicine_name_subcat': line.medicine_name_subcat.id,
@@ -1491,10 +1487,8 @@ class AccountInvoice(models.Model):
                     'manf_date': line.manf_date,
                     'expiry_date': line.expiry_date,
                     'medicine_rack': line.medicine_rack.id,
-
-                }))
-
-        self.write({'invoice_line': new_lines})
+                }])
+        self.invoice_line = new_lines
 
     state = fields.Selection([
         ('draft', 'Draft'),
