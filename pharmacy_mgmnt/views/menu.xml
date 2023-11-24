@@ -1145,7 +1145,7 @@
                         <button name="print_customer_payment_report" string="Print Report" type="object"
                                 class="oe_highlight"/>
                         <button class="oe_highlight" type="object" name="open_tree_view_history" string="Sale History"
-                                states="draft,paid"/>
+                                states="draft,paid" invisible="1"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <h1>
