@@ -1189,7 +1189,7 @@ class AccountInvoice(models.Model):
     hold_invoice = fields.Boolean("Holding Invoice?")
     cus_invoice = fields.Boolean("Customer Invoice?")
     hold_invoice_id = fields.Many2one("account.invoice", domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
-    partner_id = fields.Many2one('res.partner',default=1)
+    partner_id = fields.Many2one('res.partner')
     cus_inv_number = fields.Char()
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     cus_invoice_id = fields.Many2one("account.invoice", domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
@@ -1427,6 +1427,10 @@ class AccountInvoice(models.Model):
             else:
                 pass
         # self.number2 = self.env['ir.sequence'].next_by_code('customer.account.invoice')
+        if self.type == 'out_invoice':
+            self.partner_id = self.env['res.partner'].search(['|', ('id', '=', 24), ('customer', '=', True)],limit=1).id
+        else:
+            pass
 
     @api.multi
     def name_get(self):
