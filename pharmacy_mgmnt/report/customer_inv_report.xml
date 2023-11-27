@@ -73,206 +73,213 @@
 
             <t t-call="report.html_container">
                 <t t-foreach="docs" t-as="o">
-<!--                    <t t-call="report.external_layout">-->
-                        <div class="page">
+                    <!--                    <t t-call="report.external_layout">-->
+                    <div class="page">
 
+                        <center>
+                            <b>
+                                <h1>Customer Invoice Report</h1>
+                            </b>
+                        </center>
+                        <br/>
+
+                        <span>
                             <center>
                                 <b>
-                                    <h1>Customer Invoice Report</h1>
+                                    <h4>
+                                        <span t-field="o.date_from"/>
+                                        To
+                                        <span t-field="o.date_to"/>
+                                    </h4>
                                 </b>
                             </center>
-                            <br/>
+                        </span>
+                        <t t-set="sl_no" t-value="1"/>
+                        <t t-set="subtotal" t-value="0"/>
 
-                            <span>
-                                <center>
-                                    <b>
-                                        <h4>
-                                            <span t-field="o.date_from"/>
-                                            To
-                                            <span t-field="o.date_to"/>
-                                        </h4>
-                                    </b>
-                                </center>
-                            </span>
-                            <t t-set="sl_no" t-value="1"/>
-                            <t t-set="subtotal" t-value="0"/>
+                        <div>
+                            <center>
 
-                            <div>
-                                <center>
+                                <table class="table table-bordered">
+                                    <thead>
 
-                                    <table class="table table-bordered">
-                                        <thead>
+                                        <tr>
+                                            <td style="width: 4%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>S# No</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Date</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Customer</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Medicine</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Potency</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Group</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Company</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Packing</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%;" align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Manf:Date</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%; " align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Expiry:Date</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
+                                            <td style="width: 10%; " align="center">
+                                                <h4>
+                                                    <b>
+                                                        <center>Amount</center>
+                                                    </b>
+                                                </h4>
+                                            </td>
 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="test_variable4" t-value="0"/>
+                                        <p t-foreach="docs.get_details()" t-as="line">
+                                            <t t-set="test_variable4" t-value="line['total_amt']"/>
+                                        </p>
+                                        <t t-foreach="docs.get_details()" t-as="line">
                                             <tr>
-                                                <td style="width: 4%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>S# No</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Date</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Customer</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Medicine</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Potency</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Group</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Company</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Packing</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%;" align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Manf:Date</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%; " align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Expiry:Date</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-                                                <td style="width: 10%; " align="center">
-                                                    <h4>
-                                                        <b>
-                                                            <center>Amount</center>
-                                                        </b>
-                                                    </h4>
-                                                </td>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-set="test_variable4" t-value="0"/>
-                                            <p t-foreach="docs.get_details()" t-as="line">
-                                                <t t-set="test_variable4" t-value="line['total_amt']"/>
-                                            </p>
-                                            <t t-foreach="docs.get_details()" t-as="line">
-                                                <tr>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="sl_no"/>
-                                                            <t t-set="sl_no" t-value="sl_no+1"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                             <span t-esc="line['date'][8:10] + '-' + line['date'][5:7] + '-' + line['date'][0:4]" />
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['customer']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['medicine']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['potency']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['group']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['company']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['packing']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['exp']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['mfd']"/>
-                                                        </center>
-                                                    </td>
-                                                    <td>
-                                                        <center>
-                                                            <span t-esc="line['amount']"/>
-                                                        </center>
-                                                    </td>
-
-                                                </tr>
-                                            </t>
-                                            <tr>
-                                                <td colspan="10" style="width: 10%;" align="center">
+                                                <td>
                                                     <center>
-                                                        <h5>
-                                                            <b>Grand Total</b>
-                                                        </h5>
+                                                        <span t-esc="sl_no"/>
+                                                        <t t-set="sl_no" t-value="sl_no+1"/>
                                                     </center>
                                                 </td>
                                                 <td>
-                                                    <b>
-                                                        <center>
-                                                            <span t-esc="test_variable4"/>
-                                                        </center>
-                                                    </b>
+                                                    <center>
+                                                        <span t-esc="line['date'][8:10] + '-' + line['date'][5:7] + '-' + line['date'][0:4]"/>
+                                                    </center>
                                                 </td>
-                                            </tr>
+                                                <td>
+                                                    <center>
+                                                        <span t-esc="line['customer']"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <span t-esc="line['medicine']"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <span t-esc="line['potency']"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <span t-esc="line['group']"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <span t-esc="line['company']"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <span t-esc="line['packing']"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <t t-set="strptime" t-value="datetime.datetime.strptime"/>
+                                                        <t t-set="formatted_date"
+                                                           t-value="line['exp'] and strptime(line['exp'], '%Y-%m-%d').strftime('%d/%m/%Y') or ''"/>
+                                                        <span t-esc="formatted_date"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+<!--                                                        <span t-esc="line['mfd']"/>-->
+                                                         <t t-set="strptime" t-value="datetime.datetime.strptime"/>
+                                                        <t t-set="formatted_date"
+                                                           t-value="line['mfd'] and strptime(line['mfd'], '%Y-%m-%d').strftime('%d/%m/%Y') or ''"/>
+                                                        <span t-esc="formatted_date"/>
+                                                    </center>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        <span t-esc="line['amount']"/>
+                                                    </center>
+                                                </td>
 
-                                        </tbody>
-                                    </table>
-                                </center>
-                            </div>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td colspan="10" style="width: 10%;" align="center">
+                                                <center>
+                                                    <h5>
+                                                        <b>Grand Total</b>
+                                                    </h5>
+                                                </center>
+                                            </td>
+                                            <td>
+                                                <b>
+                                                    <center>
+                                                        <span t-esc="test_variable4"/>
+                                                    </center>
+                                                </b>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </center>
                         </div>
-<!--                    </t>-->
+                    </div>
+                    <!--                    </t>-->
                 </t>
             </t>
         </template>
