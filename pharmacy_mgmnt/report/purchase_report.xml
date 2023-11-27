@@ -92,7 +92,17 @@ th, td {
 														<center><span t-esc="line.batch_2.batch"/></center>
 													</td>
 										            <td>
-														<center><span t-esc="line.expiry_date"/></center>
+<!--														<center><span t-esc="line.expiry_date"/></center>-->
+														<t t-if="line.expiry_date">
+															<t t-set="strptime" t-value="datetime.datetime.strptime"/>
+															<t t-set="expiry_date"
+															   t-value="strptime(line.expiry_date, '%Y-%m-%d')"/>
+															<center>
+																<span t-esc="expiry_date.strftime('%d/%m/%Y')"/>
+															</center>
+														</t>
+
+
 													</td>
 													<td>
 														<center><span t-esc="line.medicine_rack.medicine_type"/></center>

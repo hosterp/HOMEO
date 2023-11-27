@@ -90,10 +90,20 @@ th, td {
 														<center><span t-esc="line['medicine']"/></center>
 													</td>
 													<td>
-														<center><span t-esc="line['exp'][8:10] + '-' + line['exp'][5:7] + '-' + line['exp'][0:4]" /></center>
+														<center>
+															<t t-set="strptime" t-value="datetime.datetime.strptime"/>
+															<t t-set="formatted_date"
+															   t-value="line['exp'] and strptime(line['exp'], '%Y-%m-%d').strftime('%d/%m/%Y') or ''"/>
+															<span t-esc="formatted_date"/>
+														</center>
 													</td>
 													<td>
-														<center><span t-esc="line['mfd'][8:10] + '-' + line['mfd'][5:7] + '-' + line['mfd'][0:4]" /></center>
+														<center>
+														 <t t-set="strptime" t-value="datetime.datetime.strptime"/>
+                                                        <t t-set="formatted_date"
+                                                           t-value="line['mfd'] and strptime(line['mfd'], '%Y-%m-%d').strftime('%d/%m/%Y') or ''"/>
+                                                        <span t-esc="formatted_date"/>
+														</center>
 													</td>
 													<td>
 														<center><span t-esc="line['amount']"/></center>
