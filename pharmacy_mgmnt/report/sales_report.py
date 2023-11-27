@@ -3,7 +3,7 @@ from openerp import tools, _
 from datetime import datetime, date, timedelta
 
 
-class InvoiceDetails(models.Model):
+class InvoiceDetails(models.TransientModel):
     _name = 'sales.details'
     _inherits = {'account.invoice': 'invoice_id'}
 
@@ -25,7 +25,7 @@ class InvoiceDetails(models.Model):
         }
 
 
-class SalesReport(models.Model):
+class SalesReport(models.TransientModel):
     _name = 'sales.report'
     _order = 'date desc'
 

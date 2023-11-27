@@ -1,19 +1,19 @@
 <openerp>
     <data>
-        <record id="sales_report_tree_view" model="ir.ui.view">
-            <field name="name">Sales Report Tree</field>
-            <field name="model">sales.report</field>
-            <field name="arch" type="xml">
-                <tree name="Sales Report">
-                    <field name="name" string="Name"/>
-                    <field name="date"/>
-                    <field name="partner_id"/>
-                    <field name="res_person_id"/>
-                    <!--                    <field name="product"/>-->
-                    <!--                    <field name="company"/>-->
-                </tree>
-            </field>
-        </record>
+<!--        <record id="sales_report_tree_view" model="ir.ui.view">-->
+<!--            <field name="name">Sales Report Tree</field>-->
+<!--            <field name="model">sales.report</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <tree name="Sales Report">-->
+<!--                    <field name="name" string="Name"/>-->
+<!--                    <field name="date"/>-->
+<!--                    <field name="partner_id"/>-->
+<!--                    <field name="res_person_id"/>-->
+<!--                    &lt;!&ndash;                    <field name="product"/>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                    <field name="company"/>&ndash;&gt;-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
         <record model="ir.ui.view" id="sales_report_xml_id">
             <field name="name">Sales Report</field>
             <field name="model">sales.report</field>
@@ -90,8 +90,9 @@
             <field name="type">ir.actions.act_window</field>
             <field name="name">Sales Report</field>
             <field name="res_model">sales.report</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">form</field>
             <field name="view_type">form</field>
+            <field name="target">current</field>
         </record>
         <record id="sales_sequence_type_id" model="ir.sequence.type">
             <field name="name">Sales Report Sequence Type</field>
