@@ -63,28 +63,27 @@ class AccountInvoiceLine(models.Model):
 
         # If no similar record found or incomplete data, create a new record
         result = super(AccountInvoiceLine, self).create(vals)
-        if result.invoice_id.type == 'in_invoice' and result.quantity != 0:
-            vals = {
-                'supplier_id': result.invoice_id.partner_id.id,
-                'expiry_date': result.expiry_date,
-                'manf_date': result.manf_date,
-                'company': result.product_of.id,
-                'medicine_1': result.product_id.id,
-                'potency': result.medicine_name_subcat.id,
-                'medicine_name_packing': result.medicine_name_packing.id,
-                'medicine_grp1': result.medicine_grp.id,
-                'batch_2': result.batch_2.id,
-                'mrp': result.price_unit,
-                'qty': result.quantity,
-                'rack': result.medicine_rack.id,
-                'hsn_code': result.hsn_code,
-                'discount': result.discount,
-                'invoice_line_tax_id4': result.invoice_line_tax_id4,
-                'stock_date': date.today(),
-            }
-            print(date.today())
-            stock_entry = self.env['entry.stock'].create(vals)
-            result.stock_entry_id = stock_entry.id
+        # if result.invoice_id.type == 'in_invoice' and result.quantity != 0:
+        #     vals = {
+        #         'supplier_id': result.invoice_id.partner_id.id,
+        #         'expiry_date': result.expiry_date,
+        #         'manf_date': result.manf_date,
+        #         'company': result.product_of.id,
+        #         'medicine_1': result.product_id.id,
+        #         'potency': result.medicine_name_subcat.id,
+        #         'medicine_name_packing': result.medicine_name_packing.id,
+        #         'medicine_grp1': result.medicine_grp.id,
+        #         'batch_2': result.batch_2.id,
+        #         'mrp': result.price_unit,
+        #         'qty': result.quantity,
+        #         'rack': result.medicine_rack.id,
+        #         'hsn_code': result.hsn_code,
+        #         'discount': result.discount,
+        #         'invoice_line_tax_id4': result.invoice_line_tax_id4,
+        #         'stock_date': date.today(),
+        #     }
+        #     stock_entry = self.env['entry.stock'].create(vals)
+        #     result.stock_entry_id = stock_entry.id
 
         if result.invoice_id.type == 'out_invoice' and result.invoice_id.state == 'packing_slip':
             domain = [
@@ -247,24 +246,25 @@ class AccountInvoiceLine(models.Model):
                                     })
                         vals['stock_entry_qty'] = quantity
             res = super(AccountInvoiceLine, rec).write(vals)
-            if rec.invoice_id.type == 'in_invoice':
-                vals = {
-                    'expiry_date': rec.expiry_date,
-                    'manf_date': rec.manf_date,
-                    'company': rec.product_of.id,
-                    'medicine_1': rec.product_id.id,
-                    'potency': rec.medicine_name_subcat.id,
-                    'medicine_name_packing': rec.medicine_name_packing.id,
-                    'medicine_grp1': rec.medicine_grp.id,
-                    'batch_2': rec.batch_2.id,
-                    'mrp': rec.price_unit,
-                    'qty': rec.quantity,
-                    'rack': rec.medicine_rack.id,
-                    'hsn_code': rec.hsn_code,
-                    'discount': rec.discount,
-                    'invoice_line_tax_id4': rec.invoice_line_tax_id4,
-                }
-                result = rec.stock_entry_id.write(vals)
+            # if rec.invoice_id.type == 'in_invoice':
+            #     vals = {
+            #         'supplier_id': rec.invoice_id.partner_id.id,
+            #         'expiry_date': rec.expiry_date,
+            #         'manf_date': rec.manf_date,
+            #         'company': rec.product_of.id,
+            #         'medicine_1': rec.product_id.id,
+            #         'potency': rec.medicine_name_subcat.id,
+            #         'medicine_name_packing': rec.medicine_name_packing.id,
+            #         'medicine_grp1': rec.medicine_grp.id,
+            #         'batch_2': rec.batch_2.id,
+            #         'mrp': rec.price_unit,
+            #         'qty': rec.quantity,
+            #         'rack': rec.medicine_rack.id,
+            #         'hsn_code': rec.hsn_code,
+            #         'discount': rec.discount,
+            #         'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+            #     }
+            #     result = rec.stock_entry_id.write(vals)
             return res
 
     @api.multi
@@ -2542,6 +2542,29 @@ class AccountInvoice(models.Model):
     def invoice_validate(self):
         if self.type != 'in_invoice' and not self.packing_slip:
             self.action_stock_transfer()
+        if self.type == 'in_invoice':
+            for result in self.invoice_line:
+            # if result.invoice_id.type == 'in_invoice' and result.quantity != 0:
+                vals = {
+                    'supplier_id': self.partner_id.id,
+                    'expiry_date': result.expiry_date,
+                    'manf_date': result.manf_date,
+                    'company': result.product_of.id,
+                    'medicine_1': result.product_id.id,
+                    'potency': result.medicine_name_subcat.id,
+                    'medicine_name_packing': result.medicine_name_packing.id,
+                    'medicine_grp1': result.medicine_grp.id,
+                    'batch_2': result.batch_2.id,
+                    'mrp': result.price_unit,
+                    'qty': result.quantity,
+                    'rack': result.medicine_rack.id,
+                    'hsn_code': result.hsn_code,
+                    'discount': result.discount,
+                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
+                    'stock_date': date.today(),
+                }
+                stock_entry = self.env['entry.stock'].create(vals)
+                result.stock_entry_id = stock_entry.id
         return self.write({'state': 'open'})
 
 
