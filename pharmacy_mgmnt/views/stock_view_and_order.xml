@@ -126,7 +126,7 @@
         </record>
         <menuitem id="menu_view_order"
                   action="action_stock_view_order"
-                  name="Create Order"
+                  name="Sales Details &amp; Create Order"
                   parent="r2"
                   sequence="5"/>
     </data>
