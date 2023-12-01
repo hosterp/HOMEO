@@ -141,29 +141,32 @@
                                 </tr>
 
                             </t>
-
+                            <tr><!-- Empty row for line separation -->
+                                <td colspan="6"></td>
+                            </tr>
                             <tr>
-                                    <td style='font-size:15px'>
-                                        <b>TOTAL TAX AMOUNT</b>
-                                    </td>
+                                <td style='font-size:15px'>
+                                    <b>TOTAL</b>
+                                </td>
                                 <td></td>
-                                    <td style='font-size:15px'>
-                                        <b>
-                                            <span t-esc="total_tax_amount"/>
-
-                                        </b>
-                                    </td>
-                                    <td style='font-size:15px'>
-                                        <b>TOTAL BILL AMOUNT</b>
-                                    </td>
                                 <td></td>
-                                    <td style='font-size:15px'>
-                                        <b>
-                                            <span t-esc="total_bill_amount"/>
-                                        </b>
-                                    </td>
-                                </tr>
+                                <td></td>
+                                <td style='font-size:15px'>
+                                    <b>
+                                        <span t-esc="total_tax_amount"/>
 
+                                    </b>
+                                </td>
+<!--                                <td style='font-size:15px'>-->
+<!--                                    <b>TOTAL BILL AMOUNT</b>-->
+<!--                                </td>-->
+
+                                <td style='font-size:15px'>
+                                    <b>
+                                        <span t-esc="total_bill_amount"/>
+                                    </b>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </t>
