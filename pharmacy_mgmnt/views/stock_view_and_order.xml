@@ -36,12 +36,16 @@
                 <form string="Medicines">
                     <header>
                         <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
-                        <button name="print_stock_order_report" string="Print order" type="object"
-                                class="oe_highlight"/>
+                        <button name="get_purchase" string="Purchase Details"
+                                attrs="{'invisible': [('state', '!=','draft')]}" type="object" class="oe_highlight"/>
                         <button name="order_purchased" string="Order Purchased"
                                 attrs="{'invisible': [('state', '!=','order' )]}" type="object" class="oe_highlight"/>
-                        <button name="get_sales"  string="Get Sales"   attrs="{'invisible': [('state', '!=','draft')]}" type="object" class="oe_highlight"/>
-                        <button name="create_order_button"  string="Create Order"   attrs="{'invisible': [('state', '!=','draft')]}" type="object" class="oe_highlight"/>
+                        <button name="get_sales" string="Sales Details" attrs="{'invisible': [('state', '!=','draft')]}"
+                                type="object" class="oe_highlight"/>
+                        <button name="create_order_button" string="Create Order"
+                                attrs="{'invisible': [('state', '!=','draft')]}" type="object" class="oe_highlight"/>
+                        <button name="print_stock_order_report" string="Print order" type="object"
+                                class="oe_highlight"/>
                         <field name="state" string="Status" widget="statusbar"/>
                     </header>
                     <group>
@@ -61,28 +65,45 @@
                     <notebook>
                         <page string="Stock">
                             <field name="stock_view_ids" widget="one2many_list">
-                                <tree editable="bottom"
-                                      colors="red:expiry_date &lt;= current_date;green:expiry_alert_date &lt;= current_date">
-                                    <field name="medicine_1" invisible="1"/>
+                                <tree editable="bottom">
                                     <field name="medicine_id" readonly="1"/>
-                                    <field name="rack" readonly="1"/>
-                                    <field name="potency" readonly="1"/>
-                                    <field name="company" readonly="1"/>
-                                    <field name="medicine_grp1" readonly="1"/>
-                                    <field name="qty" type="char" readonly="1"/>
-                                    <field name="mrp" type="char" readonly="1"/>
-                                    <field name="manf_date" readonly="1"/>
-                                    <field name="expiry_date" readonly="1"/>
-                                    <field name="get_sales"/>
+                                    <field name="rack" invisible="1"/>
+                                    <field name="potency" string="Potency" readonly="1"/>
+                                    <field name="company" string="Company" readonly="1"/>
+                                    <field name="medicine_grp1" string="Group" readonly="1"/>
+                                    <field name="qty" type="char" string="Qty" readonly="1"/>
+                                    <field name="ex_qty" type="char" readonly="1"/>
+                                    <field name="mrp" string="Mrp" type="char" readonly="1"/>
+                                    <field name="manf_date" invisible="1"/>
+                                    <field name="expiry_date" invisible="1"/>
+                                    <field name="get_purchase"/>
                                     <field name="number_of_order" colors="blue;"/>
-                                    <field name="expiry_alert_date" invisible="1"/>
+                                    <!--                                    <field name="expiry_alert_date" invisible="1"/>-->
                                 </tree>
                             </field>
                         </page>
-                        <page string="Sales">
+                        <page string="Purchase Details">
+                            <field name="purchase_order_ids" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="purchase_order_line_id" invisible="1"/>
+                                    <field name="invoice_id" readonly="1"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="date_invoice" readonly="1"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="product_of" readonly="1"/>
+                                    <field name="medicine_grp" readonly="1"/>
+                                    <field name="medicine_name_subcat" readonly="1"/>
+                                    <field name="batch_2" readonly="1"/>
+                                    <field name="quantity" readonly="1"/>
+                                    <field name="get_sales"/>
+                                    <button name="open_invoice" type="object" string="Open" class="oe_highlight"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Sales Details">
                             <field name="sales_order_ids" readonly="1">
                                 <tree editable="bottom">
-                                    <field name="number2" readonly="1"/>
+                                    <field name="invoice_id" readonly="1"/>
                                     <field name="partner_id" readonly="1"/>
                                     <field name="date_invoice" readonly="1"/>
                                     <field name="product_id" readonly="1"/>
@@ -90,13 +111,14 @@
                                     <field name="medicine_grp" readonly="1"/>
                                     <field name="product_of" readonly="1"/>
                                     <field name="quantity" readonly="1"/>
+                                    <button name="open_invoice" type="object" string="Open" class="oe_highlight"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="Orders">
                             <field name="order_ids" widget="one2many_list">
                                 <tree editable="bottom">
-                                    <field name="medicine_1" invisible="1"/>
+                                    <!--                                    <field name="medicine_1" invisible="1"/>-->
                                     <field name="medicine_id" readonly="1"/>
                                     <field name="rack" readonly="1"/>
                                     <field name="potency" readonly="1"/>
