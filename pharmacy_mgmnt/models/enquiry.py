@@ -12,6 +12,7 @@ class MedicineEnquiry(models.Model):
     medicine_ids = fields.One2many("medicine.enquiry.line", "medicine_line_id")
     state = fields.Selection([('draft', 'Draft'), ('order', 'Order'), ('purchased', 'Purchased')]
                              , required=True, default='draft')
+    date=fields.Date(string='Date',default=lambda self: fields.Date.context_today(self),)
 
     @api.onchange("name")
     def onchange_name(self):

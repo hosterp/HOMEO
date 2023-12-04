@@ -28,10 +28,12 @@
                     <sheet>
                         <group>
                             <group>
+                                <field name="date"/>
                                 <field name="name" required="1"/>
-                                <field name="phone_no"/>
+
                             </group>
                             <group>
+                                  <field name="phone_no"/>
                                 <field name="address"/>
                             </group>
                         </group>
