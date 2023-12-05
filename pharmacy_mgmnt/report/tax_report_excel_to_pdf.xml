@@ -190,5 +190,15 @@
                 attachment_use="False"
 
         />
+        <report
+                id="b2b_tax_report_date_xlsx_id"
+                string="Tax Report"
+                model="tax.report.wizard"
+                report_type="xlsx"
+                name="pharmacy_mgmnt.b2b_date_tax_report_template_xlsx.xlsx"
+                file="pharmacy_mgmnt.b2b_date_tax_report_template_xlsx.xlsx"
+                attachment_use="False"
+
+        />
     </data>
 </openerp>
