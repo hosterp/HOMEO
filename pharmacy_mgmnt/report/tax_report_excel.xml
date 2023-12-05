@@ -23,6 +23,7 @@
                         <button name="print_tax_report_excel" string="Print" type="object" class="oe_highlight"/>
                         <button name="print_b2c_date_xlsx_report" attrs="{'invisible': [('b2c', '!=',True )]}" string="Print Excel" type="object" class="oe_highlight"/>
                         <button name="print_b2b_date_xlsx_report" attrs="{'invisible': [('b2b', '!=',True )]}" string="Print Excel" type="object" class="oe_highlight"/>
+                        <button name="print_b2b_hsn_xlsx_report" attrs="{'invisible': [('by_hsn', '!=',True )]}" string="Print Excel" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
