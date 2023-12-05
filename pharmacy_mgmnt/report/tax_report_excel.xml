@@ -21,6 +21,7 @@
                     </group>
                     <footer>
                         <button name="print_tax_report_excel" string="Print" type="object" class="oe_highlight"/>
+                        <button name="print_b2c_date_xlsx_report" attrs="{'invisible': [('b2c', '!=',True )]}" string="Print Excel" type="object" class="oe_highlight"/>
                         <button name="print_b2b_date_xlsx_report" attrs="{'invisible': [('b2b', '!=',True )]}" string="Print Excel" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -51,6 +52,16 @@
                 name="pharmacy_mgmnt.report_tax_excel.xlsx"
                 file="pharmacy_mgmnt.report_tax_excel.xlsx"
                 attachment_use="False"
+        />
+         <report
+                id="b2c_tax_report_xlsx_id"
+                string="Tax Report"
+                model="tax.report.wizard"
+                report_type="xlsx"
+                name="pharmacy_mgmnt.b2c_tax_report_template_xlsx.xlsx"
+                file="pharmacy_mgmnt.b2c_tax_report_template_xlsx.xlsx"
+                attachment_use="False"
+
         />
 
         <report

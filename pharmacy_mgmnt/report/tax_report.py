@@ -118,6 +118,19 @@ class TaxReportWizard(models.TransientModel):
         }
 
     @api.multi
+    def print_b2c_date_xlsx_report(self):
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        return {'type': 'ir.actions.report.xml',
+                'report_name': 'pharmacy_mgmnt.b2c_tax_report_template_xlsx.xlsx',
+                'datas': datas
+                }
+
+    @api.multi
     def print_b2b_date_xlsx_report(self):
         datas = {
             'ids': self._ids,
