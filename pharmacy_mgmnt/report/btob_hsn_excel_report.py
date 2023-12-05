@@ -31,14 +31,16 @@ class BtobHsnXlsx(ReportXlsx):
         format = workbook.add_format({'font_size':13,'align':'vcentre','bold':True})
         format1 = workbook.add_format({'font_size':11,'align':'vcentre','bold':True})
         format2 = workbook.add_format({'font_size':9,'align':'vcentre','bold':True})
+        sl_no_format = workbook.add_format({'font_size': 9, 'align': 'left', 'bold': True})
         format3 = workbook.add_format({'font_size':9,'align':'vcentre','bold':False})
         format4 = workbook.add_format({'font_size':9,'align':'vcentre','bold':False})
         format5 = workbook.add_format({'font_size':9,'align':'vcentre','bold':True})
         sheet = workbook.add_worksheet('BTOB BILL BY DATE WISE')
-        sheet.write(2, 4, "TRAVANCORE HOMEO-GST TAX REPORT", format)
+        sheet.write(2, 3, "TRAVANCORE HOMEO-GST TAX REPORT", format)
         # sheet.write(3, 3, "BTOB TAX REPORT BY HSN WISE", str(lines.from_date), '-', str(lines.to_date), format)
-        sheet.write(3, 3, "BTOB TAX REPORT BY HSN WISE {} - {}".format(lines.from_date, lines.to_date), format)
+        sheet.write(3, 2, "BTOB TAX REPORT BY HSN WISE {} - {}".format(lines.from_date, lines.to_date), format)
 
+        sheet.write(5, 2, "No", format1)
         sheet.write(5, 3, "Customer", format1)
         sheet.write(5, 5, "GSTIN", format1)
         sheet.write(5, 7, "BillDate", format1)
@@ -49,12 +51,15 @@ class BtobHsnXlsx(ReportXlsx):
         bill_amount_total = 0
         tax_total = 0
         amt_total = 0
+        sl_no = 1
         for rec in invoice_ids:
+            sheet.write(sub_head_row, 2, sl_no ,  sl_no_format)
             sheet.write(sub_head_row, 3, rec.partner_id.name or '',  format2)
             sheet.write(sub_head_row, 5, rec.partner_id.gst_no, format2)
             sheet.write(sub_head_row, 7, rec.date_invoice, format2)
             sheet.write(sub_head_row, 8, rec.number2, format2)
             sub_head_row += 1
+            sl_no += 1
             sheet.write(sub_head_row, 3, "HSN", format3)
             sheet.write(sub_head_row, 4, "QTY", format3)
             sheet.write(sub_head_row, 5, "TAX", format3)
@@ -79,7 +84,7 @@ class BtobHsnXlsx(ReportXlsx):
             bill_tax_total = 0
             bill_amount_total = 0
             sub_head_row += 1
-        sheet.write(sub_head_row, 3, "Grand Total", format1)
+        sheet.write(sub_head_row, 2, "Grand Total", format1)
         sheet.write(sub_head_row, 6, tax_total, format1)
         sheet.write(sub_head_row, 7, amt_total, format1)
 
