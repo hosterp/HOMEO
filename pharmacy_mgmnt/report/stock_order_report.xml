@@ -57,7 +57,7 @@
 <!--                                            <th>Rack</th>-->
                                             <th>Potency</th>
                                             <th>Company</th>
-                                            <th>Group</th>
+<!--                                            <th>Group</th>-->
                                             <th>New Order</th>
                                         </tr>
                                     </thead>
@@ -75,9 +75,9 @@
                                             <td>
                                                 <span t-field="l.company"/>
                                             </td>
-                                            <td>
-                                                <span t-field="l.medicine_grp1"/>
-                                            </td>
+<!--                                            <td>-->
+<!--                                                <span t-field="l.medicine_grp1"/>-->
+<!--                                            </td>-->
                                             <td>
                                                 <span t-field="l.new_order"/>
                                             </td>
