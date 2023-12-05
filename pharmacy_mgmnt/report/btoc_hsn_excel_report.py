@@ -4,7 +4,7 @@ except ImportError:
     class ReportXlsx(object):
         def __init__(self, *args, **kwargs):
             pass
-
+from datetime import datetime
 class BtocHsnXlsx(ReportXlsx):
     def generate_xlsx_report(self, workbook, data, lines):
         if lines.type == 'interstate':
@@ -54,7 +54,14 @@ class BtocHsnXlsx(ReportXlsx):
         format3 = workbook.add_format({'font_size':9,'align':'vcentre','bold':False})
         sheet = workbook.add_worksheet('BTOB BILL BY DATE WISE')
         sheet.write(2, 3, "TRAVANCORE HOMEO-GST TAX REPORT", format)
-        sheet.write(3, 2, "BTOC TAX REPORT BY HSN WISE {} - {}".format(lines.from_date, lines.to_date), format)
+        from_date_str = lines.from_date
+        to_date_str = lines.to_date
+        from_date = datetime.strptime(from_date_str, '%Y-%m-%d')
+        to_date = datetime.strptime(to_date_str, '%Y-%m-%d')
+        formatted_from_date = from_date.strftime('%d-%m-%Y')
+        formatted_to_date = to_date.strftime('%d-%m-%Y')
+        sheet.write(3, 2, "BTOC TAX REPORT BY HSN WISE {} - {}".format(formatted_from_date, formatted_to_date), format)
+        # sheet.write(3, 2, "BTOC TAX REPORT BY HSN WISE {} - {}".format(lines.from_date, lines.to_date), format)
         sheet.write(5, 2, "ItemDescri", format1)
         sheet.write(5, 4, "CountOfQT", format1)
         sheet.write(5, 6, "TaxPer", format1)
