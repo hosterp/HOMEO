@@ -32,7 +32,6 @@ class StockViewOrder(models.Model):
         if vals.get('sl_no', 'New') == 'New':
             vals['sl_no'] = self.env['ir.sequence'].next_by_code(
                 'stock.order') or 'New'
-            print(vals, 'valsssssssssssssssssssssssssss')
         result = super(StockViewOrder, self).create(vals)
         return result
 
@@ -389,10 +388,22 @@ class SalesOrderLine(models.Model):
         redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
             base_url, self.invoice_id.id)
         return {
-            'type': 'ir.actions.act_url',
-            'url': redirect_url,
-            'target': 'self',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': self.invoice_id.id,
+            'res_model': 'account.invoice',
+            'view_id': self.env.ref('account.invoice_form').id,
+            'type': 'ir.actions.act_window',
+            'context': {'type': 'out_invoice'},
+            'flags': {'action_buttons': True},
+            # 'target': 'current',
+            # 'clear': 1,
         }
+        # return {
+        #     'type': 'ir.actions.act_url',
+        #     'url': redirect_url,
+        #     'target': 'self',
+        # }
 
 
 
@@ -419,9 +430,21 @@ class StockPurchaseOrderLine(models.Model):
         redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=328&action=399" % (
             base_url, self.invoice_id.id)
         return {
-            'type': 'ir.actions.act_url',
-            'url': redirect_url,
-            'target': 'self',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': self.invoice_id.id,
+            'res_model': 'account.invoice',
+            'view_id': self.env.ref('account.invoice_supplier_form').id,
+            'type': 'ir.actions.act_window',
+            'context': {'type': 'out_invoice'},
+            'flags': {'action_buttons': True},
+            # 'target': 'current',
+            # 'clear': 1,
         }
+        # return {
+        #     'type': 'ir.actions.act_url',
+        #     'url': redirect_url,
+        #     'target': 'self',
+        # }
 
 
