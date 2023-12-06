@@ -20,6 +20,8 @@
                 <header>
                     <button name="print_enquiry_report" string="Print Report" type="object"
                             class="oe_highlight"/>
+                    <button name="print_enquiry_report_excel" string="Print Excel" type="object"
+                            class="oe_highlight"/>
                     <button name="purchase_button" string="Purchased" type="object"
                             class="oe_highlight"/>
                      <field name="state" nolabel="1" widget="statusbar" statusbar_visible="draft,order,purchased"/>
@@ -60,6 +62,16 @@
             <field name="context">{}</field>
             <field name="target">current</field>
         </record>
+        <report
+                id="enquiry_report_xlsx_id"
+                string="Enquiry Report"
+                model="medicine.enquiry"
+                report_type="xlsx"
+                name="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"
+                file="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"
+                attachment_use="False"
+
+        />
         <menuitem id="menu_enquiry_main"
                   name="Enquiry"
                   sequence="14"/>
