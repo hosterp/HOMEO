@@ -13,7 +13,7 @@ from . import b2c_date_excel
 
 from . import enquiry_report_excel
 
-
+from . import stock_order_report_excel
 from . import btob_hsn_excel_report
 from . import btoc_hsn_excel_report
 

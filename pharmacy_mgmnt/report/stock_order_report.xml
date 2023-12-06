@@ -54,9 +54,9 @@
                                     <thead>
                                         <tr>
                                             <th>Medicine</th>
-<!--                                            <th>Rack</th>-->
+                                            <th>Packing</th>
                                             <th>Potency</th>
-                                            <th>Company</th>
+<!--                                            <th>Company</th>-->
 <!--                                            <th>Group</th>-->
                                             <th>New Order</th>
                                         </tr>
@@ -66,15 +66,15 @@
                                             <td>
                                                 <span t-field="l.medicine_id"/>
                                             </td>
-<!--                                            <td>-->
-<!--                                                <span t-field="l.rack"/>-->
-<!--                                            </td>-->
+                                            <td>
+                                                <span t-field="l.medicine_name_packing"/>
+                                            </td>
                                             <td>
                                                 <span t-field="l.potency"/>
                                             </td>
-                                            <td>
-                                                <span t-field="l.company"/>
-                                            </td>
+<!--                                            <td>-->
+<!--                                                <span t-field="l.company"/>-->
+<!--                                            </td>-->
 <!--                                            <td>-->
 <!--                                                <span t-field="l.medicine_grp1"/>-->
 <!--                                            </td>-->

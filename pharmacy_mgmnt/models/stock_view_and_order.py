@@ -51,6 +51,7 @@ class StockViewOrder(models.Model):
                         'medicine_id': rec.medicine_id.id,
                         'rack': rec.rack.id,
                         'potency': rec.potency.id,
+                        'company': rec.company.id,
                         'medicine_name_packing': rec.medicine_name_packing.id,
                         'medicine_grp1': rec.medicine_grp1.id,
                         'qty': rec.qty,
@@ -65,16 +66,29 @@ class StockViewOrder(models.Model):
             self.order_ids = new_lines
 
     @api.multi
+    def print_stock_order_report_excel(self):
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        return {'type': 'ir.actions.report.xml',
+                'report_name': 'pharmacy_mgmnt.print_stock_order_report_xlsx.xlsx',
+                'datas': datas
+                }
+    @api.multi
     def print_stock_order_report(self):
         if self.stock_view_ids:
             new_lines = []
             for rec in self.stock_view_ids:
                 if rec.number_of_order != 0:
                     new_lines.append((0, 0, {
-                        'medicine_1': rec.medicine_1.id,
+
                         'medicine_id': rec.medicine_id.id,
                         'rack': rec.rack.id,
                         'potency': rec.potency.id,
+                        # 'company': rec.company.id,
                         'medicine_name_packing': rec.medicine_name_packing.id,
                         'medicine_grp1': rec.medicine_grp1.id,
                         'qty': rec.qty,
@@ -113,10 +127,11 @@ class StockViewOrder(models.Model):
             for rec in self.stock_view_ids:
                 if rec.number_of_order != 0:
                     new_lines.append((0, 0, {
-                        'medicine_1': rec.medicine_1.id,
+
                         'medicine_id': rec.medicine_id.id,
                         'rack': rec.rack.id,
                         'potency': rec.potency.id,
+                        # 'company': rec.company.id,
                         'medicine_name_packing': rec.medicine_name_packing.id,
                         'medicine_grp1': rec.medicine_grp1.id,
                         'qty': rec.qty,
