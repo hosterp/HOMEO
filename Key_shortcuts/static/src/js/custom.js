@@ -125,6 +125,11 @@ $.shortcut('121', function() {
 	});
 });
 $(document).ready(function(){
+    $(document).on('blur', "input[type=text],textarea", function () {
+        $(this).val(function (_, val) {
+            return val.toUpperCase();
+        });
+    });
     $(document).on('click' , '.field_boolean', function(){
         var q_bal = $(this).parent('span[data-fieldname="select"]').siblings('span.oe_form_field[data-fieldname="residual"]').children('span.oe_form_char_content').text();
         var amount = $('.payment_total_calculation').children('span.oe_form_field_float').children('span.oe_form_char_content').text();
