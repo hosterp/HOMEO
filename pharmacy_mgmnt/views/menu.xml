@@ -625,14 +625,14 @@
                   sequence="4"/>
 
 
-        <menuitem action="action_rack_stock_transfer"
-                  id="menu_stock_change_rack_under_stock_menu"
-                  name="Full Stock Transfer"
-                  sequence="7"
-                  parent="r2"/>
+<!--        <menuitem action="action_rack_stock_transfer"-->
+<!--                  id="menu_stock_change_rack_under_stock_menu"-->
+<!--                  name="Full Stock Transfer"-->
+<!--                  sequence="7"-->
+<!--                  parent="r2"/>-->
         <menuitem action="action_rack_stock_transfer_partial"
                   id="menu_stock_change_rack_partial_under_stock_menu"
-                  name="Partial Stock Transfer"
+                  name="Stock Transfer"
                   sequence="8"
                   parent="r2"/>
 
