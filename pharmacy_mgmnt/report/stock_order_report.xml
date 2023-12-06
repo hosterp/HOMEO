@@ -56,7 +56,7 @@
                                             <th>Medicine</th>
                                             <th>Packing</th>
                                             <th>Potency</th>
-                                            <th>Company</th>
+<!--                                            <th>Company</th>-->
 <!--                                            <th>Group</th>-->
                                             <th>New Order</th>
                                         </tr>
@@ -72,9 +72,9 @@
                                             <td>
                                                 <span t-field="l.potency"/>
                                             </td>
-                                            <td>
-                                                <span t-field="l.company"/>
-                                            </td>
+<!--                                            <td>-->
+<!--                                                <span t-field="l.company"/>-->
+<!--                                            </td>-->
 <!--                                            <td>-->
 <!--                                                <span t-field="l.medicine_grp1"/>-->
 <!--                                            </td>-->
