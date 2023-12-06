@@ -73,7 +73,7 @@ class BtocDateXlsx(ReportXlsx):
             for date, values in merged_data.items():
                 data_list.append({
                     # 'date': date,
-                    'date': date.strftime('%d-%m-%y'),
+                    'date': date.strftime('%d-%m-%Y'),
                     'tax_5_sum': values['tax_5_sum'],
                     'tax_12_sum': values['tax_12_sum'],
                     'tax_18_sum': values['tax_18_sum'],
@@ -97,7 +97,16 @@ class BtocDateXlsx(ReportXlsx):
             format3 = workbook.add_format({'font_size': 9, 'align': 'vcentre', 'bold': True})
             sheet = workbook.add_worksheet('b2c by date wise')
             sheet.write(2, 4, "TRAVANCORE HOMEO-GST TAX REPORT", format)
-            sheet.write(3, 4, "BTOC TAX REPORT BY BILL WISE", format)
+            from_date_str = lines.from_date
+            to_date_str = lines.to_date
+            from_date = datetime.strptime(from_date_str, '%Y-%m-%d')
+            to_date = datetime.strptime(to_date_str, '%Y-%m-%d')
+            formatted_from_date = from_date.strftime('%d-%m-%Y')
+            formatted_to_date = to_date.strftime('%d-%m-%Y')
+            sheet.write(3, 3, "BTOC TAX REPORT BY BILL WISE {} - {}".format(formatted_from_date, formatted_to_date),
+                        format)
+
+            # sheet.write(3, 4, "BTOC TAX REPORT BY BILL WISE", format)
 
             sheet.write(5, 0, "DATE", format1)
             sheet.write(5, 1, "Sales5%", format1)

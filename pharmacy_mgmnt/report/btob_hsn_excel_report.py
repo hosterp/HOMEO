@@ -4,7 +4,7 @@ except ImportError:
     class ReportXlsx(object):
         def __init__(self, *args, **kwargs):
             pass
-
+from datetime import datetime
 class BtobHsnXlsx(ReportXlsx):
     def generate_xlsx_report(self, workbook, data, lines):
         if lines.type == 'interstate':
@@ -37,8 +37,15 @@ class BtobHsnXlsx(ReportXlsx):
         format5 = workbook.add_format({'font_size':9,'align':'vcentre','bold':True})
         sheet = workbook.add_worksheet('BTOB BILL BY DATE WISE')
         sheet.write(2, 3, "TRAVANCORE HOMEO-GST TAX REPORT", format)
+        from_date_str = lines.from_date
+        to_date_str = lines.to_date
+        from_date = datetime.strptime(from_date_str, '%Y-%m-%d')
+        to_date = datetime.strptime(to_date_str, '%Y-%m-%d')
+        formatted_from_date = from_date.strftime('%d-%m-%Y')
+        formatted_to_date = to_date.strftime('%d-%m-%Y')
+        sheet.write(3, 2, "BTOC TAX REPORT BY HSN WISE {} - {}".format(formatted_from_date, formatted_to_date), format)
         # sheet.write(3, 3, "BTOB TAX REPORT BY HSN WISE", str(lines.from_date), '-', str(lines.to_date), format)
-        sheet.write(3, 2, "BTOB TAX REPORT BY HSN WISE {} - {}".format(lines.from_date, lines.to_date), format)
+        # sheet.write(3, 2, "BTOB TAX REPORT BY HSN WISE {} - {}".format(lines.from_date, lines.to_date), format)
 
         sheet.write(5, 2, "No", format1)
         sheet.write(5, 3, "Customer", format1)
@@ -56,7 +63,12 @@ class BtobHsnXlsx(ReportXlsx):
             sheet.write(sub_head_row, 2, sl_no ,  sl_no_format)
             sheet.write(sub_head_row, 3, rec.partner_id.name or '',  format2)
             sheet.write(sub_head_row, 5, rec.partner_id.gst_no, format2)
-            sheet.write(sub_head_row, 7, rec.date_invoice, format2)
+
+            date_str = rec.date_invoice
+            from_date = datetime.strptime(date_str, '%Y-%m-%d')
+            formatted_from_date = from_date.strftime('%d-%m-%Y')
+
+            sheet.write(sub_head_row, 7, formatted_from_date, format2)
             sheet.write(sub_head_row, 8, rec.number2, format2)
             sub_head_row += 1
             sl_no += 1

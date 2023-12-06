@@ -4,7 +4,7 @@ except ImportError:
     class ReportXlsx(object):
         def __init__(self, *args, **kwargs):
             pass
-
+from datetime import datetime
 class BtobDateXlsx(ReportXlsx):
     def generate_xlsx_report(self, workbook, data, lines):
         if lines.type == 'interstate':
@@ -60,7 +60,15 @@ class BtobDateXlsx(ReportXlsx):
         format3 = workbook.add_format({'font_size':9,'align':'vcentre','bold':True})
         sheet = workbook.add_worksheet('BTOB BILL BY DATE WISE')
         sheet.write(2, 4, "TRAVANCORE HOMEO-GST TAX REPORT", format)
-        sheet.write(3, 4, "BTOB TAX REPORT BY BILL WISE", format)
+        from_date_str = lines.from_date
+        to_date_str = lines.to_date
+        from_date = datetime.strptime(from_date_str, '%Y-%m-%d')
+        to_date = datetime.strptime(to_date_str, '%Y-%m-%d')
+        formatted_from_date = from_date.strftime('%d-%m-%Y')
+        formatted_to_date = to_date.strftime('%d-%m-%Y')
+        sheet.write(3, 2, "BTOB TAX REPORT BY BILL WISE {} - {}".format(formatted_from_date, formatted_to_date),
+                    format)
+        # sheet.write(3, 2, "BTOB TAX REPORT BY BILL WISE", format)
 
         sheet.write(5, 0,"DATE",format1)
         sheet.write(5, 1,"Bill No",format1)
@@ -89,7 +97,11 @@ class BtobDateXlsx(ReportXlsx):
         cgst_18 = 0
         igst_18 = 0
         for rec in data_list:
-            sheet.write(row, 0, rec['invoice'].date_invoice, format2)
+            date_str = rec['invoice'].date_invoice
+            from_date = datetime.strptime(date_str, '%Y-%m-%d')
+            formatted_from_date = from_date.strftime('%d-%m-%Y')
+
+            sheet.write(row, 0, formatted_from_date, format2)
             sheet.write(row, 1, rec['invoice'].number2, format2)
             sheet.write(row, 2, rec['invoice'].partner_id.name, format2)
             sheet.write(row, 3, rec['invoice'].partner_id.gst_no, format2)
