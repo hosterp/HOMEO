@@ -18,7 +18,7 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <header>
-                    <button name="print_enquiry_report" string="Print Report" type="object"
+                    <button name="print_enquiry_report" string="Print PDF" type="object"
                             class="oe_highlight"/>
                     <button name="print_enquiry_report_excel" string="Print Excel" type="object"
                             class="oe_highlight"/>
