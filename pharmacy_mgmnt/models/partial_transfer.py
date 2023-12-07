@@ -3,6 +3,7 @@ from openerp import models, fields, api
 
 class PartialTransfer1(models.TransientModel):
     _name = 'partial.transf'
+    _rec_name = 'racks_id_1'
 
     full_trans = fields.Boolean()
     racks_id_1 = fields.Many2one('product.medicine.types', string='From')
@@ -13,12 +14,16 @@ class PartialTransfer1(models.TransientModel):
         string=' ',
         store=True,
     )
+    stock_trasferto_ids = fields.One2many(
+        comodel_name='stock.transferto',
+        inverse_name='transfer_to_id',
+        string=' ',
+        store=True,
+    )
 
     @api.multi
     def load_lines(self):
         self.stock_part_id = False
-        # self.write({'stock_part_id':False})
-        # stock_obj = self.env['entry.stock'].search([])
         stock_obj = self.env['entry.stock'].search([('rack', '=', self.racks_id_1.id),('qty', '!=', 0)])
         if stock_obj:
             new_lines = []
@@ -37,20 +42,20 @@ class PartialTransfer1(models.TransientModel):
         else:
             self.stock_part_id = [(5, 0, 0)]
             print("no stock")
-        return {
-            'context': self.env.context,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'partial.transf',
-            'res_id': self.id,
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-        }
+        # return {
+        #     'context': self.env.context,
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'partial.transf',
+        #     'res_id': self.id,
+        #     'view_id': False,
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'new',
+        # }
 
     @api.onchange('racks_id_1')
-    def onchange_load_lines(self):
-        # self.stock_part_id = False
+    def onchange_load_lines_r1(self):
+        self.stock_part_id = False
         stock_obj = self.env['entry.stock'].search([('rack', '=', self.racks_id_1.id),('qty', '!=', 0)])
         if stock_obj:
             new_lines = []
@@ -67,20 +72,42 @@ class PartialTransfer1(models.TransientModel):
                     'entry_stock_id': rec.id,
                 }))
             self.stock_part_id = new_lines
-            self.write({'stock_part_id': new_lines})
         else:
             self.stock_part_id = [(5, 0, 0)]
             print("no stock")
-        return {
-            'context': self.env.context,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'partial.transf',
-            'res_id': self.id,
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-        }
+        # return {
+        #     'context': self.env.context,
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'partial.transf',
+        #     'res_id': self.id,
+        #     'view_id': False,
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'new',
+        # }
+
+    @api.onchange('racks_id_2')
+    def onchange_load_lines_r2(self):
+        self.stock_trasferto_ids = False
+        stock_obj = self.env['entry.stock'].search([('rack', '=', self.racks_id_2.id), ('qty', '!=', 0)])
+        if stock_obj:
+            new_lines = []
+            for rec in stock_obj:
+                print("rec.id", rec.id)
+                new_lines.append((0, 0, {
+                    'qty': round(rec.qty, 0),
+                    'name': rec.medicine_1.name,
+                    'medicine_1': rec.medicine_1.id,
+                    'potency': rec.potency.id,
+                    'medicine_name_packing': rec.medicine_name_packing.id,
+                    'company': rec.company.id,
+                    'batch_2': rec.batch_2.id,
+                    'entry_stock_id': rec.id,
+                }))
+            self.stock_trasferto_ids = new_lines
+        else:
+            self.stock_trasferto_ids = [(5, 0, 0)]
+            print("no stock")
     @api.multi
     def part_transfer(self):
         # stock_obj = self.env['entry.stock'].search([('rack', '=', self.racks_id_1.id)])
@@ -116,16 +143,16 @@ class PartialTransfer1(models.TransientModel):
             for rec in self:
                 rec.write({'stock_part_id': [(5, 0, 0)]})
 
-        return {
-            'context': self.env.context,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'partial.transf',
-            'res_id': self.id,
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-        }
+        # return {
+        #     'context': self.env.context,
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'partial.transf',
+        #     'res_id': self.id,
+        #     'view_id': False,
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'new',
+        # }
 
 
     @api.multi
@@ -137,16 +164,16 @@ class PartialTransfer1(models.TransientModel):
             for rec in self:
                 rec.write({'stock_part_id': [(5, 0, 0)]})
 
-        return {
-            'context': self.env.context,
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'partial.transf',
-            'res_id': self.id,
-            'view_id': False,
-            'type': 'ir.actions.act_window',
-            'target': 'new',
-        }
+        # return {
+        #     'context': self.env.context,
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'partial.transf',
+        #     'res_id': self.id,
+        #     'view_id': False,
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'new',
+        # }
 
 
 class PartTranserNew1(models.TransientModel):
@@ -163,5 +190,22 @@ class PartTranserNew1(models.TransientModel):
     medicine_1 = fields.Many2one('product.product', string="Medicine")
     qty_received = fields.Float('Qty Transfer')
     full_id1 = fields.Many2one('partial.transf', string='Stock')
+    qty_transfer = fields.Char('Transfer_Qty')
+    entry_stock_id = fields.Many2one('entry.stock')
+
+class stockTransferto(models.TransientModel):
+    _name = 'stock.transferto'
+#
+    transfer_to_id = fields.Many2one('partial.transf')
+    expiry_date = fields.Date(string='Expiry Date')
+    manf_date = fields.Date(string='Manufacturing Date')
+    potency = fields.Many2one('product.medicine.subcat', 'Potency', )
+    batch_2 = fields.Many2one('med.batch', "Batch")
+    rack = fields.Many2one('product.medicine.types', 'Rack')
+    qty = fields.Float('Stock')
+    company = fields.Many2one('product.medicine.responsible', 'Company')
+    medicine_name_packing = fields.Many2one('product.medicine.packing', 'Packing', )
+    medicine_1 = fields.Many2one('product.product', string="Medicine")
+    qty_received = fields.Float('Qty Transfer')
     qty_transfer = fields.Char('Transfer_Qty')
     entry_stock_id = fields.Many2one('entry.stock')
