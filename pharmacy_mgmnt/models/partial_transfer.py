@@ -1,4 +1,5 @@
 from openerp import models, fields, api
+from openerp.exceptions import ValidationError
 
 
 class PartialTransfer1(models.TransientModel):
@@ -112,9 +113,8 @@ class PartialTransfer1(models.TransientModel):
     def part_transfer(self):
         # stock_obj = self.env['entry.stock'].search([('rack', '=', self.racks_id_1.id)])
         # if stock_obj:
-        if self.stock_part_id:
+        if self.stock_part_id and self.racks_id_2:
             for item in self.stock_part_id:
-                print("item.entry_stock_id", item.entry_stock_id)
                 if item.qty_transfer != 0:
                     if item.qty == float(item.qty_transfer):
                         item.entry_stock_id.rack = self.racks_id_2.id
@@ -140,8 +140,10 @@ class PartialTransfer1(models.TransientModel):
 
                         }
                         self.env['entry.stock'].create(vals)
-            for rec in self:
-                rec.write({'stock_part_id': [(5, 0, 0)]})
+        else:
+            raise ValidationError("Select Rack or Stock Item!")
+        for rec in self:
+            rec.write({'stock_part_id': [(5, 0, 0)]})
 
         # return {
         #     'context': self.env.context,
@@ -158,11 +160,14 @@ class PartialTransfer1(models.TransientModel):
     @api.multi
     def full_transfer(self):
         stock_obj = self.env['entry.stock'].search([('rack', '=', self.racks_id_1.id)])
-        if stock_obj:
-            for rec in stock_obj:
-                rec.write({'rack': self.racks_id_2.id})
-            for rec in self:
-                rec.write({'stock_part_id': [(5, 0, 0)]})
+        if self.racks_id_2:
+            if stock_obj:
+                for rec in stock_obj:
+                    rec.write({'rack': self.racks_id_2.id})
+                for rec in self:
+                    rec.write({'stock_part_id': [(5, 0, 0)]})
+        else:
+            raise ValidationError("Select Rack!")
 
         # return {
         #     'context': self.env.context,

@@ -38,7 +38,7 @@
                                 <notebok>
                                     <page string="Rack From">
                                         <field name="stock_part_id" style="width: 20%">
-                                            <tree editable="left">
+                                            <tree editable="top">
                                                 <field name="entry_stock_id" invisible="1"/>
                                                 <field name="qty" type="char"/>
                                                 <field name="medicine_1"/>
@@ -52,7 +52,7 @@
                                     </page>
                                     <page string="Rack To">
                                         <field name="stock_trasferto_ids" style="width: 20%">
-                                            <tree editable="right">
+                                            <tree editable="bottom">
                                                 <field name="entry_stock_id" invisible="1"/>
                                                 <field name="qty" type="char"/>
                                                 <field name="medicine_1"/>
