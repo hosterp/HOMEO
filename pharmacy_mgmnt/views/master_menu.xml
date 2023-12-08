@@ -157,7 +157,7 @@
                   sequence="5" parent="menu_med_configurations"/>
         <menuitem action="action_grp_config_detail_entry" id="menu_med_config_child_3"
                   name="Group-Product-Potency Link"
-                  sequence="11" parent="menu_med_configurations"/>
+                  sequence="6" parent="menu_med_configurations"/>
         <!--        <menuitem action="action_tax_combo_config_detail_entry" id="menu_med_config_child_4"-->
         <!--                      name="Group-Potency Link"-->
         <!--                      sequence="7" parent="menu_med_configurations"/>-->
@@ -165,11 +165,11 @@
                   name="Suppliers"
                   sequence="8" parent="menu_med_configurations"/>
         <menuitem action="action_partner_form" id="menu_customers"
-                  name="Customers/Retailers"
+                  name="Customers"
                   sequence="9" parent="menu_med_configurations"/>
         <menuitem action="action_inv_responsible"
                   id="menu_responsible_persons"
-                  name="Responsible Persons-Sale"
+                  name="Responsible Persons"
                   sequence="10"
                   parent="menu_med_configurations"/>
         <menuitem id="menu_main_financial_year"
