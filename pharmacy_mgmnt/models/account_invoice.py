@@ -50,11 +50,12 @@ class AccountInvoiceLine(models.Model):
                 ('product_of', '=', vals['product_of']),
                 ('medicine_grp', '=', vals['medicine_grp']),
                 ('medicine_name_packing', '=', vals['medicine_name_packing']),
-                ('medicine_name_subcat', '=', vals['medicine_name_subcat'])
+                ('invoice_line_tax_id4', '=', vals['invoice_line_tax_id4']),
+                ('medicine_name_subcat', '=', vals['medicine_name_subcat']),
             ], limit=1)
 
             if existing_record:
-                # If similar record exists, update the quantity field instead of creating a new record
+                # If similar record exist full_cleared_dbs, update the quantity field instead of creating a new record
                 existing_record.write({
                     'quantity': existing_record.quantity + vals.get('quantity', 0)
                 })
