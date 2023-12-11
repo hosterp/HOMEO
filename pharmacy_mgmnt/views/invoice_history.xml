@@ -22,7 +22,7 @@
                             <button name="testfunction" type="object" string="Group " class="oe_highlight"/>
                         </group>
                         <group>
-                            <button name="action_discount" type="object" string="Group Discount" class="oe_highlight" states="draft"/>
+                            <button name="action_discount" type="object" string="Group Discount " class="oe_highlight hiworth" states="draft"/>
                         </group>
                         <group>
                             <button name="action_discount1" type="object" string="Group Discounts" class="oe_highlight" states="open,paid"/>
