@@ -43,7 +43,7 @@ class BtobHsnXlsx(ReportXlsx):
         to_date = datetime.strptime(to_date_str, '%Y-%m-%d')
         formatted_from_date = from_date.strftime('%d-%m-%Y')
         formatted_to_date = to_date.strftime('%d-%m-%Y')
-        sheet.write(3, 2, "BTOC TAX REPORT BY HSN WISE {} - {}".format(formatted_from_date, formatted_to_date), format)
+        sheet.write(3, 2, "BTOB TAX REPORT BY HSN WISE {} - {}".format(formatted_from_date, formatted_to_date), format)
         # sheet.write(3, 3, "BTOB TAX REPORT BY HSN WISE", str(lines.from_date), '-', str(lines.to_date), format)
         # sheet.write(3, 2, "BTOB TAX REPORT BY HSN WISE {} - {}".format(lines.from_date, lines.to_date), format)
 
