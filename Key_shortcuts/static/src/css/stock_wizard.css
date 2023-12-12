@@ -68,3 +68,16 @@ max-width: 182px
 input[type=text] {
     text-transform: uppercase;
 }
+.openerp.openerp_webclient_container {
+    overflow: hidden;
+}
+.openerp .oe_form .oe_form_button {
+    float: right;
+    margin:left: 10px;
+}
+.openerp .oe_form > .oe_form_nosheet header ul:not(.oe_tooltip_technical):not(.oe_dropdown_menu) {
+    float: left;
+}
+.openerp .oe_view_manager table.oe_view_manager_header .oe_view_manager_sidebar {
+    float: inline-end;
+}
