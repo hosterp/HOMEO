@@ -1146,7 +1146,7 @@
                                 class="oe_highlight"/>
                         <button class="oe_highlight" type="object" name="open_tree_view_history" string="Sale History"
                                 states="draft,paid" invisible="1"/>
-                        <field name="state" widget="statusbar"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,bounced,paid"/>
                     </header>
                     <h1>
                         <group>

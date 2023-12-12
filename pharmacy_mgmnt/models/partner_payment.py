@@ -129,9 +129,9 @@ class PartnerPayment(models.Model):
 
     @api.onchange('payment_amount')
     def onchange_payment_amount(self):
-        if self.payment_amount != 0:
-            if self.advance_amount and self.payment_method != 'cheque':
-                self.payment_amount+=self.advance_amount
+        if self.payment_amount != 0 and self.payment_method != 'cheque':
+            if self.advance_amount:
+                self.payment_amount += self.advance_amount
         self.calc_amount = self.payment_amount
 
     @api.onchange('deposit_date', 'clearence_date')
@@ -810,24 +810,27 @@ class PartnerPayment(models.Model):
         vals.update({'state': 'draft'})
         vals.update({'account_id': 25})
         result = super(PartnerPayment, self).create(vals)
-        if result.payment_amount==0 and self.advance_amount!=0:
-            result.payment_amount+=self.advance_amount
+        # if result.payment_amount==0 and self.advance_amount!=0:
+        #     result.payment_amount+=self.advance_amount
         if result.payment_method == 'cheque':
-            vals = {
-                'name': result.partner_id.id,
-                'cheque_no': result.cheque_no,
-                't_date': result.date,
-                'cheque_amt': result.payment_amount,
-                'invoice_ids':  [(4, rec.invoice_id.id, 0) for rec in result.invoice_ids],
-                'cheque_date': result.cheque_date,
-                'deposit_date': result.deposit_date,
-                'clearance_date': result.clearence_date,
-                'bank': result.bank,
-                'branch': result.branch,
-                'ifsc': result.ifsc,
-                'state': 'draft'
-            }
-            cheque = self.env['cheque.entry'].create(vals)
+            if result.payment_amount != 0:
+                vals = {
+                    'name': result.partner_id.id,
+                    'cheque_no': result.cheque_no,
+                    't_date': result.date,
+                    'cheque_amt': result.payment_amount,
+                    'invoice_ids':  [(4, rec.invoice_id.id, 0) for rec in result.invoice_ids],
+                    'cheque_date': result.cheque_date,
+                    'deposit_date': result.deposit_date,
+                    'clearance_date': result.clearence_date,
+                    'bank': result.bank,
+                    'branch': result.branch,
+                    'ifsc': result.ifsc,
+                    'state': 'draft'
+                }
+                cheque = self.env['cheque.entry'].create(vals)
+            else:
+                raise ValidationError("Enter the Payment Amount")
         else:
             pass
         return result
