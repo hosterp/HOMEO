@@ -258,6 +258,11 @@ $(document).ready(function() {
         $('.oe_form_field_one2many_list_row_add a').trigger('click');
     }
   });
+ $(document).on('keyup', '.hsn', function (event) {
+    if (event.keyCode === 13) {
+        $('.oe_form_field_one2many_list_row_add a').trigger('click');
+    }
+  });
 
 
 

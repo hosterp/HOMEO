@@ -72,7 +72,7 @@
                     <field name="expiry_date" readonly="1" invisible="1"/>
                     <field name="medicine_rack" invisible="1"/>
                     <field name="rack_qty" invisible="1"/>
-                    <field name="hsn_code"/>
+                    <field name="hsn_code" class="hsn"/>
                 </xpath>
                 <xpath expr="//field[@name='tax_line']" position="attributes">
                     <attribute name="invisible">1</attribute>
