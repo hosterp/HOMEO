@@ -250,6 +250,7 @@
 
                 <xpath expr="//group//group/field[@name='account_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
+                    <attribute name="required">0</attribute>
                 </xpath>
 
                 <xpath expr="//group//field[@name='fiscal_position']" position="attributes">
@@ -1223,7 +1224,7 @@
                                     <field name="res_person" readonly="1"/>
                                     <field name="select" readonly="0"/>
                                     <field name="invoice_id" invisible="1"/>
-                                    <field name="account_id" invisible="1"/>
+                                    <field name="account_id" invisible="1" />
                                 </tree>
                             </field>
                         </page>

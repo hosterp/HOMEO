@@ -16,29 +16,29 @@
                 </xpath>
 
                 <xpath expr="//button[@name='invoice_cancel']" position="after">
-<!--                    <button name="move_to_holding_invoice" string="Import to Holding Invoice" type="object"-->
-<!--                            class="oe_highlight" attrs="{'invisible':[('holding_invoice', '=', True)]}"/>-->
-<!--                    <button name="move_to_picking_slip" string="Import to Packing Slip" type="object"-->
-<!--                            class="oe_highlight"-->
-<!--                            attrs="{'invisible':[('cus_invoice', '=', False),('holding_invoice', '=', False)]}"/>-->
+                    <!--                    <button name="move_to_holding_invoice" string="Import to Holding Invoice" type="object"-->
+                    <!--                            class="oe_highlight" attrs="{'invisible':[('holding_invoice', '=', True)]}"/>-->
+                    <!--                    <button name="move_to_picking_slip" string="Import to Packing Slip" type="object"-->
+                    <!--                            class="oe_highlight"-->
+                    <!--                            attrs="{'invisible':[('cus_invoice', '=', False),('holding_invoice', '=', False)]}"/>-->
                     <button name="import_to_invoice" string="Import to Invoice" type="object" class="oe_highlight"
                             attrs="{'invisible':[('cus_invoice', '=', True)]}"
                     />
                 </xpath>
-                 <xpath expr="//button[@name='invoice_open']" position="attributes" >
-<!--                     <attribute name="class">cus_validate</attribute>-->
-<!--                     <attribute name="attrs">{'invisible':['|','|','|',('packing_slip', '=', True),('hold_invoice', '=',-->
-<!--                        True),('state', '!=' , 'draft')]}-->
-<!--                    </attribute>-->
-                     <attribute name="class">cus_validate</attribute>
-                     <attribute name="attrs">{'invisible':['|','|',('hold_invoice', '=',
-                         True),('state', '!=' , 'draft')]}
-                     </attribute>
+                <xpath expr="//button[@name='invoice_open']" position="attributes">
+                    <!--                     <attribute name="class">cus_validate</attribute>-->
+                    <!--                     <attribute name="attrs">{'invisible':['|','|','|',('packing_slip', '=', True),('hold_invoice', '=',-->
+                    <!--                        True),('state', '!=' , 'draft')]}-->
+                    <!--                    </attribute>-->
+                    <attribute name="class">cus_validate</attribute>
+                    <attribute name="attrs">{'invisible':['|','|',('hold_invoice', '=',
+                        True),('state', '!=' , 'draft')]}
+                    </attribute>
 
-                 </xpath>
-                <xpath expr="//button[@name='action_invoice_sent']" position="attributes" >
-                     <attribute name="invisible">1</attribute>
-                 </xpath>
+                </xpath>
+                <xpath expr="//button[@name='action_invoice_sent']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="attributes">
                     <attribute name="attrs">{'readonly':[('state', 'not in',
                         ['draft','packing_slip','holding_invoice'])]}
@@ -74,8 +74,28 @@
                     <field name="rack_qty" invisible="1"/>
                     <field name="hsn_code"/>
                 </xpath>
+
+                <!--                invoice form-->
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='invoice_line_tax_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tax_line']/tree/field[@name='name']" position="attributes">
+                    <attribute name="widget">many2many_tags</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tax_line']/tree/field[@name='account_id']" position="attributes">
+                    <attribute name="widget">many2many_tags</attribute>
+                </xpath>
+
                 <xpath expr="//field[@name='tax_line']" position="attributes">
                     <attribute name="invisible">1</attribute>
+                    <attribute name="required">0</attribute>
+                    <attribute name="widget">many2many_tags</attribute>
                 </xpath>
 
             </field>
@@ -85,8 +105,8 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='invoice_open']" position="attributes" >
-                     <attribute name="class">supplier_validate</attribute>
+                <xpath expr="//button[@name='invoice_open']" position="attributes">
+                    <attribute name="class">supplier_validate</attribute>
                     <attribute name="attrs">{'invisible':[('state', '=' , 'open')]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='invoice_open']" position="after">
@@ -110,9 +130,28 @@
                     <field name="medicine_rack"/>
                     <field name="hsn_code"/>
                 </xpath>
-                <xpath expr="//field[@name='tax_line']" position="attributes">
+
+                <!--                invoice_supplier_form-->
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='tax_line']/tree/field[@name='name']" position="attributes">
+                    <attribute name="widget">many2many_tags</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tax_line']/tree/field[@name='account_id']" position="attributes">
+                    <attribute name="widget">many2many_tags</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tax_line']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="required">0</attribute>
+                    <attribute name="widget">many2many_tags</attribute>
+                </xpath>
+
+
                 <xpath expr="//page[@string='Other Info']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -131,10 +170,6 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
             <field name="arch" type="xml">
-                <!--                <xpath expr="//field[@name='financial_year']" position="after">-->
-                <!--                    <field name="picking_type_id"/>-->
-                <!--                    <field name="invoice_picking_id" invisible="1"/>-->
-                <!--                </xpath>-->
                 <xpath expr="//header" position="inside">
                     <div class="oe_button_box" name="button_box">
                         <button type="object"

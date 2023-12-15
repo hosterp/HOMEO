@@ -169,16 +169,6 @@
                     <attribute name="readonly">0</attribute>
                 </xpath>
 
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='invoice_line_tax_id']"
-                       position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
                 <xpath expr="//field[@name='number']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -217,8 +207,6 @@
                             attrs="{'invisible':['|','|',('type','=','in_invoice'),('hold_invoice','=',True),('state', '=', 'paid')]}"
                             class="save_as_holding_invoice"/>
                 </xpath>
-
-
             </field>
         </record>
         <record id="view_invoice_supplier_product_image" model="ir.ui.view">
@@ -238,15 +226,6 @@
 
                     <field name="batch_2"/>
                     <field name="batch" invisible="1"/>
-                </xpath>
-
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="attributes">
-                    <attribute name="invisible">True</attribute>
-
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_id']" position="attributes">
-                    <attribute name="invisible">True</attribute>
-
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="attributes">
                     <attribute name="string">Product</attribute>
@@ -297,6 +276,9 @@
             <field name="inherit_id" ref="base.view_users_form"/>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='login']" position="after">
+                    <field name="rec_password" placeholder="Password" class="creation_password"/>
+                </xpath>
                 <xpath expr="//notebook" position="inside">
                     <page string="Hide Menu">
                         <tree>

@@ -357,6 +357,7 @@ class ResUsers(models.Model):
 
     hide_menu_access_ids = fields.Many2many('ir.ui.menu', 'ir_ui_hide_menu_rel', 'uid', 'menu_id',
                                             string='Hide Access Menu')
+    rec_password = fields.Char()
 
 
 class Menu(models.Model):

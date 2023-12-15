@@ -5,7 +5,7 @@ from openerp import api, models, fields
 from openerp.osv import osv
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _, _logger
-from openerp.exceptions import except_orm, Warning, RedirectWarning
+from openerp.exceptions import except_orm, Warning, RedirectWarning,ValidationError
 from datetime import datetime, timedelta
 from datetime import date
 from datetime import timedelta
@@ -52,6 +52,7 @@ class AccountInvoiceLine(models.Model):
                 ('medicine_name_packing', '=', vals['medicine_name_packing']),
                 ('invoice_line_tax_id4', '=', vals['invoice_line_tax_id4']),
                 ('medicine_name_subcat', '=', vals['medicine_name_subcat']),
+                ('price_unit', '=', vals['price_unit']),
             ], limit=1)
 
             if existing_record:
@@ -1711,6 +1712,28 @@ class AccountInvoice(models.Model):
                         raise except_orm(_('CREDIT DAYS LIMIT REACHED!'), (
                                     'This Customers Credit Limit Days Are Ended' + "\n" 'Please Update the Customer Form'))
 
+    @api.constrains('create_id', 'password')
+    def check_password(self):
+        for record in self:
+            if record.create_id.rec_password == record.password:
+                # record.create_bool = True
+                pass
+            else:
+                # record.create_bool = False
+                raise ValidationError("Enter the correct password")
+
+    @api.constrains('invoice_line')
+    def check_invoice_line(self):
+        for record in self:
+            if record.invoice_line:
+                record.create_bool = True
+            else:
+                record.create_bool = False
+
+
+
+
+
 
     # MY CODE........................................
     @api.model
@@ -1759,7 +1782,6 @@ class AccountInvoice(models.Model):
             vals['seq'] = 1
             if res2:
                 last_index = int(res2.number2.split('/')[0]) + 1
-                print(last_index, 'last_index', res2)
                 vals['number2'] = str(last_index).zfill(4) + "/" + res2.number2.split('/')[1]
                 vals['cus_inv_number'] = str(last_index).zfill(4) + "/" + res2.number2.split('/')[1]
                 vals['seq'] = res2.seq + 1
@@ -2121,8 +2143,11 @@ class AccountInvoice(models.Model):
 
     cus_title_1 = fields.Many2one('customer.title', "Customer Type", related="partner_id.cus_title")
     cust_area = fields.Many2one('customer.area', "Customer Area", related="partner_id.cust_area")
+    create_id = fields.Many2one('res.users', "Created By", Required=True)
+    password = fields.Char(Required=True,)
+    create_bool = fields.Boolean(Default=False)
     paid_bool = fields.Boolean('Invoice Paid?')
-    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'),('upi', 'UPI'),], 'Payment Mode', default='cash')
+    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode', default='cash')
 
     amount_in_words = fields.Char('Amount in Words', compute='_compute_amount_in_words')
 
@@ -2170,9 +2195,7 @@ class AccountInvoice(models.Model):
         if self.partner_id.customer:
             # print(amount_untaxed,'first')
             amount_untaxed = sum(self.invoice_line.mapped('price_subtotal'))
-            print(amount_untaxed,'second')
             amount_total_w_tax = sum(self.invoice_line.mapped('amt_w_tax'))
-            print(amount_total_w_tax,'secondsecond')
             if amount_total_w_tax <= 0:
                 amount_total_w_tax = sum(self.invoice_line.mapped('grand_total'))
             total_products_tax = sum(self.invoice_line.mapped('product_tax'))

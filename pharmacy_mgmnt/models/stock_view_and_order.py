@@ -372,12 +372,22 @@ class StockViewOrderLine(models.Model):
 class StockOrderLine(models.Model):
     _name = "stock.order.lines"
     _description = 'Stock Order Line'
-    _inherits = {'entry.stock': 'medicine_1'}
+    # _inherits = {'entry.stock': 'medicine_1'}
 
     stock_order_line_id = fields.Many2one("stock.view.order", string="Medicine Entry")
-    medicine_1 = fields.Many2one('entry.stock')
-    medicine_id = fields.Many2one('product.product', string="Medicine")
     new_order = fields.Integer(string="New Order")
+
+    medicine_id = fields.Many2one('product.product', string="Medicine")
+    rack = fields.Many2one('product.medicine.types', string="rack")
+    company = fields.Many2one('product.medicine.responsible', string="company")
+    potency = fields.Many2one('product.medicine.subcat', string="potency")
+    medicine_name_packing = fields.Many2one('product.medicine.packing', string="medicine_name_packing")
+    medicine_grp1 = fields.Many2one('product.medicine.group', string="medicine_grp1")
+    qty = fields.Integer(string="qty")
+    mrp = fields.Float(string="mrp")
+    batch_2 = fields.Many2one('med.batch', string="batch_2")
+    manf_date = fields.Date()
+    expiry_date = fields.Date()
 
 
 

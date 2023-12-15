@@ -81,3 +81,13 @@ input[type=text] {
 .openerp .oe_view_manager table.oe_view_manager_header .oe_view_manager_sidebar {
     float: inline-end;
 }
+
+.creation_password {
+    font-family: 'arial';
+    color: transparent;
+    letter-spacing: 5px;
+    -webkit-text-security: disc; /* WebKit browsers (Chrome, Safari) */
+    text-security: disc; /* Standard property, works in Firefox */
+    padding: 3px;
+    border: none;
+}
