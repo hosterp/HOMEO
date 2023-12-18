@@ -316,6 +316,7 @@ class NewStockEntry(models.Model):
                         'quantity': rec.quantity_selected,
                     }))
                     cus_invoice.write({'invoice_line': new_lines})
+                    cus_invoice.write({'create_bool': True})
                 if cus_invoice.hold_invoice == True:
                     hold_qty = self.qty_received + self.quantity_selected
                     if hold_qty >= 0:
