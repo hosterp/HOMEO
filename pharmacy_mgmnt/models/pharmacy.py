@@ -46,16 +46,22 @@ class MedPotencyCombo(models.Model):
     medicine = fields.Many2one('product.product', string="Product")
     potency = fields.Many2one('product.medicine.subcat', string='Potency', requiered=True,
                               change_default=True, )
-    hsn = fields.Char(string='HSN')
     company = fields.Many2one('product.medicine.responsible', string="Company")
-    tax = fields.Float(string='Tax')
+    packing = fields.Many2one('product.medicine.packing', string="Packing")
+    # tax = fields.Float(string='Tax')
 
 
 class MedicineGroup(models.Model):
     _name = 'product.medicine.group'
     _rec_name = 'med_grp'
 
+
     med_grp = fields.Char("Group")
+    product = fields.Many2one('product.template', 'Medicine')
+    tax_rate = fields.Float('Tax(%)')
+    hsn = fields.Char(string='HSN')
+    company = fields.Many2one('product.medicine.responsible', string="Company")
+    tax_cat = fields.Selection([('rate_tax', 'RATE TAX'), ('mrp_tax', 'MRP TAX'), ], 'Type', default='rate_tax')
     potency_med_ids = fields.One2many(
         comodel_name='medpotency.combo',
         inverse_name='groups_id',
@@ -69,6 +75,8 @@ class MedicineGroup(models.Model):
             old_record = self.search([('med_grp', '=', record.med_grp)])
             if len(old_record.ids) > 1:
                 raise models.ValidationError('Group name Already Created')
+
+
 
     # _sql_constraints = [
     #     ('med_grp_name_uniq', 'unique(med_grp)', 'The name of Group must be unique !'),

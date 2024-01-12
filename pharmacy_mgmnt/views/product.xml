@@ -9,12 +9,13 @@
                         <group>
                             <field name="medicine"/>
                             <field name="company"/>
-                            <field name="hsn"/>
+                            <field name="packing"/>
 
                         </group>
                         <group>
+                            <field name="packing"/>
                             <field name="potency"/>
-                            <field name="tax"/>
+<!--                            <field name="tax"/>-->
                         </group>
                     </group>
                 </form>

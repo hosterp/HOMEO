@@ -21,8 +21,8 @@ class Discounts(models.Model):
     company = fields.Many2one('product.medicine.responsible', 'Company')
     medicine_1 = fields.Many2one('product.product', string="Medicine")
     potency = fields.Many2one('product.medicine.subcat', 'Potency', )
-    medicine_grp1 = fields.Many2one('tax.combo.new', 'Group')
-    # medicine_grp1 = fields.Many2one('product.medicine.group', 'Group')
+    # medicine_grp1 = fields.Many2one('tax.combo.new', 'Group')
+    medicine_grp1 = fields.Many2one('product.medicine.group', 'Group')
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Packing', )  # discount calculation
     discount = fields.Float('Discount(%)')
     lists_id = fields.Many2one('supplier.discounts', string='Set Discounts')
@@ -33,19 +33,16 @@ class Discounts2(models.Model):
 
     medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', )
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Packing', )
-    medicine_grp = fields.Many2one('tax.combo.new', 'Group', )
-    # medicine_grp = fields.Many2one('product.medicine.group', 'Group', )
+    # medicine_grp = fields.Many2one('tax.combo.new', 'Group', )
+    medicine_grp = fields.Many2one('product.medicine.group', 'Group', )
     discount = fields.Float('Discount')
     expiry_months = fields.Integer('Expiry Months')
-    # lists_id = fields.Many2one('set.discount', string='Set Discount')
     inv_id = fields.Float("Inv.Id", compute="_get_inv_number")
 
     @api.model
     def create(self, vals):
         result = super(Discounts2, self).create(vals)
-        print("++++++++++++++++++++++")
         for rec in result:
-            print("---------------------------")
             vals = {
                 'inv_id': result.env.context.get('active_id'),
                 'medicine_name_subcat': rec.medicine_name_subcat.id,
@@ -55,7 +52,6 @@ class Discounts2(models.Model):
 
             }
             self.env['group.discount.copy'].create(vals)
-            print("created records..................")
             print("show id...",result.env.context.get('active_id'))
         return result
 
@@ -69,8 +65,8 @@ class DiscountsCopy(models.Model):
 
     medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', )
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Packing', )
-    medicine_grp = fields.Many2one('tax.combo.new', 'Group', )
-    # medicine_grp = fields.Many2one('product.medicine.group', 'Group', )
+    # medicine_grp = fields.Many2one('tax.combo.new', 'Group', )
+    medicine_grp = fields.Many2one('product.medicine.group', 'Group', )
     discount = fields.Float('Discount')
     expiry_months = fields.Integer('Expiry Months')
     # lists_id = fields.Many2one('set.discount', string='Set Discount')

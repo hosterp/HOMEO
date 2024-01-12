@@ -69,7 +69,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">[('res_person_id','=',False),('customer','=',True)]</attribute>
+                </xpath>
                 <xpath expr="//field[@name='discount']" position="attributes">
                     <attribute name="digits">(16, 2)</attribute>
                 </xpath>
@@ -131,8 +133,10 @@
 
                     <group col="4">
                         <group name="discount">
-                            <field name="create_id"  attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>
-                            <field name="password" class="creation_password" placeholder="Password" attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>
+                            <field name="create_id"
+                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>
+                            <field name="password" class="creation_password" placeholder="Password"
+                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>
                             <field name="create_bool" readonly="1" string=" "/>
                             <field name="discount_category" attrs="{'readonly': [('state', '!=', 'draft')]}"
                                    style="width:20%%"/>

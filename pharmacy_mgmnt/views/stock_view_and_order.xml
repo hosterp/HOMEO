@@ -90,12 +90,12 @@
                                     <field name="invoice_id" readonly="1"/>
                                     <field name="partner_id" readonly="1"/>
                                     <field name="date_invoice" readonly="1"/>
-                                    <field name="product_id" readonly="1"/>
-                                    <field name="product_of" readonly="1"/>
-                                    <field name="medicine_grp" readonly="1"/>
-                                    <field name="medicine_name_subcat" readonly="1"/>
-                                    <field name="batch_2" readonly="1"/>
-                                    <field name="quantity" readonly="1"/>
+                                    <field name="product_id" string="Medicine" readonly="1"/>
+                                    <field name="product_of" string="Company" readonly="1"/>
+                                    <field name="medicine_grp" string="Group" readonly="1"/>
+                                    <field name="medicine_name_subcat" string="Potency" readonly="1"/>
+                                    <field name="batch_2" string="Batch" readonly="1"/>
+                                    <field name="quantity" string="Quantity" readonly="1"/>
                                     <field name="get_sales"/>
                                     <button name="open_invoice" type="object" string="Open" class="oe_highlight"/>
                                 </tree>
@@ -107,11 +107,11 @@
                                     <field name="invoice_id" readonly="1"/>
                                     <field name="partner_id" readonly="1"/>
                                     <field name="date_invoice" readonly="1"/>
-                                    <field name="product_id" readonly="1"/>
-                                    <field name="medicine_name_subcat" readonly="1"/>
-                                    <field name="medicine_grp" readonly="1"/>
-                                    <field name="product_of" readonly="1"/>
-                                    <field name="quantity" readonly="1"/>
+                                    <field name="product_id" string="Medicine" readonly="1"/>
+                                    <field name="medicine_name_subcat" string="Potency" readonly="1"/>
+                                    <field name="medicine_grp" string="Group" readonly="1"/>
+                                    <field name="product_of" string="Company" readonly="1"/>
+                                    <field name="quantity" string="Quantity" readonly="1"/>
                                     <button name="open_invoice" type="object" string="Open" class="oe_highlight"/>
                                 </tree>
                             </field>

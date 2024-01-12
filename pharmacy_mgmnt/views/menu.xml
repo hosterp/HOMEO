@@ -942,16 +942,19 @@
 
                         <group>
                             <field name="med_grp" style="width:50%%"/>
+                            <field name="hsn"/>
+                            <field name="tax_cat"/>
+                            <field name="tax_rate"/>
                         </group>
                         <group>
                             <field name="potency_med_ids">
-                                <tree>
+                                <tree editable="bottom">
                                     <field name="groups_id" string="Group" invisible="1"/>
-                                    <field name="potency" string="Potency"/>
                                     <field name="medicine"/>
-                                    <field name="hsn"/>
+                                    <field name="potency" string="Potency"/>
+                                    <field name="packing"/>
                                     <field name="company"/>
-                                    <field name="tax" type="char"/>
+<!--                                    <field name="tax" type="char"/>-->
                                 </tree>
                             </field>
                         </group>

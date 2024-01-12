@@ -39,7 +39,8 @@ class SalesReport(models.TransientModel):
     potency = fields.Many2one('product.medicine.subcat', 'Potency')
     packing = fields.Many2one('product.medicine.packing', 'Packing')
     company = fields.Many2one('product.medicine.responsible', 'Company')
-    group = fields.Many2one('tax.combo.new', 'Group')
+    # group = fields.Many2one('tax.combo.new', 'Group')
+    group = fields.Many2one('product.medicine.group', 'Group')
     state = fields.Selection([('open', 'Open'), ('draft', 'Draft'), ('paid', 'Paid')])
     invoice_ids = fields.One2many('sales.details', 'sales_details_id', readonly=False,
                                   store=True)

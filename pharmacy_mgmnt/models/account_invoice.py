@@ -427,7 +427,7 @@ class AccountInvoiceLine(models.Model):
                         if (lines.company.id == rec.product_of.id):
                             if (lines.medicine_1.id == rec.product_id.id):
                                 if (lines.potency.id == rec.medicine_name_subcat.id):
-                                    if (lines.medicine_grp1.medicine_grp.id == rec.medicine_grp.id):
+                                    if (lines.medicine_grp1.id == rec.medicine_grp.id):
                                         if (lines.medicine_name_packing.id == rec.medicine_name_packing.id):
                                             rec.discount = lines.discount
                                             flag = 1
@@ -499,7 +499,7 @@ class AccountInvoiceLine(models.Model):
 
             # FETCH EXTRA DDISCOUNT
             if self.medicine_grp:
-                dis_obj = self.env['group.discount'].search([('medicine_grp.medicine_grp', '=', self.medicine_grp.id),
+                dis_obj = self.env['group.discount'].search([('medicine_grp', '=', self.medicine_grp.id),
                                                              (
                                                                  'medicine_name_subcat', '=',
                                                                  self.medicine_name_subcat.id),
@@ -1000,8 +1000,10 @@ class AccountInvoiceLine(models.Model):
                                                                    ('groups_id', '=', grp_obj.id)
                                                                    ], order='id desc', limit=1)
                     if grp_obj_line:
-                        rec.hsn_code = grp_obj_line.hsn
-                        rec.invoice_line_tax_id4 = grp_obj_line.tax
+                        # rec.hsn_code = grp_obj_line.hsn
+                        # rec.invoice_line_tax_id4 = grp_obj_line.tax
+                        rec.hsn_code = grp_obj.hsn
+                        rec.invoice_line_tax_id4 = grp_obj.tax_rate
 
                     else:
                         if rec.product_id.id and rec.medicine_name_subcat.id:
@@ -1012,8 +1014,10 @@ class AccountInvoiceLine(models.Model):
                                                                            ('groups_id', '=', grp_obj.id)
                                                                            ], order='id desc', limit=1)
                             if grp_obj_line:
-                                rec.hsn_code = grp_obj_line.hsn
-                                rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                # rec.hsn_code = grp_obj_line.hsn
+                                # rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                rec.hsn_code = grp_obj.hsn
+                                rec.invoice_line_tax_id4 = grp_obj.tax_rate
 
                             else:
                                 if rec.product_id.id and rec.product_of.id:
@@ -1023,8 +1027,10 @@ class AccountInvoiceLine(models.Model):
                                                                                    ('groups_id', '=', grp_obj.id)
                                                                                    ], order='id desc', limit=1)
                                     if grp_obj_line:
-                                        rec.hsn_code = grp_obj_line.hsn
-                                        rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                        # rec.hsn_code = grp_obj_line.hsn
+                                        # rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                        rec.hsn_code = grp_obj.hsn
+                                        rec.invoice_line_tax_id4 = grp_obj.tax_rate
 
                                     else:
                                         if rec.medicine_name_subcat.id and rec.product_of.id:
@@ -1037,8 +1043,10 @@ class AccountInvoiceLine(models.Model):
                                                                                            'groups_id', '=', grp_obj.id)
                                                                                            ], order='id desc', limit=1)
                                             if grp_obj_line:
-                                                rec.hsn_code = grp_obj_line.hsn
-                                                rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                # rec.hsn_code = grp_obj_line.hsn
+                                                # rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                rec.hsn_code = grp_obj.hsn
+                                                rec.invoice_line_tax_id4 = grp_obj.tax_rate
 
                                             else:
                                                 if rec.medicine_name_subcat.id:
@@ -1049,8 +1057,10 @@ class AccountInvoiceLine(models.Model):
                                                          ('groups_id', '=', grp_obj.id)
                                                          ], order='id desc', limit=1)
                                                     if grp_obj_line:
-                                                        rec.hsn_code = grp_obj_line.hsn
-                                                        rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                        # rec.hsn_code = grp_obj_line.hsn
+                                                        # rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                        rec.hsn_code = grp_obj.hsn
+                                                        rec.invoice_line_tax_id4 = grp_obj.tax_rate
 
                                                     else:
                                                         if rec.product_id.id:
@@ -1061,8 +1071,10 @@ class AccountInvoiceLine(models.Model):
                                                                  ('groups_id', '=', grp_obj.id)
                                                                  ], order='id desc', limit=1)
                                                             if grp_obj_line:
-                                                                rec.hsn_code = grp_obj_line.hsn
-                                                                rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                                # rec.hsn_code = grp_obj_line.hsn
+                                                                # rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                                rec.hsn_code = grp_obj.hsn
+                                                                rec.invoice_line_tax_id4 = grp_obj.tax_rate
 
                                                             else:
                                                                 if rec.product_of.id:
@@ -1073,8 +1085,10 @@ class AccountInvoiceLine(models.Model):
                                                                          ('groups_id', '=', grp_obj.id)
                                                                          ], order='id desc', limit=1)
                                                                     if grp_obj_line:
-                                                                        rec.hsn_code = grp_obj_line.hsn
-                                                                        rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                                        # rec.hsn_code = grp_obj_line.hsn
+                                                                        # rec.invoice_line_tax_id4 = grp_obj_line.tax
+                                                                        rec.hsn_code = grp_obj.hsn
+                                                                        rec.invoice_line_tax_id4 = grp_obj.tax_rate
                                                                     else:
                                                                         rec.hsn_code = None
                                                                         rec.invoice_line_tax_id4 = 0

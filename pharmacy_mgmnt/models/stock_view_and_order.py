@@ -286,10 +286,9 @@ class StockViewOrder(models.Model):
 
     @api.multi
     def get_sales(self):
-        domain = []
+        domain = [('invoice_id.type', '=', 'out_invoice'),('invoice_id.state', '=', 'paid')]
         for rec in self.purchase_order_ids:
             if rec.get_sales == True:
-                domain = [('invoice_id.type', '=', 'out_invoice'),('invoice_id.state', '=', 'paid')]
                 if rec.product_id.id:
                     domain += [('product_id', '=', rec.product_id.id)]
                 if rec.medicine_name_subcat.id:
@@ -299,7 +298,7 @@ class StockViewOrder(models.Model):
                 if rec.medicine_grp.id:
                     domain += [('medicine_grp', '=', rec.medicine_grp.id)]
                 if rec.batch_2.id:
-                    domain += [('medicine_grp', '=', rec.batch_2.id)]
+                    domain += [('batch_2', '=', rec.batch_2.id)]
                 if self.date_from:
                     domain += [('invoice_id.date_invoice', '>=', self.date_to)]
                 if self.date_to:
@@ -335,12 +334,9 @@ class StockViewOrder(models.Model):
 class StockViewOrderLine(models.Model):
     _name = "stock.view.order.lines"
     _description = 'Stock View Line'
-    # _inherits = {'entry.stock': 'medicine_1'}
 
     stock_view_line_id = fields.Many2one("stock.view.order", string="Medicine Entry")
-    # medicine_1 = fields.Many2one('entry.stock')
     number_of_order = fields.Integer("New Order")
-    # get_sales = fields.Boolean(default=False, string="Sales Details")
     get_purchase = fields.Boolean(default=False, string="Purchase Details")
     expiry_alert_date = fields.Date(compute='_compute_expiry_alert_date', string='Expiry Alert Date', store=True)
     ex_qty = fields.Integer(string="Expired Qty")
@@ -364,7 +360,6 @@ class StockViewOrderLine(models.Model):
             if record.expiry_date:
                 expiry_date = datetime.strptime(record.expiry_date, '%Y-%m-%d').date()
                 record.expiry_alert_date = expiry_date - timedelta(days=180)
-                # print('hello', record.expiry_alert_date)
             else:
                 record.expiry_alert_date = False
 
@@ -372,7 +367,6 @@ class StockViewOrderLine(models.Model):
 class StockOrderLine(models.Model):
     _name = "stock.order.lines"
     _description = 'Stock Order Line'
-    # _inherits = {'entry.stock': 'medicine_1'}
 
     stock_order_line_id = fields.Many2one("stock.view.order", string="Medicine Entry")
     new_order = fields.Integer(string="New Order")

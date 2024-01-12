@@ -13,7 +13,8 @@ class CustomerInvoiceReport(models.TransientModel):
     potency = fields.Many2one('product.medicine.subcat', 'Potency')
     packing = fields.Many2one('product.medicine.packing', 'Packing')
     company = fields.Many2one('product.medicine.responsible', 'Company')
-    group = fields.Many2one('tax.combo.new', 'Group')
+    group = fields.Many2one('product.medicine.group', 'Group')
+    # group = fields.Many2one('tax.combo.new', 'Group')
 
     @api.multi
     def action_customer_invoice_open_window(self):

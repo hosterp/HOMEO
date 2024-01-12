@@ -52,6 +52,7 @@
                         <field name="medicine_1"/>
                         <field name="potency"/>
                         <field name="medicine_grp1"/>
+<!--                        <field name="medicine_grp"/>-->
                         <field name="medicine_name_packing"/>
                         <field name="discount"/>
                         </tree>
@@ -144,7 +145,7 @@
             <field name="model">group.discount</field>
             <field name="arch" type="xml">
                 <tree string="Set Discounts" editable="bottom">
-        <!--                <field name="inv_id"/>-->
+<!--                        <field name="inv_id"/>-->
                         <field name="medicine_grp"/>
                         <field name="medicine_name_subcat"/>
                         <field name="medicine_name_packing"/>
