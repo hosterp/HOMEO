@@ -954,11 +954,11 @@
                                     <field name="potency" string="Potency"/>
                                     <field name="packing"/>
                                     <field name="company"/>
-<!--                                    <field name="tax" type="char"/>-->
+                                    <field name="tax" widget="integer"/>
+                                    <field name="hsn" type="char"/>
                                 </tree>
                             </field>
                         </group>
-
                     </sheet>
                 </form>
             </field>

@@ -48,7 +48,8 @@ class MedPotencyCombo(models.Model):
                               change_default=True, )
     company = fields.Many2one('product.medicine.responsible', string="Company")
     packing = fields.Many2one('product.medicine.packing', string="Packing")
-    # tax = fields.Float(string='Tax')
+    tax = fields.Float(string='Tax')
+    hsn = fields.Char('Hsn')
 
 
 class MedicineGroup(models.Model):
