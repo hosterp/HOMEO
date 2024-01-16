@@ -76,7 +76,8 @@
                 </xpath>
 
                 <!--                invoice form-->
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='invoice_line_tax_id']" position="attributes">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='invoice_line_tax_id']"
+                       position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="attributes">
@@ -150,8 +151,6 @@
                     <attribute name="required">0</attribute>
                     <attribute name="widget">many2many_tags</attribute>
                 </xpath>
-
-
                 <xpath expr="//page[@string='Other Info']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -159,10 +158,16 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='number']" position="replace">
-                    <field name="number2" readonly="1"/>
+                    <group>
+                        <group col="1">
+                            <field name="number2" string="Invoice" readonly="1" nolabel="0" />
+                        </group>
+                        <group col="1">
+                            <field name="financial_year" string="Financial Year" readonly="1" nolabel="0"/>
+                        </group>
+                    </group>
                 </xpath>
             </field>
-
         </record>
 
         <record id="supplier_invoice_stock_move_view" model="ir.ui.view">

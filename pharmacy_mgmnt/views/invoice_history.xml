@@ -13,10 +13,10 @@
                  <xpath expr="//field[@name='invoice_line']" position="before">
                      <group>
                          <group>
-                            <field name="invoices_id" string="Select Previous Invoice" domain="[('partner_id','=',partner_id)]"/>
+                            <field name="invoices_id" string="Select Previous Invoice" domain="[('partner_id','=',partner_id)]" attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
                          </group>
                         <group>
-                            <button class = "oe_edit_only" name="load" string="Load Invoice Lines" type="object"/>
+                            <button class = "oe_edit_only" name="load" string="Load Invoice Lines" type="object" attrs="{'invisible': [('state', 'in', ['open', 'paid'])]}"/>
                         </group>
                         <group invisible="1">
                             <button name="testfunction" type="object" string="Group " class="oe_highlight"/>
