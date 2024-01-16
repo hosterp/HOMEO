@@ -951,7 +951,7 @@
                                 <tree editable="bottom">
                                     <field name="groups_id" string="Group" invisible="1"/>
                                     <field name="medicine"/>
-                                    <field name="potency" string="Potency"/>
+                                    <field name="potency" string="Potency" required="1"/>
                                     <field name="packing"/>
                                     <field name="company"/>
                                     <field name="tax" widget="integer"/>
