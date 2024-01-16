@@ -224,7 +224,7 @@
                     <field name="medicine_name_subcat"/>
                     <field name="medicine_name_packing"/>
 
-                    <field name="medicine_grp" readonly="False"/>
+                    <field name="medicine_grp" string="Group" readonly="0" options='{"no_open": True}'/>
                     <field name="test3" invisible="1"/>
 
                     <field name="batch_2"/>
