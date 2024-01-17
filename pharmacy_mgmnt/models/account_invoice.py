@@ -30,13 +30,13 @@ class AccountInvoiceLine(models.Model):
     amount_amount1 = fields.Float('Tax_amt', compute="_compute_all", store=True)
     # amount_w_tax = fields.Float('TOTAL_AMT', compute="_compute_amount_with_tax")
     amount_w_tax = fields.Float('Total')
-    discount = fields.Float(string='Discount', default=0.0, )
+    discount = fields.Float(default=0.0)
     discount2 = fields.Float("DISCOUNT2")
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
     invoice_id = fields.Many2one('account.invoice',required=False)
     product_tax = fields.Float(compute="_compute_customer_tax")
-    unit_price = fields.Float(string='Unit price',compute="_compute_customer_tax")
+    unit_price = fields.Float(string='Unit price',compute="_compute_customer_tax",required=False)
 
     @api.model
     def create(self, vals):

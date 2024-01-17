@@ -99,77 +99,76 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-
+                <xpath expr="//field[@name='number']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="after">
                     <field name="packing_slip" invisible="1"/>
                     <field name="holding_invoice" invisible="1"/>
-                    <!--                     Current Fields-->
                     <field name="packing_invoice" invisible="1"/>
                     <field name="hold_invoice" invisible="1"/>
                     <field name="cus_invoice" invisible="1"/>
                 </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="replace">
-                    <field name="product_id" string="Medicine"/>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
-                    <field name="expiry_date" invisible="1"/>
-                    <field name="medicine_name_subcat"/>
-                    <field name="batch_2"/>
-                    <field name="medicine_name_packing"/>
-                    <field name="product_of"/>
-
-                    <field name="avail_qty" invisible="1"/>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="after">
-                    <field name="batch" invisible="1"/>
-                </xpath>
-
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="attributes">
-                    <attribute name="string">Product</attribute>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
-                    <attribute name="string">Gross Amt</attribute>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='avail_qty']" position="attributes">
-                    <attribute name="string">Stock</attribute>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="before">
-                    <field name="medicine_grp"/>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="after">
-                    <field name="unit_price"/>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='unit_price']" position="after">
-                    <field name="product_tax"/>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
-                    <!--                    <attribute name="class">class_quantity</attribute>-->
-                    <attribute name="string">Qty</attribute>
-                    <!--                    <attribute name="tabindex">0</attribute>-->
-                </xpath>
-                <!--                <xpath expr="//field[@name='invoice_line']/tree/field[@name='hsn_code']" position="attributes">-->
-                <!--                    <attribute name="tabindex">1</attribute>-->
-                <!--                </xpath>-->
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
                     <attribute name="required">0</attribute>
                 </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="replace">
+                    <field name="product_id" string="Product" options='{"no_open": True}'/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
+                    <field name="medicine_name_subcat" options='{"no_open": True}'/>
+                    <field name="batch_2" options='{"no_open": True}'/>
+                    <field name="medicine_name_packing" options='{"no_open": True}'/>
+                    <field name="product_of" options='{"no_open": True}'/>
+                    <field name="medicine_grp" string="Group" options='{"no_open": True}'/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
+                    <attribute name="string">Qty</attribute>
+                    <attribute name="widget">integer</attribute>
+                </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Mrp</attribute>
-                    <attribute name="tabindex">2</attribute>
                 </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="before">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="replace">
+                    <field name="discount" string="Dis"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="after">
+                    <field name="unit_price" string="Unit P" options='{"no_open": True}' readonly="0"/>
+                    <field name="invoice_line_tax_id4" readonly="0" widget="integer"/>
+                    <field name="product_tax" string="Tax Amt" options='{"no_open": True}'/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
+                    <attribute name="string">Grand Total</attribute>
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="after">
+                    <field name="amt_w_tax" invisible="1"/>
+                    <field name="hsn_code" class="hsn"/>
+                    <field name="amount_amount" invisible="1"/>
+                    <!--                    <field name="amt_tax"/>-->
+                    <field name="amount_amount1" invisible="1"/>
+                    <field name="amount_w_tax" invisible="1"/>
+                    <field name="manf_date" invisible="1"/>
+                    <field name="expiry_date" readonly="1" invisible="1"/>
+                    <field name="medicine_rack" invisible="1"/>
+                    <field name="rack_qty" invisible="1"/>
                     <field name="discount2" invisible="1"/>
                     <field name="calc" invisible="1"/>
                     <field name="calc2" invisible="1"/>
                     <field name="calc3" invisible="1"/>
-                    <field name="discount"/>
+                    <field name="batch" invisible="1"/>
                     <field name="discount3" invisible="1"/>
+                    <field name="expiry_date" invisible="1"/>
+                    <field name="avail_qty" invisible="1" string="Stock"/>
                 </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
-                    <attribute name="readonly">0</attribute>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='invoice_line_tax_id']"
+                       position="attributes">
+                    <attribute name="invisible">1</attribute>
                 </xpath>
-
-                <xpath expr="//field[@name='number']" position="attributes">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <!--                <xpath expr="//field[@name='partner_id']" position="before">-->
@@ -193,7 +192,6 @@
                 <!--                 <xpath expr="//button[@name='invoice_print']" position="replace">-->
                 <!--                        <button name="invoice_print" string="Print Invoice(F10)" type="object" attrs="{'invisible':[('type','=','in_invoice'),('state', 'in', ['packing_slip','holding_invoice','draft'])]}" class="css_print"/>-->
                 <!--                 </xpath>-->
-
 
                 <xpath expr="//field[@name='invoice_line']" position="before">
                     <button name="%(wiz_tree)d" type="action" string="Search Stock" class="css_hiworth"/>
@@ -248,11 +246,9 @@
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>
-                    <attribute name="tabindex">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Mrp</attribute>
-                    <attribute name="tabindex">2</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="after">
                     <field name="test" invisible="1"/>

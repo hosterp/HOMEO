@@ -14,7 +14,6 @@
                     <!--                <field name="packing_invoice" />-->
                     <field name="holding_invoice"/>
                 </xpath>
-
                 <xpath expr="//button[@name='invoice_cancel']" position="after">
                     <!--                    <button name="move_to_holding_invoice" string="Import to Holding Invoice" type="object"-->
                     <!--                            class="oe_highlight" attrs="{'invisible':[('holding_invoice', '=', True)]}"/>-->
@@ -34,7 +33,6 @@
                     <attribute name="attrs">{'invisible':['|','|',('hold_invoice', '=',
                         True),('state', '!=' , 'draft')]}
                     </attribute>
-
                 </xpath>
                 <xpath expr="//button[@name='action_invoice_sent']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -44,61 +42,23 @@
                         ['draft','packing_slip','holding_invoice'])]}
                     </attribute>
                 </xpath>
-
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
                     <attribute name="attrs">{'readonly':[('state', 'not in',
                         ['draft','packing_slip','holding_invoice'])]}
                     </attribute>
                 </xpath>
-
-                <xpath expr="//field[@name='price_subtotal']" position="after">
-                    <!--                    <field name="rate_amtc"/>-->
-                    <field name="invoice_line_tax_id4"/>
-
-
-                </xpath>
-                <xpath expr="//field[@name='invoice_line_tax_id4']" position="after">
-                    <field name="amount_amount" invisible="1"/>
-
-                </xpath>
-                <xpath expr="//field[@name='amount_amount']" position="after">
-                    <!--                    <field name="amt_tax"/>-->
-                    <field name="amt_w_tax"/>
-                    <field name="amount_amount1" invisible="1"/>
-                    <field name="amount_w_tax" invisible="1"/>
-                </xpath>
-                <xpath expr="//field[@name='amount_w_tax']" position="after">
-                    <field name="manf_date" invisible="1"/>
-                    <field name="expiry_date" readonly="1" invisible="1"/>
-                    <field name="medicine_rack" invisible="1"/>
-                    <field name="rack_qty" invisible="1"/>
-                    <field name="hsn_code" class="hsn"/>
-                </xpath>
-
                 <!--                invoice form-->
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='invoice_line_tax_id']"
-                       position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
                 <xpath expr="//field[@name='tax_line']/tree/field[@name='name']" position="attributes">
                     <attribute name="widget">many2many_tags</attribute>
                 </xpath>
                 <xpath expr="//field[@name='tax_line']/tree/field[@name='account_id']" position="attributes">
                     <attribute name="widget">many2many_tags</attribute>
                 </xpath>
-
                 <xpath expr="//field[@name='tax_line']" position="attributes">
                     <attribute name="invisible">1</attribute>
                     <attribute name="required">0</attribute>
                     <attribute name="widget">many2many_tags</attribute>
                 </xpath>
-
             </field>
         </record>
         <record id="supplier_invoice_stock_move_view_tax" model="ir.ui.view">
