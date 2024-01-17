@@ -1,12 +1,10 @@
 <openerp>
     <data>
-
         <record id="res_partner_sale_history" model="ir.ui.view">
             <field name="name">res.partner.sale.history</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="priority" eval="20"/>
-
             <field name="arch" type="xml">
                 <xpath expr="//form//sheet" position="before">
                     <header>
@@ -16,8 +14,8 @@
                 </xpath>
                 <xpath expr="//field[@name='email']" position="after">
                     <!--                <field name="res_person_id"/>-->
-                    <!--                <field name="gst_no" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>-->
-                    <!--                <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>-->
+                    <field name="gst_no" attrs="{'invisible': [('supplier','=',False)]}"/>
+                    <field name="drug_license_number" attrs="{'invisible': [('supplier','=',False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='website']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -54,7 +52,7 @@
                     <field name="interstate_customer" attrs="{'invisible': [('customer','=',False)]}"/>
                     <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
                     <field name="address_new"/>
-                    <field name="res_person_id"/>
+                    <field name="res_person_id"  attrs="{'invisible': [('supplier','=',True)]}"/>
                     <field name="advance_amount"/>
                     <field name="gst_no" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
                     <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>
@@ -90,7 +88,7 @@
 
                 <xpath expr="//field[@name='partner_id']" position="before">
                     <!--                        <field name="date_invoice" readonly="1"/>-->
-                    <field name="financial_year" placeholder="Financial Year" style="width:50%%"/>
+                    <field name="financial_year" readonly="1" placeholder="Financial Year" style="width:50%%"/>
                 </xpath>
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>

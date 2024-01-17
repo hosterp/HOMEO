@@ -16,13 +16,27 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
 
+<!--                <xpath expr="//field[@name='sale_ok']" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='purchase_ok']" position="after">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+<!--                </xpath>-->
                 <xpath expr="//field[@name='type']" position="after">
                     <field name="Tax_of_pdt" invisible="1"/>
                 </xpath>
                  <xpath expr="//field[@name='type']" position="after">
                     <field name="made_in"/>
                 </xpath>
-
+                <xpath expr="//page[@string='Information']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Inventory']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Variants']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
             </field>
         </record>
 
