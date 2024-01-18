@@ -979,22 +979,41 @@ class AccountInvoiceLine(models.Model):
     def onchange_potency_id(self):
         for rec in self:
             if rec.product_of and rec.product_id:
-                domain = [('lists_id.supplier', '=', rec.invoice_id.partner_id.id)]
-                if rec.product_of:
-                    domain += [('company', '=', rec.product_of.id)]
-                if rec.product_id:
-                    domain += [('medicine_1', '=', rec.product_id.id)]
-                if rec.medicine_name_subcat:
-                    domain += [('potency', '=', rec.medicine_name_subcat.id)]
-                if rec.medicine_name_packing:
-                    domain += [('medicine_name_packing', '=', rec.medicine_name_packing.id)]
-                medicine_grp = self.env['list.discount'].search(domain, limit=1)
-                rec.medicine_grp = medicine_grp.medicine_grp1.id
+                # domain = [('lists_id.supplier', '=', rec.invoice_id.partner_id.id),('potency', '=', rec.medicine_name_subcat.id)]
+                # if rec.product_of:
+                #     domain += [('company', '=', rec.product_of.id)]
+                # if rec.product_id:
+                #     domain += [('medicine_1', '=', rec.product_id.id)]
+                # if rec.medicine_name_subcat:
+                    # domain += [('potency', '=', rec.medicine_name_subcat.id)]
+                # if rec.medicine_name_packing:
+                #     domain += [('medicine_name_packing', '=', rec.medicine_name_packing.id)]
+                # medicine_grp_ids = self.env['list.discount'].search(domain)
+                # group_ids = medicine_grp_ids.mapped("medicine_grp1")
+                # return {'domain': {'medicine_grp': [('id', 'in', group_ids.ids)]}}
 
-            # medicine_grp = self.env['medpotency.combo'].search([('potency', '=', rec.medicine_name_subcat.id)])
-            # medicine_grp_ids = self.env['product.medicine.group'].search(
-            #     [('id', '=', medicine_grp.mapped('groups_id').ids)])
-            # return {'domain': {'medicine_grp': [('id', 'in', medicine_grp_ids.ids)]}}
+                # medicine_grp = self.env['list.discount'].search(domain, limit=1)
+                # rec.medicine_grp = medicine_grp.medicine_grp1.id
+                medicine_grp = self.env['medpotency.combo'].search([('potency', '=', rec.medicine_name_subcat.id)])
+                medicine_grp_ids = self.env['product.medicine.group'].search(
+                    [('id', '=', medicine_grp.mapped('groups_id').ids)])
+                return {'domain': {'medicine_grp': [('id', 'in', medicine_grp_ids.ids)]}}
+
+    @api.onchange('medicine_name_packing')
+    def onchange_medicine_name_packing(self):
+        for rec in self:
+            if rec.product_of and rec.product_id and rec.medicine_name_subcat and rec.medicine_name_packing:
+                domain = [('lists_id.supplier', '=', rec.invoice_id.partner_id.id),
+                          ('potency', '=', rec.medicine_name_subcat.id),
+                          ('company', '=', rec.product_of.id),
+                          ('medicine_1', '=', rec.product_id.id),
+                          ('medicine_name_packing', '=', rec.medicine_name_packing.id),
+                          ]
+                medicine_grp = self.env['list.discount'].search(domain, limit=1)
+                if medicine_grp:
+                    pass
+                else:
+                    raise Warning("This Combination not added in Supplier Discount")
 
     ###########    # tax selection-based on group and potency
     @api.onchange('medicine_grp')
@@ -1030,8 +1049,7 @@ class AccountInvoiceLine(models.Model):
                     else:
                         if rec.product_id.id and rec.medicine_name_subcat.id:
                             grp_obj_line = grp_obj.potency_med_ids.search([('medicine', '=', rec.product_id.id),
-                                                                           (
-                                                                           'potency', '=', rec.medicine_name_subcat.id),
+                                                                           ('potency', '=', rec.medicine_name_subcat.id),
                                                                            ('company', '=', None),
                                                                            ('groups_id', '=', grp_obj.id)
                                                                            ], order='id desc', limit=1)
