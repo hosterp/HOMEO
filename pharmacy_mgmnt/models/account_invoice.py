@@ -978,18 +978,18 @@ class AccountInvoiceLine(models.Model):
     @api.onchange('medicine_name_subcat')
     def onchange_potency_id(self):
         for rec in self:
-            print( rec.invoice_id.partner_id.id,'rec.invoice_id.partner_id.id')
-            domain = [('lists_id.supplier', '=', rec.invoice_id.partner_id.id)]
-            if rec.product_of:
-                domain += [('company', '=', rec.product_of.id)]
-            if rec.product_id:
-                domain += [('medicine_1', '=', rec.product_id.id)]
-            if rec.medicine_name_subcat:
-                domain += [('potency', '=', rec.medicine_name_subcat.id)]
-            if rec.medicine_name_packing:
-                domain += [('medicine_name_packing', '=', rec.medicine_name_packing.id)]
-            medicine_grp = self.env['list.discount'].search(domain, limit=1)
-            rec.medicine_grp = medicine_grp.medicine_grp1.id
+            if rec.product_of and rec.product_id:
+                domain = [('lists_id.supplier', '=', rec.invoice_id.partner_id.id)]
+                if rec.product_of:
+                    domain += [('company', '=', rec.product_of.id)]
+                if rec.product_id:
+                    domain += [('medicine_1', '=', rec.product_id.id)]
+                if rec.medicine_name_subcat:
+                    domain += [('potency', '=', rec.medicine_name_subcat.id)]
+                if rec.medicine_name_packing:
+                    domain += [('medicine_name_packing', '=', rec.medicine_name_packing.id)]
+                medicine_grp = self.env['list.discount'].search(domain, limit=1)
+                rec.medicine_grp = medicine_grp.medicine_grp1.id
 
             # medicine_grp = self.env['medpotency.combo'].search([('potency', '=', rec.medicine_name_subcat.id)])
             # medicine_grp_ids = self.env['product.medicine.group'].search(
