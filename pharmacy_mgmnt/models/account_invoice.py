@@ -979,24 +979,23 @@ class AccountInvoiceLine(models.Model):
     def onchange_potency_id(self):
         for rec in self:
             if rec.product_of and rec.product_id:
-                # domain = [('lists_id.supplier', '=', rec.invoice_id.partner_id.id),('potency', '=', rec.medicine_name_subcat.id)]
-                # if rec.product_of:
-                #     domain += [('company', '=', rec.product_of.id)]
-                # if rec.product_id:
-                #     domain += [('medicine_1', '=', rec.product_id.id)]
-                # if rec.medicine_name_subcat:
-                    # domain += [('potency', '=', rec.medicine_name_subcat.id)]
-                # if rec.medicine_name_packing:
-                #     domain += [('medicine_name_packing', '=', rec.medicine_name_packing.id)]
-                # medicine_grp_ids = self.env['list.discount'].search(domain)
-                # group_ids = medicine_grp_ids.mapped("medicine_grp1")
-                # return {'domain': {'medicine_grp': [('id', 'in', group_ids.ids)]}}
-
-                # medicine_grp = self.env['list.discount'].search(domain, limit=1)
-                # rec.medicine_grp = medicine_grp.medicine_grp1.id
+                idss = set()
                 medicine_grp = self.env['medpotency.combo'].search([('potency', '=', rec.medicine_name_subcat.id)])
+                for grp in medicine_grp:
+                    if not grp.medicine.id and not grp.company.id:
+                            idss.add(grp.id)
+                    if grp.medicine.id and not grp.company.id:
+                        if grp.medicine.id == rec.product_id.id:
+                            idss.add(grp.id)
+                        else:
+                            pass
+                    if grp.medicine and grp.company:
+                        if grp.medicine.id == rec.product_id.id and  grp.company.id == rec.product_of.id:
+                            idss.add(grp.id)
+                        else:
+                            pass
                 medicine_grp_ids = self.env['product.medicine.group'].search(
-                    [('id', '=', medicine_grp.mapped('groups_id').ids)])
+                    [('potency_med_ids', '=', list(idss))])
                 return {'domain': {'medicine_grp': [('id', 'in', medicine_grp_ids.ids)]}}
 
     @api.onchange('medicine_name_packing')
