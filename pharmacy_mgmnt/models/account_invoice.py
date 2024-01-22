@@ -1181,9 +1181,14 @@ class AccountInvoiceLine(models.Model):
                                                                     else:
                                                                         rec.hsn_code = None
                                                                         rec.invoice_line_tax_id4 = 0
+                                                                        raise Warning(
+                                                                            "This Combination not added in Group Linking")
+
                 else:
                     rec.hsn_code = None
                     rec.invoice_line_tax_id4 = 0
+                    raise Warning("This Combination not added in Group Linking")
+
 
                     # @api.onchange('medicine_grp')
 
