@@ -39,6 +39,10 @@ class Discounts2(models.Model):
     expiry_months = fields.Integer('Expiry Months')
     inv_id = fields.Float("Inv.Id", compute="_get_inv_number")
 
+    @api.multi
+    def button_save(self):
+        # Your save logic goes here
+        return True
     @api.model
     def create(self, vals):
         result = super(Discounts2, self).create(vals)

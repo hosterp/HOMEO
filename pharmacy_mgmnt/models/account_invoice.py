@@ -65,7 +65,7 @@ class AccountInvoiceLine(models.Model):
 
         # If no similar record found or incomplete data, create a new record
         result = super(AccountInvoiceLine, self).create(vals)
-        # if result.invoice_id.type == 'in_invoice' and result.quantity != 0:
+        # if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.medicine_rack and result.price_unit:
         #     vals = {
         #         'supplier_id': result.invoice_id.partner_id.id,
         #         'expiry_date': result.expiry_date,
@@ -128,6 +128,31 @@ class AccountInvoiceLine(models.Model):
             result.stock_entry_qty = stock_entry_qty
 
         return result
+    @api.onchange('medicine_rack')
+    def onchange_medicine_rack(self):
+        for result in self:
+            if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.medicine_rack and result.price_unit:
+                vals = {
+                    'supplier_id': result.invoice_id.partner_id.id,
+                    'expiry_date': result.expiry_date,
+                    'manf_date': result.manf_date,
+                    'company': result.product_of.id,
+                    'medicine_1': result.product_id.id,
+                    'potency': result.medicine_name_subcat.id,
+                    'medicine_name_packing': result.medicine_name_packing.id,
+                    'medicine_grp1': result.medicine_grp.id,
+                    'batch_2': result.batch_2.id,
+                    'mrp': result.price_unit,
+                    'qty': result.quantity,
+                    'rack': result.medicine_rack.id,
+                    'hsn_code': result.hsn_code,
+                    'discount': result.discount,
+                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
+                    'stock_date': date.today(),
+                }
+                stock_entry = self.env['entry.stock'].create(vals)
+                result.stock_entry_id = stock_entry.id
+
 
     @api.multi
     def write(self, vals):
@@ -564,6 +589,26 @@ class AccountInvoiceLine(models.Model):
                                         cal_date = datetime.strftime(nextday_date, '%Y-%m-%d')
                                         self.expiry_date = cal_date
                                         # self.write({'expiry_date': cal_date})
+                            else:
+                                dis_obj2 = self.env['group.discount'].search(
+                                    [('medicine_grp', '=', None),
+                                     ('medicine_name_subcat', '=',
+                                      self.medicine_name_subcat.id),
+                                     ('medicine_name_packing', '=', None)])
+
+                                if dis_obj2:
+                                    self.discount3 = dis_obj2.discount
+                                    if dis_obj2.expiry_months:
+                                        if self.manf_date:
+                                            text = self.manf_date
+                                            x = datetime.strptime(text, '%Y-%m-%d')
+                                            nextday_date = x + relativedelta(months=dis_obj2.expiry_months)
+                                            cal_date = datetime.strftime(nextday_date, '%Y-%m-%d')
+                                            self.expiry_date = cal_date
+                                            # self.write({'expiry_date': cal_date})
+                                else:
+                                    pass
+
 
             # TAX CALCULATION AND SUBTOTAL WITH 2 DISCOUNTS IF THERE IS DISCOUNT1 AND DISCOUNT2
             if self.price_unit:
@@ -2090,22 +2135,24 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def action_discount(self):
-        prev_rec = self.env['group.discount'].search([])
-        if prev_rec:
-            for rec in prev_rec:
-                rec.unlink()
+        if not self.invoice_line:
+            prev_rec = self.env['group.discount'].search([])
+            if prev_rec:
+                for rec in prev_rec:
+                    rec.unlink()
 
         return {
             'name': 'group discount',
             'view_type': 'form',
-            'view_mode': 'tree',
+            'view_mode': 'form,tree',
+            'target': 'new',
             'res_model': 'group.discount',
             'type': 'ir.actions.act_window',
             'context': {'current_id': self.id},
 
         }
 
-        # add custom codes here
+
 
 
     #     if self.pay_mode == 'credit':
@@ -2673,29 +2720,29 @@ class AccountInvoice(models.Model):
     def invoice_validate(self):
         if self.type != 'in_invoice' and not self.packing_slip:
             self.action_stock_transfer()
-        if self.type == 'in_invoice':
-            for result in self.invoice_line:
-            # if result.invoice_id.type == 'in_invoice' and result.quantity != 0:
-                vals = {
-                    'supplier_id': self.partner_id.id,
-                    'expiry_date': result.expiry_date,
-                    'manf_date': result.manf_date,
-                    'company': result.product_of.id,
-                    'medicine_1': result.product_id.id,
-                    'potency': result.medicine_name_subcat.id,
-                    'medicine_name_packing': result.medicine_name_packing.id,
-                    'medicine_grp1': result.medicine_grp.id,
-                    'batch_2': result.batch_2.id,
-                    'mrp': result.price_unit,
-                    'qty': result.quantity,
-                    'rack': result.medicine_rack.id,
-                    'hsn_code': result.hsn_code,
-                    'discount': result.discount,
-                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
-                    'stock_date': date.today(),
-                }
-                stock_entry = self.env['entry.stock'].create(vals)
-                result.stock_entry_id = stock_entry.id
-        return self.write({'state': 'open'})
+        # if self.type == 'in_invoice':
+        #     for result in self.invoice_line:
+        #     # if result.invoice_id.type == 'in_invoice' and result.quantity != 0:
+        #         vals = {
+        #             'supplier_id': self.partner_id.id,
+        #             'expiry_date': result.expiry_date,
+        #             'manf_date': result.manf_date,
+        #             'company': result.product_of.id,
+        #             'medicine_1': result.product_id.id,
+        #             'potency': result.medicine_name_subcat.id,
+        #             'medicine_name_packing': result.medicine_name_packing.id,
+        #             'medicine_grp1': result.medicine_grp.id,
+        #             'batch_2': result.batch_2.id,
+        #             'mrp': result.price_unit,
+        #             'qty': result.quantity,
+        #             'rack': result.medicine_rack.id,
+        #             'hsn_code': result.hsn_code,
+        #             'discount': result.discount,
+        #             'invoice_line_tax_id4': result.invoice_line_tax_id4,
+        #             'stock_date': date.today(),
+        #         }
+        #         stock_entry = self.env['entry.stock'].create(vals)
+        #         result.stock_entry_id = stock_entry.id
+        # return self.write({'state': 'open'})
 
 
