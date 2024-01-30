@@ -941,7 +941,6 @@ class AccountInvoiceLine(models.Model):
                 rec.discount = percentage
                 rec.new_disc = percentage
 
-    # @api.onchange('product_id')
 
     @api.onchange('product_id')
     def product_id_change_new(self):
@@ -2743,6 +2742,6 @@ class AccountInvoice(models.Model):
         #         }
         #         stock_entry = self.env['entry.stock'].create(vals)
         #         result.stock_entry_id = stock_entry.id
-        # return self.write({'state': 'open'})
+        return self.write({'state': 'open'})
 
 

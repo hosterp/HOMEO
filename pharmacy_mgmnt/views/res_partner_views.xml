@@ -52,7 +52,7 @@
                     <field name="interstate_customer" attrs="{'invisible': [('customer','=',False)]}"/>
                     <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
                     <field name="address_new"/>
-                    <field name="res_person_id"  attrs="{'invisible': [('supplier','=',True)]}"/>
+                    <field name="res_person_id" attrs="{'invisible': [('supplier','=',True)]}"/>
                     <field name="advance_amount"/>
                     <field name="gst_no" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
                     <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>
@@ -128,22 +128,24 @@
                 <xpath expr="//button[@string='Cancel Invoice']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <!--            <xpath expr="//field[@name='invoice_line']" position="attributes">-->
-                <!--                <attribute name="limit">42</attribute>-->
-                <!--            </xpath>-->
                 <xpath expr="//field[@name='date_invoice']" position="attributes">
-                                <attribute name="string">Inv Date</attribute>
+                    <attribute name="string">Inv Date</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_invoice']" position="after">
+                    <field name="invoices_id" string="Select Previous Invoice"
+                           domain="[('partner_id','=',partner_id)]"
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
-                    <field name="address_new" attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
+                    <field name="inv_sup_no" required="1" placeholder="Open Invoice No"
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
+                    <field name="inv_amount" string="Inv Amount"
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="inv_sup_no" required="1" placeholder="Supplier Invoice No" attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
+                    <field name="address_new" attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
                 </xpath>
                 <xpath expr="//field[@name='fiscal_position']" position="after">
-                    <!--                        <field name="address_new"/>-->
-<!--                    <field name="financial_year" placeholder="Financial Year" style="width:50%%"/>-->
-                    <field name="inv_amount" string="Inv Amount" attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
                     <field name="picking_type_id" invisible="1"/>
                 </xpath>
 
