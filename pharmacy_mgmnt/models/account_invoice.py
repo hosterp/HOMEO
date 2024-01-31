@@ -5,7 +5,7 @@ from openerp import api, models, fields
 from openerp.osv import osv
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _, _logger
-from openerp.exceptions import except_orm, Warning, RedirectWarning,ValidationError
+from openerp.exceptions import except_orm, Warning, RedirectWarning, ValidationError
 from datetime import datetime, timedelta
 from datetime import date
 from datetime import timedelta
@@ -21,7 +21,7 @@ class AccountAccountInherit(models.Model):
 class AccountInvoiceLine(models.Model):
     _inherit = "account.invoice.line"
 
-    name = fields.Text(string="Description",required=False)
+    name = fields.Text(string="Description", required=False)
     stock_entry_id = fields.Many2one('entry.stock')
     stock_entry_qty = fields.Float()
     stock_transfer_id = fields.Many2one('stock.transfer')
@@ -34,9 +34,9 @@ class AccountInvoiceLine(models.Model):
     discount2 = fields.Float("DISCOUNT2")
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
-    invoice_id = fields.Many2one('account.invoice',required=False)
+    invoice_id = fields.Many2one('account.invoice', required=False)
     product_tax = fields.Float(compute="_compute_customer_tax")
-    unit_price = fields.Float(string='Unit price',compute="_compute_customer_tax",required=False)
+    unit_price = fields.Float(string='Unit price', compute="_compute_customer_tax", required=False)
 
     @api.model
     def create(self, vals):
@@ -128,6 +128,7 @@ class AccountInvoiceLine(models.Model):
             result.stock_entry_qty = stock_entry_qty
 
         return result
+
     @api.onchange('medicine_rack')
     def onchange_medicine_rack(self):
         for result in self:
@@ -152,7 +153,6 @@ class AccountInvoiceLine(models.Model):
                 }
                 stock_entry = self.env['entry.stock'].create(vals)
                 result.stock_entry_id = stock_entry.id
-
 
     @api.multi
     def write(self, vals):
@@ -394,7 +394,8 @@ class AccountInvoiceLine(models.Model):
 
     # CUSTOMER TAX CALCULATION
     @api.model
-    @api.depends('amt_w_tax', 'invoice_line_tax_id4', 'price_subtotal', 'amount_amount1', 'price_unit', 'rate_amtc','product_tax','unit_price')
+    @api.depends('amt_w_tax', 'invoice_line_tax_id4', 'price_subtotal', 'amount_amount1', 'price_unit', 'rate_amtc',
+                 'product_tax', 'unit_price')
     def _compute_customer_tax(self):
         for record in self:
             if record.partner_id.customer:
@@ -404,10 +405,10 @@ class AccountInvoiceLine(models.Model):
                             if rec.rate_amtc == 0:
                                 rate_amount = rec.price_subtotal
                                 quantity = rec.quantity
-                                per_product = rate_amount/ quantity
+                                per_product = rate_amount / quantity
                                 perce = rec.invoice_line_tax_id4
                                 tax_amount = perce * 100 / (perce + 100)
-                                tax = per_product * tax_amount/100
+                                tax = per_product * tax_amount / 100
                                 rec.product_tax = tax * quantity
                                 rec.unit_price = per_product - tax
                                 # tax = rate_amount * (perce / 100)
@@ -445,83 +446,70 @@ class AccountInvoiceLine(models.Model):
         if self.partner_id.supplier == True:
             # FETCH DISCOUNT1
             for rec in self:
-                flag = 0
-                s_obj = self.env['supplier.discounts'].search([('supplier', '=', rec.partner_id.id)])
-                if s_obj:
-                    for lines in s_obj.lines:
-                        if (lines.company.id == rec.product_of.id):
-                            if (lines.medicine_1.id == rec.product_id.id):
-                                if (lines.potency.id == rec.medicine_name_subcat.id):
-                                    if (lines.medicine_grp1.id == rec.medicine_grp.id):
-                                        if (lines.medicine_name_packing.id == rec.medicine_name_packing.id):
-                                            rec.discount = lines.discount
-                                            flag = 1
-                        if flag == 1:
-                            pass
-                        else:
-
-                            # print("Search in 2nd model")
-                            s_obj = self.env['supplier.discounts'].search([('supplier', '=', rec.partner_id.id)])
-                            if s_obj:
-                                for lines in s_obj.lines2:
-                                    if (lines.company.id == rec.product_of.id):
-                                        # if (lines.medicine_1.id == rec.product_id.id):
-                                        if (lines.potency.id == rec.medicine_name_subcat.id):
-                                            if (lines.medicine_grp1.id == rec.medicine_grp.id):
-                                                if (lines.medicine_name_packing.id == rec.medicine_name_packing.id):
-                                                    rec.discount = lines.discount
-                                                    print("success")
-
-                                    # if ((lines.company.id == rec.product_of.id) and (
-                                    #         lines.medicine_grp1.id == rec.medicine_grp.id) and (
-                                    #         lines.medicine_1.id == None) and (
-                                    #         lines.potency.id == rec.medicine_name_subcat.id) and (
-                                    #         lines.medicine_name_packing.id == rec.medicine_name_packing.id)):
-                                    #     rec.discount = lines.discount
-                                    # else:
-                                    if ((lines.company.id == rec.product_of.id) and (
-                                            lines.medicine_grp1.id == rec.medicine_grp.id)
-                                            and (
-                                                    lines.potency.id == rec.medicine_name_subcat.id) and (
-                                                    lines.medicine_name_packing.id == None)):
-                                        rec.discount = lines.discount
-                                    else:
-                                        if ((lines.company.id == rec.product_of.id) and (
-                                                lines.medicine_grp1.id == rec.medicine_grp.id) and (
-                                                lines.potency.id == None) and (
-                                                lines.medicine_name_packing.id == rec.medicine_name_packing.id)):
-                                            rec.discount = lines.discount
-                                        else:
-                                            if ((lines.company.id == rec.product_of.id) and (
-                                                    lines.medicine_grp1.id == rec.medicine_grp.id) and (
-                                                    lines.potency.id == None) and (
-                                                    lines.medicine_name_packing.id == None)):
-                                                rec.discount = lines.discount
-                                            if ((lines.company.id == rec.product_of.id) and (
-                                                    lines.medicine_name_packing.id == None) and (
-                                                    lines.potency.id == None) and (
-                                                    lines.medicine_grp1.id == rec.medicine_grp.id)):
-                                                rec.discount = lines.discount
-                                            if ((lines.company.id == None) and (
-                                                    lines.medicine_name_packing.id == rec.medicine_name_packing.id) and (
-                                                    lines.potency.id == rec.medicine_name_subcat.id) and (
-                                                    lines.medicine_grp1.id == None)):
-                                                rec.discount = lines.discount
-                                            if ((lines.company.id == None) and (
-                                                    lines.medicine_name_packing.id == None) and (
-                                                    lines.potency.id == None) and (
-                                                    lines.medicine_grp1.id == rec.medicine_grp.id)):
-                                                rec.discount = lines.discount
-                                            if ((lines.company.id == None) and (
-                                                    lines.medicine_name_packing.id == None) and (
-                                                    lines.potency.id == rec.medicine_name_subcat.id) and (
-                                                    lines.medicine_grp1.id == None)):
-                                                rec.discount = lines.discount
-                                            if ((lines.company.id == None) and (
-                                                    lines.medicine_name_packing.id == rec.medicine_name_packing.id) and (
-                                                    lines.potency.id == None) and (lines.medicine_grp1.id == None)):
-                                                rec.discount = lines.discount
-
+                if rec.medicine_grp.id and rec.product_of.id and rec.product_id.id and rec.medicine_name_subcat.id and rec.medicine_name_packing.id:
+                    flag = 0
+                    s_obj = self.env['supplier.discounts'].search([('supplier', '=', rec.partner_id.id)])
+                    if s_obj:
+                        for lines in s_obj.lines:
+                            print('dis',lines.potency.id)
+                            print('prod',rec.medicine_name_subcat.id)
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id and lines.medicine_1.id == rec.product_id.id
+                                    and lines.potency.id == rec.medicine_name_subcat.id and lines.medicine_name_packing.id == rec.medicine_name_packing.id):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                pass
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id and lines.medicine_1.id == rec.product_id.id
+                                    and lines.potency.id == rec.medicine_name_subcat.id and lines.medicine_name_packing.id == False):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                pass
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id and lines.medicine_1.id == rec.product_id.id
+                                    and lines.potency.id == False and lines.medicine_name_packing.id == rec.medicine_name_packing.id):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                pass
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id and lines.medicine_1.id == False
+                                    and lines.medicine_name_packing.id == rec.medicine_name_packing.id and lines.potency.id == rec.medicine_name_subcat.id):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                pass
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id and lines.medicine_1.id == rec.product_id.id
+                                    and lines.medicine_name_packing.id == False and lines.potency.id == False):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                pass
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id and lines.potency.id == rec.medicine_name_subcat.id
+                                    and lines.medicine_1.id == False and lines.medicine_name_packing.id == False):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                pass
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id
+                                    and lines.medicine_name_packing.id == rec.medicine_name_packing.id and lines.medicine_1.id == False and lines.potency.id == False):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                pass
+                            if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id
+                                    and lines.medicine_1.id == False and lines.medicine_name_packing.id == False and lines.potency.id == False):
+                                rec.discount = lines.discount
+                                flag = 1
+                                break
+                            else:
+                                rec.discount = 0
+                                # raise Warning("No Supplier Discount")
             # FETCH EXTRA DDISCOUNT
             if self.medicine_grp:
                 dis_obj = self.env['group.discount'].search([('medicine_grp', '=', self.medicine_grp.id),
@@ -608,7 +596,6 @@ class AccountInvoiceLine(models.Model):
                                             # self.write({'expiry_date': cal_date})
                                 else:
                                     pass
-
 
             # TAX CALCULATION AND SUBTOTAL WITH 2 DISCOUNTS IF THERE IS DISCOUNT1 AND DISCOUNT2
             if self.price_unit:
@@ -883,7 +870,7 @@ class AccountInvoiceLine(models.Model):
 
     medicine_rack = fields.Many2one('product.medicine.types', 'Rack')
     product_of = fields.Many2one('product.medicine.responsible', 'Company')
-    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency',required=True)
+    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack', )
 
     # medicine_grp = fields.Many2one('product.medicine.group', 'GROUP',compute='_compute_taxes',readonly="0")
@@ -940,7 +927,6 @@ class AccountInvoiceLine(models.Model):
                 percentage = (discount_amount * 100) / (rec.quantity * rec.price_unit)
                 rec.discount = percentage
                 rec.new_disc = percentage
-
 
     @api.onchange('product_id')
     def product_id_change_new(self):
@@ -1027,14 +1013,14 @@ class AccountInvoiceLine(models.Model):
                 medicine_grp = self.env['medpotency.combo'].search([('potency', '=', rec.medicine_name_subcat.id)])
                 for grp in medicine_grp:
                     if not grp.medicine.id and not grp.company.id:
-                            idss.add(grp.id)
+                        idss.add(grp.id)
                     if grp.medicine.id and not grp.company.id:
                         if grp.medicine.id == rec.product_id.id:
                             idss.add(grp.id)
                         else:
                             pass
                     if grp.medicine and grp.company:
-                        if grp.medicine.id == rec.product_id.id and  grp.company.id == rec.product_of.id:
+                        if grp.medicine.id == rec.product_id.id and grp.company.id == rec.product_of.id:
                             idss.add(grp.id)
                         else:
                             pass
@@ -1055,8 +1041,8 @@ class AccountInvoiceLine(models.Model):
                 medicine_grp = self.env['list.discount'].search(domain, limit=1)
                 if medicine_grp:
                     pass
-                else:
-                    raise Warning("This Combination not added in Supplier Discount")
+                # else:
+                #     raise Warning("This Combination not added in Supplier Discount")
 
     ###########    # tax selection-based on group and potency
     @api.onchange('medicine_grp')
@@ -1092,7 +1078,8 @@ class AccountInvoiceLine(models.Model):
                     else:
                         if rec.product_id.id and rec.medicine_name_subcat.id:
                             grp_obj_line = grp_obj.potency_med_ids.search([('medicine', '=', rec.product_id.id),
-                                                                           ('potency', '=', rec.medicine_name_subcat.id),
+                                                                           (
+                                                                           'potency', '=', rec.medicine_name_subcat.id),
                                                                            ('company', '=', None),
                                                                            ('groups_id', '=', grp_obj.id)
                                                                            ], order='id desc', limit=1)
@@ -1139,7 +1126,8 @@ class AccountInvoiceLine(models.Model):
                                                                                            ('company', '=',
                                                                                             rec.product_of.id),
                                                                                            (
-                                                                                           'groups_id', '=', grp_obj.id)
+                                                                                               'groups_id', '=',
+                                                                                               grp_obj.id)
                                                                                            ], order='id desc', limit=1)
                                             if grp_obj_line:
                                                 if grp_obj_line.tax:
@@ -1225,13 +1213,12 @@ class AccountInvoiceLine(models.Model):
                                                                         rec.hsn_code = None
                                                                         rec.invoice_line_tax_id4 = 0
                                                                         raise Warning(
-                                                                            "This Combination not added in Group Linking")
+                                                                            "This Combination not added in Product Potency Group Linking")
 
                 else:
                     rec.hsn_code = None
                     rec.invoice_line_tax_id4 = 0
-                    raise Warning("This Combination not added in Group Linking")
-
+                    raise Warning("This Combination not added in Product Potency Group Linking")
 
                     # @api.onchange('medicine_grp')
 
@@ -1341,20 +1328,23 @@ class AccountInvoice(models.Model):
     packing_invoice = fields.Boolean("Packing Slip?")
     hold_invoice = fields.Boolean("Holding Invoice?")
     cus_invoice = fields.Boolean("Customer Invoice?")
-    hold_invoice_id = fields.Many2one("account.invoice", domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
+    hold_invoice_id = fields.Many2one("account.invoice",
+                                      domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
     partner_id = fields.Many2one('res.partner')
     cus_inv_number = fields.Char()
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
-    cus_invoice_id = fields.Many2one("account.invoice", domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
-    pack_open_cus_invoice_id = fields.Many2one("account.invoice", domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
-    pack_invoice_id = fields.Many2one("account.invoice", domain=[('type', '=', 'out_invoice'), ('packing_invoice', '=', True)])
-
+    cus_invoice_id = fields.Many2one("account.invoice",
+                                     domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
+    pack_open_cus_invoice_id = fields.Many2one("account.invoice",
+                                               domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
+    pack_invoice_id = fields.Many2one("account.invoice",
+                                      domain=[('type', '=', 'out_invoice'), ('packing_invoice', '=', True)])
 
     @api.multi
     def previous_invoice(self):
         next_inv = self.env['account.invoice'].search(
             [(('id', '=', self.id - 1))])
-        print(next_inv,'next_inv')
+        print(next_inv, 'next_inv')
         if next_inv:
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
@@ -1376,7 +1366,6 @@ class AccountInvoice(models.Model):
             # }
         else:
             raise Warning("Create a new record")
-
 
     @api.multi
     def next_invoice(self):
@@ -1409,13 +1398,12 @@ class AccountInvoice(models.Model):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
             base_url, self.cus_invoice_id.id)
-        print(redirect_url,'.......>')
+        print(redirect_url, '.......>')
         return {
             'type': 'ir.actions.act_url',
             'url': redirect_url,
             'target': 'self',
         }
-
 
     @api.multi
     def onchange_cus_invoice_id(self):
@@ -1423,7 +1411,7 @@ class AccountInvoice(models.Model):
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
                 base_url, self.cus_invoice_id.id)
-            print(redirect_url,'customer........>')
+            print(redirect_url, 'customer........>')
             return {
                 'type': 'ir.actions.act_url',
                 'url': redirect_url,
@@ -1442,7 +1430,6 @@ class AccountInvoice(models.Model):
         #     'clear': 1,
         # }
 
-
     @api.multi
     def onchange_pack_cus_invoice_id(self):
         if self.pack_open_cus_invoice_id:
@@ -1453,7 +1440,7 @@ class AccountInvoice(models.Model):
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
                 base_url, self.pack_open_cus_invoice_id.id)
-            print(redirect_url,'packing........>')
+            print(redirect_url, 'packing........>')
             return {
                 'type': 'ir.actions.act_url',
                 'url': redirect_url,
@@ -1581,7 +1568,8 @@ class AccountInvoice(models.Model):
                 pass
         # self.number2 = self.env['ir.sequence'].next_by_code('customer.account.invoice')
         if self.type == 'out_invoice':
-            self.partner_id = self.env['res.partner'].search(['|', ('id', '=', 24), ('customer', '=', True)],limit=1).id
+            self.partner_id = self.env['res.partner'].search(['|', ('id', '=', 24), ('customer', '=', True)],
+                                                             limit=1).id
         else:
             pass
 
@@ -1674,9 +1662,9 @@ class AccountInvoice(models.Model):
     #     self.env['ir.sequence'].next_by_code('customer.account.invoice'))
     duplicate = fields.Boolean()
     seq = fields.Integer()
-    holding_invoice = fields.Boolean() #NOT WORKING IN SOME CONDITION USE holding_invoice
-    packing_slip = fields.Boolean() #NOT WORKING IN SOME CONDITION  USE packing_slip
-    packing_slip_new = fields.Boolean() #NOT WORKING IN SOME CONDITION
+    holding_invoice = fields.Boolean()  # NOT WORKING IN SOME CONDITION USE holding_invoice
+    packing_slip = fields.Boolean()  # NOT WORKING IN SOME CONDITION  USE packing_slip
+    packing_slip_new = fields.Boolean()  # NOT WORKING IN SOME CONDITION
 
     @api.multi
     def invoice_print(self):
@@ -1709,8 +1697,6 @@ class AccountInvoice(models.Model):
             'report_type': 'qweb-pdf',
         }
 
-
-
     @api.multi
     def move_to_holding_invoice(self):
         for record in self:
@@ -1718,13 +1704,13 @@ class AccountInvoice(models.Model):
                 [('type', '=', 'out_invoice'), ('hold_invoice', '=', True)], limit=1)
             last_index = int(res.number2.split('/')[0]) + 1
             record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
-            record.cus_inv_number=str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+            record.cus_inv_number = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
             record.seq = res.seq + 1
             record.packing_invoice = False
             record.hold_invoice = True
             record.cus_invoice = False
             record.state = "draft"
-        return{
+        return {
             'type': 'ir.actions.client',
             'tag': 'history_back',
         }
@@ -1738,7 +1724,6 @@ class AccountInvoice(models.Model):
         #     'type': 'ir.actions.act_window',
         #     'target': 'main',
         # }
-
 
     # @api.multi
     # def move_to_holding_invoice(self):
@@ -1803,7 +1788,7 @@ class AccountInvoice(models.Model):
                 [('type', '=', 'out_invoice'), ('cus_invoice', '=', True)], limit=1)
             last_index = int(res.number2.split('/')[0]) + 1
             record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
-            record.cus_inv_number=str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+            record.cus_inv_number = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
             record.seq = res.seq + 1
             record.packing_invoice = False
             record.hold_invoice = False
@@ -1861,7 +1846,7 @@ class AccountInvoice(models.Model):
 
                     if (rec.partner_id.credit_end_date < self.date_invoice):
                         raise except_orm(_('CREDIT DAYS LIMIT REACHED!'), (
-                                    'This Customers Credit Limit Days Are Ended' + "\n" 'Please Update the Customer Form'))
+                                'This Customers Credit Limit Days Are Ended' + "\n" 'Please Update the Customer Form'))
 
     @api.constrains('create_id', 'password')
     def check_password(self):
@@ -1881,11 +1866,6 @@ class AccountInvoice(models.Model):
             else:
                 record.create_bool = False
 
-
-
-
-
-
     # MY CODE........................................
     @api.model
     def create(self, vals):
@@ -1899,11 +1879,11 @@ class AccountInvoice(models.Model):
             res4 = self.env['account.invoice'].search([('type', '=', 'in_invoice')], limit=1)
             number = self.env['ir.sequence'].get('supplier.account.invoice')
             vals['number2'] = number
-            vals['cus_inv_number']=number
+            vals['cus_inv_number'] = number
             vals['seq'] = 1
             if res4:
                 last_index = int(res4.number2.split('/')[0]) + 1
-                vals['number2'] =  str(last_index).zfill(4)+ "/" +res4.number2.split('/')[1]
+                vals['number2'] = str(last_index).zfill(4) + "/" + res4.number2.split('/')[1]
                 vals['cus_inv_number'] = str(last_index).zfill(4) + "/" + res4.number2.split('/')[1]
                 vals['seq'] = res4.seq + 1
             else:
@@ -1918,7 +1898,7 @@ class AccountInvoice(models.Model):
             vals['seq'] = 1
             if res1:
                 last_index = int(res1.number2.split('/')[0]) + 1
-                print(last_index,'last_index',res1)
+                print(last_index, 'last_index', res1)
                 vals['number2'] = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
                 vals['cus_inv_number'] = str(last_index).zfill(4) + "/" + res1.number2.split('/')[1]
                 vals['seq'] = res1.seq + 1
@@ -1926,7 +1906,7 @@ class AccountInvoice(models.Model):
                 pass
         if packing_slip == True and invoice_type == 'out_invoice':
             res2 = self.env['account.invoice'].search(
-                [('type', '=', 'out_invoice'), ('packing_invoice', '=', True), ('hold_invoice', '=', False),], limit=1)
+                [('type', '=', 'out_invoice'), ('packing_invoice', '=', True), ('hold_invoice', '=', False), ], limit=1)
             number = self.env['ir.sequence'].get('packing.slip.invoice')
             vals['number2'] = number
             vals['cus_inv_number'] = number
@@ -1955,6 +1935,7 @@ class AccountInvoice(models.Model):
                 pass
         result = super(AccountInvoice, self).create(vals)
         return result
+
     #     # ................. OLD CODE..............
     #     # if 'duplicate' in self._context:
     #     #     if self._context['duplicate']:
@@ -1978,7 +1959,7 @@ class AccountInvoice(models.Model):
     #     #     result.state = 'holding_invoice'
     #     # return result
     # endofmycode.............................................
-#updated code................................................
+    # updated code................................................
     # @api.model
     # def create(self, vals):
     #     invoice_type = self.env.context.get('default_type') or self._context.get('default_type')
@@ -2098,7 +2079,7 @@ class AccountInvoice(models.Model):
     #     return result
     #
 
-    #end...................................................
+    # end...................................................
     #
     @api.multi
     def write(self, vals):
@@ -2151,16 +2132,13 @@ class AccountInvoice(models.Model):
 
         }
 
-
-
-
     #     if self.pay_mode == 'credit':
     #         if self.partner_id.customer:
     #             print("inside credits onchange")
 
     def get_year(self):
         year = self.env['account.fiscalyear'].search([('state', '=', 'draft')])
-        print(year,'yearyear')
+        print(year, 'yearyear')
         if year:
             return year
 
@@ -2204,7 +2182,7 @@ class AccountInvoice(models.Model):
     @api.multi
     def wiz_tree(self):
         rec = self.env['entry.stock'].sudo.search([])
-        print(rec,"alldataaaa11")
+        print(rec, "alldataaaa11")
         return {
             'context': self.env.context,
             'view_type': 'form',
@@ -2297,14 +2275,13 @@ class AccountInvoice(models.Model):
     cus_title_1 = fields.Many2one('customer.title', "Customer Type", related="partner_id.cus_title")
     cust_area = fields.Many2one('customer.area', "Customer Area", related="partner_id.cust_area")
     create_id = fields.Many2one('res.users', "Created By", Required=True)
-    password = fields.Char(Required=True,)
+    password = fields.Char(Required=True, )
     create_bool = fields.Boolean(Default=False)
     paid_bool = fields.Boolean('Invoice Paid?')
-    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode', default='cash')
+    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode',
+                                default='cash')
 
     amount_in_words = fields.Char('Amount in Words', compute='_compute_amount_in_words')
-
-
 
     @api.depends('amount_total')
     def _compute_amount_in_words(self):
@@ -2316,7 +2293,6 @@ class AccountInvoice(models.Model):
         for rec in self:
             rec.amount_tax_custom = rec.amount_total - (rec.amount_untaxed - rec.amount_discount)
             rec.amount_tax = rec.amount_tax_custom
-
 
     @api.one
     @api.depends('invoice_line.price_subtotal', 'tax_line.amount')
@@ -2337,13 +2313,12 @@ class AccountInvoice(models.Model):
             # discount_2 = 0.0
             # for lines in self.invoice_line:
             #     discount_2 += (lines.quantity * lines.price_unit) * lines.discount3 / 100
-                # discount_2 += (lines.quantity * lines.price_unit) * lines.discount3 / 100
+            # discount_2 += (lines.quantity * lines.price_unit) * lines.discount3 / 100
             self.amount_untaxed = total_price_amount
             self.amount_tax = total_tax_amount
             self.amount_tax_custom = total_tax_amount
             self.amount_discount = total_discount
             self.amount_total = round(amount_total_w_tax)
-
 
         if self.partner_id.customer:
             # print(amount_untaxed,'first')
@@ -2363,7 +2338,6 @@ class AccountInvoice(models.Model):
             self.amount_discount = total_discount
             self.amount_total = round(amount_total_w_tax)
             self.amount_residual = round(amount_total_w_tax)
-
 
     # @api.one
     # @api.depends('invoice_line.price_subtotal', 'tax_line.amount')
@@ -2523,8 +2497,6 @@ class AccountInvoice(models.Model):
             #     record.residual = max(record.residual, 0.0)
             if record.state == 'paid':
                 record.residual = 0.0
-
-
 
     # def _compute_residual(self):
     #     for record in self:
@@ -2743,5 +2715,3 @@ class AccountInvoice(models.Model):
         #         stock_entry = self.env['entry.stock'].create(vals)
         #         result.stock_entry_id = stock_entry.id
         return self.write({'state': 'open'})
-
-
