@@ -510,7 +510,7 @@ class AccountInvoiceLine(models.Model):
                                 break
                             else:
                                 rec.discount = 0
-                                raise Warning("No Supplier Discount Available")
+                                # raise Warning("No Supplier Discount Available")
             # FETCH EXTRA DDISCOUNT
             if self.medicine_grp:
                 dis_obj = self.env['group.discount'].search([('medicine_grp', '=', self.medicine_grp.id),
