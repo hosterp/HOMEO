@@ -132,7 +132,7 @@ class AccountInvoiceLine(models.Model):
     @api.onchange('medicine_rack')
     def onchange_medicine_rack(self):
         for result in self:
-            if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.medicine_rack and result.price_unit:
+            if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.price_unit and result.amount_w_tax and result.medicine_rack:
                 vals = {
                     'supplier_id': result.invoice_id.partner_id.id,
                     'expiry_date': result.expiry_date,
@@ -153,6 +153,7 @@ class AccountInvoiceLine(models.Model):
                 }
                 stock_entry = self.env['entry.stock'].create(vals)
                 result.stock_entry_id = stock_entry.id
+
 
     @api.multi
     def write(self, vals):
@@ -509,7 +510,7 @@ class AccountInvoiceLine(models.Model):
                                 break
                             else:
                                 rec.discount = 0
-                                # raise Warning("No Supplier Discount")
+                                raise Warning("No Supplier Discount Available")
             # FETCH EXTRA DDISCOUNT
             if self.medicine_grp:
                 dis_obj = self.env['group.discount'].search([('medicine_grp', '=', self.medicine_grp.id),
