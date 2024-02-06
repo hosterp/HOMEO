@@ -78,7 +78,7 @@
                 </xpath>
 
                 <xpath expr="//field[@name='price_subtotal']" position="after">
-                    <field name="invoice_line_tax_id4"/>
+                    <field name="invoice_line_tax_id4" widget="integer"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line_tax_id4']" position="after">
                     <field name="amount_amount" invisible="1"/>

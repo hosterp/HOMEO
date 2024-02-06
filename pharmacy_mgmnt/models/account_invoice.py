@@ -37,6 +37,7 @@ class AccountInvoiceLine(models.Model):
     invoice_id = fields.Many2one('account.invoice', required=False)
     product_tax = fields.Float(compute="_compute_customer_tax")
     unit_price = fields.Float(string='Unit price', compute="_compute_customer_tax", required=False)
+    unit_price_s = fields.Float(string='Unit price', required=False)
 
     @api.model
     def create(self, vals):
@@ -441,7 +442,7 @@ class AccountInvoiceLine(models.Model):
 
     @api.one
     @api.depends('product_id', 'medicine_name_subcat', 'medicine_grp', 'medicine_name_subcat', 'discount2',
-                 'price_unit',
+                 'price_unit','unit_price_s',
                  'quantity', 'discount')
     def _compute_all(self):
         if self.partner_id.supplier == True:
@@ -615,7 +616,10 @@ class AccountInvoiceLine(models.Model):
                         # self.amount_w_tax = subtotal_with_dis1 + tax_amount
                         dis2_amt = subtotal_with_dis1 * (self.discount3 / 100)
                         subtotal_with_dis2 = subtotal_with_dis1 - dis2_amt
-                        # print("1st round of calculation")
+                        unit_price_s = subtotal_with_dis2 / self.quantity
+                        print('unit_price',unit_price_s)
+                        self.unit_price_s = unit_price_s
+                        print(' self.unit_price', self.unit_price_s)
                         self.price_subtotal = subtotal_with_dis2
                         self.amount_w_tax = subtotal_with_dis2 + tax_amount
                         self.grand_total = subtotal_with_dis2 + tax_amount
@@ -631,6 +635,8 @@ class AccountInvoiceLine(models.Model):
                         discount1_amount = subtotal_wo_dis1 * (self.discount / 100)
                         item = self.invoice_line_tax_id4
                         subtotal_with_dis1 = subtotal_wo_dis1 - discount1_amount
+                        unit_price_s = subtotal_with_dis1 / self.quantity
+                        self.unit_price_s = unit_price_s
                         tax_amount = subtotal_with_dis1 * (item / 100)
                         self.price_subtotal = subtotal_with_dis1
                         self.amount_amount1 = tax_amount
@@ -640,11 +646,14 @@ class AccountInvoiceLine(models.Model):
                 else:
                     item = self.invoice_line_tax_id4
                     tax_amount = subtotal_wo_dis1 * (item / 100)
+                    unit_price_s = subtotal_wo_dis1 / self.quantity
+                    self.unit_price_s = unit_price_s
                     self.amount_amount1 = tax_amount
                     self.amount_w_tax = subtotal_wo_dis1 + tax_amount
                     self.grand_total = subtotal_wo_dis1 + tax_amount
         if self.partner_id.supplier == True:
             self.rate_amt = self.amount_w_tax - self.amount_amount1
+
             # self.grand_total = self.amount_w_tax - self.amount_amount1
             # print("finallyyyyy", self.rate_amt)
 
