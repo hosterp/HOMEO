@@ -133,9 +133,10 @@
                     <field name="discount" string="Dis"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="after">
-                    <field name="unit_price" string="Unit P" options='{"no_open": True}' readonly="0"/>
+                    <field name="unit_price" string="Unit P" options='{"no_open": True}' readonly="1"/>
                     <field name="invoice_line_tax_id4" readonly="0" widget="integer"/>
                     <field name="product_tax" string="Tax Amt" options='{"no_open": True}'/>
+                    <field name="unit_price_c" onchange="_onchange_unit_price_c(unit_price_c)" string="Unit TP" options='{"no_open": True}' readonly="0"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
                     <attribute name="string">Grand Total</attribute>
@@ -245,7 +246,8 @@
                     <field name="discount2" invisible="1"/>
                     <field name="discount3"/>
                     <field name="unit_price_s" string="U Price" readonly="0"/>
-                    <field name="rate_amt" invisible="1"/>
+<!--                    <field name="unit_price_s" onchange="_onchange_unit_price_s(unit_price_s)" string="U Price" readonly="0"/>-->
+                    <field name="rate_amt" invisible="0"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>

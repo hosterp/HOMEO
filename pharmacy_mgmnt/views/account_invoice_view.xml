@@ -133,10 +133,10 @@
 
                     <group col="4">
                         <group name="discount">
-                            <field name="create_id"
-                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>
-                            <field name="password" class="creation_password" placeholder="Password"
-                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>
+<!--                            <field name="create_id"-->
+<!--                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>-->
+<!--                            <field name="password" class="creation_password" placeholder="Password"-->
+<!--                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>-->
                             <field name="create_bool" readonly="1" string=" "/>
                             <field name="discount_category" attrs="{'readonly': [('state', '!=', 'draft')]}"
                                    style="width:20%%"/>

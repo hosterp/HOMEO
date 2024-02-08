@@ -38,6 +38,15 @@ class AccountInvoiceLine(models.Model):
     product_tax = fields.Float(compute="_compute_customer_tax")
     unit_price = fields.Float(string='Unit price', compute="_compute_customer_tax", required=False)
     unit_price_s = fields.Float(string='Unit price', required=False)
+    unit_price_c = fields.Float(string='Unit price', required=False,compute="_compute_customer_tax")
+
+    @api.onchange('unit_price_c')
+    def _onchange_unit_price_c(self):
+        for rec in self:
+            if rec.partner_id.customer and rec.price_unit != 0:
+                rec.discount = 100 * ((rec.price_unit - rec.unit_price_c) / rec.price_unit)
+            else:
+                pass
 
     @api.model
     def create(self, vals):
@@ -397,7 +406,7 @@ class AccountInvoiceLine(models.Model):
     # CUSTOMER TAX CALCULATION
     @api.model
     @api.depends('amt_w_tax', 'invoice_line_tax_id4', 'price_subtotal', 'amount_amount1', 'price_unit', 'rate_amtc',
-                 'product_tax', 'unit_price')
+                 'product_tax', 'unit_price', 'unit_price_s')
     def _compute_customer_tax(self):
         for record in self:
             if record.partner_id.customer:
@@ -413,6 +422,7 @@ class AccountInvoiceLine(models.Model):
                                 tax = per_product * tax_amount / 100
                                 rec.product_tax = tax * quantity
                                 rec.unit_price = per_product - tax
+                                rec.unit_price_c = per_product
                                 # tax = rate_amount * (perce / 100)
                                 rec.amt_tax = round(rec.product_tax)
                                 # total = rate_amount - round(tax)
@@ -429,6 +439,7 @@ class AccountInvoiceLine(models.Model):
                         tax = per_product * tax_amount / 100
                         rec.product_tax = tax * quantity
                         rec.unit_price = per_product - tax
+                        rec.unit_price_c = per_product
                         rec.amt_tax = round(rec.product_tax)
                         rec.amt_w_tax = rec.price_subtotal
                         rec.amount_residual = rec.price_subtotal
@@ -871,6 +882,7 @@ class AccountInvoiceLine(models.Model):
 
             percentage = 0
             if record.partner_id.customer == True:
+                print('record.rate_amtc',record.rate_amtc)
                 if record.rate_amtc:
                     for rec in self:
                         # print("got")
@@ -1858,15 +1870,15 @@ class AccountInvoice(models.Model):
                         raise except_orm(_('CREDIT DAYS LIMIT REACHED!'), (
                                 'This Customers Credit Limit Days Are Ended' + "\n" 'Please Update the Customer Form'))
 
-    @api.constrains('create_id', 'password')
-    def check_password(self):
-        for record in self:
-            if record.create_id.rec_password == record.password:
-                # record.create_bool = True
-                pass
-            else:
-                # record.create_bool = False
-                raise ValidationError("Enter the correct password")
+    # @api.constrains('create_id', 'password')
+    # def check_password(self):
+    #     for record in self:
+    #         if record.create_id.rec_password == record.password:
+    #             # record.create_bool = True
+    #             pass
+    #         else:
+    #             # record.create_bool = False
+    #             raise ValidationError("Enter the correct password")
 
     @api.constrains('invoice_line')
     def check_invoice_line(self):
