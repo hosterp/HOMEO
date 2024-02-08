@@ -365,7 +365,7 @@ class AccountInvoiceLine(models.Model):
             discount = line.quantity * line.price_unit * (line.discount / 100)
             amount = (line.quantity * line.price_unit) - discount
             tax_amount = amount * (line.invoice_line_tax_id4 / 100)
-            total_price = round(tax_amount + line.rate_amt)
+            total_price = line.amount_w_tax
 
         return {
             'type': 'src',
@@ -2486,39 +2486,38 @@ class AccountInvoice(models.Model):
     ####################### BALANCE CALCULATION###########################################
 
     def _compute_residual(self):
-        for record in self:
-            record.residual = 0.0
-            # Each partial reconciliation is considered only once for each invoice it appears into,
-            # and its residual amount is divided by this number of invoices
-            partial_reconciliations_done = []
-            for line in record.sudo().move_id.line_id:
-                if line.account_id.type not in ('receivable', 'payable'):
-                    continue
-                if line.reconcile_partial_id and line.reconcile_partial_id.id in partial_reconciliations_done:
-                    continue
-                # Get the correct line residual amount
-                if line.currency_id == record.currency_id:
-                    line_amount = line.amount_residual_currency if line.currency_id else line.amount_residual
-                else:
-                    from_currency = line.company_id.currency_id.with_context(date=line.date)
-                    line_amount = from_currency.compute(line.amount_residual, record.currency_id)
-                # For partially reconciled lines, split the residual amount
-                if line.reconcile_partial_id:
-                    partial_reconciliation_invoices = set()
-                    for pline in line.reconcile_partial_id.line_partial_ids:
-                        if pline.invoice and record.type == pline.invoice.type:
-                            partial_reconciliation_invoices.update([pline.invoice.id])
-                    line_amount = record.currency_id.round(line_amount / len(partial_reconciliation_invoices))
-                    partial_reconciliations_done.append(line.reconcile_partial_id.id)
-                record.residual += line_amount
-            record.residual = max(record.residual, 0.0)
+        self.residual = 0.0
+        # Each partial reconciliation is considered only once for each invoice it appears into,
+        # and its residual amount is divided by this number of invoices
+        partial_reconciliations_done = []
+        for line in self.sudo().move_id.line_id:
+            if line.account_id.type not in ('receivable', 'payable'):
+                continue
+            if line.reconcile_partial_id and line.reconcile_partial_id.id in partial_reconciliations_done:
+                continue
+            # Get the correct line residual amount
+            if line.currency_id == self.currency_id:
+                line_amount = line.amount_residual_currency if line.currency_id else line.amount_residual
+            else:
+                from_currency = line.company_id.currency_id.with_context(date=line.date)
+                line_amount = from_currency.compute(line.amount_residual, self.currency_id)
+            # For partially reconciled lines, split the residual amount
+            if line.reconcile_partial_id:
+                partial_reconciliation_invoices = set()
+                for pline in line.reconcile_partial_id.line_partial_ids:
+                    if pline.invoice and self.type == pline.invoice.type:
+                        partial_reconciliation_invoices.update([pline.invoice.id])
+                line_amount = self.currency_id.round(line_amount / len(partial_reconciliation_invoices))
+                partial_reconciliations_done.append(line.reconcile_partial_id.id)
+            self.residual += line_amount
+        self.residual = round(max(self.residual, 0.0))
             # if record.type == "out_invoice" and record.residual != 0:
             #     record.residual += round(record.amount_tax)
             #     record.residual = max(record.residual, 0.0)
             # else:
             #     record.residual = max(record.residual, 0.0)
-            if record.state == 'paid':
-                record.residual = 0.0
+        if self.state == 'paid':
+            self.residual = 0.0
 
     # def _compute_residual(self):
     #     for record in self:
