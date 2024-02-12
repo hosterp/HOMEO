@@ -43,6 +43,19 @@ class Discounts2(models.Model):
     def button_save(self):
         # Your save logic goes here
         return True
+
+    @api.multi
+    def save_and_create(self):
+        self.button_save()
+        return {
+            'name': 'Group Discount',
+            'view_type': 'form',
+            'view_mode': 'form,tree',
+            'target': 'new',
+            'res_model': 'group.discount',
+            'type': 'ir.actions.act_window',
+            'context': {'current_id': self.id},
+        }
     @api.model
     def create(self, vals):
         result = super(Discounts2, self).create(vals)

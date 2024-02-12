@@ -161,8 +161,9 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button string="Save" class="oe_highlight" type="object" groups="base.group_user"
+                        <button string="Save and Close" class="oe_highlight" type="object" groups="base.group_user"
                                 name="button_save"/>
+                        <button name="save_and_create" string="Save and Create" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
