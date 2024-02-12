@@ -244,10 +244,9 @@
 
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="before">
                     <field name="discount2" invisible="1"/>
-                    <field name="discount3"/>
-                    <field name="unit_price_s" string="U Price" readonly="0"/>
-<!--                    <field name="unit_price_s" onchange="_onchange_unit_price_s(unit_price_s)" string="U Price" readonly="0"/>-->
-                    <field name="rate_amt" invisible="0"/>
+                    <field name="discount3" onchange="_onchange_discount3(discount3)"/>
+                    <field name="unit_price_s" string="U Price" onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>
+                    <field name="rate_amt" string="total unit_price_s" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>

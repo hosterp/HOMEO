@@ -48,6 +48,22 @@ class AccountInvoiceLine(models.Model):
             else:
                 pass
 
+    @api.onchange('discount3')
+    def _onchange_discount3(self):
+        for rec in self:
+            if rec.partner_id.supplier and rec.unit_price_s != 0:
+                rec._compute_all()
+            else:
+                pass
+    @api.onchange('unit_price_s')
+    def _onchange_unit_price_s(self):
+        for rec in self:
+            if rec.partner_id.supplier and rec.unit_price_s != 0:
+                price_d1 = self.price_unit * (1 - (self.discount or 0.0) / 100.0)
+                rec.discount3 = 100 *(price_d1 - rec.unit_price_s)/price_d1
+            else:
+                pass
+
     @api.model
     def create(self, vals):
         cus_invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
@@ -452,8 +468,8 @@ class AccountInvoiceLine(models.Model):
                         # rec.amt_w_tax = total
 
     @api.one
-    @api.depends('product_id', 'medicine_name_subcat', 'medicine_grp', 'medicine_name_subcat', 'discount2',
-                 'price_unit','unit_price_s',
+    @api.depends('product_id', 'medicine_name_subcat', 'medicine_grp', 'medicine_name_subcat',
+                 'price_unit','discount3','unit_price_s',
                  'quantity', 'discount')
     def _compute_all(self):
         if self.partner_id.supplier == True:
@@ -464,8 +480,6 @@ class AccountInvoiceLine(models.Model):
                     s_obj = self.env['supplier.discounts'].search([('supplier', '=', rec.partner_id.id)])
                     if s_obj:
                         for lines in s_obj.lines:
-                            print('dis',lines.potency.id)
-                            print('prod',rec.medicine_name_subcat.id)
                             if (lines.medicine_grp1.id == rec.medicine_grp.id and lines.company.id == rec.product_of.id and lines.medicine_1.id == rec.product_id.id
                                     and lines.potency.id == rec.medicine_name_subcat.id and lines.medicine_name_packing.id == rec.medicine_name_packing.id):
                                 rec.discount = lines.discount
@@ -524,7 +538,7 @@ class AccountInvoiceLine(models.Model):
                                 rec.discount = 0
                                 # raise Warning("No Supplier Discount Available")
             # FETCH EXTRA DDISCOUNT
-            if self.medicine_grp:
+            if self.medicine_grp and not self.discount3:
                 dis_obj = self.env['group.discount'].search([('medicine_grp', '=', self.medicine_grp.id),
                                                              (
                                                                  'medicine_name_subcat', '=',
@@ -609,61 +623,89 @@ class AccountInvoiceLine(models.Model):
                                             # self.write({'expiry_date': cal_date})
                                 else:
                                     pass
-
+            else:
+                pass
             # TAX CALCULATION AND SUBTOTAL WITH 2 DISCOUNTS IF THERE IS DISCOUNT1 AND DISCOUNT2
             if self.price_unit:
-                # print("price unit exist")
                 subtotal_wo_dis1 = self.price_unit * self.quantity
-                if self.discount:
-                    # print("first discount exist")
-                    if self.discount3:
-                        # print("condition-extra discount")
-                        discount1_amount = subtotal_wo_dis1 * (self.discount / 100)
-                        item = self.invoice_line_tax_id4
-                        subtotal_with_dis1 = subtotal_wo_dis1 - discount1_amount
-                        tax_amount = subtotal_with_dis1 * (item / 100)
-                        # self.price_subtotal = subtotal_with_dis1
-                        self.amount_amount1 = tax_amount
-                        # self.amount_w_tax = subtotal_with_dis1 + tax_amount
-                        dis2_amt = subtotal_with_dis1 * (self.discount3 / 100)
-                        subtotal_with_dis2 = subtotal_with_dis1 - dis2_amt
-                        unit_price_s = subtotal_with_dis2 / self.quantity
-                        print('unit_price',unit_price_s)
-                        self.unit_price_s = unit_price_s
-                        print(' self.unit_price', self.unit_price_s)
-                        self.price_subtotal = subtotal_with_dis2
-                        self.amount_w_tax = subtotal_with_dis2 + tax_amount
-                        self.grand_total = subtotal_with_dis2 + tax_amount
-                        # print("price_subtotal", subtotal_with_dis2)
-                        # print("total", subtotal_with_dis2 + tax_amount)
-                        # print("extra dis", dis2_amt)
-                        self.price_subtotal = self.amount_w_tax - self.amount_amount1
-                        self.dis1 = discount1_amount
-                        self.dis2 = dis2_amt
+                if rec.discount:
+                    if rec.discount3:
+                        d1 = self.price_unit * (self.discount / 100)
+                        total_d1 = d1 * self.quantity
+                        self.dis1 = total_d1
+                        unit_price = self.price_unit - d1
 
+
+                        # Tax calculation
+                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
+                        total_tax = single_tax * self.quantity
+                        self.amount_amount1 = total_tax
+
+
+                        # Discount 2 calculation
+                        d2 = unit_price * (self.discount3 / 100)
+                        total_d2 = d2 * rec.quantity
+                        self.dis2 = total_d2
+                        unit_price -= d2
+                        self.rate_amt = unit_price * self.quantity
+                        self.unit_price_s = unit_price
+                        final_price = self.unit_price_s * self.quantity
+                        self.price_subtotal = final_price
+                        self.amount_w_tax = final_price + total_tax
+                        self.grand_total = final_price + total_tax
 
                     else:
-                        discount1_amount = subtotal_wo_dis1 * (self.discount / 100)
-                        item = self.invoice_line_tax_id4
-                        subtotal_with_dis1 = subtotal_wo_dis1 - discount1_amount
-                        unit_price_s = subtotal_with_dis1 / self.quantity
-                        self.unit_price_s = unit_price_s
-                        tax_amount = subtotal_with_dis1 * (item / 100)
-                        self.price_subtotal = subtotal_with_dis1
-                        self.amount_amount1 = tax_amount
-                        self.amount_w_tax = subtotal_with_dis1 + tax_amount
-                        self.grand_total = subtotal_with_dis1 + tax_amount
-                        self.dis1 = discount1_amount
+
+                        # Discount 1 calculation
+                        d1 = self.price_unit * (self.discount / 100)
+                        total_d1 = d1 * self.quantity
+                        self.dis1 = total_d1
+                        unit_price = self.price_unit - d1
+
+
+
+                        # Tax calculation
+                        single_tax = self.price_unit * (self.invoice_line_tax_id4 / 100)
+                        total_tax = single_tax * self.quantity
+                        self.amount_amount1 = total_tax
+                        self.dis2 = 0
+                        self.rate_amt = unit_price * self.quantity
+                        self.unit_price_s = unit_price
+                        final_price = self.unit_price_s * self.quantity
+                        self.price_subtotal = final_price
+                        self.amount_w_tax = final_price + total_tax
+                        self.grand_total = final_price + total_tax
                 else:
-                    item = self.invoice_line_tax_id4
-                    tax_amount = subtotal_wo_dis1 * (item / 100)
-                    unit_price_s = subtotal_wo_dis1 / self.quantity
-                    self.unit_price_s = unit_price_s
-                    self.amount_amount1 = tax_amount
-                    self.amount_w_tax = subtotal_wo_dis1 + tax_amount
-                    self.grand_total = subtotal_wo_dis1 + tax_amount
-        if self.partner_id.supplier == True:
-            self.rate_amt = self.amount_w_tax - self.amount_amount1
+                    # Tax calculation
+                    single_tax = self.price_unit * (self.invoice_line_tax_id4 / 100)
+                    total_tax = single_tax * self.quantity
+                    self.amount_amount1 = total_tax
+                    if rec.discount3:
+                        # Discount 2 calculation
+                        d2 = self.price_unit * (self.discount3 / 100)
+                        total_d2 = d2 * self.quantity
+                        self.dis2 = total_d2
+                        self.dis1 = 0
+                        unit_price = self.price_unit - d2
+                        self.rate_amt = unit_price * self.quantity
+                        self.unit_price_s = unit_price
+                        final_price = self.unit_price_s * self.quantity
+                        self.price_subtotal = final_price
+                        self.amount_w_tax = final_price + total_tax
+                        self.grand_total = final_price + total_tax
+                    else:
+                        self.dis2 = 0
+                        self.dis1 = 0
+                        unit_price = self.price_unit
+                        self.rate_amt = unit_price * self.quantity
+                        self.unit_price_s = unit_price
+                        final_price = self.unit_price_s * self.quantity
+                        self.price_subtotal = final_price
+                        self.amount_w_tax = final_price + total_tax
+                        self.grand_total = final_price + total_tax
+
+
+
 
             # self.grand_total = self.amount_w_tax - self.amount_amount1
             # print("finallyyyyy", self.rate_amt)
