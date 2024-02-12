@@ -229,7 +229,7 @@ $(document).ready(function() {
 
     quantity = $('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]');
     $(document).on('keyup', quantity, function (event) {
-        if (event.keyCode === 13) {
+        if (event.keyCode === 32) {
             const currentKeyPressTime = new Date().getTime();
             const timeSinceLastKeyPress = currentKeyPressTime - lastKeyPressTime;
             lastKeyPressTime = currentKeyPressTime;

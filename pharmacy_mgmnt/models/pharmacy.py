@@ -258,7 +258,7 @@ class TaxComboNew(models.Model):
 class NewStockEntry(models.Model):
     _name = 'entry.stock'
     _rec_name = 's_no'
-    _order = 'id desc'
+    _order = 'id,qty asc'
 
     supplier_id = fields.Many2one("res.partner", domain="[('supplier', '=', True)]")
     expiry_date = fields.Date(string='Expiry Date')
