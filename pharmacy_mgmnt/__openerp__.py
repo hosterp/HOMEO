@@ -56,7 +56,8 @@
 
     ],
     'qweb': [
-        "static/src/css/template.xml",
+        "static/src/xml/template.xml",
+        "static/src/xml/save_and_create_button.xml",
     ],
     'images': ['static/description/banner.jpg'],
     'license': 'LGPL-3',

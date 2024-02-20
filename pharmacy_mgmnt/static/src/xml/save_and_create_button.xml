@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-extend="FormView.buttons">
+        <t t-jquery="button.oe_form_button_save" t-operation="after">
+            <button type="button" class="oe_button oe_form_button_save_create oe_highlight" accesskey="S">Save And Create</button>
+        </t>
+    </t>
+</templates>
