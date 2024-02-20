@@ -41,6 +41,7 @@
                     <attribute name="attrs">{'readonly':[('state', 'not in',
                         ['draft','packing_slip','holding_invoice'])]}
                     </attribute>
+                     <attribute name="readonly">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']" position="attributes">
                     <attribute name="attrs">{'readonly':[('state', 'not in',
