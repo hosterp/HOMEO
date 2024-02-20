@@ -635,6 +635,12 @@ class AccountInvoiceLine(models.Model):
                         self.dis1 = total_d1
                         unit_price = self.price_unit - d1
 
+                        # Discount 2 calculation
+                        d2 = unit_price * (self.discount3 / 100)
+                        total_d2 = d2 * rec.quantity
+                        self.dis2 = total_d2
+                        unit_price -= d2
+
 
                         # Tax calculation
                         single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
@@ -642,11 +648,7 @@ class AccountInvoiceLine(models.Model):
                         self.amount_amount1 = total_tax
 
 
-                        # Discount 2 calculation
-                        d2 = unit_price * (self.discount3 / 100)
-                        total_d2 = d2 * rec.quantity
-                        self.dis2 = total_d2
-                        unit_price -= d2
+
                         self.rate_amt = unit_price * self.quantity
                         self.unit_price_s = unit_price
                         final_price = self.unit_price_s * self.quantity
@@ -665,7 +667,7 @@ class AccountInvoiceLine(models.Model):
 
 
                         # Tax calculation
-                        single_tax = self.price_unit * (self.invoice_line_tax_id4 / 100)
+                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
                         total_tax = single_tax * self.quantity
                         self.amount_amount1 = total_tax
                         self.dis2 = 0
@@ -676,10 +678,7 @@ class AccountInvoiceLine(models.Model):
                         self.amount_w_tax = final_price + total_tax
                         self.grand_total = final_price + total_tax
                 else:
-                    # Tax calculation
-                    single_tax = self.price_unit * (self.invoice_line_tax_id4 / 100)
-                    total_tax = single_tax * self.quantity
-                    self.amount_amount1 = total_tax
+
                     if rec.discount3:
                         # Discount 2 calculation
                         d2 = self.price_unit * (self.discount3 / 100)
@@ -687,6 +686,12 @@ class AccountInvoiceLine(models.Model):
                         self.dis2 = total_d2
                         self.dis1 = 0
                         unit_price = self.price_unit - d2
+
+                        # Tax calculation
+                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
+                        total_tax = single_tax * self.quantity
+                        self.amount_amount1 = total_tax
+
                         self.rate_amt = unit_price * self.quantity
                         self.unit_price_s = unit_price
                         final_price = self.unit_price_s * self.quantity
@@ -697,6 +702,12 @@ class AccountInvoiceLine(models.Model):
                         self.dis2 = 0
                         self.dis1 = 0
                         unit_price = self.price_unit
+
+                        #tax calculation
+                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
+                        total_tax = single_tax * self.quantity
+                        self.amount_amount1 = total_tax
+
                         self.rate_amt = unit_price * self.quantity
                         self.unit_price_s = unit_price
                         final_price = self.unit_price_s * self.quantity
