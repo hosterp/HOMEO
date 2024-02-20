@@ -37,8 +37,8 @@ class AccountInvoiceLine(models.Model):
     invoice_id = fields.Many2one('account.invoice', required=False)
     product_tax = fields.Float(compute="_compute_customer_tax")
     unit_price = fields.Float(string='Unit price', compute="_compute_customer_tax", required=False)
-    unit_price_s = fields.Float(string='Unit price', required=False)
-    unit_price_c = fields.Float(string='Unit price', required=False,compute="_compute_customer_tax")
+    unit_price_s = fields.Float(string='Unit price', required=False, default=False)
+    unit_price_c = fields.Float(string='Unit price', required=False,compute="_compute_customer_tax",default=False)
 
     @api.onchange('unit_price_c')
     def _onchange_unit_price_c(self):

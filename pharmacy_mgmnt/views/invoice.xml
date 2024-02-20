@@ -124,19 +124,20 @@
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>
-                    <attribute name="widget">integer</attribute>
+                    <attribute name="widget">char</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Mrp</attribute>
+                    <attribute name="widget">char</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="replace">
                     <field name="discount" string="Dis"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="after">
-                    <field name="unit_price" string="Unit P" options='{"no_open": True}' readonly="1"/>
-                    <field name="invoice_line_tax_id4" readonly="0" widget="integer"/>
+                    <field name="unit_price" widget="char" string="Unit P" options='{"no_open": True}' readonly="1"/>
+                    <field name="invoice_line_tax_id4" readonly="0" widget="char"/>
                     <field name="product_tax" string="Tax Amt" options='{"no_open": True}'/>
-                    <field name="unit_price_c" onchange="_onchange_unit_price_c(unit_price_c)" string="Unit TP" options='{"no_open": True}' readonly="0"/>
+                    <field name="unit_price_c" widget="char" onchange="_onchange_unit_price_c(unit_price_c)" string="Unit TP" options='{"no_open": True}' readonly="0"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
                     <attribute name="string">Grand Total</attribute>
@@ -230,10 +231,10 @@
                     <field name="medicine_name_packing" options='{"no_open": True}'/>
 
                     <field name="medicine_grp" string="Group" readonly="0" options='{"no_open": True}'/>
+                     <field name="batch" string="Batch"/>
                     <field name="test3" invisible="1"/>
 
-                    <field name="batch_2" options='{"no_open": True}'/>
-                    <field name="batch" invisible="1"/>
+                    <field name="batch_2" options='{"no_open": True}' invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="attributes">
                     <attribute name="string">Product</attribute>
@@ -244,16 +245,18 @@
 
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="before">
                     <field name="discount2" invisible="1"/>
-                    <field name="discount3" onchange="_onchange_discount3(discount3)"/>
-                    <field name="unit_price_s" string="U Price" onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>
-                    <field name="rate_amt" string="total unit_price_s" invisible="1"/>
+                    <field name="discount3" widget="char" onchange="_onchange_discount3(discount3)"/>
+                    <field name="unit_price_s" string="U Price" widget="char" digits="(16,2)" onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>
+                    <field name="rate_amt" widget="char" string="total unit_price_s" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>
-                    <attribute name="widget">integer</attribute>
+                    <attribute name="widget">char</attribute>
+                    <attribute name="default_focus">false</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Mrp</attribute>
+                    <attribute name="widget">char</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="after">
                     <field name="test" invisible="1"/>
@@ -269,7 +272,7 @@
                        position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='batch_2']" position="after">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='batch']" position="after">
                     <field name="manf_date"/>
                     <field name="expiry_date"/>
                 </xpath>
