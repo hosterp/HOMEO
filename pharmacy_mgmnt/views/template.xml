@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--this file added inside views-->
 <openerp>
     <data>
         <template id="assets_backend" name="pharmacy_mgmnt_move assets" inherit_id="web.assets_backend">
