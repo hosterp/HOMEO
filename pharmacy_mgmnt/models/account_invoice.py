@@ -44,7 +44,7 @@ class AccountInvoiceLine(models.Model):
     def _onchange_unit_price_c(self):
         for rec in self:
             if rec.partner_id.customer and rec.price_unit != 0:
-                rec.discount = 100 * ((rec.price_unit - rec.unit_price_c) / rec.price_unit)
+                rec.discount = round(100 * ((rec.price_unit - rec.unit_price_c) / rec.price_unit))
             else:
                 pass
 
@@ -60,7 +60,15 @@ class AccountInvoiceLine(models.Model):
         for rec in self:
             if rec.partner_id.supplier and rec.unit_price_s != 0:
                 price_d1 = self.price_unit * (1 - (self.discount or 0.0) / 100.0)
-                rec.discount3 = 100 *(price_d1 - rec.unit_price_s)/price_d1
+                # Assuming rec.unit_price_s and price_d1 are defined somewhere
+                if price_d1 != 0:
+                    discount3_raw = 100 * (price_d1 - rec.unit_price_s) / price_d1
+                    discount3_rounded = round(discount3_raw, 2)  # Round to 2 decimal places
+                    rec.discount3 = int(discount3_rounded) if discount3_rounded.is_integer() else discount3_rounded
+                else:
+                    # Handle the case where price_d1 is zero to avoid division by zero error
+                    rec.discount3 = None  # Set an appropriate default value or handle it accordingly
+
             else:
                 pass
 
@@ -432,34 +440,31 @@ class AccountInvoiceLine(models.Model):
                             if rec.rate_amtc == 0:
                                 rate_amount = rec.price_subtotal
                                 quantity = rec.quantity
-                                per_product = rate_amount / quantity
+                                per_product = round(rate_amount / quantity, 2)
                                 perce = rec.invoice_line_tax_id4
-                                tax_amount = perce * 100 / (perce + 100)
-                                tax = per_product * tax_amount / 100
-                                rec.product_tax = tax * quantity
-                                rec.unit_price = per_product - tax
-                                rec.unit_price_c = per_product
-                                # tax = rate_amount * (perce / 100)
-                                rec.amt_tax = round(rec.product_tax)
-                                # total = rate_amount - round(tax)
-                                rec.amt_w_tax = rec.price_subtotal
-                                rec.amount_residual = rec.price_subtotal
-                                rec.amount_residual_currency = rec.price_subtotal
-
+                                tax_amount = round(perce * 100 / (perce + 100), 2)
+                                tax = round(per_product * tax_amount / 100, 2)
+                                rec.product_tax = round(tax * quantity, 2)
+                                rec.unit_price = round(per_product - tax, 2)
+                                rec.unit_price_c = round(per_product, 2)
+                                rec.amt_tax = round(rec.product_tax, 2)
+                                rec.amt_w_tax = round(rec.price_subtotal, 2)
+                                rec.amount_residual = round(rec.price_subtotal, 2)
+                                rec.amount_residual_currency = round(rec.price_subtotal, 2)
                     else:
                         rate_amount = rec.price_subtotal
                         quantity = rec.quantity
-                        per_product = rate_amount / quantity
+                        per_product = round(rate_amount / quantity, 2)
                         perce = rec.invoice_line_tax_id4
-                        tax_amount = perce * 100 / (perce + 100)
-                        tax = per_product * tax_amount / 100
-                        rec.product_tax = tax * quantity
-                        rec.unit_price = per_product - tax
-                        rec.unit_price_c = per_product
-                        rec.amt_tax = round(rec.product_tax)
-                        rec.amt_w_tax = rec.price_subtotal
-                        rec.amount_residual = rec.price_subtotal
-                        rec.amount_residual_currency = rec.price_subtotal
+                        tax_amount = round(perce * 100 / (perce + 100), 2)
+                        tax = round(per_product * tax_amount / 100, 2)
+                        rec.product_tax = round(tax * quantity, 2)
+                        rec.unit_price = round(per_product - tax, 2)
+                        rec.unit_price_c = round(per_product, 2)
+                        rec.amt_tax = round(rec.product_tax, 2)
+                        rec.amt_w_tax = round(rec.price_subtotal, 2)
+                        rec.amount_residual = round(rec.price_subtotal, 2)
+                        rec.amount_residual_currency = round(rec.price_subtotal, 2)
                         # perce = rec.invoice_line_tax_id4
                         # new_rate = rec.rate_amtc
                         # tax = new_rate * (perce / 100)
@@ -627,96 +632,86 @@ class AccountInvoiceLine(models.Model):
                 pass
             # TAX CALCULATION AND SUBTOTAL WITH 2 DISCOUNTS IF THERE IS DISCOUNT1 AND DISCOUNT2
             if self.price_unit:
-                subtotal_wo_dis1 = self.price_unit * self.quantity
+                subtotal_wo_dis1 = round(self.price_unit * self.quantity, 2)
                 if rec.discount:
                     if rec.discount3:
-                        d1 = self.price_unit * (self.discount / 100)
-                        total_d1 = d1 * self.quantity
+                        d1 = round(self.price_unit * (self.discount / 100), 2)
+                        total_d1 = round(d1 * self.quantity, 2)
                         self.dis1 = total_d1
-                        unit_price = self.price_unit - d1
+                        unit_price = round(self.price_unit - d1, 2)
 
                         # Discount 2 calculation
-                        d2 = unit_price * (self.discount3 / 100)
-                        total_d2 = d2 * rec.quantity
+                        d2 = round(unit_price * (self.discount3 / 100), 2)
+                        total_d2 = round(d2 * rec.quantity, 2)
                         self.dis2 = total_d2
                         unit_price -= d2
 
-
                         # Tax calculation
-                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
-                        total_tax = single_tax * self.quantity
+                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                        total_tax = round(single_tax * self.quantity, 2)
                         self.amount_amount1 = total_tax
 
-
-
-                        self.rate_amt = unit_price * self.quantity
-                        self.unit_price_s = unit_price
-                        final_price = self.unit_price_s * self.quantity
+                        self.rate_amt = round(unit_price * self.quantity, 2)
+                        self.unit_price_s = round(unit_price, 2)
+                        final_price = round(self.unit_price_s * self.quantity, 2)
                         self.price_subtotal = final_price
-                        self.amount_w_tax = final_price + total_tax
-                        self.grand_total = final_price + total_tax
+                        self.amount_w_tax = round(final_price + total_tax, 2)
+                        self.grand_total = round(final_price + total_tax, 2)
 
                     else:
-
                         # Discount 1 calculation
-                        d1 = self.price_unit * (self.discount / 100)
-                        total_d1 = d1 * self.quantity
+                        d1 = round(self.price_unit * (self.discount / 100), 2)
+                        total_d1 = round(d1 * self.quantity, 2)
                         self.dis1 = total_d1
-                        unit_price = self.price_unit - d1
-
-
+                        unit_price = round(self.price_unit - d1, 2)
 
                         # Tax calculation
-                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
-                        total_tax = single_tax * self.quantity
+                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                        total_tax = round(single_tax * self.quantity, 2)
                         self.amount_amount1 = total_tax
                         self.dis2 = 0
-                        self.rate_amt = unit_price * self.quantity
-                        self.unit_price_s = unit_price
-                        final_price = self.unit_price_s * self.quantity
+                        self.rate_amt = round(unit_price * self.quantity, 2)
+                        self.unit_price_s = round(unit_price, 2)
+                        final_price = round(self.unit_price_s * self.quantity, 2)
                         self.price_subtotal = final_price
-                        self.amount_w_tax = final_price + total_tax
-                        self.grand_total = final_price + total_tax
+                        self.amount_w_tax = round(final_price + total_tax, 2)
+                        self.grand_total = round(final_price + total_tax, 2)
                 else:
-
                     if rec.discount3:
                         # Discount 2 calculation
-                        d2 = self.price_unit * (self.discount3 / 100)
-                        total_d2 = d2 * self.quantity
+                        d2 = round(self.price_unit * (self.discount3 / 100), 2)
+                        total_d2 = round(d2 * self.quantity, 2)
                         self.dis2 = total_d2
                         self.dis1 = 0
-                        unit_price = self.price_unit - d2
+                        unit_price = round(self.price_unit - d2, 2)
 
                         # Tax calculation
-                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
-                        total_tax = single_tax * self.quantity
+                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                        total_tax = round(single_tax * self.quantity, 2)
                         self.amount_amount1 = total_tax
 
-                        self.rate_amt = unit_price * self.quantity
-                        self.unit_price_s = unit_price
-                        final_price = self.unit_price_s * self.quantity
+                        self.rate_amt = round(unit_price * self.quantity, 2)
+                        self.unit_price_s = round(unit_price, 2)
+                        final_price = round(self.unit_price_s * self.quantity, 2)
                         self.price_subtotal = final_price
-                        self.amount_w_tax = final_price + total_tax
-                        self.grand_total = final_price + total_tax
+                        self.amount_w_tax = round(final_price + total_tax, 2)
+                        self.grand_total = round(final_price + total_tax, 2)
                     else:
                         self.dis2 = 0
                         self.dis1 = 0
-                        unit_price = self.price_unit
+                        unit_price = round(self.price_unit, 2)
 
-                        #tax calculation
-                        single_tax = unit_price * (self.invoice_line_tax_id4 / 100)
-                        total_tax = single_tax * self.quantity
+                        # Tax calculation
+                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                        total_tax = round(single_tax * self.quantity, 2)
                         self.amount_amount1 = total_tax
 
-                        self.rate_amt = unit_price * self.quantity
-                        self.unit_price_s = unit_price
-                        final_price = self.unit_price_s * self.quantity
+                        self.rate_amt = round(unit_price * self.quantity, 2)
+                        self.unit_price_s = round(unit_price, 2)
+                        final_price = round(self.unit_price_s * self.quantity, 2)
                         self.price_subtotal = final_price
-                        self.amount_w_tax = final_price + total_tax
-                        self.grand_total = final_price + total_tax
-
-
-
+                        self.amount_w_tax = round(final_price + total_tax, 2)
+                        self.grand_total = round(final_price + total_tax, 2)
 
             # self.grand_total = self.amount_w_tax - self.amount_amount1
             # print("finallyyyyy", self.rate_amt)
