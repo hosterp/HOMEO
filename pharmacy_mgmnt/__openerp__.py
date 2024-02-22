@@ -53,10 +53,14 @@
         'report/sale_report.xml',
         'views/account_invoice_view.xml',
         'views/invoice_report.xml',
+        'views/template.xml',
 
     ],
+    'js': [
+            "static/src/js/widget.js",
+        ],
     'qweb': [
-        "static/src/css/template.xml",
+        "static/src/xml/save_and_create_button.xml",
     ],
     'images': ['static/description/banner.jpg'],
     'license': 'LGPL-3',

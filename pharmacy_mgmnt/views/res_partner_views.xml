@@ -138,9 +138,9 @@
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="inv_sup_no" required="1" placeholder="Open Invoice No"
-                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}" widget="char" />
                     <field name="inv_amount" string="Inv Amount"
-                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}" widget="char" digits="(16, 2)"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="address_new" attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
