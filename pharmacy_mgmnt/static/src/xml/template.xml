@@ -6,6 +6,7 @@
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="pharmacy_mgmnt/static/src/css/custom.css"/>
                 <script type="text/javascript" src="/pharmacy_mgmnt/static/src/js/widget.js"/>
+                <script type="text/javascript" src="/pharmacy_mgmnt/static/src/js/cursor_movement.js"/>
             </xpath>
         </template>
     </data>

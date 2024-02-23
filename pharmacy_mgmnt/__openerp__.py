@@ -58,6 +58,7 @@
     ],
     'js': [
             "static/src/js/widget.js",
+            "static/src/js/cursor_movement.js",
         ],
     'qweb': [
         "static/src/xml/save_and_create_button.xml",
