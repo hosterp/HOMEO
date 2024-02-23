@@ -334,7 +334,7 @@ class NewStockEntry(models.Model):
                         self.qty_received = 0
                 else:
                     pass
-                self.quantity_selected = 0
+                # self.quantity_selected = 0
             else:
                 pass
 

@@ -220,25 +220,58 @@ $(document).ready(function() {
 //VINCODES
 
   $(document).on('keyup', '.dataTables_filter input[type="search"]', function (event) {
-    if (event.keyCode === 13) {
-     var quantityField = $('[id^="DataTables_Table_"] tbody tr:first-child td[data-field="quantity_selected"]');
-     quantityField.click();
-     }
+  if (event.keyCode === 13) {
+    var firstRow = $('[id^="DataTables_Table_"] tbody tr:first-child');
+    var quantityField = firstRow.find('td[data-field="quantity_selected"]');
+    var nextRow = firstRow.next();
+
+    if(quantityField.length > 0 && nextRow.length>0){
+         quantityField.click();
+    }else if(nextRow.length === 0 && quantityField.length > 0) {
+
+        quantityField.click();
+        quantityField.on('click', function() {
+                 $(this).trigger('change');
+    });
+      setTimeout(function() {
+
+        $('.close').click();
+    }, 1500);
+    } else {
+
+        $('.close').click();
+
+    }
+}
      let lastKeyPressTime = 0;
     const doubleClickInterval = 500; // Time interval to consider as a double click (in milliseconds)
 
     quantity = $('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]');
     $(document).on('keyup', quantity, function (event) {
-        if (event.keyCode === 32) {
+        if (event.keyCode === 13)  {
             const currentKeyPressTime = new Date().getTime();
             const timeSinceLastKeyPress = currentKeyPressTime - lastKeyPressTime;
             lastKeyPressTime = currentKeyPressTime;
 
-            if (timeSinceLastKeyPress < doubleClickInterval) {
-                $('.close').click();
+             if (timeSinceLastKeyPress < doubleClickInterval) {
+
+                    $('.close').click();
+                }
             }
+
+    });
+
+    var quantitySelectedField = '[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]';
+
+    $(document).on('keyup', quantitySelectedField, function (event) {
+        if (event.keyCode === 32) {
+            $(this).trigger('change');
+//            $('.close').click(); //
         }
-});
+    });
+
+
+
 
 //     quantity=$('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]')
 //     $(document).on('keyup',quantity,function (event) {
