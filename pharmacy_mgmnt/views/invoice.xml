@@ -102,6 +102,7 @@
                 <xpath expr="//field[@name='number']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
+
                 <xpath expr="//field[@name='date_invoice']" position="after">
                     <field name="packing_slip" invisible="1"/>
                     <field name="holding_invoice" invisible="1"/>
@@ -273,7 +274,7 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='batch']" position="after">
-                    <field name="manf_date"/>
+                    <field name="manf_date" readonly="0"/>
                     <field name="expiry_date"/>
                 </xpath>
             </field>

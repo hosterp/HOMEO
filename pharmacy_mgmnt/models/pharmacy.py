@@ -299,6 +299,13 @@ class NewStockEntry(models.Model):
         result = super(NewStockEntry, self).create(vals)
         return result
 
+    # @api.multi
+    # def reset_quantity_selected(self):
+    #     for record in self:
+    #         if record.quantity_selected > 0:
+    #             record.quantity_selected = 0
+    #     return True
+
     @api.onchange('quantity_selected')
     def quantity_selected_onchage(self):
         if self.quantity_selected != 0:
@@ -334,7 +341,6 @@ class NewStockEntry(models.Model):
                         self.qty_received = 0
                 else:
                     pass
-                # self.quantity_selected = 0
             else:
                 pass
 
