@@ -222,7 +222,15 @@ $(document).ready(function() {
   if (event.keyCode === 13) {
      var quantityField = $('[id^="DataTables_Table_"] tbody tr:first-child td[data-field="quantity_selected"]');
      quantityField.click();
+       if (quantityField.closest('tr').next('tr').length >= 0) {
+        quantityField.click();
+//        alert('click');
+        }
+        else{
+               $('.close').click();
+        }
     }
+
      let lastKeyPressTime = 0;
     const doubleClickInterval = 500; // Time interval to consider as a double click (in milliseconds)
 
