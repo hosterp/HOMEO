@@ -940,7 +940,14 @@ class AccountInvoiceLine(models.Model):
                         rec.new_disc = 100 - percentage
 
     medicine_rack = fields.Many2one('product.medicine.types', 'Rack')
-    product_of = fields.Many2one('product.medicine.responsible', 'Company')
+    product_of = fields.Many2one('product.medicine.responsible', 'Company',
+                                 default=lambda self: self._compute_default_target_field())
+
+    @api.model
+    def _compute_default_target_field(self):
+        latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
+        return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
+    
     medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack', )
 
