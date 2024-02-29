@@ -31,7 +31,7 @@ class AccountInvoiceLine(models.Model):
     # amount_w_tax = fields.Float('TOTAL_AMT', compute="_compute_amount_with_tax")
     amount_w_tax = fields.Float('Total')
     discount = fields.Float(default=0.0)
-    discount2 = fields.Float("DISCOUNT2")
+    discount2 = fields.Float("Dis3(%)")
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
     invoice_id = fields.Many2one('account.invoice', required=False)
@@ -1416,7 +1416,18 @@ class AccountInvoice(models.Model):
                                                domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
     pack_invoice_id = fields.Many2one("account.invoice",
                                       domain=[('type', '=', 'out_invoice'), ('packing_invoice', '=', True)])
+    bill_discount = fields.Float("Bill Discount")
 
+    @api.onchange("bill_discount")
+    def onchange_bill_discount(self):
+        for rec in self.invoice_line:
+            if not rec.discount2:
+                rec.discount2 = self.bill_discount
+                rec.discount3 += self.bill_discount
+            else:
+                rec.discount3 -= rec.discount2
+                rec.discount2 = self.bill_discount
+                rec.discount3 += self.bill_discount
     @api.multi
     def previous_invoice(self):
         next_inv = self.env['account.invoice'].search(

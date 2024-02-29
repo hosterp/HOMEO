@@ -43,6 +43,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
                     <group>
+                        <group class="oe_subtotal_footer oe_left">
+                            <field name="bill_discount" widget="float_no_default"/>
+                        </group>
                         <group class="oe_subtotal_footer oe_right">
                             <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="amount_discount" widget='monetary' options="{'currency_field': 'currency_id'}"
