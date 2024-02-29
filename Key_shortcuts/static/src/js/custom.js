@@ -45,6 +45,7 @@ $.shortcut('114', function() {
 	$('.css_hiworth').each(function() {
 		if($(this).parents('div:hidden').length == 0){
 			$(this).trigger('click');
+			 resetFieldValue();
 		}
 	});
 });

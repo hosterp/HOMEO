@@ -1,5 +1,8 @@
 from openerp import models, fields, api, tools, _
 from datetime import datetime, timedelta
+from openerp import http
+from openerp.http import request
+
 
 class Batches(models.Model):
     _name = "med.batch"
@@ -287,9 +290,10 @@ class NewStockEntry(models.Model):
     amount_w_tax = fields.Float()
     custom_qty = fields.Integer()
     invoice_line_id = fields.Many2one('account.invoice.line')
-    quantity_selected = fields.Float(string="Item Qty")
+    quantity_selected = fields.Float(string="Item Qty",store="False")
     stock_date = fields.Date(string="stock date")
     med_category = fields.Selection([('indian', 'Indian'), ('german', 'German')], default='indian', string="Made In")
+
 
     @api.model
     def create(self, vals):
