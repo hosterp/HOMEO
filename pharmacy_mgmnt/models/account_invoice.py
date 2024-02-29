@@ -6,10 +6,11 @@ from openerp.osv import osv
 import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _, _logger
 from openerp.exceptions import except_orm, Warning, RedirectWarning, ValidationError
-from datetime import datetime, timedelta
+from datetime import datetime
 from datetime import date
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
+import datetime
 
 
 class AccountAccountInherit(models.Model):
@@ -987,6 +988,28 @@ class AccountInvoiceLine(models.Model):
 
     price_subtotal = fields.Float(string='Amount', digits=dp.get_precision('Account'),
                                   store=True, readonly=True, compute='_compute_price', inverse='_inverse_compute_price')
+
+
+    # @api.onchange('price_unit')
+    # def _compute_manf_expiry_date_display(self):
+    #     for record in self:
+    #         if record.manf_date:
+    #             # Compute/manipulate 'manf_date'
+    #             manf_date_obj = datetime.datetime.strptime(record.manf_date, '%m/%Y')
+    #             manf_date_str = manf_date_obj.strftime('%m/%Y')
+    #             record.manf_date = manf_date_str
+    #             record.manf_date_display = manf_date_str
+    #         else:
+    #             record.manf_date_display = ''
+    #
+    #         if record.expiry_date:
+    #             # Compute/manipulate 'expiry_date'
+    #             expiry_date_obj = datetime.datetime.strptime(record.expiry_date, '%m/%Y')
+    #             expiry_date_str = expiry_date_obj.strftime('%m/%Y')
+    #             record.expiry_date = expiry_date_str
+    #             record.expiry_date_display = expiry_date_str
+    #         else:
+    #             record.expiry_date_display = ''
 
     def _inverse_compute_price(self):
         for rec in self:
