@@ -1754,11 +1754,11 @@ class AccountInvoice(models.Model):
             else:
                 pass
         # self.number2 = self.env['ir.sequence'].next_by_code('customer.account.invoice')
-        if self.type == 'out_invoice':
-            self.partner_id = self.env['res.partner'].search(['|', ('id', '=', 24), ('customer', '=', True)],
-                                                             limit=1).id
-        else:
-            pass
+        # if self.type == 'out_invoice':
+        #     self.partner_id = self.env['res.partner'].search(['|', ('id', '=', 24), ('customer', '=', True)],
+        #                                                      limit=1).id
+        # else:
+        #     pass
 
     @api.multi
     def name_get(self):
