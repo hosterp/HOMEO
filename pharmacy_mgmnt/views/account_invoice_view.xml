@@ -43,6 +43,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
                     <group>
+                        <group class="oe_subtotal_footer oe_left">
+                            <field name="bill_discount" widget="float_no_default"/>
+                        </group>
                         <group class="oe_subtotal_footer oe_right">
                             <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="amount_discount" widget='monetary' options="{'currency_field': 'currency_id'}"
@@ -71,6 +74,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="domain">[('res_person_id','=',False),('customer','=',True)]</attribute>
+<!--                    <attribute name="options">{"no_open": True}</attribute>-->
                 </xpath>
 <!--                <xpath expr="//field[@name='discount']" position="attributes">-->
 <!--                    <attribute name="digits">(16, 2)</attribute>-->
@@ -141,7 +145,7 @@
                             <field name="discount_category" attrs="{'readonly': [('state', '!=', 'draft')]}"
                                    style="width:20%%"/>
                             <field name="discount_type" style="width:20%%" readonly="1"/>
-                            <field name="discount_rate" style="width:20%%"/>
+                            <field name="discount_rate" widget="float_no_default" style="width:20%%"/>
                             <field name="amount_in_words" readonly="1" invisible="1"/>
                             <button name="print_e_way_report" type="object" string="E-WayReport"/>
                         </group>

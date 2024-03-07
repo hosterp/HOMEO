@@ -32,7 +32,7 @@ class AccountInvoiceLine(models.Model):
     # amount_w_tax = fields.Float('TOTAL_AMT', compute="_compute_amount_with_tax")
     amount_w_tax = fields.Float('Total')
     discount = fields.Float(default=0.0)
-    discount2 = fields.Float("DISCOUNT2")
+    discount2 = fields.Float("Dis3(%)")
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
     invoice_id = fields.Many2one('account.invoice', required=False)
@@ -476,7 +476,7 @@ class AccountInvoiceLine(models.Model):
 
     @api.one
     @api.depends('product_id', 'medicine_name_subcat', 'medicine_grp', 'medicine_name_subcat',
-                 'price_unit','discount3','unit_price_s',
+                 'price_unit','discount3','discount2','unit_price_s',
                  'quantity', 'discount')
     def _compute_all(self):
         if self.partner_id.supplier == True:
@@ -647,18 +647,33 @@ class AccountInvoiceLine(models.Model):
                         total_d2 = round(d2 * rec.quantity, 2)
                         self.dis2 = total_d2
                         unit_price -= d2
+                        if self.discount2:
+                            d3 = round(unit_price * (self.discount2 / 100), 2)
+                            total_d3 = round(d3 * rec.quantity, 2)
+                            unit_price -= d3
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
 
-                        # Tax calculation
-                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
-                        total_tax = round(single_tax * self.quantity, 2)
-                        self.amount_amount1 = total_tax
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
+                        else:
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
 
-                        self.rate_amt = round(unit_price * self.quantity, 2)
-                        self.unit_price_s = round(unit_price, 2)
-                        final_price = round(self.unit_price_s * self.quantity, 2)
-                        self.price_subtotal = final_price
-                        self.amount_w_tax = round(final_price + total_tax, 2)
-                        self.grand_total = round(final_price + total_tax, 2)
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
 
                     else:
                         # Discount 1 calculation
@@ -667,17 +682,34 @@ class AccountInvoiceLine(models.Model):
                         self.dis1 = total_d1
                         unit_price = round(self.price_unit - d1, 2)
 
-                        # Tax calculation
-                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
-                        total_tax = round(single_tax * self.quantity, 2)
-                        self.amount_amount1 = total_tax
-                        self.dis2 = 0
-                        self.rate_amt = round(unit_price * self.quantity, 2)
-                        self.unit_price_s = round(unit_price, 2)
-                        final_price = round(self.unit_price_s * self.quantity, 2)
-                        self.price_subtotal = final_price
-                        self.amount_w_tax = round(final_price + total_tax, 2)
-                        self.grand_total = round(final_price + total_tax, 2)
+                        if self.discount2:
+                            d3 = round(unit_price * (self.discount2 / 100), 2)
+                            total_d3 = round(d3 * rec.quantity, 2)
+                            unit_price -= d3
+
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
+                            self.dis2 = 0
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
+                        else:
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
+                            self.dis2 = 0
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
                 else:
                     if rec.discount3:
                         # Discount 2 calculation
@@ -687,33 +719,68 @@ class AccountInvoiceLine(models.Model):
                         self.dis1 = 0
                         unit_price = round(self.price_unit - d2, 2)
 
-                        # Tax calculation
-                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
-                        total_tax = round(single_tax * self.quantity, 2)
-                        self.amount_amount1 = total_tax
+                        if self.discount2:
+                            d3 = round(unit_price * (self.discount2 / 100), 2)
+                            total_d3 = round(d3 * rec.quantity, 2)
+                            unit_price -= d3
 
-                        self.rate_amt = round(unit_price * self.quantity, 2)
-                        self.unit_price_s = round(unit_price, 2)
-                        final_price = round(self.unit_price_s * self.quantity, 2)
-                        self.price_subtotal = final_price
-                        self.amount_w_tax = round(final_price + total_tax, 2)
-                        self.grand_total = round(final_price + total_tax, 2)
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
+
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
+                        else:
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
+
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
                     else:
                         self.dis2 = 0
                         self.dis1 = 0
                         unit_price = round(self.price_unit, 2)
 
-                        # Tax calculation
-                        single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
-                        total_tax = round(single_tax * self.quantity, 2)
-                        self.amount_amount1 = total_tax
+                        if self.discount2:
+                            d3 = round(unit_price * (self.discount2 / 100), 2)
+                            total_d3 = round(d3 * rec.quantity, 2)
+                            unit_price -= d3
 
-                        self.rate_amt = round(unit_price * self.quantity, 2)
-                        self.unit_price_s = round(unit_price, 2)
-                        final_price = round(self.unit_price_s * self.quantity, 2)
-                        self.price_subtotal = final_price
-                        self.amount_w_tax = round(final_price + total_tax, 2)
-                        self.grand_total = round(final_price + total_tax, 2)
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
+
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
+                        else:
+                            # Tax calculation
+                            single_tax = round(unit_price * (self.invoice_line_tax_id4 / 100), 2)
+                            total_tax = round(single_tax * self.quantity, 2)
+                            self.amount_amount1 = total_tax
+
+                            self.rate_amt = round(unit_price * self.quantity, 2)
+                            self.unit_price_s = round(unit_price, 2)
+                            final_price = round(self.unit_price_s * self.quantity, 2)
+                            self.price_subtotal = final_price
+                            self.amount_w_tax = round(final_price + total_tax, 2)
+                            self.grand_total = round(final_price + total_tax, 2)
+
 
             # self.grand_total = self.amount_w_tax - self.amount_amount1
             # print("finallyyyyy", self.rate_amt)
@@ -1440,7 +1507,27 @@ class AccountInvoice(models.Model):
                                                domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
     pack_invoice_id = fields.Many2one("account.invoice",
                                       domain=[('type', '=', 'out_invoice'), ('packing_invoice', '=', True)])
+    bill_discount = fields.Float("Bill Discount")
 
+    @api.onchange("bill_discount")
+    def onchange_bill_discount(self):
+        if self.partner_id.supplier:
+            for rec in self.invoice_line:
+                rec.discount2 = self.bill_discount
+            self.invoice_line._compute_all()
+        else:
+            pass
+
+    # @api.onchange("bill_discount")
+    # def onchange_bill_discount(self):
+    #     for rec in self.invoice_line:
+    #         if not rec.discount2:
+    #             rec.discount2 = self.bill_discount
+    #             rec.discount3 += self.bill_discount
+    #         else:
+    #             rec.discount3 -= rec.discount2
+    #             rec.discount2 = self.bill_discount
+    #             rec.discount3 += self.bill_discount
     @api.multi
     def previous_invoice(self):
         next_inv = self.env['account.invoice'].search(
@@ -1680,11 +1767,11 @@ class AccountInvoice(models.Model):
             else:
                 pass
         # self.number2 = self.env['ir.sequence'].next_by_code('customer.account.invoice')
-        if self.type == 'out_invoice':
-            self.partner_id = self.env['res.partner'].search(['|', ('id', '=', 24), ('customer', '=', True)],
-                                                             limit=1).id
-        else:
-            pass
+        # if self.type == 'out_invoice':
+        #     self.partner_id = self.env['res.partner'].search(['|', ('id', '=', 24), ('customer', '=', True)],
+        #                                                      limit=1).id
+        # else:
+        #     pass
 
     @api.multi
     def name_get(self):
@@ -2421,7 +2508,6 @@ class AccountInvoice(models.Model):
             # total_discount = sum(self.invoice_line.mapped(lambda l: l.dis1 + l.dis2))
             total_tax_amount = amount_total_w_tax - amount_untaxed
             total_discount = total_price_amount - amount_untaxed
-            print("total_discounttotal_discounttotal_discount", total_discount)
             # self.rate_amt = self.amount_w_tax - self.amount_amount1
             # discount_2 = 0.0
             # for lines in self.invoice_line:
