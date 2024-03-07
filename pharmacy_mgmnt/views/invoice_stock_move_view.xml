@@ -91,7 +91,7 @@
                     <field name="grand_total" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='amount_w_tax']" position="after">
-                    <field name="medicine_rack" required="1" options='{"no_open": True}'/>
+                    <field name="medicine_rack" required="1" options='{"no_open": True}' class="rack"/>
                     <field name="hsn_code"/>
                 </xpath>
 

@@ -107,17 +107,17 @@
                     <field name="company"/>
                     <field name="medicine_grp" invisible="1"/>
                     <field name="medicine_grp1"/>
-                    <field name="quantity_selected" store="False"/>
+                    <field name="quantity_selected" store="False"  widget="float_no_default"/>
                     <field name="qty" type="char"/>
-                    <field name="mrp" type="char"/>
+                    <field name="mrp" type="char"  widget="float_no_default"/>
                     <field name="batch_2"/>
                     <field name="manf_date"/>
                     <field name="expiry_date"/>
                     <field name="custom_qty" type="char" invisible="1"/>
                     <field name="rack"/>
                     <field name="hsn_code"/>
-                    <field name="invoice_line_tax_id4"/>
-                    <field name="qty_received"/>
+                    <field name="invoice_line_tax_id4"  widget="float_no_default"/>
+                    <field name="qty_received"  widget="float_no_default"/>
                     <field name="discount" invisible="1"/>
                 </tree>
             </field>
@@ -143,17 +143,17 @@
                     <field name="company" readonly="1"/>
                     <field name="medicine_grp" invisible="1" readonly="1"/>
                     <field name="medicine_grp1" readonly="1"/>
-                    <field name="quantity_selected" store="False"/>
+                    <field name="quantity_selected" store="False" widget="float_no_default"/>
                     <field name="qty" type="char" readonly="1"/>
-                    <field name="mrp" type="char" readonly="1"/>
+                    <field name="mrp" type="char" readonly="1"  widget="float_no_default"/>
                     <field name="batch_2" readonly="1"/>
                     <field name="manf_date" readonly="1"/>
                     <field name="expiry_date" readonly="1"/>
                     <field name="custom_qty" type="char" invisible="1" readonly="1"/>
                     <field name="rack" readonly="1"/>
                     <field name="hsn_code" readonly="1"/>
-                    <field name="invoice_line_tax_id4" readonly="1"/>
-                    <field name="qty_received" readonly="1"/>
+                    <field name="invoice_line_tax_id4" readonly="1"  widget="float_no_default"/>
+                    <field name="qty_received" readonly="1"  widget="float_no_default"/>
                     <field name="discount" invisible="1" readonly="1"/>
                 </tree>
                 <!--                </div>-->

@@ -170,6 +170,17 @@ $(document).ready(function() {
             $(".open_customer").trigger('click');
         }
     });
+    $(document).on('keydown','input[type="text"][placeholder="select supplier"]', function(event) {
+        if (event.keyCode === 13) {
+            var inputValue = $(this).val().trim();
+            if (inputValue !== "") {
+                $(".supplier_invo").trigger('click');
+            } else {
+                $(this).next('input').focus();
+            }
+        }
+    });
+
     $(document).on('keydown', 'input[type="text"][placeholder="Select Hold Bill"]', function(event) {
         if (event.keyCode === 13) {
             $(".Hold_Bill").trigger('click');

@@ -134,7 +134,8 @@
                 <xpath expr="//field[@name='date_invoice']" position="after">
                     <field name="invoices_id" string="Select Previous Invoice"
                            domain="[('partner_id','=',partner_id)]"
-                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"   placeholder="select supplier"/>
+                     <button name="open_supplier_invoice" string="open supplier invoice" type="object" class="supplier_invo" style="align:right" invisible="True"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="inv_sup_no" required="1" placeholder="Open Invoice No"

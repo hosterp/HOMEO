@@ -190,6 +190,7 @@ class AccountInvoiceLine(models.Model):
                 result.stock_entry_id = stock_entry.id
 
 
+
     @api.multi
     def write(self, vals):
         for rec in self:
@@ -1492,6 +1493,18 @@ class AccountInvoice(models.Model):
             # }
         else:
             raise Warning("Create a new record")
+
+    @api.multi
+    def open_supplier_invoice(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=328&action=399" % (
+            base_url, self.invoices_id.id)
+        print(redirect_url, '.......>')
+        return {
+            'type': 'ir.actions.act_url',
+            'url': redirect_url,
+            'target': 'self',
+        }
 
     @api.multi
     def open_customer_invoice(self):
