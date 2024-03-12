@@ -14,7 +14,7 @@
                 </xpath>
                 <xpath expr="//field[@name='email']" position="after">
                     <!--                <field name="res_person_id"/>-->
-                    <field name="gst_no" attrs="{'invisible': [('supplier','=',False)]}"/>
+                    <field name="gst_number" attrs="{'invisible': [('supplier','=',False)]}"/>
                     <field name="drug_license_number" attrs="{'invisible': [('supplier','=',False)]}"/>
                 </xpath>
                 <xpath expr="//field[@name='website']" position="attributes">
@@ -54,7 +54,7 @@
                     <field name="address_new"/>
                     <field name="res_person_id" attrs="{'invisible': [('supplier','=',True)]}"/>
                     <field name="advance_amount"/>
-                    <field name="gst_no" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
+                    <field name="gst_number_c" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
                     <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>
                     <field name="b2c" attrs="{'invisible': [('customer','=',False)]}"/>
                     <field name="b2b" attrs="{'invisible': [('customer','=',False)]}" readonly="0"/>

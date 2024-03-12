@@ -75,7 +75,7 @@ class TaxReport(ReportXlsx):
         tax_total = 0
         for invoice in invoice_ids:
             worksheet.write('A%s' % row, invoice.partner_id.name or '', boldcl)
-            worksheet.write('B%s' % row, invoice.partner_id.gst_no or '', boldcc)
+            worksheet.write('B%s' % row, invoice.partner_id.gst_number or '', boldcc)
             worksheet.write('C%s' % row, invoice.number2 or '', rightbb)
             worksheet.write('D%s' % row, invoice.date_invoice or '', boldcc)
             worksheet.write('E%s' % row, invoice.amount_tax or '', rightbr)

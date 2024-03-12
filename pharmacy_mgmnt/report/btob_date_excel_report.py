@@ -104,7 +104,7 @@ class BtobDateXlsx(ReportXlsx):
             sheet.write(row, 0, formatted_from_date, format2)
             sheet.write(row, 1, rec['invoice'].number2, format2)
             sheet.write(row, 2, rec['invoice'].partner_id.name, format2)
-            sheet.write(row, 3, rec['invoice'].partner_id.gst_no, format2)
+            sheet.write(row, 3, rec['invoice'].partner_id.gst_number, format2)
             sheet.write(row, 4, rec['tax_5_sum'], format2)
 
             bill_total += rec['tax_5_sum']

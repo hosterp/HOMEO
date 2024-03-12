@@ -75,10 +75,10 @@ class ResPartner(models.Model):
 
 
     # @api.multi
-    # @api.depends('gst_no')
+    # @api.depends('gst_number')
     # def _change_boolean_status(self):
     #     for rec in self:
-    #         if rec.gst_no:
+    #         if rec.gst_number:
     #             rec.b2b = True
     #             rec.b2c = False
     #         else:
@@ -90,7 +90,8 @@ class ResPartner(models.Model):
     b2b = fields.Boolean()
     # b2b = fields.Boolean(compute="_change_boolean_status")
     b2c = fields.Boolean()
-    gst_no = fields.Char()
+    gst_number = fields.Char('GST No')
+    gst_number_c = fields.Char('GST No')
     drug_license_number = fields.Char(string='DL/REG NO')
     address_new = fields.Text('Address')
     res_person_id = fields.Boolean('Sale Responsible Person ?')
@@ -319,13 +320,12 @@ class ResPartner(models.Model):
                         res.address_new = select_state
                 # res.address_new = vals['select_state'] if not res.address_new else res.address_new + ',' + vals[
                 #     'select_state']
-            print(res, 'res,res')
             return res
         else:
             return None
-    @api.onchange('gst_no')
+    @api.onchange('gst_number_c')
     def b2c_field(self):
-        if self.gst_no:
+        if self.gst_number_c:
             self.b2b = True
             self.b2c = False
         else:

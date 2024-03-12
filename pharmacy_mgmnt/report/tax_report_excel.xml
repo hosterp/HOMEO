@@ -204,7 +204,7 @@
                                             <span t-esc="line['invoice'].partner_id.name"/>
                                         </td>
                                         <td style='font-size:15px'>
-                                            <span t-esc="line['invoice'].partner_id.gst_no"/>
+                                            <span t-esc="line['invoice'].partner_id.gst_number_c"/>
                                         </td>
                                     </t>
                                     <td style='font-size:15px'>

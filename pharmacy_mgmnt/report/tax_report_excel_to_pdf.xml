@@ -59,7 +59,7 @@
                                        <b> <span t-esc="invoice.partner_id.name"/></b>
                                     </td>
                                     <td style='font-size:15px'>
-                                        <b><span t-esc="invoice.partner_id.gst_no"/></b>
+                                        <b><span t-esc="invoice.partner_id.gst_number_c"/></b>
                                     </td>
                                     <td style='font-size:15px'>
                                         <b><span t-esc="invoice.number2"/></b>

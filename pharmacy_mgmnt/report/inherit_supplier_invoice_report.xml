@@ -68,9 +68,9 @@
                                     <strong>Address:</strong>
                                     <span t-field="o.address_new"/>
                                 </div>
-                                <div t-if="o.partner_id.gst_no">
+                                <div t-if="o.partner_id.gst_number_c">
                                     <strong>GST NO:</strong>
-                                    <span t-field="o.partner_id.gst_no"/>
+                                    <span t-field="o.partner_id.gst_number_c"/>
                                 </div>
                                 <div t-if="o.partner_id.mobile">
                                     <strong>Mobile:</strong>

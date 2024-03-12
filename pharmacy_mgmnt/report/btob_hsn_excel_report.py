@@ -62,7 +62,7 @@ class BtobHsnXlsx(ReportXlsx):
         for rec in invoice_ids:
             sheet.write(sub_head_row, 2, sl_no ,  sl_no_format)
             sheet.write(sub_head_row, 3, rec.partner_id.name or '',  format2)
-            sheet.write(sub_head_row, 5, rec.partner_id.gst_no, format2)
+            sheet.write(sub_head_row, 5, rec.partner_id.gst_number, format2)
 
             date_str = rec.date_invoice
             from_date = datetime.strptime(date_str, '%Y-%m-%d')
