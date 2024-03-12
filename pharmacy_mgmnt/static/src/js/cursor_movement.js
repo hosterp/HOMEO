@@ -17,12 +17,12 @@ $(document).ready(function(){
             $this.prop('selectionStart', $this.val().length);
         }
     });
-//    $(document).on('keydown', '.oe_form_field_many2one', function(event) {
-//        var $currentField = $(this);
-//        var $createLabelElement = $('.oe_view_manager_body').find('li.ui-menu-item:first a:contains("Create")');
-//        if ($createLabelElement.length > 0 && event.which === $.ui.keyCode.ENTER) {
-//            $createLabelElement.click();
-//        }
-//    });
+    $(document).on('keydown', '.oe_form_field_many2one', function(event) {
+        var $currentField = $(this);
+        var $createLabelElement = $('.oe_view_manager_body').find('li.ui-menu-item:first a:contains("Create")');
+        if ($createLabelElement.length > 0 && event.which === $.ui.keyCode.ENTER) {
+            $createLabelElement.click();
+        }
+    });
 
 });
