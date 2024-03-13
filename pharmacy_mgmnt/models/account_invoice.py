@@ -2348,7 +2348,7 @@ class AccountInvoice(models.Model):
     b2c = fields.Boolean("B2C", default=True)
     bill_nature = fields.Selection([('gst', 'GST'), ('igst', 'IGST')], default='gst', compute='compute_bill')
     doctor_name = fields.Many2one('res.partner', 'Doctor Name')
-    doctor_name_1 = fields.Char('Doctor Name')
+    doctor_name_1 = fields.Many2one('res.partner', 'Doctor')
 
     res_person = fields.Many2one('res.partner', string="Responsible Person")
     address_new = fields.Text('Address', related="partner_id.address_new")
@@ -2382,7 +2382,6 @@ class AccountInvoice(models.Model):
     @api.multi
     def wiz_tree(self):
         rec = self.env['entry.stock'].sudo.search([])
-        print(rec, "alldataaaa11")
         return {
             'context': self.env.context,
             'view_type': 'form',

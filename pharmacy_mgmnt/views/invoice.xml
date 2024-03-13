@@ -114,11 +114,11 @@
                     <attribute name="required">0</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="replace">
-                    <field name="product_id" string="Product" required="1" options='{"no_open": True}'/>
+                    <field name="product_id" string="Product" required="0" options='{"no_open": True}'/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
                     <field name="medicine_name_subcat" options='{"no_open": True}'/>
-                    <field name="batch_2" options='{"no_open": True}'/>
+                    <field name="batch"/>
                     <field name="medicine_name_packing" options='{"no_open": True}'/>
                     <field name="product_of" options='{"no_open": True}'/>
                     <field name="medicine_grp" string="Group" required="1" options='{"no_open": True}'/>
@@ -135,19 +135,19 @@
                     <field name="discount" string="Dis" widget="float_no_default"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="after">
-                    <field name="unit_price" widget="float_no_default" string="Unit P" options='{"no_open": True}' readonly="1"/>
-                    <field name="invoice_line_tax_id4" readonly="0" widget="float_no_default"/>
-                    <field name="product_tax" string="Tax Amt" widget="float_no_default" options='{"no_open": True}'/>
                     <field name="unit_price_c" widget="float_no_default" onchange="_onchange_unit_price_c(unit_price_c)" string="Unit TP" options='{"no_open": True}' readonly="0"/>
+                    <field name="unit_price" widget="float_no_default" string="Unit P" options='{"no_open": True}' readonly="1"/>
+                    <field name="invoice_line_tax_id4" readonly="1" widget="float_no_default"/>
+                    <field name="product_tax" string="Tax Amt" readonly="1"  widget="float_no_default" options='{"no_open": True}'/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
                     <attribute name="string">Grand Total</attribute>
                     <attribute name="widget">float_no_default</attribute>
-                    <attribute name="readonly">0</attribute>
+                    <attribute name="readonly">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="after">
                     <field name="amt_w_tax" invisible="1"/>
-                    <field name="hsn_code" class="hsn"/>
+                    <field name="hsn_code" class="hsn" readonly="1"/>
                     <field name="amount_amount" invisible="1"/>
                     <!--                    <field name="amt_tax"/>-->
                     <field name="amount_amount1" invisible="1"/>
@@ -160,7 +160,6 @@
                     <field name="calc" invisible="1"/>
                     <field name="calc2" invisible="1"/>
                     <field name="calc3" invisible="1"/>
-                    <field name="batch" invisible="1"/>
                     <field name="discount3" invisible="1"/>
                     <field name="expiry_date" invisible="1"/>
                     <field name="avail_qty" invisible="1" string="Stock"/>
