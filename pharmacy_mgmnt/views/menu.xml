@@ -208,9 +208,15 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='email']" position="after">
-                    <field name="cus_title" attrs="{'invisible': [('customer','=',False)]}"/>
-                    <field name="discount_category" attrs="{'invisible': [('customer','=',False)]}"/>
-                    <field name="cust_area" attrs="{'invisible': [('customer','=',False)]}"/>
+                    <field name="cus_title" invisible="1"/>
+                    <field name="discount_category" attrs="{'invisible': [('customer','=',False)]}" style="width:50%%"/>
+                    <field name="cust_area" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='email']" position="attributes">
+                    <attribute name="style">width:50%;</attribute>
+                </xpath>
+                <xpath expr="//field[@name='mobile']" position="attributes">
+                    <attribute name="style">width:50%;</attribute>
                 </xpath>
 
                 <xpath expr="//div/field[@name='category_id']" position="attributes">

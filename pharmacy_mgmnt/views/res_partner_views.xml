@@ -47,18 +47,25 @@
                 <xpath expr="//field[@name='phone']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='title']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='website']" position="after">
+                    <group col="2">
+                        <field name="interstate_customer"/>
+                        <field name="res_person_id" attrs="{'invisible': [('supplier','=',True)]}"/>
+                    </group>
+                    <group col="2">
+                        <field name="b2c" attrs="{'invisible': [('customer','=',False)]}"/>
+                        <field name="b2b" attrs="{'invisible': [('customer','=',False)]}" readonly="0"/>
+                    </group>
                     <field name="local_area_customer" attrs="{'invisible': [('customer','=',False)]}"/>
-                    <field name="interstate_customer"/>
                     <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
                     <field name="address_new"/>
-                    <field name="res_person_id" attrs="{'invisible': [('supplier','=',True)]}"/>
-                    <field name="advance_amount"/>
+                    <field name="advance_amount" invisible="1" widget="float_no_default"/>
                     <field name="gst_number_c" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
                     <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>
-                    <field name="b2c" attrs="{'invisible': [('customer','=',False)]}"/>
-                    <field name="b2b" attrs="{'invisible': [('customer','=',False)]}" readonly="0"/>
-                    <field name="local_customer" attrs="{'invisible': [('customer','=',False)]}"/>
+                    <field name="local_customer" invisible="1"/>
                 </xpath>
             </field>
         </record>
