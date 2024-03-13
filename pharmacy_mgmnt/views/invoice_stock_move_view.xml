@@ -92,7 +92,7 @@
                 </xpath>
                 <xpath expr="//field[@name='amount_w_tax']" position="after">
                     <field name="medicine_rack" required="1" options='{"no_open": True}' class="rack"/>
-                    <field name="hsn_code"/>
+                    <field name="hsn_code" invisible="1"/>
                 </xpath>
 
                 <!--                invoice_supplier_form-->
