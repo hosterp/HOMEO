@@ -57,7 +57,7 @@ border-color: darkgrey;
 }
 
 .openerp .oe_form_sheet_width {
-    min-width: 781px;
-    max-width: 1177px;
-    margin: -3px 49px 5px;
+    min-width: 60%;
+    max-width: 90%;
+    margin: -3px auto 5px; /* Auto margin to center the sheet horizontally */
 }
