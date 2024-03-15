@@ -284,11 +284,33 @@ $(document).ready(function() {
         $('.oe_form_field_one2many_list_row_add a').trigger('click');
     }
   });
-  $(document).on('keyup', '.hiworth', function (event) {
+ $(document).on('keyup', '.hiworth', function (event) {
     if (event.keyCode === 13) {
-        $('.oe_form_field_one2many_list_row_add a').trigger('click');
+        var firstRow = document.querySelector('tr[data-id^="one2many_v_id_"]');
+        if (firstRow) {
+            var productOfField = firstRow.querySelector('td[data-field="product_of"]');
+            if (productOfField) {
+                productOfField.click();
+            }
+        } else {
+           $('.oe_form_field_one2many_list_row_add a').trigger('click');
+           setTimeout(function() {
+                var productOfInput = $('span[data-fieldname="product_of"] input');
+                productOfInput.val('');
+            }, 100)
+
+        }
     }
-  });
+});
+
+
+  $(document).on('keydown', '.rack input[type="text"]', function() {
+     if (event.keyCode === 13) {
+    // Trigger the click event on .oe_form_field_one2many_list_row_add a
+    $('.oe_form_field_one2many_list_row_add a').trigger('click');
+    }
+ });
+
  $(document).on('keyup', '.hsn', function (event) {
     if (event.keyCode === 13) {
         $('.oe_form_field_one2many_list_row_add a').trigger('click');
@@ -343,5 +365,4 @@ $(document).ready(function() {
 //  });
 //
 //});
-
 
