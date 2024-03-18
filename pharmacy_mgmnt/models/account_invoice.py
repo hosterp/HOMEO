@@ -1009,13 +1009,14 @@ class AccountInvoiceLine(models.Model):
 
     medicine_rack = fields.Many2one('product.medicine.types', 'Rack')
     product_of = fields.Many2one('product.medicine.responsible', 'Company',
-                                 default=lambda self: self._compute_default_target_field())
+                                 default=lambda self: self._compute_default_target_field(),)
 
     @api.model
     def _compute_default_target_field(self):
         latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
         return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
-    
+
+
     medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack', )
 
@@ -1508,6 +1509,23 @@ class AccountInvoice(models.Model):
     pack_invoice_id = fields.Many2one("account.invoice",
                                       domain=[('type', '=', 'out_invoice'), ('packing_invoice', '=', True)])
     bill_discount = fields.Float("Bill Discount")
+
+    # @api.model
+    # def default_get(self, fields):
+    #     res = super(AccountInvoice, self).default_get(fields)
+    #
+    #     # Check if the invoice type is 'in_invoice'
+    #     if res.get('type') == 'in_invoice':
+    #         records = [(5, 0, 0)]  # Remove existing records, if any
+    #
+    #         # Create the first line without the default value for 'product_of'
+    #         first_line = (0, 0, {'product_of': False})
+    #         records.append(first_line)
+    #
+    #         if 'invoice_line' in fields:
+    #             res.update({'invoice_line': records})
+    #
+    #     return res
 
     @api.onchange("bill_discount")
     def onchange_bill_discount(self):
