@@ -42,8 +42,8 @@ max-width: 182px
 .modal-content {
     width: 1150px;
     position: absolute;
-    top: 50%;
     left: -15%;
+    top:235px;
 
 }
 .oe_form_uri{
