@@ -44,7 +44,7 @@
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
                     <group>
                         <group class="oe_subtotal_footer oe_left">
-                            <field name="bill_discount" widget="float_no_default"/>
+                            <field name="bill_discount" widget="float_no_default"  attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>/>
                         </group>
                         <group class="oe_subtotal_footer oe_right">
                             <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
