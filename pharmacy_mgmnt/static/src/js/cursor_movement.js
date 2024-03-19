@@ -25,11 +25,17 @@ $(document).ready(function(){
 //        }
 //    });
     $(document).on('focus', '.oe_form_field_many2one', function(event) {
-        if (!$(this).data('clicked')) { // Check if the click event hasn't been triggered yet
-            $(this).data('clicked', true); // Set the flag to indicate the click event has been triggered
-            $(this).find('.oe_m2o_drop_down_button').click(); // Trigger click event on oe_m2o_drop_down_button
+        if (!$(this).data('clicked')) {
+            $(this).data('clicked', true);
+            $(this).find('.oe_m2o_drop_down_button').click();
+//            var $firstListItem = $('ul.ui-autocomplete[id^="ui-id-"]').find('li.ui-menu-item:first');
+//            console.log($firstListItem.length);
+//            if ($firstListItem.length > 0) {
+//                $firstListItem.click();
+//            }
         }
     });
+
 
     $(document).on('blur', '.oe_form_field_many2one', function(event) {
         $(this).data('clicked', false); // Reset the flag when the field loses focus

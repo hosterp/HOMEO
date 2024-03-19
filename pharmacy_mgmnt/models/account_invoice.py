@@ -1499,7 +1499,7 @@ class AccountInvoice(models.Model):
     cus_invoice = fields.Boolean("Customer Invoice?")
     hold_invoice_id = fields.Many2one("account.invoice",
                                       domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
-    partner_id = fields.Many2one('res.partner')
+    partner_id = fields.Many2one('res.partner',create=True)
     cus_inv_number = fields.Char()
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     cus_invoice_id = fields.Many2one("account.invoice",
