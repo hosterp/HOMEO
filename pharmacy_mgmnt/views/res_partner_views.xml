@@ -100,6 +100,7 @@
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="advance_amount" string="Advance Amount" style="height:20%%" invisible="1"/>
                     <field name="doctor_name_1" string="Doctor" required="0" domain="[('res_person_id','=',False),('customer','=',True)]"/>
+                    <field name="gst_type" />
                     <!--                        <field name="financial_year" placeholder="Financial Year" style="width:50%%" invisible="1"/>-->
 
                     <field name="b2c" invisible="1"/>

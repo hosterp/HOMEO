@@ -436,43 +436,82 @@ class AccountInvoiceLine(models.Model):
     def _compute_customer_tax(self):
         for record in self:
             if record.partner_id.customer:
-                for rec in record:
-                    if rec.rate_amtc == 0:
-                        if rec.rate_amtc < rec.price_subtotal:
-                            if rec.rate_amtc == 0:
-                                rate_amount = rec.price_subtotal
-                                quantity = rec.quantity
-                                per_product = round(rate_amount / quantity, 2)
-                                perce = rec.invoice_line_tax_id4
-                                tax_amount = round(perce * 100 / (perce + 100), 2)
-                                tax = round(per_product * tax_amount / 100, 2)
-                                rec.product_tax = round(tax * quantity, 2)
-                                rec.unit_price = round(per_product - tax, 2)
-                                rec.unit_price_c = round(per_product, 2)
-                                rec.amt_tax = round(rec.product_tax, 2)
-                                rec.amt_w_tax = round(rec.price_subtotal, 2)
-                                rec.amount_residual = round(rec.price_subtotal, 2)
-                                rec.amount_residual_currency = round(rec.price_subtotal, 2)
-                    else:
-                        rate_amount = rec.price_subtotal
-                        quantity = rec.quantity
-                        per_product = round(rate_amount / quantity, 2)
-                        perce = rec.invoice_line_tax_id4
-                        tax_amount = round(perce * 100 / (perce + 100), 2)
-                        tax = round(per_product * tax_amount / 100, 2)
-                        rec.product_tax = round(tax * quantity, 2)
-                        rec.unit_price = round(per_product - tax, 2)
-                        rec.unit_price_c = round(per_product, 2)
-                        rec.amt_tax = round(rec.product_tax, 2)
-                        rec.amt_w_tax = round(rec.price_subtotal, 2)
-                        rec.amount_residual = round(rec.price_subtotal, 2)
-                        rec.amount_residual_currency = round(rec.price_subtotal, 2)
-                        # perce = rec.invoice_line_tax_id4
-                        # new_rate = rec.rate_amtc
-                        # tax = new_rate * (perce / 100)
-                        # rec.amt_tax = round(tax)
-                        # total = new_rate + round(tax)
-                        # rec.amt_w_tax = total
+                if record.invoice_id.gst_type == 'gst_minus':
+                    for rec in record:
+                        if rec.rate_amtc == 0:
+                            if rec.rate_amtc < rec.price_subtotal:
+                                if rec.rate_amtc == 0:
+                                    rate_amount = rec.price_subtotal
+                                    quantity = rec.quantity
+                                    per_product = round(rate_amount / quantity, 2)
+                                    perce = rec.invoice_line_tax_id4
+                                    tax_amount = round(perce * 100 / (perce + 100), 2)
+                                    tax = round(per_product * tax_amount / 100, 2)
+                                    rec.product_tax = round(tax * quantity, 2)
+                                    rec.unit_price = round(per_product - tax, 2)
+                                    rec.unit_price_c = round(per_product, 2)
+                                    rec.amt_tax = round(rec.product_tax, 2)
+                                    rec.amt_w_tax = round(rec.price_subtotal, 2)
+                                    rec.amount_residual = round(rec.price_subtotal, 2)
+                                    rec.amount_residual_currency = round(rec.price_subtotal, 2)
+                        else:
+                            rate_amount = rec.price_subtotal
+                            quantity = rec.quantity
+                            per_product = round(rate_amount / quantity, 2)
+                            perce = rec.invoice_line_tax_id4
+                            tax_amount = round(perce * 100 / (perce + 100), 2)
+                            tax = round(per_product * tax_amount / 100, 2)
+                            rec.product_tax = round(tax * quantity, 2)
+                            rec.unit_price = round(per_product - tax, 2)
+                            rec.unit_price_c = round(per_product, 2)
+                            rec.amt_tax = round(rec.product_tax, 2)
+                            rec.amt_w_tax = round(rec.price_subtotal, 2)
+                            rec.amount_residual = round(rec.price_subtotal, 2)
+                            rec.amount_residual_currency = round(rec.price_subtotal, 2)
+                            # perce = rec.invoice_line_tax_id4
+                            # new_rate = rec.rate_amtc
+                            # tax = new_rate * (perce / 100)
+                            # rec.amt_tax = round(tax)
+                            # total = new_rate + round(tax)
+                            # rec.amt_w_tax = total
+                else:
+                    for rec in record:
+                        if rec.rate_amtc == 0:
+                            if rec.rate_amtc < rec.price_subtotal:
+                                if rec.rate_amtc == 0:
+                                    rate_amount = rec.price_subtotal
+                                    quantity = rec.quantity
+                                    per_product = round(rate_amount / quantity, 2)
+                                    perce = rec.invoice_line_tax_id4
+                                    tax_amount = round(perce * 100 / (perce + 100), 2)
+                                    tax = round(per_product * tax_amount / 100, 2)
+                                    rec.product_tax = round(tax * quantity, 2)
+                                    rec.unit_price = round(per_product, 2)
+                                    rec.unit_price_c = round(per_product, 2)
+                                    rec.amt_tax = round(rec.product_tax, 2)
+                                    rec.amt_w_tax = round(rec.price_subtotal, 2)
+                                    rec.amount_residual = round(rec.price_subtotal, 2)
+                                    rec.amount_residual_currency = round(rec.price_subtotal, 2)
+                        else:
+                            rate_amount = rec.price_subtotal
+                            quantity = rec.quantity
+                            per_product = round(rate_amount / quantity, 2)
+                            perce = rec.invoice_line_tax_id4
+                            tax_amount = round(perce * 100 / (perce + 100), 2)
+                            tax = round(per_product * tax_amount / 100, 2)
+                            rec.product_tax = round(tax * quantity, 2)
+                            rec.unit_price = round(per_product, 2)
+                            rec.unit_price_c = round(per_product, 2)
+                            rec.amt_tax = round(rec.product_tax, 2)
+                            rec.amt_w_tax = round(rec.price_subtotal, 2)
+                            rec.amount_residual = round(rec.price_subtotal, 2)
+                            rec.amount_residual_currency = round(rec.price_subtotal, 2)
+                            # perce = rec.invoice_line_tax_id4
+                            # new_rate = rec.rate_amtc
+                            # tax = new_rate * (perce / 100)
+                            # rec.amt_tax = round(tax)
+                            # total = new_rate + round(tax)
+                            # rec.amt_w_tax = total
 
     @api.one
     @api.depends('product_id', 'medicine_name_subcat', 'medicine_grp', 'medicine_name_subcat',
@@ -1509,7 +1548,9 @@ class AccountInvoice(models.Model):
     pack_invoice_id = fields.Many2one("account.invoice",
                                       domain=[('type', '=', 'out_invoice'), ('packing_invoice', '=', True)])
     bill_discount = fields.Float("Bill Discount")
-
+    gst_type = fields.Selection([
+        ('gst_minus', 'GST MINUS'),
+        ('gst_plus', 'GST PLUS')],default='gst_minus')
     # @api.model
     # def default_get(self, fields):
     #     res = super(AccountInvoice, self).default_get(fields)
