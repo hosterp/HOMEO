@@ -13,7 +13,7 @@
     'category': 'Accounting',
     'depends': ['base', 'account', 'stock', 'purchase', 'sale','report',
                 'report_xlsx','report_custom_filename',
-                'account_accountant', 'product_expiry', 'product_expiry_simple', 'Key_shortcuts',],
+                'account_accountant', 'product_expiry', 'product_expiry_simple', 'Key_shortcuts','account_cancel'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
