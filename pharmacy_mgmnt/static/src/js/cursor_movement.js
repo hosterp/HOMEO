@@ -76,10 +76,10 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="product_id"]', 
         $firstItem.off('click');
     }
 });
-$(document).on('focus', '.oe_form_field_many2one[data-fieldname="rack"]', function(event) {
+$(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]', function(event) {
     var $productField = $(this);
 
-    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(21)");
+    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(20)");
     var $firstItem = $ul.find("li:first");
 
     if ($firstItem.length && !$firstItem.data('clicked')) {
