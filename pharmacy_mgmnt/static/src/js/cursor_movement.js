@@ -8,38 +8,89 @@ $(document).ready(function(){
         if ((event.which === 13 || event.which === 9) && !isHandlingFocus && value === "") {
             event.preventDefault();
             isHandlingFocus = true;
-//            console.log("Required field is empty. Value:", value);
             $this.focus();
             isHandlingFocus = false;
         } else {
-//            console.log("Field has value:", value);
             isHandlingFocus = false;
             $this.prop('selectionStart', $this.val().length);
         }
     });
-//    $(document).on('keydown', '.oe_form_field_many2one', function(event) {
-//        var $currentField = $(this);
-//        var $createLabelElement = $('.oe_view_manager_body').find('li.ui-menu-item:first a:contains("Create")');
-//        if ($createLabelElement.length > 0 && event.which === $.ui.keyCode.ENTER) {
-//            $createLabelElement.click();
-//        }
-//    });
+
     $(document).on('focus', '.oe_form_field_many2one', function(event) {
         if (!$(this).data('clicked')) {
             $(this).data('clicked', true);
             $(this).find('.oe_m2o_drop_down_button').click();
-//            var $firstListItem = $('ul.ui-autocomplete[id^="ui-id-"]').find('li.ui-menu-item:first');
-//            console.log($firstListItem.length);
-//            if ($firstListItem.length > 0) {
-//                $firstListItem.click();
-//            }
         }
     });
 
 
     $(document).on('blur', '.oe_form_field_many2one', function(event) {
-        $(this).data('clicked', false); // Reset the flag when the field loses focus
+        $(this).data('clicked', false);
     });
+
+
+var clickedStates = {};
+$(document).on('focus', '.oe_form_field_many2one', function(event) {
+    var tableRow = $(this).closest('tr');
+    var label = tableRow.find('label');
+
+
+    if (label.text().trim() === "Customer") {
+
+
+        var $ul = $("ul.ui-autocomplete:eq(0)");
+        var $firstItem = $ul.find("li:first");
+
+        if ($firstItem.length && !$firstItem.data('clicked')) {
+        // Trigger a click event on the first item of the autocomplete dropdown
+            $firstItem.trigger("click");
+
+        // Remove the click event listener after it's been triggered once
+            $firstItem.data('clicked', true);
+            $firstItem.off('click');
+    }
+
+
+//        if ($ul.find("li").length === 2) {
+//            if (!clickedStates.customer) {
+//                $ul.find("li:first").click();
+//                clickedStates.customer = true;
+//            }
+//        }
+    }
+
+});
+
+$(document).on('focus', '.oe_form_field_many2one[data-fieldname="product_id"]', function(event) {
+    var $productField = $(this);
+
+    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(21)");
+    var $firstItem = $ul.find("li:first");
+
+    if ($firstItem.length && !$firstItem.data('clicked')) {
+        // Trigger a click event on the first item of the autocomplete dropdown
+        $firstItem.trigger("click");
+
+        // Remove the click event listener after it's been triggered once
+        $firstItem.data('clicked', true);
+        $firstItem.off('click');
+    }
+});
+$(document).on('focus', '.oe_form_field_many2one[data-fieldname="rack"]', function(event) {
+    var $productField = $(this);
+
+    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(21)");
+    var $firstItem = $ul.find("li:first");
+
+    if ($firstItem.length && !$firstItem.data('clicked')) {
+        // Trigger a click event on the first item of the autocomplete dropdown
+        $firstItem.trigger("click");
+
+        // Remove the click event listener after it's been triggered once
+        $firstItem.data('clicked', true);
+        $firstItem.off('click');
+    }
+});
 
 
 });
