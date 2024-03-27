@@ -1203,6 +1203,8 @@
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
                             <field name="ifsc"
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
+                            <field name="credited_bank"
+                                   attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
                         </group>
                     </group>
                     <notebook>
