@@ -88,6 +88,7 @@ class PartnerPayment(models.Model):
     _order = 'reference_number desc'
 
     voucher_relation_id = fields.Many2one('account.voucher', required=True)
+    credited_bank = fields.Many2one('master.bank', 'Credited Bank',required=True)
     res_person_id = fields.Many2one('res.partner', domain=[('res_person_id', '=', True)])
     partner_id = fields.Many2one('res.partner', domain=[('customer', '=', True), ('res_person_id', '=', False)])
     reference_number = fields.Integer()

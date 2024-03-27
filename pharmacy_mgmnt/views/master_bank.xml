@@ -1,0 +1,52 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="action_master_bank_tree">
+            <field name="name">Bank Accounts</field>
+            <field name="model">master.bank</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="medicines" version="7.0">
+                    <field name="name"/>
+                    <field name="account_number"/>
+                    <field name="ifsc_number"/>
+                    <field name="branch"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="action_master_bank_form">
+            <field name="name">Bank Accounts</field>
+            <field name="model">master.bank</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Bank">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                                <field name="account_number" required="1" widget="float_no_default"/>
+                            </group>
+                            <group>
+                                <field name="ifsc_number" required="1" widget="float_no_default"/>
+                                <field name="branch" required="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_bank_details" model="ir.actions.act_window">
+            <field name="name">Medicine Enquiry</field>
+            <field name="res_model">master.bank</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="action_master_bank_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="target">current</field>
+        </record>
+        <menuitem id="menu_bank"
+                  action="action_bank_details"
+                  name="Bank"
+                  parent="menu_med_configurations"
+                  sequence="12"/>
+    </data>
+</openerp>
