@@ -63,7 +63,8 @@
                     <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
                     <field name="address_new"/>
                     <field name="advance_amount" invisible="1" widget="float_no_default"/>
-                    <field name="gst_number_c" attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
+                    <field name="gst_number_c"
+                           attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"/>
                     <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"/>
                     <field name="local_customer" invisible="1"/>
                 </xpath>
@@ -85,10 +86,17 @@
                 <!--                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>-->
                 <!--                    </xpath>-->
                 <xpath expr="//field[@name='account_id']" position="after">
-                    <field name="pay_mode"/>
+                    <field name="partner_id" string="Customer" required="False"/>
                     <field name="address_new" style="height:50%%"/>
                 </xpath>
+                 <xpath expr="//field[@name='date_invoice']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="after">
+                    <field name="pay_mode"/>
                     <field name="res_person" domain="[('res_person_id', '=', True)]"
                            attrs="{'required': [('pay_mode','=', 'credit')]}"/>
                 </xpath>
@@ -96,11 +104,13 @@
                 <xpath expr="//field[@name='partner_id']" position="before">
                     <!--                        <field name="date_invoice" readonly="1"/>-->
                     <field name="financial_year" readonly="1" placeholder="Financial Year" style="width:50%%"/>
+                    <field name="date_invoice" />
                 </xpath>
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="advance_amount" string="Advance Amount" style="height:20%%" invisible="1"/>
-                    <field name="doctor_name_1" string="Doctor" required="0" domain="[('res_person_id','=',False),('customer','=',True)]"/>
-                    <field name="gst_type" />
+                    <field name="doctor_name_1" class="doctor" string="Doctor" required="0"
+                           domain="[('res_person_id','=',False),('customer','=',True)]"/>
+                    <field name="gst_type"/>
                     <!--                        <field name="financial_year" placeholder="Financial Year" style="width:50%%" invisible="1"/>-->
 
                     <field name="b2c" invisible="1"/>
@@ -142,12 +152,13 @@
                 <xpath expr="//field[@name='date_invoice']" position="after">
                     <field name="invoices_id" string="Select Previous Invoice"
                            domain="[('partner_id','=',partner_id)]"
-                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"   placeholder="select supplier"/>
-                     <button name="open_supplier_invoice" string="open supplier invoice" type="object" class="supplier_invo" style="align:right" invisible="True"/>
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}" placeholder="select supplier"/>
+                    <button name="open_supplier_invoice" string="open supplier invoice" type="object"
+                            class="supplier_invo" style="align:right" invisible="True"/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="inv_sup_no" required="1" placeholder="Open Invoice No"
-                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}" widget="char" />
+                           attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}" widget="char"/>
                     <field name="inv_amount" string="Inv Amount"
                            attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}" widget="char" digits="(16, 2)"/>
                 </xpath>
