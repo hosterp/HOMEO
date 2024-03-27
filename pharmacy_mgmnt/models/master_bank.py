@@ -15,5 +15,5 @@ class BankAccounts(models.Model):
 
     name = fields.Char('Bank Name', required=False, copy=False)
     account_number = fields.Integer('Account No', required=False, copy=False)
-    ifsc_number = fields.Integer('IFSC No', required=False, copy=False)
+    ifsc_number = fields.Char('IFSC No', required=False, copy=False)
     branch = fields.Char('Branch', required=False, copy=False)
