@@ -2193,6 +2193,10 @@ class AccountInvoice(models.Model):
             else:
                 pass
         result = super(AccountInvoice, self).create(vals)
+        # if hasattr(result, 'invoice_validate') and callable(getattr(result, 'invoice_validate')):
+        #     result.invoice_validate()
+        if result.state == 'draft':
+            result.invoice_validate()
         return result
 
     #     # ................. OLD CODE..............
@@ -2396,7 +2400,7 @@ class AccountInvoice(models.Model):
     #             print("inside credits onchange")
 
     def get_year(self):
-        year = self.env['account.fiscalyear'].search([('state', '=', 'draft')])
+        year = self.env['account.fiscalyear'].search([('state', '=', 'draft')],order='id desc',limit=1)
         print(year, 'yearyear')
         if year:
             return year
