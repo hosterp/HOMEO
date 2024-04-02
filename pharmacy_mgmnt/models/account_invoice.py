@@ -2194,6 +2194,8 @@ class AccountInvoice(models.Model):
             else:
                 pass
         result = super(AccountInvoice, self).create(vals)
+        # if hasattr(result, 'invoice_validate') and callable(getattr(result, 'invoice_validate')):
+        #     result.invoice_validate()
         return result
 
     #     # ................. OLD CODE..............
@@ -2397,7 +2399,7 @@ class AccountInvoice(models.Model):
     #             print("inside credits onchange")
 
     def get_year(self):
-        year = self.env['account.fiscalyear'].search([('state', '=', 'draft')])
+        year = self.env['account.fiscalyear'].search([('state', '=', 'draft')],order='id desc',limit=1)
         print(year, 'yearyear')
         if year:
             return year
@@ -2488,13 +2490,8 @@ class AccountInvoice(models.Model):
     @api.onchange('residual')
     def onchange_residual(self):
         if self.residual == 0.00:
-            print('yes')
-            if self._origin.state == 'open':
-                print("working...........................................................")
-                self.state = 'paid'
-                self.update({'state': 'paid'})
-        else:
-            print("not working")
+            if self.state == 'open':
+                self.write({'state': 'paid'})
 
     # @api.onchange('residual')
     # def onchange_residual(self):
