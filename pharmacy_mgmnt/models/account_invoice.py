@@ -2195,8 +2195,6 @@ class AccountInvoice(models.Model):
         result = super(AccountInvoice, self).create(vals)
         # if hasattr(result, 'invoice_validate') and callable(getattr(result, 'invoice_validate')):
         #     result.invoice_validate()
-        if result.state == 'draft':
-            result.invoice_validate()
         return result
 
     #     # ................. OLD CODE..............
@@ -2491,13 +2489,8 @@ class AccountInvoice(models.Model):
     @api.onchange('residual')
     def onchange_residual(self):
         if self.residual == 0.00:
-            print('yes')
-            if self._origin.state == 'open':
-                print("working...........................................................")
-                self.state = 'paid'
-                self.update({'state': 'paid'})
-        else:
-            print("not working")
+            if self.state == 'open':
+                self.write({'state': 'paid'})
 
     # @api.onchange('residual')
     # def onchange_residual(self):
