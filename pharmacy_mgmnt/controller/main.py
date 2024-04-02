@@ -9,7 +9,7 @@ class SupplierProductInvoiceline(http.Controller):
     def reset_quantity_selected(self):
 
         records = request.env['entry.stock'].search([])
-        # Call the method on each record
+
         for record in records:
             record.reset_quantity_selected()
 
