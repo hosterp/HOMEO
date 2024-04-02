@@ -1052,8 +1052,9 @@ class AccountInvoiceLine(models.Model):
 
     @api.model
     def _compute_default_target_field(self):
-        latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
-        return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
+       if self.partner_id.supplier:
+            latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
+            return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
 
 
     medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
@@ -1552,6 +1553,7 @@ class AccountInvoice(models.Model):
         ('gst_minus', 'GST MINUS'),
         ('gst_plus', 'GST PLUS')],default='gst_minus')
     account_id = fields.Many2one('account.account', string='Account',required='False',default=1)
+    date_invoices=fields.Date(default=fields.Date.today(),readonly=True,string="Invoice Date")
     # @api.model
     # def default_get(self, fields):
     #     res = super(AccountInvoice, self).default_get(fields)
@@ -2194,8 +2196,6 @@ class AccountInvoice(models.Model):
             else:
                 pass
         result = super(AccountInvoice, self).create(vals)
-        # if hasattr(result, 'invoice_validate') and callable(getattr(result, 'invoice_validate')):
-        #     result.invoice_validate()
         return result
 
     #     # ................. OLD CODE..............
@@ -2399,7 +2399,7 @@ class AccountInvoice(models.Model):
     #             print("inside credits onchange")
 
     def get_year(self):
-        year = self.env['account.fiscalyear'].search([('state', '=', 'draft')],order='id desc',limit=1)
+        year = self.env['account.fiscalyear'].search([('state', '=', 'draft')],limit=1,order="id desc")
         print(year, 'yearyear')
         if year:
             return year
@@ -2490,8 +2490,13 @@ class AccountInvoice(models.Model):
     @api.onchange('residual')
     def onchange_residual(self):
         if self.residual == 0.00:
-            if self.state == 'open':
-                self.write({'state': 'paid'})
+            print('yes')
+            if self._origin.state == 'open':
+                print("working...........................................................")
+                self.state = 'paid'
+                self.update({'state': 'paid'})
+        else:
+            print("not working")
 
     # @api.onchange('residual')
     # def onchange_residual(self):

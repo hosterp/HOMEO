@@ -45,7 +45,7 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
     if (label.text().trim() === "Customer") {
 
 
-        var $ul = $("ul.ui-autocomplete:eq(0)");
+        var $ul = $("ul.ui-autocomplete:eq(5)");
         var $firstItem = $ul.find("li:first");
 
         if ($firstItem.length && !$firstItem.data('clicked')) {
@@ -71,7 +71,7 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
 $(document).on('focus', '.oe_form_field_many2one[data-fieldname="product_id"]', function(event) {
     var $productField = $(this);
 
-    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(21)");
+    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(22)");
     var $firstItem = $ul.find("li:first");
 
     if ($firstItem.length && !$firstItem.data('clicked')) {
