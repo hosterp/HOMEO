@@ -15,8 +15,13 @@
     font-size: 17px;
 }
 textarea.field_text[name="address_new"] {
-    max-height: 40px;
+
+    height: 114px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    resize: vertical;
 }
+
 
 text.input[type="text"]{
 max-width: 182px

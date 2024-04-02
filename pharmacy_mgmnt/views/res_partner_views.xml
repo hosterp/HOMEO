@@ -48,10 +48,9 @@
                         <attribute name="invisible">1</attribute>
                  </xpath>
                 <xpath expr="//field[@name='phone']" position="after">
-                          <field name="address_new" style="width:50px;"/>
                        <field name="gst_number_c"
-                           attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}" style="width:50px;"/>
-                    <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}" style="width:50px;"/>
+                           attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}" style="width:200px;"/>
+                    <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}" style="width:200px;"/>
 
                 </xpath>
                 <xpath expr="//field[@name='title']" position="attributes">
@@ -70,6 +69,7 @@
                     <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
                     <field name="advance_amount" invisible="1" widget="float_no_default"/>
                     <field name="local_customer" invisible="1"/>
+                     <field name="address_new"/>
                 </xpath>
             </field>
         </record>

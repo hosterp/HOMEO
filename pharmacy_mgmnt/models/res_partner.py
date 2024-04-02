@@ -1,3 +1,5 @@
+from logging import warning
+
 from openerp import models, fields, api
 from openerp import models, fields, api, tools, _
 
@@ -323,6 +325,22 @@ class ResPartner(models.Model):
             return res
         else:
             return None
+
+
+    @api.one
+    @api.constrains('gst_number_c', 'b2b')
+    def check_gst_and_b2b(self):
+        if self.gst_number_c and not self.b2b:
+            raise Warning('Warning: B2B must be True when GST Number is set.')
+
+    @api.onchange('b2b')
+    def onchange_b2b(self):
+        if self.gst_number_c and not self.b2b:
+            warning = {
+                'title': 'Warning!',
+                'message': 'B2B must be True when GST Number is set.',
+            }
+            return {'warning': warning}
     @api.onchange('gst_number_c')
     def b2c_field(self):
         if self.gst_number_c:
