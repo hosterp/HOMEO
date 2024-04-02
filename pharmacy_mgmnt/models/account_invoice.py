@@ -1551,6 +1551,7 @@ class AccountInvoice(models.Model):
     gst_type = fields.Selection([
         ('gst_minus', 'GST MINUS'),
         ('gst_plus', 'GST PLUS')],default='gst_minus')
+    account_id = fields.Many2one('account.account', string='Account',required='False',default=1)
     # @api.model
     # def default_get(self, fields):
     #     res = super(AccountInvoice, self).default_get(fields)

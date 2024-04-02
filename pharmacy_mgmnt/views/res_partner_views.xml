@@ -49,8 +49,8 @@
                  </xpath>
                 <xpath expr="//field[@name='phone']" position="after">
                        <field name="gst_number_c"
-                           attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}" style="width:200px;"/>
-                    <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}" style="width:200px;"/>
+                           attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}" style="width:100px;"/>
+                    <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}" style="width:50px;"/>
 
                 </xpath>
                 <xpath expr="//field[@name='title']" position="attributes">
@@ -67,9 +67,9 @@
                     </group>
                     <field name="local_area_customer" attrs="{'invisible': [('customer','=',False)]}"/>
                     <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
+                      <field name="address_new"/>
                     <field name="advance_amount" invisible="1" widget="float_no_default"/>
                     <field name="local_customer" invisible="1"/>
-                     <field name="address_new"/>
                 </xpath>
             </field>
         </record>
@@ -102,6 +102,8 @@
                     <field name="pay_mode"/>
                     <field name="res_person" domain="[('res_person_id', '=', True)]"
                            attrs="{'required': [('pay_mode','=', 'credit')]}"/>
+<!--                    <field name="account_id" required="False" invisible="1"/>-->
+
                 </xpath>
 
                 <xpath expr="//field[@name='partner_id']" position="before">
