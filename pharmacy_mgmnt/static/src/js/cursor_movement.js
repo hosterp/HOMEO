@@ -15,13 +15,20 @@ $(document).ready(function(){
             $this.prop('selectionStart', $this.val().length);
         }
     });
-
     $(document).on('focus', '.oe_form_field_many2one', function(event) {
-        if (!$(this).data('clicked')) {
+        var inputValue = $(this).find('input').val().trim();
+        if (!$(this).data('clicked') && inputValue === '') {
             $(this).data('clicked', true);
             $(this).find('.oe_m2o_drop_down_button').click();
         }
     });
+
+//    $(document).on('focus', '.oe_form_field_many2one', function(event) {
+//        if (!$(this).data('clicked')) {
+//            $(this).data('clicked', true);
+//            $(this).find('.oe_m2o_drop_down_button').click();
+//        }
+//    });
 
 
     $(document).on('blur', '.oe_form_field_many2one', function(event) {

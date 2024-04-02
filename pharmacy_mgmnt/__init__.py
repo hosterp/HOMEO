@@ -20,3 +20,4 @@
 from . import models
 from . import expiry_manage
 from . import report
+from . import controller
