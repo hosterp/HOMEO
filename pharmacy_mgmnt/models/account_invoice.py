@@ -1428,9 +1428,10 @@ class AccountInvoiceLine(models.Model):
                     rec.hsn_code = None
                     rec.invoice_line_tax_id4 = 0
                     raise Warning("This Combination not added in Product Potency Group Linking")
+                if  rec.hsn_code == None:
+                    raise Warning("HSN not Linked")
 
-                    # @api.onchange('medicine_grp')
-
+    # @api.onchange('medicine_grp')
     # def onchange_group_id(self):
     #     for rec in self:
     #         if self.medicine_grp.id:
