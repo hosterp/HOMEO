@@ -1052,9 +1052,8 @@ class AccountInvoiceLine(models.Model):
 
     @api.model
     def _compute_default_target_field(self):
-       if self.partner_id.supplier:
-            latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
-            return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
+        latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
+        return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
 
 
     medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
