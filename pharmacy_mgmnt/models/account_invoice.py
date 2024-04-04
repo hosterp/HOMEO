@@ -1052,9 +1052,8 @@ class AccountInvoiceLine(models.Model):
 
     @api.model
     def _compute_default_target_field(self):
-       if self.partner_id.supplier:
-            latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
-            return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
+        latest_entry_stock = self.env['entry.stock'].search([], order='id desc', limit=1)
+        return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
 
 
     medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
@@ -1428,9 +1427,10 @@ class AccountInvoiceLine(models.Model):
                     rec.hsn_code = None
                     rec.invoice_line_tax_id4 = 0
                     raise Warning("This Combination not added in Product Potency Group Linking")
+                if  rec.hsn_code == None:
+                    raise Warning("HSN not Linked")
 
-                    # @api.onchange('medicine_grp')
-
+    # @api.onchange('medicine_grp')
     # def onchange_group_id(self):
     #     for rec in self:
     #         if self.medicine_grp.id:

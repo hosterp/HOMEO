@@ -89,7 +89,7 @@
                 <!--                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>-->
                 <!--                    </xpath>-->
                 <xpath expr="//field[@name='account_id']" position="after">
-                    <field name="partner_id" string="Customer" required="False"/>
+                    <field name="partner_id" string="Customer" required="False" domain="['|', ('b2b', '=', True), ('b2c', '=', True), ('customer', '=', True)]"/>
                     <field name="address_new" style="height:50%%"/>
                 </xpath>
                  <xpath expr="//field[@name='date_invoice']" position="attributes">
