@@ -88,7 +88,7 @@ class PartnerPayment(models.Model):
     _order = 'reference_number desc'
 
     voucher_relation_id = fields.Many2one('account.voucher', required=True)
-    credited_bank = fields.Many2one('master.bank', 'Credited Bank',required=True)
+    credited_bank = fields.Many2one('master.bank', 'Credited Bank',required=True,default=lambda self: self.env['master.bank'].search([('default', '=', True)], limit=1))
     res_person_id = fields.Many2one('res.partner', domain=[('res_person_id', '=', True)])
     partner_id = fields.Many2one('res.partner', domain=[('customer', '=', True), ('res_person_id', '=', False)])
     reference_number = fields.Integer()
@@ -119,6 +119,7 @@ class PartnerPayment(models.Model):
     click = fields.Boolean(string='clicked')
     cheque_balance = fields.Float('Check Balance')
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
+
 
     @api.constrains('deposit_date', 'clearence_date')
     def _check_deposit_and_const(self):

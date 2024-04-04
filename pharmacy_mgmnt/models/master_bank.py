@@ -14,6 +14,13 @@ class BankAccounts(models.Model):
     _name = 'master.bank'
 
     name = fields.Char('Bank Name', required=False, copy=False)
-    account_number = fields.Integer('Account No', required=False, copy=False)
+    account_number = fields.Char('Account No', required=False, copy=False)
     ifsc_number = fields.Char('IFSC No', required=False, copy=False)
     branch = fields.Char('Branch', required=False, copy=False)
+    default=fields.Boolean('Default')
+
+    @api.onchange('default')
+    def _onchange_default(self):
+        if self.default:
+            other_records = self.search([('default', '=', True)])
+            other_records.write({'default': False})
