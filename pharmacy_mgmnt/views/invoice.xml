@@ -122,14 +122,16 @@
                     <field name="batch"/>
                     <field name="medicine_name_packing" options='{"no_open": True}'/>
                     <field name="product_of" options='{"no_open": True}'/>
-                    <field name="medicine_grp" string="Group" required="1" options='{"no_open": True}'/>
+                    <field name="medicine_grp" string="Group" required="0" options='{"no_open": True}'/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>
+                    <attribute name="required">0</attribute>
                     <attribute name="widget">float_no_default</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Mrp</attribute>
+                      <attribute name="required">0</attribute>
                     <attribute name="widget">float_no_default</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="replace">

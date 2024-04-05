@@ -20,7 +20,7 @@
                     <!--                    <button name="move_to_picking_slip" string="Import to Packing Slip" type="object"-->
                     <!--                            class="oe_highlight"-->
                     <!--                            attrs="{'invisible':[('cus_invoice', '=', False),('holding_invoice', '=', False)]}"/>-->
-                    <button name="import_to_invoice" string="Import to Invoice" type="object" class="oe_highlight"
+                    <button name="import_to_invoice" string="Import to Invoice" type="object" class="oe_highlight import_customer"
                             attrs="{'invisible':[('cus_invoice', '=', True)]}"
                     />
                 </xpath>
