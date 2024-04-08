@@ -144,7 +144,7 @@
                     <field name="medicine_grp" invisible="1" readonly="1"/>
                     <field name="medicine_grp1" readonly="1"/>
                     <field name="quantity_selected" store="False" widget="float_no_default"/>
-                    <field name="qty" type="char" readonly="1"/>
+                    <field name="qty" type="char" readonly="0"/>
                     <field name="mrp" type="char" readonly="1"  widget="float_no_default"/>
                     <field name="batch_2" readonly="1"/>
                     <field name="manf_date" readonly="1"/>
@@ -155,6 +155,7 @@
                     <field name="invoice_line_tax_id4" readonly="1"  widget="float_no_default"/>
                     <field name="qty_received" readonly="1"  widget="float_no_default"/>
                     <field name="discount" invisible="1" readonly="1"/>
+                    <field name="invoice_line_id" readonly="0"/>
                 </tree>
                 <!--                </div>-->
             </field>
@@ -192,6 +193,7 @@
                                 <field name="mrp" type="char"/>
                                 <field name="qty" type="char"/>
                                 <field name="rack"/>
+                                <field name="invoice_line_id" string="id"/>
                             </group>
                         </group>
                         <group>

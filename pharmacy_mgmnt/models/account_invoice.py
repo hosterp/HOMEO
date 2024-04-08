@@ -21,6 +21,7 @@ class AccountAccountInherit(models.Model):
 
 class AccountInvoiceLine(models.Model):
     _inherit = "account.invoice.line"
+    _rec_name = 'id'
 
     name = fields.Text(string="Description", required=False)
     stock_entry_id = fields.Many2one('entry.stock')
@@ -36,10 +37,12 @@ class AccountInvoiceLine(models.Model):
     discount3 = fields.Float("Dis2(%)", )
     discount4 = fields.Float()
     invoice_id = fields.Many2one('account.invoice', required=False)
+    id_for_ref = fields.Integer()
     product_tax = fields.Float(compute="_compute_customer_tax")
     unit_price = fields.Float(string='Unit price', compute="_compute_customer_tax", required=False)
     unit_price_s = fields.Float(string='Unit price', required=False, default=False)
     unit_price_c = fields.Float(string='Unit price', required=False,compute="_compute_customer_tax",default=False)
+    delete_bool = fields.Boolean(string="Delete", default=False)
 
     @api.onchange('unit_price_c')
     def _onchange_unit_price_c(self):
@@ -168,6 +171,24 @@ class AccountInvoiceLine(models.Model):
     def onchange_medicine_rack(self):
         for result in self:
             if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.price_unit and result.amount_w_tax and result.medicine_rack:
+                rec = {
+                    'expiry_date': result.expiry_date,
+                    'manf_date': result.manf_date,
+                    'product_of': result.product_of.id,
+                    'product_id': result.product_id.id,
+                    'medicine_name_subcat': result.medicine_name_subcat.id,
+                    'medicine_name_packing': result.medicine_name_packing.id,
+                    'medicine_grp': result.medicine_grp.id,
+                    'batch': result.batch,
+                    'manf_date': result.manf_date,
+                    'expiry_date': result.expiry_date,
+                    'price_unit': result.price_unit,
+                    'quantity': result.quantity,
+                    'medicine_rack': result.medicine_rack.id,
+                    'hsn_code': result.hsn_code,
+                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
+                }
+                line_entry = self.env['account.invoice.line'].create(rec)
                 vals = {
                     'supplier_id': result.invoice_id.partner_id.id,
                     'expiry_date': result.expiry_date,
@@ -185,7 +206,9 @@ class AccountInvoiceLine(models.Model):
                     'discount': result.discount,
                     'invoice_line_tax_id4': result.invoice_line_tax_id4,
                     'stock_date': date.today(),
+                    'invoice_line_id': line_entry.id,
                 }
+
                 stock_entry = self.env['entry.stock'].create(vals)
                 result.stock_entry_id = stock_entry.id
 
@@ -331,13 +354,16 @@ class AccountInvoiceLine(models.Model):
             #     result = rec.stock_entry_id.write(vals)
             return res
 
+
+
     @api.multi
     def unlink(self):
         for rec in self:
             if rec.invoice_id.state in ['draft', 'holding_invoice', 'packing_slip']:
                 if rec.invoice_id.type == 'in_invoice':
-                    if rec.stock_entry_id:
-                        rec.stock_entry_id.unlink()
+                    # if rec.stock_entry_id:
+                    #     rec.stock_entry_id.unlink()
+                    print("hiaiiii")
                 if rec.invoice_id.type == 'out_invoice':
                     if rec.invoice_id.packing_slip:
                         if rec.stock_entry_qty:
@@ -356,7 +382,6 @@ class AccountInvoiceLine(models.Model):
                                 domain += [('medicine_name_packing', '=', rec.medicine_name_packing.id)]
                             if rec.medicine_name_subcat:
                                 domain += [('potency', '=', rec.medicine_name_subcat.id)]
-
                             entry_stock_id = self.env['entry.stock'].search(domain, order='id desc', limit=1)
                             if not entry_stock_id:
                                 if rec.medicine_rack:
@@ -2355,6 +2380,16 @@ class AccountInvoice(models.Model):
         for record in self:
             if record.state not in ['draft', 'holding_invoice', 'packing_slip']:
                 raise Warning("Only Draft Invoice can be deleted")
+            else:
+                if record.invoice_line:
+                    for rec in record.invoice_line:
+                        same_ids = self.env['entry.stock'].search([('invoice_line_id', '=', rec.id_for_ref)],limit=1)
+                        if same_ids:
+                            same_ids.qty += rec.quantity
+                        else:
+                            pass
+                else:
+                    pass
         return super(AccountInvoice, self).unlink()
 
     def copy(self, cr, uid, id, default=None, context=None):
@@ -2974,3 +3009,17 @@ class AccountInvoice(models.Model):
         #         stock_entry = self.env['entry.stock'].create(vals)
         #         result.stock_entry_id = stock_entry.id
         return self.write({'state': 'open'})
+
+    @api.multi
+    def delete_line(self):
+        for rec in self:
+            if rec.invoice_line:
+                for res in rec.invoice_line:
+                    if res.delete_bool == True:
+                        data = self.env['entry.stock'].search([('invoice_line_id', '=', res.id_for_ref)])
+                        if data:
+                            data.qty += res.quantity
+                            data.write({'qty': data.qty})
+                        res.unlink()
+            else:
+                raise ValidationError("No invoice Lines")

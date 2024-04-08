@@ -149,6 +149,7 @@
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="after">
                     <field name="amt_w_tax" invisible="1"/>
                     <field name="hsn_code" class="hsn" readonly="1"/>
+                    <field name="delete_bool" string="Delete"/>
                     <field name="amount_amount" invisible="1"/>
                     <!--                    <field name="amt_tax"/>-->
                     <field name="amount_amount1" invisible="1"/>
@@ -198,7 +199,8 @@
                 <!--                 </xpath>-->
 
                 <xpath expr="//field[@name='invoice_line']" position="before">
-                    <button name="%(wiz_tree)d" type="action" string="Search Stock" class="css_hiworth"/>
+                    <button name="delete_line" string="Delete Line" type="object" class="oe_highlight record_delete"/>
+                    <button name="%(wiz_tree)d" type="action" string="Search Stock" class="css_hiworth oe_highlight"/>
                     <field name="search_items" class="flexdatalist-json" invisible="1"/>
 
                 </xpath>

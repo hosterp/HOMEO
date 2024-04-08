@@ -1,6 +1,7 @@
 from openerp import models, fields, api, tools, _
 from datetime import datetime, timedelta
 from openerp import http
+from openerp.exceptions import ValidationError
 from openerp.http import request
 
 
@@ -313,40 +314,48 @@ class NewStockEntry(models.Model):
     @api.onchange('quantity_selected')
     def quantity_selected_onchage(self):
         if self.quantity_selected != 0:
-            cus_invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
-            if cus_invoice:
-                new_lines = []
-                for rec in self:
-                    new_lines.append((0, 0, {
-                        'name': rec.medicine_1.name,
-                        'product_id': rec.medicine_1.id,
-                        'medicine_name_subcat': rec.potency.id,
-                        'medicine_name_packing': rec.medicine_name_packing.id,
-                        'product_of': rec.company.id,
-                        'medicine_grp': rec.medicine_grp1.id,
-                        'batch_2': rec.batch_2.id,
-                        'hsn_code': rec.hsn_code,
-                        'price_unit': rec.mrp,
-                        'discount': cus_invoice.discount_rate or 0,
-                        'manf_date': rec.manf_date,
-                        'expiry_date': rec.expiry_date,
-                        'medicine_rack': rec.rack.id,
-                        'invoice_line_tax_id4': rec.invoice_line_tax_id4,
-                        'rack_qty': rec.qty,
-                        'quantity': rec.quantity_selected,
-                    }))
-                    cus_invoice.write({'invoice_line': new_lines})
-                    cus_invoice.write({'create_bool': True})
-                if cus_invoice.hold_invoice == True:
-                    hold_qty = self.qty_received + self.quantity_selected
-                    if hold_qty >= 0:
-                        self.qty_received = hold_qty
+            if self.qty < self.quantity_selected:
+                raise ValidationError("Selected Quantity not Available")
+            else:
+                self.qty -= self.quantity_selected
+                cus_invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
+                if cus_invoice:
+                    new_lines = []
+                    for rec in self:
+                        new_lines.append((0, 0, {
+                            'id_for_ref': rec.invoice_line_id.id,
+                            'stock_entry_id': rec.id,
+                            'name': rec.medicine_1.name,
+                            'product_id': rec.medicine_1.id,
+                            'medicine_name_subcat': rec.potency.id,
+                            'medicine_name_packing': rec.medicine_name_packing.id,
+                            'product_of': rec.company.id,
+                            'medicine_grp': rec.medicine_grp1.id,
+                            'batch_2': rec.batch_2.id,
+                            'hsn_code': rec.hsn_code,
+                            'price_unit': rec.mrp,
+                            'discount': cus_invoice.discount_rate or 0,
+                            'manf_date': rec.manf_date,
+                            'expiry_date': rec.expiry_date,
+                            'medicine_rack': rec.rack.id,
+                            'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+                            'rack_qty': rec.qty,
+                            'quantity': rec.quantity_selected,
+                        }))
+                        cus_invoice.write({'invoice_line': new_lines})
+                        # cus_invoice.write({'create_bool': True})
+                    if cus_invoice.hold_invoice == True:
+                        hold_qty = self.qty_received + self.quantity_selected
+                        if hold_qty >= 0:
+                            self.qty_received = hold_qty
+                        else:
+                            self.qty_received = 0
                     else:
-                        self.qty_received = 0
+                        pass
                 else:
                     pass
-            else:
-                pass
+        else:
+            pass
 
 
     # self.quantity_selected=0
