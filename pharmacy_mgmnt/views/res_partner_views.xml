@@ -99,7 +99,7 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="after">
-                    <field name="pay_mode"/>
+                    <field name="pay_mode" attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
                     <field name="res_person" domain="[('res_person_id', '=', True)]"
                            attrs="{'required': [('pay_mode','=', 'credit')]}"/>
 <!--                    <field name="account_id" required="False" invisible="1"/>-->
@@ -114,8 +114,8 @@
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="advance_amount" string="Advance Amount" style="height:20%%" invisible="1"/>
                     <field name="doctor_name_1" class="doctor" string="Doctor" required="0"
-                           domain="[('res_person_id','=',False),('customer','=',True)]"/>
-                    <field name="gst_type"/>
+                           domain="[('res_person_id','=',False),('customer','=',True)]" attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
+                    <field name="gst_type" attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
                     <!--                        <field name="financial_year" placeholder="Financial Year" style="width:50%%" invisible="1"/>-->
 
                     <field name="b2c" invisible="1"/>
