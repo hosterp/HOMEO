@@ -2524,9 +2524,9 @@ class AccountInvoice(models.Model):
 
     @api.onchange('residual')
     def onchange_residual(self):
-        if self.residual == 0.00:
+        if self.residual <= 0.00:
             print('yes')
-            if self._origin.state == 'open':
+            if self.state == 'open':
                 print("working...........................................................")
                 self.state = 'paid'
                 self.update({'state': 'paid'})
@@ -2922,10 +2922,10 @@ class AccountInvoice(models.Model):
                         domain += [('qty', '>=', 0)]
                         entry_stock_ids = self.env['entry.stock'].search(domain, order='id asc')
 
-                    if not entry_stock_ids or sum(entry_stock_ids.mapped('qty')) <= 0:
-                        raise Warning(
-                            _('Only we have %s Products with current combination in stock') % str(
-                                int(line.stock_entry_qty) + int(sum(entry_stock_ids.mapped('qty')))))
+                    # if not entry_stock_ids or sum(entry_stock_ids.mapped('qty')) <= 0:
+                    #     raise Warning(
+                    #         _('Only we have %s Products with current combination in stock') % str(
+                    #             int(line.stock_entry_qty) + int(sum(entry_stock_ids.mapped('qty')))))
 
                     quantity = line.quantity
                     for stock in entry_stock_ids:

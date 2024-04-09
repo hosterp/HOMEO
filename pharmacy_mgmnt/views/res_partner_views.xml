@@ -89,13 +89,10 @@
                 <!--                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>-->
                 <!--                    </xpath>-->
                 <xpath expr="//field[@name='account_id']" position="after">
-                    <field name="partner_id" string="Customer" required="False" domain="['|', ('b2b', '=', True), ('b2c', '=', True), ('customer', '=', True)]"/>
+                    <field name="date_invoices" />
                     <field name="address_new" style="height:50%%"/>
                 </xpath>
                  <xpath expr="//field[@name='date_invoice']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="after">
@@ -109,7 +106,6 @@
                 <xpath expr="//field[@name='partner_id']" position="before">
                     <!--                        <field name="date_invoice" readonly="1"/>-->
                     <field name="financial_year" readonly="1" placeholder="Financial Year" style="width:50%%"/>
-                    <field name="date_invoices" />
                 </xpath>
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="advance_amount" string="Advance Amount" style="height:20%%" invisible="1"/>
