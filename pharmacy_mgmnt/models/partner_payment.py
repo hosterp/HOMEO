@@ -204,15 +204,47 @@ class PartnerPayment(models.Model):
     @api.onchange('partner_id')
     def onchange_partner_id(self):
         if self.partner_id and self.res_person_id:
-            for rec in self:
-                rec.account_id = 25
+            self.account_id = 25
+            list = []
+            invoices_id = self.env['account.invoice'].search(
+                [('partner_id', '=', self.partner_id.id), ('res_person', '=', self.res_person_id.id),('pay_mode', '=','credit'),('state', '=','open')
+                 ])
+            if invoices_id:
+                for line in invoices_id:
+                    list.append((0, 0, {'partner_id': line.partner_id.id,
+                                        'name': line.name,
+                                        'reference': line.reference,
+                                        'type': line.type,
+                                        'state': line.state,
+                                        'amount_total': line.amount_total,
+                                        'amount_untaxed': line.amount_untaxed,
+                                        'residual': line.residual,
+                                        'de_residual': line.residual,
+                                        'currency_id': line.currency_id.id,
+                                        'origin': line.origin,
+                                        'date_invoice': line.date_invoice,
+                                        'journal_id': line.journal_id.id,
+                                        'period_id': line.period_id.id,
+                                        'company_id': line.company_id.id,
+                                        # 'user_id': line.user_id.id,
+                                        'date_due': line.date_due,
+                                        'number2': line.number2,
+                                        'account_id': line.account_id.id,
+                                        'invoice_id': line.id
+                                        }
+                                 ))
+                    self.invoice_ids = list
+
+        else:
+            if self.partner_id:
+                self.account_id = 25
                 list = []
-                invoices = self.env['account.invoice'].search(
-                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit'),('state', '=','open')
+                invoices_id = self.env['account.invoice'].search(
+                    [('partner_id', '=', self.partner_id.id),('pay_mode', '=','credit'),('state', '=','open'),('state', '=','open')
                      ])
-                if invoices:
-                    for line in invoices:
-                        list.append([0, 0, {'partner_id': line.partner_id.id,
+                if invoices_id:
+                    for line in invoices_id:
+                        list.append((0, 0, {'partner_id': line.partner_id.id,
                                             'name': line.name,
                                             'reference': line.reference,
                                             'type': line.type,
@@ -233,58 +265,57 @@ class PartnerPayment(models.Model):
                                             'account_id': line.account_id.id,
                                             'invoice_id': line.id
                                             }
-                                     ])
-                    rec.invoice_ids = list
-
-        else:
-            if self.partner_id:
-                for rec in self:
-                    rec.account_id = 25
-                    list = []
-                    invoices = self.env['account.invoice'].search(
-                        [('partner_id', '=', rec.partner_id.id),('pay_mode', '=','credit'),('state', '=','open'),('state', '=','open')
-                         ])
-                    if invoices:
-                        for line in invoices:
-                            list.append([0, 0, {'partner_id': line.partner_id.id,
-                                                'name': line.name,
-                                                'reference': line.reference,
-                                                'type': line.type,
-                                                'state': line.state,
-                                                'amount_total': line.amount_total,
-                                                'amount_untaxed': line.amount_untaxed,
-                                                'residual': line.residual,
-                                                'de_residual': line.residual,
-                                                'currency_id': line.currency_id.id,
-                                                'origin': line.origin,
-                                                'date_invoice': line.date_invoice,
-                                                'journal_id': line.journal_id.id,
-                                                'period_id': line.period_id.id,
-                                                'company_id': line.company_id.id,
-                                                # 'user_id': line.user_id.id,
-                                                'date_due': line.date_due,
-                                                'number2': line.number2,
-                                                'account_id': line.account_id.id,
-                                                'invoice_id': line.id
-                                                }
-                                         ])
-                        rec.invoice_ids = list
+                                     ))
+                    self.invoice_ids = list
             else:
                 pass
 
     @api.onchange('res_person_id')
     def onchange_res_partner_id(self):
         if self.partner_id and self.res_person_id:
-            for rec in self:
-                rec.account_id = 25
-                rec.invoice_ids = []
+            self.account_id = 25
+            list = []
+            invoices_id = self.env['account.invoice'].search(
+                [('partner_id', '=', self.partner_id.id), ('res_person', '=', self.res_person_id.id),
+                 ('pay_mode', '=', 'credit'), ('state', '=', 'open')
+                 ])
+            if invoices_id:
+                for line in invoices_id:
+                    list.append((0, 0, {'partner_id': line.partner_id.id,
+                                        'name': line.name,
+                                        'reference': line.reference,
+                                        'type': line.type,
+                                        'state': line.state,
+                                        'amount_total': line.amount_total,
+                                        'amount_untaxed': line.amount_untaxed,
+                                        'residual': line.residual,
+                                        'de_residual': line.residual,
+                                        'currency_id': line.currency_id.id,
+                                        'origin': line.origin,
+                                        'date_invoice': line.date_invoice,
+                                        'journal_id': line.journal_id.id,
+                                        'period_id': line.period_id.id,
+                                        'company_id': line.company_id.id,
+                                        # 'user_id': line.user_id.id,
+                                        'date_due': line.date_due,
+                                        'number2': line.number2,
+                                        'account_id': line.account_id.id,
+                                        'invoice_id': line.id
+                                        }
+                                 ))
+                    self.invoice_ids = list
+
+        else:
+            if self.res_person_id:
+                self.account_id = 25
                 list = []
-                invoices = self.env['account.invoice'].search(
-                    [('partner_id', '=', rec.partner_id.id), ('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit'),('state', '=','open')
+                invoices_id = self.env['account.invoice'].search(
+                    [('partner_id', '=', self.partner_id.id), ('pay_mode', '=', 'credit'), ('state', '=', 'open'),
+                     ('state', '=', 'open')
                      ])
-                if invoices:
-                    for line in invoices:
-                        list.append([0, 0, {'partner_id': line.partner_id.id,
+                if invoices_id:
+                    for line in invoices_id:
+                        list.append((0, 0, {'partner_id': line.partner_id.id,
                                             'name': line.name,
                                             'reference': line.reference,
                                             'type': line.type,
@@ -305,45 +336,10 @@ class PartnerPayment(models.Model):
                                             'account_id': line.account_id.id,
                                             'invoice_id': line.id
                                             }
-                                     ])
-                    rec.invoice_ids = list
-        else:
-            if self.res_person_id:
-                for rec in self:
-                    rec.account_id = 25
-                    rec.invoice_ids = []
-                    list = []
-                    invoices = self.env['account.invoice'].search(
-                        [('res_person', '=', rec.res_person_id.id),('pay_mode', '=','credit'),('state', '=','open')
-                         ])
-                    if invoices:
-                        for line in invoices:
-                            list.append([0, 0, {'partner_id': line.partner_id.id,
-                                                'name': line.name,
-                                                'reference': line.reference,
-                                                'type': line.type,
-                                                'state': line.state,
-                                                'amount_total': line.amount_total,
-                                                'amount_untaxed': line.amount_untaxed,
-                                                'residual': line.residual,
-                                                'de_residual': line.residual,
-                                                'currency_id': line.currency_id.id,
-                                                'origin': line.origin,
-                                                'date_invoice': line.date_invoice,
-                                                'journal_id': line.journal_id.id,
-                                                'period_id': line.period_id.id,
-                                                'company_id': line.company_id.id,
-                                                # 'user_id': line.user_id.id,
-                                                'date_due': line.date_due,
-                                                'number2': line.number2,
-                                                'account_id': line.account_id.id,
-                                                'invoice_id': line.id
-                                                }
-                                         ])
-                        rec.invoice_ids = list
+                                     ))
+                    self.invoice_ids = list
             else:
                 pass
-
     # #     -----------------------------
     #
     # @api.onchange('res_person_id', 'partner_id')
