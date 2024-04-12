@@ -1174,8 +1174,8 @@
                     <group col="3">
                         <group>
                             <field name="date" style="width:50%;"/>
-                            <field name="partner_id" string="Customer" style="width:40%;"/>
-                            <field name="res_person_id" string="Responsible Person" style="width:40%;"/>
+                            <field name="partner_id" string="Customer" style="width:40%;" options='{"no_open": True, "no_create": True}'/>
+                            <field name="res_person_id" string="Responsible Person" style="width:40%;" options='{"no_open": True, "no_create": True}'/>
                             <field name="cheque_date" attrs="{'invisible': [('payment_method','!=','cheque')]}" invisible="1"/>
                             <field name="remarks"/>
                             <button name="cheque_bounce_button" type="object" string="Cheque Bounce"

@@ -1989,18 +1989,30 @@ class AccountInvoice(models.Model):
         for record in self:
             res = self.env['account.invoice'].search(
                 [('type', '=', 'out_invoice'), ('hold_invoice', '=', True)], limit=1)
-            last_index = int(res.number2.split('/')[0]) + 1
-            record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
-            record.cus_inv_number = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
-            record.seq = res.seq + 1
-            record.packing_invoice = False
-            record.hold_invoice = True
-            record.cus_invoice = False
-            record.state = "draft"
+            if res:
+                last_index = int(res.number2.split('/')[0]) + 1
+                record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+                record.cus_inv_number = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+                record.seq = res.seq + 1
+                record.packing_invoice = False
+                record.hold_invoice = True
+                record.cus_invoice = False
+                record.state = "draft"
+            else:
+                last_index = 1
+                current_year = datetime.datetime.now().year
+                record.number2 = str(last_index).zfill(4) + "/" + str(current_year)
+                record.cus_inv_number = str(last_index).zfill(4) + "/" + str(current_year)
+                record.seq = 1
+                record.packing_invoice = False
+                record.hold_invoice = True
+                record.cus_invoice = False
+                record.state = "draft"
         return {
             'type': 'ir.actions.client',
             'tag': 'history_back',
         }
+
         # return {
         #     'name': _('Customer Invoices'),
         #     'view_type': 'tree',
