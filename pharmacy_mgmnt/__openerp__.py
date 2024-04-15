@@ -54,6 +54,7 @@
         'views/account_invoice_view.xml',
         'views/invoice_report.xml',
         'views/master_bank.xml',
+        'views/credit_payment_view.xml',
         'views/template.xml',
 
     ],

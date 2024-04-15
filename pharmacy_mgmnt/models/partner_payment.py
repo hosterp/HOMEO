@@ -16,6 +16,11 @@ class InvoiceDetails(models.Model):
     select = fields.Boolean()
     de_residual = fields.Float()
     calc = fields.Float()
+    date = fields.Date(default=fields.Date.today)
+    payment_state = fields.Selection([('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')],defualt='draft')
+    balance = fields.Float()
+    paid = fields.Float()
+
 
     # def onchange_de_residual(self):
     #     print('shooo')
@@ -113,7 +118,7 @@ class PartnerPayment(models.Model):
                                   store=True)
     # invoice_ids = fields.One2many('invoice.details', 'partner_payment_id', compute='generate_lines', readonly=False,
     #                               store=True)
-    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')])
+    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')],defualt='draft')
     advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
     payment_total_calculation = fields.Float()
     click = fields.Boolean(string='clicked')
@@ -144,7 +149,22 @@ class PartnerPayment(models.Model):
             if record.clearence_date and record.clearence_date < record.deposit_date:
                 raise ValidationError("The clearence date cannot be earlier than the deposit date.")
 
+    @api.multi
+    def payment_history(self):
+        data = {
+            'name': _('Payment History'),
+            'view_type': 'tree',
+            'view_mode': 'tree',
+            'res_model': 'invoice.details',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'domain': [('partner_id', '=', self.partner_id.id), ('payment_state', '=', 'paid')],
+        }
 
+        if self.res_person_id:
+            data['domain'].append(('res_person', '=', self.res_person_id.id))
+
+        return data
 
     # @api.onchange('chekbox')
     # def _advance_amount_calc(self):
@@ -234,13 +254,12 @@ class PartnerPayment(models.Model):
                                         }
                                  ))
                     self.invoice_ids = list
-
         else:
             if self.partner_id:
                 self.account_id = 25
                 list = []
                 invoices_id = self.env['account.invoice'].search(
-                    [('partner_id', '=', self.partner_id.id),('pay_mode', '=','credit'),('state', '=','open'),('state', '=','open')
+                    [('partner_id', '=', self.partner_id.id),('pay_mode', '=','credit'),('state', '=','open')
                      ])
                 if invoices_id:
                     for line in invoices_id:
@@ -303,7 +322,10 @@ class PartnerPayment(models.Model):
                                         'invoice_id': line.id
                                         }
                                  ))
-                    self.invoice_ids = list
+                    if self.invoice_ids:
+                        self.invoice_ids = ([5,0,0])
+                    else:
+                        self.invoice_ids = list
 
         else:
             if self.res_person_id:
@@ -311,7 +333,6 @@ class PartnerPayment(models.Model):
                 list = []
                 invoices_id = self.env['account.invoice'].search(
                     [('partner_id', '=', self.partner_id.id), ('pay_mode', '=', 'credit'), ('state', '=', 'open'),
-                     ('state', '=', 'open')
                      ])
                 if invoices_id:
                     for line in invoices_id:
@@ -631,6 +652,10 @@ class PartnerPayment(models.Model):
                         if amount == invoice.residual:
                             invoice.state = 'paid'
                             invoice.paid_bool = True
+                            payment_amount -= amount
+                            record.payment_state = 'paid'
+                            record.balance = invoice.residual
+                            record.paid = amount
                         else:
                             move = self.env['account.move']
                             move_line = self.env['account.move.line']
@@ -675,10 +700,14 @@ class PartnerPayment(models.Model):
                                 'state': 'posted',
                                 'number': name,
                             })
-                        payment_amount = payment_amount - amount
-                        # self.state = 'paid'
+                            payment_amount = payment_amount - amount
+                            # self.state = 'paid'
+                            record.payment_state = 'paid'
+                            record.balance = invoice.residual
+                            record.paid = amount
+                else:
+                    pass
             if payment_amount != 0:
-                print(payment_amount, 'after first Payment')
                 for record in self.invoice_ids:
                     if record.select != True:
                         amount = 0
@@ -692,6 +721,10 @@ class PartnerPayment(models.Model):
                             if amount == invoice.residual:
                                 invoice.state = 'paid'
                                 invoice.paid_bool = True
+                                payment_amount -= amount
+                                record.payment_state = 'paid'
+                                record.balance = invoice.residual
+                                record.paid = amount
                             else:
 
                                 move = self.env['account.move']
@@ -737,10 +770,13 @@ class PartnerPayment(models.Model):
                                     'state': 'posted',
                                     'number': name,
                                 })
-                            payment_amount = payment_amount - amount
-                            # self.state = 'paid'
+                                payment_amount -= amount
+                                # self.state = 'paid'
+                                record.payment_state = 'paid'
+                                record.balance = invoice.residual
+                                record.paid = amount
             if self.payment_method != "cheque":
-                self.advance_amount=payment_amount
+                self.advance_amount = payment_amount
             else:
                 self.cheque_balance = payment_amount
             payment_records = self.env['account.invoice'].search(
@@ -760,13 +796,13 @@ class PartnerPayment(models.Model):
                     next_date = x + relativedelta(days=customer_details.days_credit_limit)
                     cal_date = datetime.strftime(next_date, '%Y-%m-%d')
                     customer_details.write({'credit_end_date': cal_date})
-
             else:
                 self.state = 'paid'
 
             return True
         else:
             raise ValidationError("Invoice-line or the Payment-Amount is empty!! ")
+
 
     @api.multi
     def open_tree_view_history(self, context=None):

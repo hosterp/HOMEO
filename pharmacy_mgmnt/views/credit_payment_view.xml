@@ -1,0 +1,29 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="payment_history_tree">
+            <field name="name">Payment History</field>
+            <field name="model">invoice.details</field>
+            <field name="arch" type="xml">
+                <tree string="Payment History" >
+                    <field name="number2" string="Invoice No"/>
+                    <field name="partner_id"/>
+                    <field name="res_person"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                    <field name="amount_total"/>
+                    <field name="paid"/>
+                    <field name="balance"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_payment_history_wizard" model="ir.actions.act_window">
+            <field name="name">Payment History</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">invoice.details</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="payment_history_tree"/>
+            <field name="context">{}</field>
+        </record>
+    </data>
+</openerp>
