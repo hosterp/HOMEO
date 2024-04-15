@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 class InvoiceDetails(models.Model):
     _name = 'invoice.details'
     _inherits = {'account.invoice': 'invoice_id'}
+    _order = 'id desc'
 
     invoice_id = fields.Many2one('account.invoice', required=True)
     partner_payment_id = fields.Many2one('partner.payment')

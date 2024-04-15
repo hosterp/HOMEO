@@ -4,7 +4,7 @@
             <field name="name">Payment History</field>
             <field name="model">invoice.details</field>
             <field name="arch" type="xml">
-                <tree string="Payment History" >
+                <tree string="Payment History">
                     <field name="number2" string="Invoice No"/>
                     <field name="partner_id"/>
                     <field name="res_person"/>
