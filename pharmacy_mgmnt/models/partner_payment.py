@@ -165,7 +165,6 @@ class PartnerPayment(models.Model):
 
         if self.res_person_id:
             data['domain'].append(('res_person', '=', self.res_person_id.id))
-
         return data
 
     # @api.onchange('chekbox')
