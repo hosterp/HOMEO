@@ -62,25 +62,14 @@
                                         </h4>
                                     </center>
                                 </div>
-                                <br></br>
                                 <div>
                                     <div class="left-aligned-div">
-                                        <div t-if="o.date">
-                                            <strong>Invoice Date:</strong>
-                                            <span t-field="o.date"/>
-                                        </div>
                                         <div t-if="o.partner_id">
-                                            <strong>Customer Name:</strong>
-                                            <span t-field="o.partner_id.name"/>
-                                        </div>
-                                        <div t-if="o.res_person_id">
-                                            <strong>Responsible Person:</strong>
-                                            <span t-field="o.res_person_id.name"/>
+                                            <h4>Received with thanks from <strong t-field="o.partner_id.name"/> Sum of Rs <strong t-field="o.payment_amount"/> Receipt No:
+                                            <strong t-field="o.reference_number"/> Dated <strong t-field="o.date"/> with payment mode  <strong t-field="o.payment_method"/></h4>
                                         </div>
                                     </div>
                                 </div>
-                                <br></br>
-                                <br></br>
 
                                 <style>
                                     .right-aligned-div {
@@ -100,36 +89,26 @@
                                     <div style="border:1px solid black;">
                                         <thead>
                                             <tr>
-                                                <th>Partner</th>
-                                                <th>Responsible Person</th>
-                                                <th>Invoice Date</th>
-                                                <th>Number</th>
-                                                <th>Total</th>
-                                                <th>Balance</th>
-
+                                                <th>NARRATION</th>
+                                                <th>BILL AMOUNT</th>
+                                                <th>AMOUNT PAID</th>
+                                                <th>BALANCE</th>
                                             </tr>
                                         </thead>
                                         <tbody class="invoice_tbody">
                                             <tr t-foreach="o.invoice_ids" t-as="l">
                                                 <td>
-                                                    <span t-field="l.partner_id.name"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="l.res_person.name"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="l.date_invoice"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="l.number2"/>
+                                                    <h4><strong t-field="l.date_invoice"/> Parts payment of Bill Number <strong t-field="l.number2"/> Rs</h4>
                                                 </td>
                                                 <td>
                                                     <span t-field="l.amount_total"/>
                                                 </td>
                                                 <td>
+                                                    <span t-field="l.pay_balance"/>
+                                                </td>
+                                                <td>
                                                     <span t-field="l.residual"/>
                                                 </td>
-
                                             </tr>
                                         </tbody>
                                     </div>
@@ -139,20 +118,30 @@
                                         <table class="table table-condensed">
                                             <tr class="border-black">
                                                 <td>
-                                                    <strong>Total</strong>
+                                                    <h4><strong>Grand Total</strong></h4>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span t-esc="sum(o.invoice_ids.mapped('amount_total'))"
-                                                          t-field-options='{"widget": "monetary"}, "display_currency": "o.currency_id"}'/>
+                                                    <h4><span t-esc="sum(o.invoice_ids.mapped('pay_balance'))"
+                                                          t-field-options='{"widget": "monetary"}, "display_currency": "o.currency_id"}'/></h4>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <strong>Balance</strong>
+                                                    <h4><strong>Balance</strong></h4>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span t-esc="sum(o.invoice_ids.mapped('residual'))"
-                                                          t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
+                                                    <!-- Display the residual -->
+                                                    <h4><span t-esc="sum(o.invoice_ids.mapped('residual'))"
+                                                          t-field-options='{"widget": "monetary"}, "display_currency": "o.currency_id"}'/></h4>
+                                                </td>
+                                            </tr>
+                                            <tr t-if="o.advance_amount">
+                                                <td>
+                                                    <h4><strong>Advance Amt Balance</strong></h4>
+                                                </td>
+                                                <td class="text-right">
+                                                    <h4><span t-esc="o.advance_amount"
+                                                          t-field-options='{"widget": "monetary"}, "display_currency": "o.currency_id"}'/></h4>
                                                 </td>
                                             </tr>
                                         </table>

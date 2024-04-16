@@ -21,6 +21,7 @@ class InvoiceDetails(models.Model):
     payment_state = fields.Selection([('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')],defualt='draft')
     balance = fields.Float()
     paid = fields.Float()
+    pay_balance = fields.Float()
 
 
     # def onchange_de_residual(self):
@@ -251,6 +252,7 @@ class PartnerPayment(models.Model):
                 'state': invoice.state,
                 'amount_total': invoice.amount_total,
                 'amount_untaxed': invoice.amount_untaxed,
+                'pay_balance': invoice.residual,
                 'residual': invoice.residual,
                 'de_residual': invoice.residual,
                 'currency_id': invoice.currency_id.id,
@@ -295,6 +297,7 @@ class PartnerPayment(models.Model):
                 'state': invoice.state,
                 'amount_total': invoice.amount_total,
                 'amount_untaxed': invoice.amount_untaxed,
+                'pay_balance': invoice.residual,
                 'residual': invoice.residual,
                 'de_residual': invoice.residual,
                 'currency_id': invoice.currency_id.id,
