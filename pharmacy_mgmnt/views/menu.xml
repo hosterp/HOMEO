@@ -8,7 +8,7 @@
                 <!--                    <field name="med_category"/>-->
                 <!--                </header>-->
                 <tree string="Medicine Stock Report"
-                     colors="black:expiry_date == False;red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
+                      colors="black:expiry_date == False;red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
                     <field name="medicine_1"/>
                     <field name="rack"/>
                     <field name="potency"/>
@@ -107,17 +107,17 @@
                     <field name="company"/>
                     <field name="medicine_grp" invisible="1"/>
                     <field name="medicine_grp1"/>
-                    <field name="quantity_selected" store="False"  widget="float_no_default"/>
+                    <field name="quantity_selected" store="False" widget="float_no_default"/>
                     <field name="qty" type="char"/>
-                    <field name="mrp" type="char"  widget="float_no_default"/>
+                    <field name="mrp" type="char" widget="float_no_default"/>
                     <field name="batch_2"/>
                     <field name="manf_date"/>
                     <field name="expiry_date"/>
                     <field name="custom_qty" type="char" invisible="1"/>
                     <field name="rack"/>
                     <field name="hsn_code"/>
-                    <field name="invoice_line_tax_id4"  widget="float_no_default"/>
-                    <field name="qty_received"  widget="float_no_default"/>
+                    <field name="invoice_line_tax_id4" widget="float_no_default"/>
+                    <field name="qty_received" widget="float_no_default"/>
                     <field name="discount" invisible="1"/>
                 </tree>
             </field>
@@ -133,7 +133,8 @@
                 <!--                <div id="my_div" class="my_tclass_div">-->
                 <tree string="Stock Entry" editable="bottom" id="stock_wizard_id" class="tree_class" name="tree_name"
                       colors="black:expiry_date == False;red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
-                    <button name="reset_quantity_selected" string="Add" type="object" class="css_wizard_button oe_highlight"
+                    <button name="reset_quantity_selected" string="Add" type="object"
+                            class="css_wizard_button oe_highlight"
                             help="calls python function" id="focushere"/>
                     <field name="s_no" invisible="1"/>
                     <field name="expiry_alert_date" invisible="1"/>
@@ -145,15 +146,15 @@
                     <field name="medicine_grp1" readonly="1"/>
                     <field name="quantity_selected" store="False" widget="float_no_default"/>
                     <field name="qty" type="char" readonly="0"/>
-                    <field name="mrp" type="char" readonly="1"  widget="float_no_default"/>
+                    <field name="mrp" type="char" readonly="1" widget="float_no_default"/>
                     <field name="batch_2" readonly="1"/>
                     <field name="manf_date" readonly="1"/>
                     <field name="expiry_date" readonly="1"/>
                     <field name="custom_qty" type="char" invisible="1" readonly="1"/>
                     <field name="rack" readonly="1"/>
                     <field name="hsn_code" readonly="1"/>
-                    <field name="invoice_line_tax_id4" readonly="1"  widget="float_no_default"/>
-                    <field name="qty_received" readonly="1"  widget="float_no_default"/>
+                    <field name="invoice_line_tax_id4" readonly="1" widget="float_no_default"/>
+                    <field name="qty_received" readonly="1" widget="float_no_default"/>
                     <field name="discount" invisible="1" readonly="1"/>
                     <field name="invoice_line_id" readonly="0"/>
                 </tree>
@@ -633,11 +634,11 @@
                   sequence="4"/>
 
 
-<!--        <menuitem action="action_rack_stock_transfer"-->
-<!--                  id="menu_stock_change_rack_under_stock_menu"-->
-<!--                  name="Full Stock Transfer"-->
-<!--                  sequence="7"-->
-<!--                  parent="r2"/>-->
+        <!--        <menuitem action="action_rack_stock_transfer"-->
+        <!--                  id="menu_stock_change_rack_under_stock_menu"-->
+        <!--                  name="Full Stock Transfer"-->
+        <!--                  sequence="7"-->
+        <!--                  parent="r2"/>-->
         <menuitem action="action_rack_stock_transfer_partial"
                   id="menu_stock_change_rack_partial_under_stock_menu"
                   name="Stock Transfer"
@@ -1152,9 +1153,9 @@
                     </style>
                     <header>
                         <button name="action_payment_all" string="Pay" type="object" class="oe_highlight"
-                                />
+                        />
                         <button name="payment_history" string="Payment History" type="object" class="oe_highlight"
-                               />
+                        />
                         <button name="print_customer_payment_report" string="Print Receipt" type="object"
                                 class="oe_highlight"/>
                         <button class="oe_highlight" type="object" name="open_tree_view_history" string="Sale History"
@@ -1176,9 +1177,12 @@
                     <group col="3">
                         <group>
                             <field name="date" style="width:50%;"/>
-                            <field name="partner_id" string="Customer" style="width:40%;" options='{"no_open": True, "no_create": True}'/>
-                            <field name="res_person_id" string="Responsible Person" style="width:40%;" options='{"no_open": True, "no_create": True}'/>
-                            <field name="cheque_date" attrs="{'invisible': [('payment_method','!=','cheque')]}" invisible="1"/>
+                            <field name="partner_id" string="Customer" style="width:40%;"
+                                   options='{"no_open": True, "no_create": True}'/>
+                            <field name="res_person_id" string="Responsible Person" style="width:40%;"
+                                   options='{"no_open": True, "no_create": True}'/>
+                            <field name="cheque_date" attrs="{'invisible': [('payment_method','!=','cheque')]}"
+                                   invisible="1"/>
                             <field name="remarks"/>
                             <button name="cheque_bounce_button" type="object" string="Cheque Bounce"
                                     class="oe_highlight"
@@ -1193,8 +1197,8 @@
                             <!--                            <field name="journal_id" string="Payment Method"/>-->
                             <field name="payment_method" style="width:40%;"/>
                             <field name="payment_amount" string="Payment Amount"/>
-                             <field name="advance_amount" string="Advance Amount"/>
-                             <field name="deposit_date"
+                            <field name="advance_amount" string="Advance Amount"/>
+                            <field name="deposit_date"
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
                             <field name="clearence_date"
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
@@ -1202,7 +1206,7 @@
 
                         </group>
                         <group>
-                             <field name="cheque_no"
+                            <field name="cheque_no"
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
                             <field name="bank"
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
@@ -1218,12 +1222,12 @@
                         <page string="invoices">
                             <field name="invoice_ids" widget="one2many_clickable">
                                 <tree editable="bottom" string="Invoice">
-                                    <field name="partner_id" readonly="1"/>
+                                    <field name="partner_id" readonly="1" invisible="1"/>
                                     <field name="date" invisible="1"/>
                                     <field name="pay_balance" invisible="1"/>
                                     <field name="commercial_partner_id" invisible="1"/>
-                                    <field name="date_invoice" readonly="1"/>
                                     <field name="number2" string="Number" readonly="1"/>
+                                    <field name="date_invoice" readonly="1"/>
                                     <field name="reference" invisible="1"/>
                                     <field name="name" invisible="1"/>
                                     <field name="journal_id" invisible="1"/>
@@ -1234,16 +1238,18 @@
                                     <field name="date_due" invisible="1"/>
                                     <field name="origin" invisible="1"/>
                                     <field name="currency_id" groups="base.group_multi_currency"/>
+                                    <field name="amount_total" sum="Total Amount"/>
                                     <field name="residual" sum="Residual Amount" invisible="0"/>
                                     <field name="amount_untaxed" sum="Untaxed Amount" invisible="1"/>
                                     <field name="amount_tax" sum="Tax Amount" invisible="1"/>
-                                    <field name="amount_total" sum="Total Amount"/>
+
                                     <field name="state" readonly="1"/>
                                     <field name="type" invisible="context.get('type',True)"/>
                                     <field name="res_person" readonly="1"/>
+                                    <field name="narration"/>
                                     <field name="select" readonly="0"/>
                                     <field name="invoice_id" invisible="1"/>
-                                    <field name="account_id" invisible="1" />
+                                    <field name="account_id" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

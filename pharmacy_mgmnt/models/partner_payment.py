@@ -22,6 +22,7 @@ class InvoiceDetails(models.Model):
     balance = fields.Float()
     paid = fields.Float()
     pay_balance = fields.Float()
+    narration=fields.Text('Narration')
 
 
     # def onchange_de_residual(self):
