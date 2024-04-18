@@ -1,19 +1,19 @@
 <openerp>
     <data>
-<!--        <record id="sales_report_tree_view" model="ir.ui.view">-->
-<!--            <field name="name">Sales Report Tree</field>-->
-<!--            <field name="model">sales.report</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <tree name="Sales Report">-->
-<!--                    <field name="name" string="Name"/>-->
-<!--                    <field name="date"/>-->
-<!--                    <field name="partner_id"/>-->
-<!--                    <field name="res_person_id"/>-->
-<!--                    &lt;!&ndash;                    <field name="product"/>&ndash;&gt;-->
-<!--                    &lt;!&ndash;                    <field name="company"/>&ndash;&gt;-->
-<!--                </tree>-->
-<!--            </field>-->
-<!--        </record>-->
+        <!--        <record id="sales_report_tree_view" model="ir.ui.view">-->
+        <!--            <field name="name">Sales Report Tree</field>-->
+        <!--            <field name="model">sales.report</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <tree name="Sales Report">-->
+        <!--                    <field name="name" string="Name"/>-->
+        <!--                    <field name="date"/>-->
+        <!--                    <field name="partner_id"/>-->
+        <!--                    <field name="res_person_id"/>-->
+        <!--                    &lt;!&ndash;                    <field name="product"/>&ndash;&gt;-->
+        <!--                    &lt;!&ndash;                    <field name="company"/>&ndash;&gt;-->
+        <!--                </tree>-->
+        <!--            </field>-->
+        <!--        </record>-->
         <record model="ir.ui.view" id="sales_report_xml_id">
             <field name="name">Sales Report</field>
             <field name="model">sales.report</field>
@@ -32,20 +32,22 @@
 
                     </header>
                     <group>
-                        <group>
+                        <group col="3">
                             <group>
                                 <field name="date" invisible="1"/>
                                 <field name="partner_id"/>
                                 <field name="res_person_id"/>
+                                <field name="pay_mode"/>
+                            </group>
+                            <group>
                                 <field name="product"/>
                                 <field name="company"/>
-                                <field name="pay_mode"/>
+                                <field name="potency"/>
                             </group>
                             <group>
                                 <field name="date_from"/>
                                 <field name="date_to"/>
                                 <field name="state"/>
-                                <field name="potency"/>
                                 <field name="packing"/>
                             </group>
                         </group>
