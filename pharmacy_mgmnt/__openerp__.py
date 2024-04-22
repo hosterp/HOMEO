@@ -56,6 +56,7 @@
         'views/master_bank.xml',
         'views/credit_payment_view.xml',
         'views/cash_and_expense_book.xml',
+        'views/expense_book.xml',
         'views/template.xml',
 
     ],

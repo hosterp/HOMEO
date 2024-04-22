@@ -12,6 +12,19 @@ class CashBook(models.Model):
 	period_id = fields.Many2one('account.period')
 	date = fields.Date('Date', default=fields.date.today())
 	cash_book_ids = fields.One2many('cash.book.line', 'cash_book_id', 'Transactions')
+	total_debit = fields.Float("Total", compute="_compute_total_debit",)
+	total_credit = fields.Float("Credited", compute="_compute_total_debit",)
+	total_balance = fields.Float("Balance", compute="_compute_total_debit",)
+
+	@api.depends('cash_book_ids.debit','cash_book_ids.credit','cash_book_ids.amount_residual')
+	def _compute_total_debit(self):
+		for record in self:
+			total_debit = sum(line.debit for line in record.cash_book_ids)
+			record.total_debit = total_debit
+			total_credit = sum(line.credit for line in record.cash_book_ids)
+			record.total_credit = total_credit
+			total_balance = sum(line.amount_residual for line in record.cash_book_ids)
+			record.total_balance = total_balance
 
 
 	@api.multi
@@ -45,6 +58,8 @@ class CashBookLines(models.Model):
 
 	move_line_id = fields.Many2one('account.move.line', )
 	cash_book_id = fields.Many2one('cash.book', 'CashBook')
+
+
 
 
 

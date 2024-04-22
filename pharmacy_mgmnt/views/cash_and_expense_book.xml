@@ -37,6 +37,15 @@
                                 <field name="amount_residual" string="Balance" sum="Total Balance"/>
                             </tree>
                         </field>
+                        <footer>
+                            <group>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="total_debit"/>
+                                    <field name="total_credit"/>
+                                    <field name="total_balance"/>
+                                </group>
+                            </group>
+                        </footer>
                     </sheet>
                 </form>
             </field>
@@ -59,17 +68,16 @@
         <!--                attachment_use="False"-->
 
         <!--        />-->
-        <menuitem id="menu_cash_report"
-                  name="Cash Report"
-                  sequence="16"/>
+
+
         <menuitem id="menu_cash_root"
-                  name="Product Enquiry"
-                  parent="menu_cash_report"
-                  sequence="1"/>
+                  name="Cash Book"
+                  parent="menu_reports_0"
+                  sequence="7"/>
         <menuitem id="cash_details"
                   action="action_cash_book"
                   name="Cash Book"
                   parent="menu_cash_root"
-                  sequence="4"/>
+                  />
     </data>
 </openerp>

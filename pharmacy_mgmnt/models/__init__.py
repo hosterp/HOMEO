@@ -13,3 +13,4 @@ from . import enquiry
 from . import stock_view_and_order
 from . import master_bank
 from . import cash_and_expense_book
+from . import expense_book
