@@ -1,0 +1,75 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="action_cash_book_tree">
+            <field name="name">Cash Book Tree</field>
+            <field name="model">cash.book</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Cash Details">
+                    <field name="date"/>
+                    <field name="period_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="action_cash_book_form">
+            <field name="name">Cash Book Form</field>
+            <field name="model">cash.book</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Cash Details">
+                    <sheet>
+                        <header>
+                            <button name="view_collection" string="View Collection" type="object" class="oe_highlight"/>
+                        </header>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                                <field name="period_id"/>
+                            </group>
+                        </group>
+                        <field name="cash_book_ids" string="Medicine">
+                            <tree editable="bottom">
+                                <field name="cash_book_id" invisible="1"/>
+                                <field name="invoice" string="Invoice"/>
+                                <field name="partner_id"/>
+                                <field name="debit" sum="Total Debit"/>
+                                <field name="credit" string="Credited" sum="Total Credit"/>
+                                <field name="amount_residual" string="Balance" sum="Total Balance"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_cash_book" model="ir.actions.act_window">
+            <field name="name">Medicine Enquiry</field>
+            <field name="res_model">cash.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="action_cash_book_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+        <!--        <report-->
+        <!--                id="enquiry_report_xlsx_id"-->
+        <!--                string="Enquiry Report"-->
+        <!--                model="medicine.enquiry"-->
+        <!--                report_type="xlsx"-->
+        <!--                name="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"-->
+        <!--                file="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"-->
+        <!--                attachment_use="False"-->
+
+        <!--        />-->
+        <menuitem id="menu_cash_report"
+                  name="Cash Report"
+                  sequence="16"/>
+        <menuitem id="menu_cash_root"
+                  name="Product Enquiry"
+                  parent="menu_cash_report"
+                  sequence="1"/>
+        <menuitem id="cash_details"
+                  action="action_cash_book"
+                  name="Cash Book"
+                  parent="menu_cash_root"
+                  sequence="4"/>
+    </data>
+</openerp>
