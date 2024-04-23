@@ -27,7 +27,7 @@
                                 <field name="period_id"/>
                             </group>
                         </group>
-                        <field name="cash_book_ids" string="Medicine">
+                        <field name="cash_book_ids" string="Cash">
                             <tree editable="bottom">
                                 <field name="cash_book_id" invisible="1"/>
                                 <field name="invoice" string="Invoice"/>
@@ -51,7 +51,7 @@
             </field>
         </record>
         <record id="action_cash_book" model="ir.actions.act_window">
-            <field name="name">Medicine Enquiry</field>
+            <field name="name">Cash Book</field>
             <field name="res_model">cash.book</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="action_cash_book_tree"/>
