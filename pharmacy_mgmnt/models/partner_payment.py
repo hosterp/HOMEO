@@ -112,11 +112,8 @@ class PaymentHistory(models.Model):
             'view_mode': 'tree',
             'res_model': 'invoice.details',
             'type': 'ir.actions.act_window',
-            # 'context': {
-            #     'default_reference_number': self.reference_number
-            # },
             'target': 'new',
-            'domain': [('partner_id', '=', self.partner_id.id)],
+            'domain': [('partner_id', '=', self.partner_id.id),('reference', '=', self.reference_number),('payment_state','=','paid')],
 
         }
         return data
@@ -162,7 +159,7 @@ class PartnerPayment(models.Model):
     click = fields.Boolean(string='clicked')
     cheque_balance = fields.Float('Check Balance')
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
-    payment_history_ids=fields.One2many('payment.history','payment_id')
+    payment_history_ids = fields.One2many('payment.history','payment_id')
 
     @api.constrains('deposit_date', 'clearence_date')
     def _check_deposit_and_const(self):
@@ -327,6 +324,8 @@ class PartnerPayment(models.Model):
 
     @api.onchange('partner_id')
     def onchange_partner_id(self):
+        last = self.env['partner.payment'].search([], limit=1, order='id desc')
+        self.reference_number = last.reference_number + 1
         self.account_id = 25
         invoice_records = []
 
@@ -348,8 +347,8 @@ class PartnerPayment(models.Model):
             invoice_records.append((0, 0, {
                 'partner_id': invoice.partner_id.id,
                 'name': invoice.name,
-                'reference': invoice.reference,
-                # 'reference_number': self.reference_number,
+                # 'reference': invoice.reference,
+                'reference': self.reference_number,
                 'type': invoice.type,
                 'state': invoice.state,
                 'amount_total': invoice.amount_total,
@@ -373,6 +372,8 @@ class PartnerPayment(models.Model):
 
     @api.onchange('res_person_id')
     def onchange_res_partner_id(self):
+        last = self.env['partner.payment'].search([], limit=1, order='id desc')
+        self.reference_number = last.reference_number + 1
         self.account_id = 25
         invoice_records = []
 
@@ -395,7 +396,7 @@ class PartnerPayment(models.Model):
                 'partner_id': invoice.partner_id.id,
                 'name': invoice.name,
                 'reference': invoice.reference,
-                # 'reference_number': self.reference_number,
+                'reference_number': self.reference_number,
                 'type': invoice.type,
                 'state': invoice.state,
                 'amount_total': invoice.amount_total,
