@@ -1,0 +1,81 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="action_cash_book_tree">
+            <field name="name">Cash Book Tree</field>
+            <field name="model">cash.book</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Cash Details">
+                    <field name="date"/>
+                    <field name="period_id"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="action_cash_book_form">
+            <field name="name">Cash Book Form</field>
+            <field name="model">cash.book</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Cash Details">
+                    <sheet>
+                        <header>
+                            <button name="view_collection" string="View Collection" type="object" class="oe_highlight"/>
+                        </header>
+                        <group>
+                            <group>
+                                <field name="date" readonly="1"/>
+                            </group>
+                              <group>
+                                <field name="period_id" readonly="1" string="Period"/>
+                            </group>
+                        </group>
+                        <field name="cash_book_ids" string="Cash">
+                            <tree editable="bottom">
+                                <field name="cash_book_id" invisible="1"/>
+                                <field name="invoice" string="Invoice"/>
+                                <field name="partner_id"/>
+                                <field name="amount" string="Credited" sum="Total Amount"/>
+                            </tree>
+                        </field>
+                        <footer>
+                            <group>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="total_balance" string="Total"/>
+                                </group>
+                            </group>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_cash_book" model="ir.actions.act_window">
+            <field name="name">Cash Book</field>
+            <field name="res_model">cash.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="action_cash_book_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+        <!--        <report-->
+        <!--                id="enquiry_report_xlsx_id"-->
+        <!--                string="Enquiry Report"-->
+        <!--                model="medicine.enquiry"-->
+        <!--                report_type="xlsx"-->
+        <!--                name="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"-->
+        <!--                file="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"-->
+        <!--                attachment_use="False"-->
+
+        <!--        />-->
+
+
+        <menuitem id="menu_cash_root"
+                  name="Cash Book"
+                  parent="menu_reports_0"
+                  sequence="7"/>
+        <menuitem id="cash_details"
+                  action="action_cash_book"
+                  name="Cash Book"
+                  parent="menu_cash_root"
+                  />
+    </data>
+</openerp>

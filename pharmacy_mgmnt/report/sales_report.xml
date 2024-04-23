@@ -29,29 +29,29 @@
                                 class="oe_highlight"/>
                         <button name="print_sale_report" type="object" string="Print"
                                 class="oe_highlight"/>
-
                     </header>
-                    <group>
-                        <group col="3">
-                            <group>
-                                <field name="date" invisible="1"/>
-                                <field name="partner_id"/>
-                                <field name="res_person_id"/>
-                                <field name="pay_mode"/>
-                            </group>
-                            <group>
-                                <field name="product"/>
-                                <field name="company"/>
-                                <field name="potency"/>
-                            </group>
-                            <group>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="state"/>
-                                <field name="packing"/>
-                            </group>
+
+                    <group col="3">
+                        <group>
+                            <field name="date" invisible="1"/>
+                            <field name="partner_id"/>
+                            <field name="res_person_id"/>
+                            <field name="product"/>
+                        </group>
+                        <group>
+                            <field name="company"/>
+                            <field name="pay_mode"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="potency"/>
+                            <field name="packing"/>
+>>>>>>> 84c9ca410dc8d1dac33e5f46ce4a9fd2a08592ee
                         </group>
                     </group>
+
                     <notebook>
                         <page string="invoices">
                             <field name="invoice_ids">

@@ -1,0 +1,115 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="action_expense_book_tree">
+            <field name="name">Expense Book Tree</field>
+            <field name="model">expense.book</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Cash Details">
+                    <field name="date"/>
+                    <field name="period_id"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="action_expense_book_form">
+            <field name="name">Expense Book Form</field>
+            <field name="model">expense.book</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Cash Details">
+                    <sheet>
+                        <header>
+                            <field name="status" widget="statusbar"/>
+                        </header>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                            </group>
+                            <group>
+                                <field name="period_id"/>
+                            </group>
+                        </group>
+                        <field name="expense_book_ids" string="Expenses">
+                            <tree editable="bottom">
+                                <field name="expense_book_id" invisible="1"/>
+                                <field name="expense_type_id" string="Expense" widget='selection'/>
+                                <field name="narration" string="Narration"/>
+                                <field name="account_id" invisible="1"/>
+                                <field name="journal_id" invisible="1"/>
+                                <!--                                <field name="period_id" invisible="1"/>-->
+                                <field name="debit" sum="Total Debit"/>
+                                <field name="credit" sum="Total credit"/>
+                                <field name="balance" sum="Balance"/>
+                                <field name="status" sum="Balance"/>
+                            </tree>
+                        </field>
+                        <footer>
+                            <group>
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="total_debit"/>
+                                    <field name="total_credit"/>
+                                    <field name="total_balance"/>
+                                </group>
+                            </group>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_expense_book" model="ir.actions.act_window">
+            <field name="name">Expense Book</field>
+            <field name="res_model">expense.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="action_expense_book_tree"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+        <record model="ir.ui.view" id="action_expense_type_form">
+            <field name="name">Expense</field>
+            <field name="model">expense.types</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" string="Expense" style="width:50%%"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_expense_type" model="ir.actions.act_window">
+            <field name="name">Expense Type</field>
+            <field name="res_model">expense.types</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+        <!--        <report-->
+        <!--                id="enquiry_report_xlsx_id"-->
+        <!--                string="Enquiry Report"-->
+        <!--                model="medicine.enquiry"-->
+        <!--                report_type="xlsx"-->
+        <!--                name="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"-->
+        <!--                file="pharmacy_mgmnt.enquiry_report_xlsx.xlsx"-->
+        <!--                attachment_use="False"-->
+
+        <!--        />-->
+
+
+        <menuitem id="menu_expense_root"
+                  name="Expense Book"
+                  parent="menu_reports_0"
+                  sequence="8"/>
+        <menuitem id="expense_details"
+                  action="action_expense_book"
+                  name="Expense Book"
+                  parent="menu_expense_root"
+                  sequence="1"/>
+        <menuitem id="expense_type"
+                  action="action_expense_type"
+                  name="Expense Types"
+                  parent="menu_expense_root"
+                  sequence="2"/>
+    </data>
+</openerp>
