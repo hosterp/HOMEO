@@ -1254,6 +1254,27 @@
                             </field>
                         </page>
                     </notebook>
+                    <field name="payment_history_boolean"/>
+                    <notebook>
+                        <page string="Payment History" attrs="{'invisible': [('payment_history_boolean', '=', False)]}">
+                            <field name="payment_history_ids">
+                                <tree string="Payment History Details">
+                                            <field name="reference_number" string="Receipt No" nolabel="1"
+                                                   readonly="1"/>
+                                            <field name="date" string="Date"/>
+                                            <field name="res_person_id" string="Responsible Person"/>
+                                            <field name="partner_id" string="Customer"/>
+                                            <field name="payment_method" string="Payment Method"/>
+                                            <field name="total_amount" string="Total Amount"/>
+                                            <field name="payment_amount" string="Payment Amount"/>
+                                            <field name="balance_amount" string="Balance Amount"/>
+                                            <field name="remarks" string="Remarks"/>
+                                            <button name="payment_history_invoice_line" string="View" type="object"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
                     <seprator/>
 
                     <group>
@@ -1262,7 +1283,6 @@
                         <field name="calc_amount" string="Available Balance"
                                attrs="{'invisible': [('state','=','paid')]}" invisible="1"/>
                     </group>
-
                 </form>
             </field>
         </record>
@@ -1272,15 +1292,15 @@
             <field name="model">partner.payment</field>
             <field name="arch" type="xml">
                 <tree string="Payment Details">
-                    <field name="reference_number" nolabel="1" readonly="1"/>
-                    <field name="date"/>
+                    <field name="reference_number" string="Reference No" nolabel="1" readonly="1"/>
+                    <field name="date" string="Date"/>
                     <field name="res_person_id" string="Responsible Person"/>
                     <field name="partner_id" string="Customer"/>
-                    <field name="payment_method"/>
-                    <field name="total_amount"/>
-                    <field name="payment_amount"/>
-                    <field name="balance_amount"/>
-                    <field name="remarks"/>
+                    <field name="payment_method" string="Payment Method"/>
+                    <field name="total_amount" string="Total Amount"/>
+                    <field name="payment_amount" string="Payment Amount"/>
+                    <field name="balance_amount" string="Balance Amount"/>
+                    <field name="remarks" string="Remarks"/>
                 </tree>
             </field>
         </record>

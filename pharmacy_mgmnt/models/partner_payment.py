@@ -23,6 +23,8 @@ class InvoiceDetails(models.Model):
     paid = fields.Float()
     pay_balance = fields.Float()
     narration=fields.Text('Narration')
+    # reference_number = fields.Integer(default=lambda self:self.partner_payment_id.reference_number)
+
 
 
     # def onchange_de_residual(self):
@@ -88,7 +90,40 @@ class InvoiceDetails(models.Model):
     #             else:
     #                 pass
 
+class PaymentHistory(models.Model):
+    _name = 'payment.history'
 
+    payment_id=fields.Many2one('partner.payment')
+    reference_number = fields.Integer()
+    date = fields.Date()
+    balance_amount = fields.Float()
+    total_amount = fields.Float()
+    payment_method = fields.Char()
+    partner_id = fields.Many2one('res.partner', domain=[('customer', '=', True), ('res_person_id', '=', False)])
+    res_person_id = fields.Many2one('res.partner', domain=[('res_person_id', '=', True)])
+    payment_amount = fields.Float()
+    remarks = fields.Text()
+
+    @api.multi
+    def payment_history_invoice_line(self):
+        data = {
+            'name': _('Payment History'),
+            'view_type': 'tree',
+            'view_mode': 'tree',
+            'res_model': 'invoice.details',
+            'type': 'ir.actions.act_window',
+            # 'context': {
+            #     'default_reference_number': self.reference_number
+            # },
+            'target': 'new',
+            'domain': [('partner_id', '=', self.partner_id.id)],
+
+        }
+        return data
+
+        # if self.res_person_id:
+        #     data['domain'].append(('res_person', '=', self.res_person_id.id))
+        return data
 class PartnerPayment(models.Model):
     _inherits = {'account.voucher': 'voucher_relation_id'}
     _name = 'partner.payment'
@@ -127,7 +162,7 @@ class PartnerPayment(models.Model):
     click = fields.Boolean(string='clicked')
     cheque_balance = fields.Float('Check Balance')
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
-
+    payment_history_ids=fields.One2many('payment.history','payment_id')
 
     @api.constrains('deposit_date', 'clearence_date')
     def _check_deposit_and_const(self):
@@ -152,21 +187,87 @@ class PartnerPayment(models.Model):
             if record.clearence_date and record.clearence_date < record.deposit_date:
                 raise ValidationError("The clearence date cannot be earlier than the deposit date.")
 
-    @api.multi
-    def payment_history(self):
-        data = {
+    def action_display_payment_history(self):
+        self.ensure_one()
+
+        datas = {
             'name': _('Payment History'),
-            'view_type': 'tree',
-            'view_mode': 'tree',
-            'res_model': 'invoice.details',
             'type': 'ir.actions.act_window',
+            'res_model': 'invoice.details',
+            'view_mode': 'tree',
+            'view_type': 'tree',
+            'view_id': self.env.ref('pharmacy_mgmnt.payment_history_tree').id,
             'target': 'new',
-            'domain': [('partner_id', '=', self.partner_id.id), ('payment_state', '=', 'paid')],
+            'domain': [('partner_id', '=', self.partner_id.id)],
         }
 
-        if self.res_person_id:
-            data['domain'].append(('res_person', '=', self.res_person_id.id))
-        return data
+        return datas
+
+    payment_history_boolean=fields.Boolean()
+
+
+    @api.multi
+    def payment_history(self):
+        self.ensure_one()
+
+        self.payment_history_boolean = True
+
+        domain = [('partner_id', '=', self.partner_id.id)]
+
+        partner_payments = self.env['partner.payment'].search(domain)
+        result_data = []
+
+        for payment in partner_payments:
+            existing_payments = self.payment_history_ids.filtered(
+                lambda r: r.reference_number == payment.reference_number)
+
+            if not existing_payments:
+                payment_data = {
+                    'reference_number': payment.reference_number,
+                    'date': payment.date,
+                    'partner_id': payment.partner_id.id,
+                    'res_person_id': payment.res_person_id.id,
+                    'payment_method': payment.payment_method,
+                    'total_amount': payment.total_amount,
+                    'payment_amount': payment.payment_amount,
+                    'balance_amount': payment.balance_amount,
+                    'remarks': payment.remarks,
+                }
+                result_data.append(payment_data)
+
+        self.payment_history_ids = [(0, 0, data) for data in result_data]
+
+        return {'partner_payments': result_data}
+
+        # print (data.reference_number,data.date,data.partner_id.id)
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'Payment History',
+        #     'res_model': 'partner.payment',
+        #     'view_mode': 'tree',
+        #     'view_id': False,
+        #     'views': [(False, 'tree')],
+        #     'domain': [('id', 'in', data.ids)],
+        #     'context': {'search_default_partner_id': self.partner_id.id},
+        # }
+
+        # data = {
+        #     'name': _('Payment History'),
+        #     'view_type': 'tree',
+        #     'view_mode': 'tree',
+        #     'res_model': 'partner.payment',
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'new',
+        #     'view_id': self.env.ref('pharmacy_mgmnt.partner_payment_history_view_tree').id,
+        #     'domain': [('partner_id', '=', self.partner_id.id),],
+        #     'context': {
+        #         'edit': True,
+        #     },
+        # }
+        #
+        # if self.res_person_id:
+        #     data['domain'].append(('res_person', '=', self.res_person_id.id))
+        # return data
 
     # @api.onchange('chekbox')
     # def _advance_amount_calc(self):
@@ -248,6 +349,7 @@ class PartnerPayment(models.Model):
                 'partner_id': invoice.partner_id.id,
                 'name': invoice.name,
                 'reference': invoice.reference,
+                # 'reference_number': self.reference_number,
                 'type': invoice.type,
                 'state': invoice.state,
                 'amount_total': invoice.amount_total,
@@ -293,6 +395,7 @@ class PartnerPayment(models.Model):
                 'partner_id': invoice.partner_id.id,
                 'name': invoice.name,
                 'reference': invoice.reference,
+                # 'reference_number': self.reference_number,
                 'type': invoice.type,
                 'state': invoice.state,
                 'amount_total': invoice.amount_total,

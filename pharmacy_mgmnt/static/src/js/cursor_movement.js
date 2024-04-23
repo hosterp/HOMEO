@@ -99,5 +99,29 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
     }
 });
 
-
 });
+ $(document).ready(function() {
+    $(document).on('click', 'div.modal.in div.modal-header h3:contains("Payment History")', function() {
+    });
+
+   $(document).on('click', 'div.modal.in table tbody tr', function(event) {
+        var jsonData = {};
+
+        $.ajax({
+            type: 'POST',
+            url: '/pharmacy_mgmnt/payment_history',
+            contentType: 'application/json',
+            data: JSON.stringify(jsonData),
+            success: function (response) {
+//                alert('Payment successful!');
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+
+                alert('Error payment history: ' + error);
+            }
+        });
+//        alert('Element in the first row of the modal body clicked!');
+    });
+});
+

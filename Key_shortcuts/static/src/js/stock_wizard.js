@@ -16,15 +16,15 @@ function resetFieldValue() {
                 console.log(response);
             },
             error: function (xhr, status, error) {
-                alert('Error resetting quantity: ' + error);
+//                alert('Error resetting quantity: ' + error);
             }
      });
     var field = $('td[data-field="quantity_selected"]');
     if (field.length > 0) {
         field.text('0');
-        console.log('Resetting field value...');
+//        console.log('Resetting field value...');
     } else {
-        console.error('Field not found.');
+//        console.error('Field not found.');
     }
 }
 

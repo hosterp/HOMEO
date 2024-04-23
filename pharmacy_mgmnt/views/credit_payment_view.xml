@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record model="ir.ui.view" id="payment_history_tree">
+         <record model="ir.ui.view" id="payment_history_tree">
             <field name="name">Payment History</field>
             <field name="model">invoice.details</field>
             <field name="arch" type="xml">
@@ -26,5 +27,35 @@
             <field name="view_id" ref="payment_history_tree"/>
             <field name="context">{}</field>
         </record>
+
+        <record model="ir.ui.view" id="partner_payment_history_view_tree">
+            <field name="name">Payment History Tree</field>
+            <field name="model">partner.payment</field>
+            <field name="arch" type="xml">
+                <tree string="Payment History Details" editable="top">
+                    <field name="reference_number" string="Reference No" nolabel="1" readonly="1"/>
+                    <field name="date" string="Date"/>
+                    <field name="res_person_id" string="Responsible Person"  class="o_tree_view_clickable"/>
+                    <field name="partner_id" string="Customer" class="o_tree_view_clickable"/>
+                    <field name="payment_method" string="Payment Method"/>
+                    <field name="total_amount" string="Total Amount"/>
+                    <field name="payment_amount" string="Payment Amount"/>
+                    <field name="balance_amount" string="Balance Amount"/>
+                    <field name="remarks" string="Remarks"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_payment_history_tree" model="ir.actions.act_window">
+            <field name="name">Payment History Tree</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.payment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="partner_payment_history_view_tree"/>
+            <field name="context">{'edit': True}</field>
+        </record>
+
+
     </data>
 </openerp>
