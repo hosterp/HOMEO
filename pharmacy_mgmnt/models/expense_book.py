@@ -54,6 +54,7 @@ class CashBookLines(models.Model):
 	debit = fields.Float("Debit")
 	credit = fields.Float("Credit")
 	balance = fields.Float("Balance")
+	narration = fields.Text("Narration")
 	status = fields.Selection([('balanced','Balanced'),('unbalanced','Unbalanced')],default='unbalanced')
 
 
