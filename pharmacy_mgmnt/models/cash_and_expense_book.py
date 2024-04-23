@@ -12,38 +12,30 @@ class CashBook(models.Model):
 	period_id = fields.Many2one('account.period')
 	date = fields.Date('Date', default=fields.date.today())
 	cash_book_ids = fields.One2many('cash.book.line', 'cash_book_id', 'Transactions')
-	total_debit = fields.Float("Total", compute="_compute_total_debit",)
-	total_credit = fields.Float("Credited", compute="_compute_total_debit",)
+	# total_debit = fields.Float("Total", compute="_compute_total_debit",)
+	# total_credit = fields.Float("Credited", compute="_compute_total_debit",)
 	total_balance = fields.Float("Balance", compute="_compute_total_debit",)
 
-	@api.depends('cash_book_ids.debit','cash_book_ids.credit','cash_book_ids.amount_residual')
+	@api.depends('cash_book_ids.amount')
 	def _compute_total_debit(self):
 		for record in self:
-			total_debit = sum(line.debit for line in record.cash_book_ids)
-			record.total_debit = total_debit
-			total_credit = sum(line.credit for line in record.cash_book_ids)
-			record.total_credit = total_credit
-			total_balance = sum(line.amount_residual for line in record.cash_book_ids)
+			total_balance = sum(line.amount for line in record.cash_book_ids)
 			record.total_balance = total_balance
 
 
 	@api.multi
 	def view_collection(self):
-		datas = self.env['account.move'].search([('date','=',self.date),('line_id.credit','!=',0)])
+		datas = self.env['account.voucher'].search([('date','=',self.date)])
 		line_record = []
 		for rec in datas:
-			if rec.line_id:
-				for lines in rec.line_id:
-					if lines.credit != 0:
+			if rec.line_ids:
+				for lines in rec.line_ids:
+					if lines.amount != 0:
 						line_record.append((0, 0,{
-							"name": lines.name,
-							"invoice": lines.invoice.id,
-							"partner_id":lines.partner_id.id,
-							"debit":lines.debit,
-							"credit":lines.credit,
-							"account_id":lines.account_id.id,
-							"journal_id":lines.move_id.journal_id.id,
-							"amount_residual":lines.amount_residual,
+							"invoice": rec.reference,
+							"partner_id":rec.partner_id.id,
+							"amount":lines.amount,
+							"journal_id":rec.journal_id.id,
 						}))
 		if self.cash_book_ids:
 			self.cash_book_ids = [(5, 0, 0)]
@@ -54,10 +46,14 @@ class CashBook(models.Model):
 
 class CashBookLines(models.Model):
 	_name = "cash.book.line"
-	_inherits = {'account.move.line': 'move_id'}
-
-	move_line_id = fields.Many2one('account.move.line', )
+	# _inherits = {'account.voucher.line': 'voucher_id'}
+	#
+	# voucher_line_id = fields.Many2one('account.voucher.line', )
 	cash_book_id = fields.Many2one('cash.book', 'CashBook')
+	Journal_id = fields.Many2one('account.voucher','Invoice')
+	partner_id = fields.Many2one('res.partner','Partner')
+	amount = fields.Float("Amount")
+	invoice = fields.Char('Invoice')
 
 
 
