@@ -1270,6 +1270,7 @@
                                             <field name="balance_amount" string="Balance Amount"/>
                                             <field name="remarks" string="Remarks"/>
                                             <button name="payment_history_invoice_line" string="View" type="object"/>
+                                            <button name="print_customer_payment_history_report" string="Print" type="object"/>
                                 </tree>
                             </field>
                         </page>
