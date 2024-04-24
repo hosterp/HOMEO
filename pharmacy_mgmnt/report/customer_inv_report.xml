@@ -302,7 +302,7 @@
         <menuitem id="menu_reports_0" name="Reports" sequence="1" parent="menu_med_main_reports"/>
         <menuitem id="menu_reports_1"
                   name="Invoice Reports"
-                  sequence="1" parent="menu_reports_0"/>
+                  sequence="9" parent="menu_reports_0"/>
         <menuitem action="action_customer_invoice_report" id="menu_customer"
                   name="Customer Invoice Reports"
                   sequence="1" parent="menu_reports_1"/>
