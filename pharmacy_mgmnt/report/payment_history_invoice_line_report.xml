@@ -12,7 +12,6 @@
                 text-align: left;
                 }
             </style>
-
             <t t-call="report.html_container">
                 <t t-foreach="docs" t-as="o">
                     <xpath expr="//t[@t-call='report.external_layout']" position="replace">
@@ -53,11 +52,11 @@
                                         <div t-if="o.partner_id">
                                             <h4>Received with thanks from
                                                 <strong t-esc="o.partner_id.name"/>
-                                                Sum of Rs
+                                                Sum of
                                                 <strong t-field="o.payment_amount"/>
                                                 Receipt No:
                                                 <strong t-esc="o.reference_number"/>
-                                                Dated<strong t-esc="o.date"/>with payment mode
+                                                 Dated <strong t-esc="o.date"/> with payment mode
                                                 <strong t-field="o.payment_method"/>
                                             </h4>
                                         </div>
@@ -117,52 +116,39 @@
                                             </tr>
                                         </tbody>
                                     </div>
-                                    </table>
-                                        <div>
-                                            <div class="col-xs-4 pull-right">
-                                                <table class="table table-condensed">
-                                                    <tr class="border-black">
-                                                        <td>
-                                                            <h4>
-                                                                <strong>Grand Total</strong>
-                                                            </h4>
-                                                        </td>
-                                                        <td class="text-right">  <!-- Add the text-right class here -->
-                                                            <h4>
-                                                                <t t-esc="total_paid"/>
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h4>
-                                                                <strong>Balance</strong>
-                                                            </h4>
-                                                        </td>
-                                                        <td class="text-right">  <!-- Add the text-right class here -->
-                                                            <h4>
-                                                                <t t-esc="total_balance"/>
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h4>
-                                                                <strong>Advance Amt Balance</strong>
-                                                            </h4>
-                                                        </td>
-                                                        <td class="text-right">  <!-- Add the text-right class here -->
-                                                            <h4>
-<!--                                                                <t t-esc="total_balance"/>-->
-                                                            </h4>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-
+                                </table>
+                                <div>
+                                    <div class="col-xs-4 pull-right">
+                                        <table class="table table-condensed">
+                                            <tr class="border-black">
+                                                <td>
+                                                    <h4>
+                                                        <strong>Grand Total</strong>
+                                                    </h4>
+                                                </td>
+                                                <td class="text-right">
+                                                    <h4>
+                                                        <t t-esc="total_paid"/>
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <h4>
+                                                        <strong>Balance</strong>
+                                                    </h4>
+                                                </td>
+                                                <td class="text-right">
+                                                    <h4>
+                                                        <t t-esc="total_balance"/>
+                                                    </h4>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
-<!--                            </div>-->
+                                </div>
+
+                            </div>
                         </t>
                     </xpath>
                 </t>
