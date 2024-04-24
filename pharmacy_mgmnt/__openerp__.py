@@ -44,6 +44,7 @@
 
         'report/inherit_supplier_invoice_report.xml',
         'report/e_way_report_customer.xml',
+        'report/payment_history_invoice_line_report.xml',
 
         'report/packing_holding_history.xml',
         'report/tax_report_view.xml',

@@ -1,0 +1,116 @@
+<openerp>
+    <data>
+         <template id="report_customer_payment_history_template">
+            <style>
+                table, th, td {
+
+                border-collapse: collapse;
+
+                }
+                th, td {
+                padding: 17px;
+                text-align: left;
+                }
+            </style>
+
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <xpath expr="//t[@t-call='report.external_layout']" position="replace">
+                        <t>
+                            <div class="page">
+                                <div style="border:1px solid black;">
+                                    <center>
+                                        <h3>
+                                            <b>TRAVANCORE HOMEO MEDICALS</b>
+                                        </h3>
+                                    </center>
+                                    <center>
+                                        <h5>
+                                            <b>TC 25/1613(1) SS KOVIL ROAD THAMPANOOR</b>
+                                        </h5>
+                                    </center>
+                                    <center>
+                                        <h5>
+                                            <b>TRIVANDRUM - 695001, KERALA-32,PH:0471-4010102,2335863 and
+                                                travancorehomeo@gmail.com
+                                            </b>
+                                        </h5>
+                                    </center>
+                                    <center>
+                                        <h4>
+                                            <b>GSTIN : 32AYAPS1856Q1ZY , DLNO:TVM-111350,TVM-111351 [20C 20D]</b>
+                                        </h4>
+                                    </center>
+                                    <center>
+                                        <h4>
+<!--                                            <b>TAX INVOICE-->
+<!--                                            </b>-->
+                                        </h4>
+                                    </center>
+                                </div>
+                                <div>
+                                    <div class="left-aligned-div">
+                                        <div t-if="o.partner_id">
+                                            <h4>Received with thanks from <strong t-esc="o.partner_id.name"/> Sum of Rs <strong t-field="o.payment_amount"/> Receipt No:
+                                            <strong t-esc="o.reference_number"/> Dated <strong t-esc="o.date"/>with payment mode  <strong t-field="o.payment_method"/></h4>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <style>
+                                    .right-aligned-div {
+                                    text-align: left;
+                                    float: right;
+                                    }
+                                    .left-aligned-div {
+                                    text-align: left;
+                                    float: left;
+                                    }
+                                    .center {
+                                    text-align: center;
+
+                                    }
+                                </style>
+                                 <table class="table table-bordered">
+                                    <div style="border:1px solid black;">
+                                        <thead>
+                                            <tr>
+                                                <th>NARRATION</th>
+                                                <th>BILL AMOUNT</th>
+                                                <th>AMOUNT PAID</th>
+                                                <th>BALANCE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="invoice_tbody">
+                                            <tr t-foreach="o.payment_history_invoice_line_report()" t-as="l">
+                                                <td>
+                                                    <h4><strong t-esc = "l.date"/> Parts payment of Bill Number <strong t-esc="l.number2"/> Rs</h4>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="l.amount_total"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="l.paid"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="l.balance"/>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </div>
+                                </table>
+                            </div>
+                        </t>
+                    </xpath>
+                </t>
+            </t>
+         </template>
+
+         <report
+                id="payment_history_invoiceline"
+                string="Payment History Report"
+                model="payment.history"
+                report_type="qweb-pdf"
+                name="pharmacy_mgmnt.report_customer_payment_history_template"/>
+    </data>
+</openerp>
