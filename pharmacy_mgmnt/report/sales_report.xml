@@ -48,7 +48,6 @@
                             <field name="state"/>
                             <field name="potency"/>
                             <field name="packing"/>
->>>>>>> 84c9ca410dc8d1dac33e5f46ce4a9fd2a08592ee
                         </group>
                     </group>
 
@@ -75,9 +74,10 @@
                                     <field name="amount_untaxed" sum="Untaxed Amount" invisible="1"/>
                                     <field name="amount_tax" sum="Tax Amount" invisible="1"/>
                                     <field name="amount_total" sum="Total Amount"/>
-                                    <field name="state" readonly="1"/>
+                                    <field name="state" readonly="1" string="Pay Mode"/>
                                     <field name="type" invisible="context.get('type',True)"/>
                                     <field name="res_person" readonly="1"/>
+                                    <field name="credit_end_days" readonly="1" widget="html"/>
                                     <field name="invoice_id" invisible="1"/>
                                     <field name="account_id" invisible="1"/>
                                     <button name="open_invoice" type="object" string="Open" class="oe_highlight"/>

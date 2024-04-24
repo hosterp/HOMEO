@@ -10,6 +10,7 @@ class InvoiceDetails(models.TransientModel):
     invoice_id = fields.Many2one('account.invoice', required=True)
     sales_details_id = fields.Many2one('sales.report')
     test = fields.Integer()
+    credit_end_days = fields.Html('Due days' , sanitize=False)
 
     @api.multi
     def open_invoice(self):
@@ -41,18 +42,16 @@ class SalesReport(models.TransientModel):
     company = fields.Many2one('product.medicine.responsible', 'Company')
     # group = fields.Many2one('tax.combo.new', 'Group')
     group = fields.Many2one('product.medicine.group', 'Group')
-    state = fields.Selection([('open', 'Open'), ('draft', 'Draft'), ('paid', 'Paid')], default="paid")
+    state = fields.Selection([('open', 'Open'), ('draft', 'Draft'), ('paid', 'Paid')],)
     invoice_ids = fields.One2many('sales.details', 'sales_details_id', readonly=False,
                                   store=True)
     pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'),('upi', 'UPI'),], 'Payment Mode',)
 
     @api.model
     def create(self, vals):
-        print('hello')
         if not vals.get('name'):
             vals['name'] = self.env['ir.sequence'].next_by_code('sales.report.sequence')
             result = super(SalesReport,self).create(vals)
-            print('hello1',result.name)
             return result
         else:
             pass
@@ -101,6 +100,20 @@ class SalesReport(models.TransientModel):
             invoices = self.env['account.invoice'].search(domain)
             if invoices:
                 for line in invoices:
+                    credit_end = ''
+                    if line.pay_mode == 'credit':
+                        if line.partner_id.credit_end_date and self.state != 'paid':
+                            credit_end_date = datetime.strptime(line.partner_id.credit_end_date, "%Y-%m-%d").date()
+                            delta = datetime.today().date() - credit_end_date
+                            if delta.days >= 0:
+                                credit_end = str(delta.days) + ' Days'
+                            else:
+                                credit_end = 'Not Expired'
+
+                        else:
+                            credit_end = "N/A on Paid"
+                    else:
+                        credit_end = "N/A on Cash Payment"
                     list.append([0, 0, {'partner_id': line.partner_id.id,
                                         'name': line.name,
                                         'test': line.id,
@@ -123,6 +136,7 @@ class SalesReport(models.TransientModel):
                                         'account_id': line.account_id.id,
                                         'invoice_id': line.id,
                                         'pay_mode':line.pay_mode,
+                                        'credit_end_days':credit_end
                                         }
                                  ])
             rec.invoice_ids = list
