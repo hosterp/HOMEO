@@ -1256,7 +1256,7 @@
                     </notebook>
                     <field name="payment_history_boolean"/>
                     <notebook>
-                        <page string="Payment History" attrs="{'invisible': [('payment_history_boolean', '=', False)]}">
+                        <page string="Payment History" style="color: blue;" attrs="{'invisible': [('payment_history_boolean', '=', False)]}">
                             <field name="payment_history_ids">
                                 <tree string="Payment History Details">
                                             <field name="reference_number" string="Receipt No" nolabel="1"
