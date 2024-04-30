@@ -1257,28 +1257,27 @@
                     </notebook>
                     <field name="payment_history_boolean"/>
                     <notebook>
-                        <page string="Payment History" style="color: blue;" attrs="{'invisible': [('payment_history_boolean', '=', False)]}">
+                        <page string="Payment History" style="color: blue;"
+                              attrs="{'invisible': [('payment_history_boolean', '=', False)]}">
                             <field name="payment_history_ids">
                                 <tree string="Payment History Details">
-                                            <field name="reference_number" string="Receipt No" nolabel="1"
-                                                   readonly="1"/>
-                                            <field name="date" string="Date"/>
-                                            <field name="res_person_id" string="Responsible Person"/>
-                                            <field name="partner_id" string="Customer"/>
-                                            <field name="payment_method" string="Payment Method"/>
-                                            <field name="total_amount" string="Total Amount"/>
-                                            <field name="payment_amount" string="Payment Amount"/>
-                                            <field name="balance_amount" string="Balance Amount"/>
-                                            <field name="remarks" string="Remarks"/>
-                                            <button name="payment_history_invoice_line" string="View" type="object"/>
-                                            <button name="print_customer_payment_history_report" string="Print" type="object"/>
+                                    <field name="reference_number" string="Receipt No" nolabel="1"
+                                           readonly="1"/>
+                                    <field name="date" string="Date"/>
+                                    <field name="res_person_id" string="Responsible Person"/>
+                                    <field name="partner_id" string="Customer"/>
+                                    <field name="payment_method" string="Payment Method"/>
+                                    <field name="total_amount" string="Total Amount"/>
+                                    <field name="payment_amount" string="Payment Amount"/>
+                                    <field name="balance_amount" string="Balance Amount"/>
+                                    <field name="remarks" string="Remarks"/>
+                                    <button name="payment_history_invoice_line" string="View" type="object"/>
+                                    <button name="print_customer_payment_history_report" string="Print" type="object"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
-
                     <seprator/>
-
                     <group>
                         <field name="total_amount" string="Total Amount"/>
                         <field name="balance_amount" string="Balance Amount"/>

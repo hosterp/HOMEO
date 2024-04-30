@@ -132,18 +132,18 @@
                                                     </h4>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <h4>
-                                                        <strong>Balance</strong>
-                                                    </h4>
-                                                </td>
-                                                <td class="text-right">
-                                                    <h4>
-                                                        <t t-esc="total_balance"/>
-                                                    </h4>
-                                                </td>
-                                            </tr>
+<!--                                            <tr>-->
+<!--                                                <td>-->
+<!--                                                    <h4>-->
+<!--                                                        <strong>Balance</strong>-->
+<!--                                                    </h4>-->
+<!--                                                </td>-->
+<!--                                                <td class="text-right">-->
+<!--                                                    <h4>-->
+<!--                                                        <t t-esc="total_balance"/>-->
+<!--                                                    </h4>-->
+<!--                                                </td>-->
+<!--                                            </tr>-->
                                         </table>
                                     </div>
                                 </div>

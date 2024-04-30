@@ -126,7 +126,7 @@ class PaymentHistory(models.Model):
     def payment_history_invoice_line_report(self):
         payment_history = self.env['invoice.details'].search([
             ('partner_id', '=', self.partner_id.id),
-            ('reference', '=', self.reference_number),
+            ('reference_number', '=', self.reference_number),
             ('payment_state', '=', 'paid')
         ])
         return payment_history
