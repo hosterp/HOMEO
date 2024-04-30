@@ -6,7 +6,9 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-
+                <xpath expr="//form" position="attributes">
+                        <attribute name="save">false</attribute>
+                    </xpath>
                 <xpath expr="//field[@name='date_due']" position="after">
                     <field name="picking_transfer_id"/>
                     <field name="invoice_picking_id" invisible="1"/>
@@ -25,7 +27,7 @@
                     />
                 </xpath>
                 <xpath expr="//button[@name='invoice_open']" position="attributes">
-                    <!--                     <attribute name="class">cus_validate</attribute>-->
+                     <attribute name="string">Save</attribute>
                     <!--                     <attribute name="attrs">{'invisible':['|','|','|',('packing_slip', '=', True),('hold_invoice', '=',-->
                     <!--                        True),('state', '!=' , 'draft')]}-->
                     <!--                    </attribute>-->
