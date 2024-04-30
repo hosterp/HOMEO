@@ -22,7 +22,8 @@ class InvoiceDetails(models.Model):
     balance = fields.Float()
     paid = fields.Float()
     pay_balance = fields.Float()
-    narration=fields.Text('Narration')
+    narration = fields.Text('Narration')
+    reference_number = fields.Integer('Ref')
     # reference_number = fields.Integer(default=lambda self:self.partner_payment_id.reference_number)
 
 
@@ -113,8 +114,7 @@ class PaymentHistory(models.Model):
             'res_model': 'invoice.details',
             'type': 'ir.actions.act_window',
             'target': 'new',
-            'domain': [('partner_id', '=', self.partner_id.id),('reference', '=', self.reference_number),('payment_state','=','paid')],
-
+            'domain': [('partner_id', '=', self.partner_id.id),('reference_number', '=', self.reference_number),('payment_state','=','paid')],
         }
         return data
 
@@ -232,11 +232,11 @@ class PartnerPayment(models.Model):
         return self.env['report'].get_action(self, 'pharmacy_mgmnt.customer_payment_invoice')
     @api.multi
     def payment_history(self):
-        self.ensure_one()
+        # self.ensure_one()
 
         self.payment_history_boolean = True
 
-        domain = [('partner_id', '=', self.partner_id.id)]
+        domain = [('partner_id', '=', self.partner_id.id),('state', '=', 'paid')]
 
         partner_payments = self.env['partner.payment'].search(domain)
         result_data = []
@@ -258,8 +258,11 @@ class PartnerPayment(models.Model):
                     'remarks': payment.remarks,
                 }
                 result_data.append(payment_data)
-
-        self.payment_history_ids = [(0, 0, data) for data in result_data]
+        if self.payment_history_ids:
+            self.payment_history_ids = [(5, 0, 0)]
+            self.payment_history_ids = [(0, 0, data) for data in result_data]
+        else:
+            self.payment_history_ids = [(0, 0, data) for data in result_data]
 
         return {'partner_payments': result_data}
 
@@ -375,7 +378,7 @@ class PartnerPayment(models.Model):
                 'partner_id': invoice.partner_id.id,
                 'name': invoice.name,
                 # 'reference': invoice.reference,
-                'reference': self.reference_number,
+                # 'reference': self.reference_number,
                 'type': invoice.type,
                 'state': invoice.state,
                 'amount_total': invoice.amount_total,
@@ -716,8 +719,14 @@ class PartnerPayment(models.Model):
     def action_payment_all(self, context=None):
         if self.payment_amount and self.invoice_ids:
             payment_amount = self.payment_amount
+            if not self.reference_number:
+                self.reference_number = self.env['ir.sequence'].next_by_code(
+                    'partner.payment')
+                print(self.reference_number,'self.reference_number')
             for record in self.invoice_ids:
                 if record.select == True:
+                    record.reference_number = int(self.reference_number)
+                    print(record.reference)
                     amount = 0
                     invoice = record.invoice_id
                     if payment_amount > 0:
@@ -787,6 +796,8 @@ class PartnerPayment(models.Model):
             if payment_amount != 0:
                 for record in self.invoice_ids:
                     if record.select != True:
+                        record.reference_number = int(self.reference_number)
+
                         amount = 0
                         invoice = record.invoice_id
                         if payment_amount > 0:
@@ -903,9 +914,9 @@ class PartnerPayment(models.Model):
     @api.model
     def create(self, vals):
         # print(vals)
-        if not vals.get('reference_number'):
-            vals['reference_number'] = self.env['ir.sequence'].next_by_code(
-                'partner.payment')
+        # if not vals.get('reference_number'):
+        #     vals['reference_number'] = self.env['ir.sequence'].next_by_code(
+        #         'partner.payment')
         vals.update({'state': 'draft'})
         vals.update({'account_id': 25})
         result = super(PartnerPayment, self).create(vals)

@@ -6,7 +6,8 @@
             <field name="model">invoice.details</field>
             <field name="arch" type="xml">
                 <tree string="Payment History">
-                    <field name="reference" string="Receipt No"/>
+                    <field name="reference" string="Receipt No" invisible="1"/>
+                    <field name="reference_number" string="Receipt No"/>
                     <field name="number2" string="Invoice No"/>
                     <field name="partner_id"/>
                     <field name="res_person"/>

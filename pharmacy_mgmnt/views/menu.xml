@@ -1229,6 +1229,7 @@
                                     <field name="number2" string="Number" readonly="1"/>
                                     <field name="date_invoice" readonly="1"/>
                                     <field name="reference" invisible="1"/>
+                                    <field name="reference_number" invisible="1"/>
                                     <field name="name" invisible="1"/>
                                     <field name="journal_id" invisible="1"/>
                                     <field name="period_id" invisible="1" groups="account.group_account_user"/>
