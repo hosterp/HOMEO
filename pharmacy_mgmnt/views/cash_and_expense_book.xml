@@ -6,8 +6,8 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Cash Details">
-                    <field name="date"/>
-                    <field name="period_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
                 </tree>
             </field>
         </record>
@@ -23,10 +23,11 @@
                         </header>
                         <group>
                             <group>
-                                <field name="date" readonly="1"/>
+                                <field name="date_from" readonly="0"/>
                             </group>
-                              <group>
-                                <field name="period_id" readonly="1" string="Period"/>
+                            <group>
+                                <field name="date_to" readonly="0"/>
+                                <!--                                <field name="period_id" readonly="1" string="Period"/>-->
                             </group>
                         </group>
                         <field name="cash_book_ids" string="Cash">
@@ -76,6 +77,6 @@
                   action="action_cash_book"
                   name="Cash Book"
                   parent="menu_cash_root"
-                  />
+        />
     </data>
 </openerp>

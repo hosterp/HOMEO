@@ -5,12 +5,13 @@ from openerp.osv.fields import datetime
 
 class CashBook(models.Model):
 	_name = 'cash.book'
-	_rec_name = 'date'
-	_order = 'date desc'
+	_rec_name = 'id'
+	_order = 'id desc'
 
 	move_id = fields.Many2one('account.move')
 	period_id = fields.Many2one('account.period')
-	date = fields.Date('Date', default=fields.date.today())
+	date_from = fields.Date('Date From', default=fields.date.today())
+	date_to = fields.Date('Date To', default=fields.date.today())
 	cash_book_ids = fields.One2many('cash.book.line', 'cash_book_id', 'Transactions')
 	# total_debit = fields.Float("Total", compute="_compute_total_debit",)
 	# total_credit = fields.Float("Credited", compute="_compute_total_debit",)
@@ -25,7 +26,9 @@ class CashBook(models.Model):
 
 	@api.multi
 	def view_collection(self):
-		datas = self.env['account.voucher'].search([('date','=',self.date)])
+		datas = self.env['account.voucher'].search([('date', '>=', self.date_from), ('date', '<=', self.date_to or datetime.date.today())])
+
+		print(datas,'datas')
 		line_record = []
 		for rec in datas:
 			if rec.line_ids:
