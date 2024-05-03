@@ -414,14 +414,14 @@ class AccountInvoiceLine(models.Model):
             if line.invoice_id.advance_amount:
                 if line.invoice_id.advance_amount > total_price:
                     if line.invoice_id.advance_amount == total_price:
-                        line.invoice_id.advance_amount = 0
+                        line.invoice_id.partner_id.advance_amount = 0
                         total_price = 0
                     else:
-                        line.invoice_id.advance_amount -= total_price
+                        line.invoice_id.partner_id.advance_amount -= total_price
                         total_price = 0
                 else:
                     total_price -= line.invoice_id.advance_amount
-                    line.invoice_id.advance_amount = 0
+                    line.invoice_id.partner_id.advance_amount = 0
         if line.invoice_id.type != 'out_invoice':
             # total_price = line.amount_w_tax
             discount = line.quantity * line.price_unit * (line.discount / 100)
@@ -1577,7 +1577,7 @@ class AccountInvoice(models.Model):
                                       domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
     partner_id = fields.Many2one('res.partner',create=True)
     cus_inv_number = fields.Char()
-    advance_amount = fields.Float('Advance Amount',related='partner_id.advance_amount', store=True)
+    advance_amount = fields.Float('Advance Amount',compute='get_advance_amount', store=True)
     cus_invoice_id = fields.Many2one("account.invoice",
                                      domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
     pack_open_cus_invoice_id = fields.Many2one("account.invoice",
@@ -1600,6 +1600,12 @@ class AccountInvoice(models.Model):
     #         action = self.env.ref('pharmacy_mgmnt.action_holding_invoice', raise_if_not_found=False)
     #         if action:
     #             record.action_invoice_tree_id = action.id
+    @api.depends('partner_id')
+    def get_advance_amount(self):
+        for rec in self:
+            if rec.advance_amount == 0:
+                rec.advance_amount = rec.partner_id.advance_amount
+
     @api.depends('hold_invoice_link')
     def _compute_invoice_link(self):
         for record in self:
@@ -2668,10 +2674,21 @@ class AccountInvoice(models.Model):
             self.amount_tax = round(total_products_tax)
             self.amount_tax_custom = total_products_tax
             self.amount_discount = total_discount
+            # if self.advance_amount:
+            #     amount_total_w_tax -= self.advance_amount
+            # else:
+            #     pass
             if self.advance_amount:
-                amount_total_w_tax -= self.advance_amount
-            else:
-                pass
+                if self.advance_amount > amount_total_w_tax:
+                    if self.advance_amount == amount_total_w_tax:
+                        # self.advance_amount = 0
+                        amount_total_w_tax = 0
+                    else:
+                        # self.advance_amount -= amount_total_w_tax
+                        amount_total_w_tax = 0
+                else:
+                    amount_total_w_tax -= self.advance_amount
+                    # self.advance_amount = 0
             self.amount_total = round(amount_total_w_tax)
             self.amount_residual = round(amount_total_w_tax)
 
