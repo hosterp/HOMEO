@@ -11,30 +11,30 @@
                 </xpath>
             </field>
         </record>
-<!--        <record id="discount_view_invoice_line_tree" model="ir.ui.view">-->
-<!--            <field name="name">discount.account.invoice.line.tree</field>-->
-<!--            <field name="model">account.invoice.line</field>-->
-<!--            <field name="inherit_id" ref="account.view_invoice_line_tree"/>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <xpath expr="//field[@name='discount']" position="attributes">-->
-<!--                    <attribute name="digits">(16, 2)</attribute>-->
-<!--                </xpath>-->
-<!--            </field>-->
-<!--        </record>-->
+        <!--        <record id="discount_view_invoice_line_tree" model="ir.ui.view">-->
+        <!--            <field name="name">discount.account.invoice.line.tree</field>-->
+        <!--            <field name="model">account.invoice.line</field>-->
+        <!--            <field name="inherit_id" ref="account.view_invoice_line_tree"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='discount']" position="attributes">-->
+        <!--                    <attribute name="digits">(16, 2)</attribute>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
 
-<!--        <record id="discount_view_invoice_line_form" model="ir.ui.view">-->
-<!--            <field name="name">discount.account.invoice.line.form</field>-->
-<!--            <field name="model">account.invoice.line</field>-->
-<!--            <field name="inherit_id" ref="account.view_invoice_line_form"/>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <xpath expr="//field[@name='discount']" position="attributes">-->
-<!--                    <attribute name="digits">(16, 2)</attribute>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//field[@name='discount']" position="attributes">-->
-<!--                    <attribute name="readonly">0</attribute>-->
-<!--                </xpath>-->
-<!--            </field>-->
-<!--        </record>-->
+        <!--        <record id="discount_view_invoice_line_form" model="ir.ui.view">-->
+        <!--            <field name="name">discount.account.invoice.line.form</field>-->
+        <!--            <field name="model">account.invoice.line</field>-->
+        <!--            <field name="inherit_id" ref="account.view_invoice_line_form"/>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <xpath expr="//field[@name='discount']" position="attributes">-->
+        <!--                    <attribute name="digits">(16, 2)</attribute>-->
+        <!--                </xpath>-->
+        <!--                <xpath expr="//field[@name='discount']" position="attributes">-->
+        <!--                    <attribute name="readonly">0</attribute>-->
+        <!--                </xpath>-->
+        <!--            </field>-->
+        <!--        </record>-->
 
         <record id="discount_account_invoice_view_sup_form1" model="ir.ui.view">
             <field name="name">discount.account.invoice</field>
@@ -44,7 +44,8 @@
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
                     <group>
                         <group class="oe_subtotal_footer oe_left">
-                            <field name="bill_discount" widget="float_no_default"  attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>/>
+                            <field name="bill_discount" widget="float_no_default"
+                                   attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>/>
                         </group>
                         <group class="oe_subtotal_footer oe_right">
                             <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -73,17 +74,17 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="attributes">
-                      <attribute name="required">False</attribute>
+                    <attribute name="required">False</attribute>
                     <attribute name="domain">[('res_person_id','=',False),('customer','=',True)]</attribute>
-<!--                    <attribute name="options">{"no_open": True}</attribute>-->
+                    <!--                    <attribute name="options">{"no_open": True}</attribute>-->
                 </xpath>
-<!--                <xpath expr="//field[@name='discount']" position="attributes">-->
-<!--                    <attribute name="digits">(16, 2)</attribute>-->
-<!--                </xpath>-->
+                <!--                <xpath expr="//field[@name='discount']" position="attributes">-->
+                <!--                    <attribute name="digits">(16, 2)</attribute>-->
+                <!--                </xpath>-->
 
-<!--                <xpath expr="//field[@name='discount']" position="attributes">-->
-<!--                    <attribute name="readonly">0</attribute>-->
-<!--                </xpath>-->
+                <!--                <xpath expr="//field[@name='discount']" position="attributes">-->
+                <!--                    <attribute name="readonly">0</attribute>-->
+                <!--                </xpath>-->
                 <xpath expr="//field[@name='number']" position="before">
 
                     <h1 class="container" style="color:red;" attrs="{'invisible': [('cus_invoice', '!=', True)]}">
@@ -104,6 +105,10 @@
                     </group>
                 </xpath>
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">
+                    <!--                    <field name="action_invoice_tree_id" widget="handle"/>-->
+                    <field name="hold_invoice_link" style="width:13%%" widget="url" text="Holding Invoice"
+                           class="oe_inline oe_bold"
+                           attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                     <field name="hold_invoice_id" style="width:13%%" placeholder="Select Hold Bill"
                            attrs="{'invisible': [('cus_invoice', '!=', True)]}"/>
                     <button name="onchange_hold_invoice_id" string="Import Hold Bill" type="object" class="Hold_Bill"
@@ -138,10 +143,10 @@
 
                     <group col="4">
                         <group name="discount">
-<!--                            <field name="create_id"-->
-<!--                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>-->
-<!--                            <field name="password" class="creation_password" placeholder="Password"-->
-<!--                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>-->
+                            <!--                            <field name="create_id"-->
+                            <!--                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>-->
+                            <!--                            <field name="password" class="creation_password" placeholder="Password"-->
+                            <!--                                   attrs="{'invisible': [('create_bool','!=',True)], 'required': [('create_bool','=',True)]}"/>-->
                             <field name="create_bool" readonly="1" string=" "/>
                             <field name="discount_category" attrs="{'readonly': [('state', '!=', 'draft')]}"
                                    style="width:20%%"/>

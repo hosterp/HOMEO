@@ -1578,7 +1578,23 @@ class AccountInvoice(models.Model):
         ('gst_minus', 'GST MINUS'),
         ('gst_plus', 'GST PLUS')],default='gst_minus')
     account_id = fields.Many2one('account.account', string='Account',required='False',default=13)
-    date_invoices=fields.Date(default=fields.Date.today(),readonly=True,string="Invoice Date")
+    date_invoices = fields.Date(default=fields.Date.today(),readonly=True,string="Invoice Date")
+    hold_invoice_link = fields.Char(string="Invoice Link", compute='_compute_invoice_link', readonly=True)
+
+    # action_invoice_tree_id = fields.Many2one('ir.actions.act_window', compute='_compute_action_id',
+    #                                          string="Invoice Tree Action")
+    # @api.depends('action_invoice_tree_id')
+    # def _compute_action_id(self):
+    #     for record in self:
+    #         action = self.env.ref('pharmacy_mgmnt.action_holding_invoice', raise_if_not_found=False)
+    #         if action:
+    #             record.action_invoice_tree_id = action.id
+    @api.depends('hold_invoice_link')
+    def _compute_invoice_link(self):
+        for record in self:
+            invoice_url = "http://0.0.0.0:8069/web#page=0&limit=80&view_type=list&model=account.invoice&action={}".format(
+                self.env.ref('pharmacy_mgmnt.action_holding_invoice', raise_if_not_found=False).id)
+            record.hold_invoice_link = invoice_url
     # @api.model
     # def default_get(self, fields):
     #     res = super(AccountInvoice, self).default_get(fields)
