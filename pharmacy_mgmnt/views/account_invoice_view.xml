@@ -164,6 +164,8 @@
                             </div>
                             <field name="amount_tax" nolabel="1" widget="monetary"
                                    options="{'currency_field': 'currency_id'}"/>
+                            <field name="advance_amount" string="Advance Amount" widget="monetary"
+                                   attrs="{'invisible': [('advance_amount', '=', 0)]}" readonly="1"/>
                             <field name="amount_total" class="oe_subtotal_footer_separator" widget="monetary"
                                    options="{'currency_field': 'currency_id'}"/>
                             <field name="residual" groups="account.group_account_user" widget="monetary"

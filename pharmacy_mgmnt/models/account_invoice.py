@@ -411,6 +411,17 @@ class AccountInvoiceLine(models.Model):
         if line.invoice_id.type == 'out_invoice':
             # total_price = line.amt_w_tax
             total_price = round(line.price_subtotal)
+            if line.invoice_id.advance_amount:
+                if line.invoice_id.advance_amount > total_price:
+                    if line.invoice_id.advance_amount == total_price:
+                        line.invoice_id.advance_amount = 0
+                        total_price = 0
+                    else:
+                        line.invoice_id.advance_amount -= total_price
+                        total_price = 0
+                else:
+                    total_price -= line.invoice_id.advance_amount
+                    line.invoice_id.advance_amount = 0
         if line.invoice_id.type != 'out_invoice':
             # total_price = line.amount_w_tax
             discount = line.quantity * line.price_unit * (line.discount / 100)
@@ -1566,7 +1577,7 @@ class AccountInvoice(models.Model):
                                       domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
     partner_id = fields.Many2one('res.partner',create=True)
     cus_inv_number = fields.Char()
-    advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
+    advance_amount = fields.Float('Advance Amount',related='partner_id.advance_amount', store=True)
     cus_invoice_id = fields.Many2one("account.invoice",
                                      domain=[('type', '=', 'out_invoice'), ('cus_invoice', '=', True)])
     pack_open_cus_invoice_id = fields.Many2one("account.invoice",
@@ -2491,9 +2502,7 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def tree_stock(self):
-        print("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
         rec = self.env['entry.stock'].sudo.search([])
-        print(rec, "alldataaaa222")
         return {
             'name': 'stock tree',
             'view_type': 'form',
@@ -2659,6 +2668,10 @@ class AccountInvoice(models.Model):
             self.amount_tax = round(total_products_tax)
             self.amount_tax_custom = total_products_tax
             self.amount_discount = total_discount
+            if self.advance_amount:
+                amount_total_w_tax -= self.advance_amount
+            else:
+                pass
             self.amount_total = round(amount_total_w_tax)
             self.amount_residual = round(amount_total_w_tax)
 
