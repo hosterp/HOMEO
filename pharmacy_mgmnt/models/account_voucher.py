@@ -14,7 +14,7 @@ import datetime
 class AccountVoucher(models.Model):
     _inherit = 'account.voucher'
 
-    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode', required=True)
+    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode')
 
 
 

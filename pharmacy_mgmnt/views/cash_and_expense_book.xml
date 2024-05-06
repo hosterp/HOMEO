@@ -27,7 +27,7 @@
                             </group>
                             <group>
                                 <field name="date_to" readonly="0"/>
-                                <!--                                <field name="period_id" readonly="1" string="Period"/>-->
+                                <field name="pay_mode" string="Payment Mode" width="40%%"/>
                             </group>
                         </group>
                         <field name="cash_book_ids" string="Cash">
@@ -35,6 +35,7 @@
                                 <field name="cash_book_id" invisible="1"/>
                                 <field name="invoice" string="Invoice"/>
                                 <field name="partner_id"/>
+                                <field name="pay_mode"/>
                                 <field name="amount" string="Credited" sum="Total Amount"/>
                             </tree>
                         </field>
