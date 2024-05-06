@@ -727,17 +727,11 @@ class PartnerPayment(models.Model):
                     record.reference_number = int(self.reference_number)
                     amount = 0
                     invoice = record.invoice_id
-                    self.voucher_relation_id.amount = self.payment_amount
-                    self.voucher_relation_id.reference = str(invoice.number2)
-                    self.voucher_relation_id.type = 'receipt'
-                    self.voucher_relation_id.partner_id = invoice.partner_id
-                    self.voucher_relation_id.number = invoice.move_id.name
                     if payment_amount > 0:
                         if invoice.residual < payment_amount:
                             amount = invoice.residual
                         else:
                             amount = payment_amount
-                        self.voucher_relation_id.amount = self.payment_amount
                         if amount == invoice.residual:
                             move = self.env['account.move']
                             move_line = self.env['account.move.line']
@@ -775,16 +769,20 @@ class PartnerPayment(models.Model):
                             move_id.button_validate()
                             move_id.post()
                             name = move_id.name
-                            self.voucher_relation_id.line_ids = [(0, 0, {
-                                'account_id': 8,
-                                'amount_original': invoice.amount_total,
-                                'amount': amount,
-                                'type': 'cr',
-                            })]
                             self.voucher_relation_id.write({
                                 'move_id': move_id.id,
                                 'state': 'posted',
-                                'amount': amount,
+                                'amount': self.payment_amount,
+                                'reference': str(invoice.number2),
+                                'type': 'receipt',
+                                'partner_id': invoice.partner_id.id,
+                                'number': invoice.move_id.name,
+                                'line_ids': [(0, 0, {
+                                    'account_id': 8,
+                                    'amount_original': invoice.amount_total,
+                                    'amount': amount,
+                                    'type': 'cr',
+                                })]
                             })
                             invoice.state = 'paid'
                             invoice.paid_bool = True
@@ -831,16 +829,20 @@ class PartnerPayment(models.Model):
                             move_id.button_validate()
                             move_id.post()
                             name = move_id.name
-                            self.voucher_relation_id.line_ids = [(0, 0, {
-                                'account_id': 8,
-                                'amount_original': invoice.amount_total,
-                                'amount': balance_amount,
-                                'type': 'cr',
-                            })]
                             self.voucher_relation_id.write({
                                 'move_id': move_id.id,
                                 'state': 'posted',
-                                'amount': balance_amount,
+                                'amount': self.payment_amount,
+                                'reference': str(invoice.number2),
+                                'type': 'receipt',
+                                'partner_id': invoice.partner_id.id,
+                                'number': invoice.move_id.name,
+                                'line_ids': [(0, 0, {
+                                    'account_id': 8,
+                                    'amount_original': invoice.amount_total,
+                                    'amount': balance_amount,
+                                    'type': 'cr',
+                                })]
                             })
                             payment_amount = payment_amount - amount
                             # self.state = 'paid'
@@ -904,16 +906,20 @@ class PartnerPayment(models.Model):
                                 move_id.button_validate()
                                 move_id.post()
                                 name = move_id.name
-                                self.voucher_relation_id.line_ids = [(0, 0, {
-                                    'account_id': 8,
-                                    'amount_original': invoice.amount_total,
-                                    'amount': amount,
-                                    'type': 'cr',
-                                })]
                                 self.voucher_relation_id.write({
                                     'move_id': move_id.id,
                                     'state': 'posted',
-                                    'amount': amount,
+                                    'amount': self.payment_amount,
+                                    'reference': str(invoice.number2),
+                                    'type': 'receipt',
+                                    'partner_id': invoice.partner_id.id,
+                                    'number': invoice.move_id.name,
+                                    'line_ids': [(0, 0, {
+                                        'account_id': 8,
+                                        'amount_original': invoice.amount_total,
+                                        'amount': amount,
+                                        'type': 'cr',
+                                    })]
                                 })
                                 invoice.state = 'paid'
                                 invoice.paid_bool = True
@@ -961,16 +967,20 @@ class PartnerPayment(models.Model):
                                 move_id.button_validate()
                                 move_id.post()
                                 name = move_id.name
-                                self.voucher_relation_id.line_ids = [(0, 0, {
-                                    'account_id': 8,
-                                    'amount_original': invoice.amount_total,
-                                    'amount': balance_amount,
-                                    'type': 'cr',
-                                })]
                                 self.voucher_relation_id.write({
                                     'move_id': move_id.id,
                                     'state': 'posted',
-                                    'amount': balance_amount,
+                                    'amount': self.payment_amount,
+                                    'reference': str(invoice.number2),
+                                    'type': 'receipt',
+                                    'partner_id': invoice.partner_id.id,
+                                    'number': invoice.move_id.name,
+                                    'line_ids': [(0, 0, {
+                                        'account_id': 8,
+                                        'amount_original': invoice.amount_total,
+                                        'amount': balance_amount,
+                                        'type': 'cr',
+                                    })]
                                 })
                                 payment_amount -= amount
                                 # self.state = 'paid'

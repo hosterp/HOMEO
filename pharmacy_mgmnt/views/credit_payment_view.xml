@@ -13,7 +13,8 @@
                     <field name="res_person"/>
                     <field name="date"/>
                     <field name="state"/>
-                    <field name="amount_total"/>
+                    <field name="amount_total" string="Total Amount"/>
+                    <field name="pay_balance" string="Amount to pay"/>
                     <field name="paid"/>
                     <field name="balance"/>
                 </tree>
