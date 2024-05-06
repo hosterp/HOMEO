@@ -128,7 +128,7 @@
                                     </div>
                                 </table>
                                 <div>
-                                    <div class="col-xs-4 pull-right">
+                                    <div class="col-xs-4 pull-right" style="margin-right:85px;">
                                         <table class="table table-condensed">
                                             <tr class="border-black">
                                                 <td>

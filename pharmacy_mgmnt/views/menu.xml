@@ -1312,6 +1312,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">partner.payment</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('reference_number', '!=', '0')]</field>
         </record>
 
         <record model="ir.ui.view" id="customer_inherit_tree">

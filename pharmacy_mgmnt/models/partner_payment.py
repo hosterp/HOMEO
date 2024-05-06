@@ -993,6 +993,7 @@ class PartnerPayment(models.Model):
                                 record.paid = amount
             if self.payment_method != "cheque":
                 self.advance_amount = payment_amount
+                self.partner_id.advance_amount += payment_amount
             else:
                 self.cheque_balance = payment_amount
             payment_records = self.env['account.invoice'].search(
