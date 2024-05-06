@@ -56,7 +56,9 @@
                                                 <strong t-field="o.payment_amount"/>
                                                 Receipt No:
                                                 <strong t-esc="o.reference_number"/>
-                                                 Dated <strong t-esc="o.date"/> with payment mode
+                                                Dated
+                                                <strong t-esc="o.date"/>
+                                                with payment mode
                                                 <strong t-field="o.payment_method"/>
                                             </h4>
                                         </div>
@@ -107,11 +109,19 @@
                                                 <td>
                                                     <span t-esc="l.paid"/>
                                                     <t t-set="total_paid" t-value="total_paid + l.paid"/>
-
                                                 </td>
                                                 <td>
                                                     <span t-esc="l.balance"/>
                                                     <t t-set="total_balance" t-value="total_balance + l.balance"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td t-if="o.advance_amount" colspan="4">
+                                                    <h4>
+                                                        Advance Amount of Rs
+                                                        <strong t-esc="o.advance_amount"/>
+                                                        Added to account
+                                                    </h4>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -132,18 +142,18 @@
                                                     </h4>
                                                 </td>
                                             </tr>
-<!--                                            <tr>-->
-<!--                                                <td>-->
-<!--                                                    <h4>-->
-<!--                                                        <strong>Balance</strong>-->
-<!--                                                    </h4>-->
-<!--                                                </td>-->
-<!--                                                <td class="text-right">-->
-<!--                                                    <h4>-->
-<!--                                                        <t t-esc="total_balance"/>-->
-<!--                                                    </h4>-->
-<!--                                                </td>-->
-<!--                                            </tr>-->
+                                            <!--                                            <tr>-->
+                                            <!--                                                <td>-->
+                                            <!--                                                    <h4>-->
+                                            <!--                                                        <strong>Balance</strong>-->
+                                            <!--                                                    </h4>-->
+                                            <!--                                                </td>-->
+                                            <!--                                                <td class="text-right">-->
+                                            <!--                                                    <h4>-->
+                                            <!--                                                        <t t-esc="total_balance"/>-->
+                                            <!--                                                    </h4>-->
+                                            <!--                                                </td>-->
+                                            <!--                                            </tr>-->
                                         </table>
                                     </div>
                                 </div>

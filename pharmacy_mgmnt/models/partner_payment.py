@@ -22,6 +22,7 @@ class InvoiceDetails(models.Model):
     balance = fields.Float()
     paid = fields.Float()
     pay_balance = fields.Float()
+    advance_amount = fields.Float(related='partner_payment_id.advance_amount')
     narration = fields.Text('Narration')
     reference_number = fields.Integer('Ref')
     # reference_number = fields.Integer(default=lambda self:self.partner_payment_id.reference_number)
@@ -94,7 +95,7 @@ class InvoiceDetails(models.Model):
 class PaymentHistory(models.Model):
     _name = 'payment.history'
 
-    payment_id=fields.Many2one('partner.payment')
+    payment_id = fields.Many2one('partner.payment')
     reference_number = fields.Integer()
     date = fields.Date()
     balance_amount = fields.Float()
@@ -103,6 +104,7 @@ class PaymentHistory(models.Model):
     partner_id = fields.Many2one('res.partner', domain=[('customer', '=', True), ('res_person_id', '=', False)])
     res_person_id = fields.Many2one('res.partner', domain=[('res_person_id', '=', True)])
     payment_amount = fields.Float()
+    advance_amount = fields.Float()
     remarks = fields.Text()
 
     @api.multi
@@ -174,7 +176,7 @@ class PartnerPayment(models.Model):
     # invoice_ids = fields.One2many('invoice.details', 'partner_payment_id', compute='generate_lines', readonly=False,
     #                               store=True)
     state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')],defualt='draft')
-    advance_amount = fields.Float('Advance Amount', related="partner_id.advance_amount")
+    advance_amount = fields.Float('Advance Amount')
     payment_total_calculation = fields.Float()
     click = fields.Boolean(string='clicked')
     cheque_balance = fields.Float('Check Balance')
@@ -254,6 +256,7 @@ class PartnerPayment(models.Model):
                     'payment_method': payment.payment_method,
                     'total_amount': payment.total_amount,
                     'payment_amount': payment.payment_amount,
+                    'advance_amount': payment.advance_amount,
                     'balance_amount': payment.balance_amount,
                     'remarks': payment.remarks,
                 }
@@ -356,6 +359,7 @@ class PartnerPayment(models.Model):
     def onchange_partner_id(self):
         last = self.env['partner.payment'].search([], limit=1, order='id desc')
         self.reference_number = last.reference_number + 1
+        self.advance_amount = self.partner_id.advance_amount
         self.account_id = 25
         invoice_records = []
 
