@@ -59,7 +59,7 @@
         'views/cash_and_expense_book.xml',
         'views/expense_book.xml',
         'views/template.xml',
-
+        'views/account_voucher.xml',
     ],
     'js': [
             "static/src/js/widget.js",

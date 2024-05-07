@@ -2560,6 +2560,7 @@ class AccountInvoice(models.Model):
                 'close_after_process': True,
                 'invoice_type': inv.type,
                 'invoice_id': inv.id,
+                'default_pay_mode': inv.pay_mode,
                 'default_type': inv.type in ('out_invoice', 'out_refund') and 'receipt' or 'payment',
                 'type': inv.type in ('out_invoice', 'out_refund') and 'receipt' or 'payment'
             }
