@@ -62,8 +62,10 @@
                             <div class="left-aligned-div">
                                 <div t-if="o.partner_id">
                                     <strong>Customer Name:</strong>
-                                    <span t-field="o.partner_id.name"/>
+                                    <t t-set="name_parts" t-value="o.partner_id.name.split(',')"/>
+                                    <span t-esc="name_parts[0]"/>
                                 </div>
+
                                 <div t-if="o.address_new">
                                     <strong>Address:</strong>
                                     <span t-field="o.address_new"/>
@@ -150,7 +152,7 @@
                                         <td class="text-right">
                                             <span t-field="l.price_unit"/>
                                         </td>
-                                         <td>
+                                        <td>
                                             <span t-field="l.product_tax"/>
                                         </td>
                                         <td>
@@ -226,95 +228,95 @@
                                         <t t-set="found_12" t-value="False"/>
                                         <t t-set="total_amt_w_tax" t-value="0.0"/>
 
-                                           <t t-if="tax18_tax != 0">
-<!--                                                <t t-set="found_18" t-value="True"/>-->
-                                                <tr>
-                                                    <td>
-                                                        <strong>CGST@Tax9.0%</strong>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax18_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                        <t t-if="tax18_tax != 0">
+                                            <!--                                                <t t-set="found_18" t-value="True"/>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax9.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax18_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                                <tr>
-                                                    <td>
-                                                        <strong>SGST@Tax9.0%</strong>
-                                                    </td>
-                                                   <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax18_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax9.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax18_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                            </t>
-                                            <t t-if="tax5_tax != 0">
-<!--                                                <t t-set="found_5" t-value="True"/>-->
-                                                <tr>
-                                                    <td>
-                                                        <strong>CGST@Tax2.5%</strong>
-                                                    </td>
-                                                     <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax5_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                        </t>
+                                        <t t-if="tax5_tax != 0">
+                                            <!--                                                <t t-set="found_5" t-value="True"/>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax2.5%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax5_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                                <tr>
-                                                    <td>
-                                                        <strong>SGST@Tax2.5%</strong>
-                                                    </td>
-                                                     <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax5_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax2.5%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax5_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                            </t>
-                                           <t t-if="tax12_tax != 0">
-<!--                                                <t t-set="found_12" t-value="True"/>-->
-                                                <tr>
-                                                    <td>
-                                                        <strong>CGST@Tax6.0%</strong>
-                                                    </td>
-                                                  <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax12_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
-                                                </tr>
+                                        </t>
+                                        <t t-if="tax12_tax != 0">
+                                            <!--                                                <t t-set="found_12" t-value="True"/>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax6.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax12_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
+                                            </tr>
 
-                                                <tr>
-                                                    <td>
-                                                        <strong>SGST@Tax6.0%</strong>
-                                                    </td>
-                                                   <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax12_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
-                                                </tr>
-                                            </t>
-<!--                                        </tr>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>SGST@Tax6.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax12_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <!--                                        </tr>-->
                                     </table>
                                 </div>
                                 <div class="col-xs-4 pull-center">
-<!--                                    <div t-if="o.amount_in_words">-->
-<!--                                        <strong>Amount in words:</strong>-->
-<!--                                        <span t-field="o.amount_in_words"/>-->
-<!--                                    </div>-->
-<!--                                    <td>-->
-<!--                                        <strong>Amount in words:</strong>-->
-<!--                                    </td>-->
+                                    <!--                                    <div t-if="o.amount_in_words">-->
+                                    <!--                                        <strong>Amount in words:</strong>-->
+                                    <!--                                        <span t-field="o.amount_in_words"/>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <td>-->
+                                    <!--                                        <strong>Amount in words:</strong>-->
+                                    <!--                                    </td>-->
                                 </div>
                             </t>
                             <t t-if="o.partner_id.interstate_customer">
@@ -324,86 +326,86 @@
                                         <t t-set="found_18" t-value="False"/>
                                         <t t-set="found_12" t-value="False"/>
                                         <t t-set="total_amt_w_tax" t-value="0.0"/>
-<!--                                        <tr t-foreach="o.invoice_line" t-as="l">-->
-                                           <t t-if="tax18_tax != 0">
-<!--                                                <t t-set="found_18" t-value="True"/>-->
-                                                <tr>
-                                                    <td>
-                                                        <strong>CGST@Tax9.0%</strong>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax18_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                        <!--                                        <tr t-foreach="o.invoice_line" t-as="l">-->
+                                        <t t-if="tax18_tax != 0">
+                                            <!--                                                <t t-set="found_18" t-value="True"/>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax9.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax18_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                                <tr>
-                                                    <td>
-                                                        <strong>IGST@Tax9.0%</strong>
-                                                    </td>
-                                                   <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax18_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                            <tr>
+                                                <td>
+                                                    <strong>IGST@Tax9.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax18_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                            </t>
-                                            <t t-if="tax5_tax != 0">
-<!--                                                <t t-set="found_5" t-value="True"/>-->
-                                                <tr>
-                                                    <td>
-                                                        <strong>CGST@Tax2.5%</strong>
-                                                    </td>
-                                                     <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax5_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                        </t>
+                                        <t t-if="tax5_tax != 0">
+                                            <!--                                                <t t-set="found_5" t-value="True"/>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax2.5%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax5_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                                <tr>
-                                                    <td>
-                                                        <strong>IGST@Tax2.5%</strong>
-                                                    </td>
-                                                     <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax5_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
+                                            <tr>
+                                                <td>
+                                                    <strong>IGST@Tax2.5%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax5_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
 
-                                                </tr>
+                                            </tr>
 
-                                            </t>
-                                           <t t-if="tax12_tax != 0">
-<!--                                                <t t-set="found_12" t-value="True"/>-->
-                                                <tr>
-                                                    <td>
-                                                        <strong>CGST@Tax6.0%</strong>
-                                                    </td>
-                                                  <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax12_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
-                                                </tr>
+                                        </t>
+                                        <t t-if="tax12_tax != 0">
+                                            <!--                                                <t t-set="found_12" t-value="True"/>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>CGST@Tax6.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax12_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
+                                            </tr>
 
-                                                <tr>
-                                                    <td>
-                                                        <strong>IGST@Tax6.0%</strong>
-                                                    </td>
-                                                   <td class="text-right">
-                                                        <!--                                                    <td style='font-size:20px'>-->
-                                                        <strong t-esc="(tax12_tax)/2"/>
-                                                        <!--                                                    </td>-->
-                                                    </td>
-                                                </tr>
-                                            </t>
-<!--                                        </tr>-->
+                                            <tr>
+                                                <td>
+                                                    <strong>IGST@Tax6.0%</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <!--                                                    <td style='font-size:20px'>-->
+                                                    <strong t-esc="(tax12_tax)/2"/>
+                                                    <!--                                                    </td>-->
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <!--                                        </tr>-->
                                     </table>
                                 </div>
                             </t>
