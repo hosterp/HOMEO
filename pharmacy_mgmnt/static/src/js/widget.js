@@ -30,4 +30,18 @@ openerp.pharmacy_mgmnt = function (instance) {
             }
         },
     });
+    instance.web.FormView.include({
+        load_form: function(data) {
+            this._super(data);
+            var self = this;
+            this.$buttons.find('.oe_form_button_save').click(function() {
+                var validateButton = document.querySelector('.cus_validate');
+                if (validateButton) {
+                    validateButton.click();
+                }
+            });
+        },
+    });
 };
+
+
