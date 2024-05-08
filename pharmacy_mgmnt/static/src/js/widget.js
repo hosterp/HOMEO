@@ -8,23 +8,18 @@ openerp.pharmacy_mgmnt = function (instance) {
     instance.pharmacy_mgmnt.FieldFloatNoDefault = instance.web.form.FieldFloat.extend({
         init: function () {
             this._super.apply(this, arguments);
-
-            // Set precision to 2 decimal places directly on the field
             this.node.attrs.digits = [16, 2];
         },
         render_value: function () {
             this._super.apply(this, arguments);
             var value = this.get('value');
-
-            // Check if the decimal part is ".00" before rounding
             if (parseFloat(value) % 1 === 0) {
                 value = parseFloat(value).toFixed(0);
             } else {
                 value = parseFloat(value).toFixed(2);
             }
-
             if (value === "0") {
-                this.$el.find('input').val(""); // Use this.$el to find the input element
+                this.$el.find('input').val("");
             } else {
                 this.$el.find('input').val(value);
             }
@@ -40,6 +35,23 @@ openerp.pharmacy_mgmnt = function (instance) {
                     validateButton.click();
                 }
             });
+        },
+    });
+    instance.web.FormView.include({
+        load_form: function() {
+            this._super.apply(this, arguments);
+            var self = this;
+            var invoiceCancelButton = document.querySelector('.button_invoice_cancel');
+            if (invoiceCancelButton) {
+                invoiceCancelButton.addEventListener('click', function() {
+                    var cancelButton = document.querySelector('.button_cancel_draft');
+                    if (cancelButton) {
+                        setTimeout(function() {
+                            cancelButton.click();
+                        }, 500);
+                    }
+                });
+            }
         },
     });
 };

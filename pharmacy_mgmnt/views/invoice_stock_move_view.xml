@@ -37,6 +37,16 @@
                         True),('state', '!=' , 'draft')]}
                     </attribute>
                 </xpath>
+                <xpath expr="//button[@name='action_cancel_draft']" position="attributes">
+                     <attribute name="invisible">1</attribute>
+                    <attribute name="class">button_cancel_draft</attribute>
+                </xpath>
+                <xpath expr="//button[@name='invoice_cancel']" position="attributes">
+                    <attribute name="class">button_invoice_cancel</attribute>
+                    <attribute name="attrs">{'invisible':['|','|',('hold_invoice', '=',
+                        True),('state', '!=' , 'open')]}
+                    </attribute>
+                </xpath>
                 <xpath expr="//button[@name='action_invoice_sent']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
