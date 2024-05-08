@@ -2554,7 +2554,6 @@ class AccountInvoice(models.Model):
             'context': {
                 'payment_expected_currency': inv.currency_id.id,
                 'default_partner_id': self.pool.get('res.partner')._find_accounting_partner(inv.partner_id).id,
-                # 'default_amount': inv.type in ('out_refund', 'in_refund') and -residual or residual,
                 'default_amount': inv.type in ('out_refund', 'in_refund') and -inv.residual or inv.residual,
                 'default_reference': inv.name,
                 'close_after_process': True,
@@ -2569,9 +2568,7 @@ class AccountInvoice(models.Model):
     @api.onchange('residual')
     def onchange_residual(self):
         if self.residual <= 0.00:
-            print('yes')
             if self.state == 'open':
-                print("working...........................................................")
                 self.state = 'paid'
                 self.update({'state': 'paid'})
         else:
