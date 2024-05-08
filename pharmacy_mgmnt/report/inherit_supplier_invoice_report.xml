@@ -476,8 +476,6 @@
                                                   t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
                                         </td>
 
-                                   
-
                                 </table>
                                 <div t-if="o.amount_in_words">
                                     <strong>Amount in words:</strong>
