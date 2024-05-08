@@ -28,6 +28,7 @@
                 </xpath>
                 <xpath expr="//button[@name='invoice_open']" position="attributes">
                      <attribute name="string">Save</attribute>
+                     <attribute name="invisible">1</attribute>
                     <!--                     <attribute name="attrs">{'invisible':['|','|','|',('packing_slip', '=', True),('hold_invoice', '=',-->
                     <!--                        True),('state', '!=' , 'draft')]}-->
                     <!--                    </attribute>-->
