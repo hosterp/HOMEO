@@ -186,13 +186,13 @@ class PartnerPayment(models.Model):
 
     @api.multi
     def unlink(self):
-        for rec in self.invoice_ids:
-            rec.residual = rec.de_residual
-            rec.advance_amount = rec.pre_advance_amount
-            rec.state = 'open'
-            rec.move_id.state = 'cancel'
-        self.state = 'bounced'
-        self.voucher_relation_id.state = 'cancel'
+        if self.state == 'paid':
+            for rec in self.invoice_ids:
+                rec.residual = rec.de_residual
+                rec.advance_amount = rec.pre_advance_amount
+                rec.state = 'open'
+                rec.move_id.state = 'cancel'
+            self.voucher_relation_id.state = 'cancel'
         return super(PartnerPayment, self).unlink()
 
     @api.multi
