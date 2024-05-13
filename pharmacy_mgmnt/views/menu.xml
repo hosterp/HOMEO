@@ -618,6 +618,12 @@
         <menuitem action="action_invoice_tree1" id="menu_med_main_customer_invoice"
                   name="Customer Invoice" parent="menu_med_main_cust"
                   sequence="4"/>
+        <menuitem action="action_holding_invoice" id="menu_med_main_holding_invoice"
+                  name="Holding Invoice" parent="menu_med_main_cust"
+                  sequence="5"/>
+        <menuitem action="action_packing_slip" id="menu_med_main_packing_invoice"
+                  name="Packing Invoice" parent="menu_med_main_cust"
+                  sequence="6"/>
         <!--        #################################-->
         <menuitem id="r1"
                   name="Stock Entry"
