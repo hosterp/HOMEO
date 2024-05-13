@@ -1167,11 +1167,15 @@
                     </style>
                     <header>
                         <button name="action_payment_all" string="Pay" type="object" class="oe_highlight"
+                                attrs="{'invisible':[('state', '=', 'paid')]}"
+                        />
+                        <button name="cancel_payment" string="Cancel Payment" type="object" class="oe_highlight"
+                                states="paid"
                         />
                         <button name="payment_history" string="Payment History" type="object" class="oe_highlight"
                         />
                         <button name="print_customer_payment_report" string="Print Receipt" type="object"
-                                class="oe_highlight"/>
+                                class="oe_highlight" states="bounced,paid"/>
                         <button class="oe_highlight" type="object" name="open_tree_view_history" string="Sale History"
                                 states="draft,paid" invisible="1"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,bounced,paid"/>

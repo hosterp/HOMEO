@@ -177,11 +177,33 @@ class PartnerPayment(models.Model):
     #                               store=True)
     state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')],defualt='draft')
     advance_amount = fields.Float('Advance Amount')
+    pre_advance_amount = fields.Float('Advance Amount')
     payment_total_calculation = fields.Float()
     click = fields.Boolean(string='clicked')
     cheque_balance = fields.Float('Check Balance')
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
     payment_history_ids = fields.One2many('payment.history','payment_id')
+
+    @api.multi
+    def unlink(self):
+        for rec in self.invoice_ids:
+            rec.residual = rec.de_residual
+            rec.advance_amount = rec.pre_advance_amount
+            rec.state = 'open'
+            rec.move_id.state = 'cancel'
+        self.state = 'bounced'
+        self.voucher_relation_id.state = 'cancel'
+        return super(PartnerPayment, self).unlink()
+
+    @api.multi
+    def cancel_payment(self):
+        for rec in self.invoice_ids:
+            rec.residual = rec.de_residual
+            rec.advance_amount = rec.pre_advance_amount
+            rec.state = 'open'
+            rec.move_id.state = 'cancel'
+        self.state = 'bounced'
+        self.voucher_relation_id.state = 'cancel'
 
     @api.constrains('deposit_date', 'clearence_date')
     def _check_deposit_and_const(self):
@@ -360,6 +382,7 @@ class PartnerPayment(models.Model):
         last = self.env['partner.payment'].search([], limit=1, order='id desc')
         self.reference_number = last.reference_number + 1
         self.advance_amount = self.partner_id.advance_amount
+        self.pre_advance_amount = self.partner_id.advance_amount
         self.account_id = 25
         invoice_records = []
 
