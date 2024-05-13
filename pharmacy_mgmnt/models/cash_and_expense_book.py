@@ -26,7 +26,7 @@ class CashBook(models.Model):
 
 	@api.multi
 	def view_collection(self):
-		domain = [('date', '>=', self.date_from), ('date', '<=', self.date_to or fields.Date.today())]
+		domain = [('date', '>=', self.date_from), ('date', '<=', self.date_to or fields.Date.today()),('state','!=','cancel')]
 		if self.pay_mode:
 			domain.append(('pay_mode', '=', self.pay_mode))
 		datas = self.env['account.voucher'].search(domain)

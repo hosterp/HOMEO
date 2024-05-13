@@ -17,5 +17,8 @@ class AccountVoucher(models.Model):
     pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode')
 
 
+class AccountVoucherEntry(models.Model):
+    _inherit = 'account.move'
 
+    state = fields.Selection([('draft', 'Unposted'), ('posted', 'Posted'), ('cancel', 'Canceled')], )
 
