@@ -584,6 +584,20 @@
         <menuitem id="menu_med_main_payments_menu_child1" action="action_payment"
                   name="Customer Payments"
                   sequence="1" parent="menu_med_main_payments_menu"/>
+        <menuitem id="menu_med_payments_child_2"
+                  name="Accounts"
+                  sequence="10" parent="menu_med_main_payments"/>
+        <menuitem
+                action="account.action_move_journal_line"
+                id="menu_action_review_voucher_list"
+                parent="menu_med_payments_child_2"
+                sequence="0"/>
+        <menuitem
+                name="Reconciliation"
+                action="account.action_account_manual_reconcile"
+                id="menu_manual_reconcile"
+                parent="menu_med_payments_child_2"
+                sequence="1"/>
         <!--        <menuitem id="menu_med_main_payments_menu_2"-->
         <!--                  name="Due Payments"-->
         <!--                  sequence="2" parent="menu_med_main_payments"/>-->
