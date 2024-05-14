@@ -864,6 +864,7 @@ class PartnerPayment(models.Model):
                                 'type': 'receipt',
                                 'partner_id': invoice.partner_id.id,
                                 'number': invoice.move_id.name,
+                                'pay_mode': self.payment_method,
                                 'line_ids': [(0, 0, {
                                     'account_id': 8,
                                     'amount_original': invoice.amount_total,
