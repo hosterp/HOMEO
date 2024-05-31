@@ -92,6 +92,7 @@
                                         <t t-set="total_amount" t-value="0.0"/>
                                         <t t-set="total_paid" t-value="0.0"/>
                                         <t t-set="total_balance" t-value="0.0"/>
+                                        <t t-set="grant_total" t-value="0.0"/>
                                         <tbody class="invoice_tbody">
                                             <tr t-foreach="o.payment_history_invoice_line_report()" t-as="l">
                                                 <td>
@@ -103,8 +104,8 @@
                                                     </h4>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="l.amount_total"/>
-                                                    <t t-set="total_amount" t-value="total_amount + l.amount_total"/>
+                                                    <span t-esc="o.total_amount"/>
+<!--                                                    <t t-set="total_amount" t-value="total_amount + l.amount_total"/>-->
                                                 </td>
                                                 <td>
                                                     <span t-esc="l.paid"/>
@@ -116,12 +117,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td t-if="o.advance_amount" colspan="4">
+                                                <td t-if="o.advance_amount" colspan="1">
                                                     <h4>
                                                         Advance Amount of Rs
                                                         <strong t-esc="o.advance_amount"/>
                                                         Added to account
                                                     </h4>
+                                                </td>
+                                                <td colspan="3" class="center" t-if="o.advance_amount">
+                                                     <strong t-esc="o.advance_amount"/>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -137,8 +141,9 @@
                                                     </h4>
                                                 </td>
                                                 <td class="text-right">
+                                                      <t t-set="grant_total" t-value="total_paid + o.advance_amount"/>
                                                     <h4>
-                                                        <t t-esc="total_paid"/>
+                                                        <t t-esc="grant_total"/>
                                                     </h4>
                                                 </td>
                                             </tr>
