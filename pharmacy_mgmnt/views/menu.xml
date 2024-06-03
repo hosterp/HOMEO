@@ -565,6 +565,50 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <record id="action_supplier_bill_details" model="ir.actions.act_window">
+            <field name="name">Supplir Bill Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">supplier.bill.details</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="view_supplier_bill_details_tree" model="ir.ui.view">
+            <field name="name">supplier.bill.details.tree</field>
+            <field name="model">supplier.bill.details</field>
+            <field name="arch" type="xml">
+                <tree string="Supplier Bill Details">
+                    <field name="invoice_date"/>
+                    <field name="bill_date"/>
+                    <field name="supplier"/>
+                    <field name="product_of"/>
+                    <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_supplier_bill_details_form" model="ir.ui.view">
+            <field name="name">supplier.bill.details.form</field>
+            <field name="model">supplier.bill.details</field>
+            <field name="arch" type="xml">
+                <form string="Supplier Bill Details">
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="invoice_date"/>
+                                <field name="inv_sup_no"/>
+                                <field name="supplier"/>
+                            </group>
+                            <group>
+                                <field name="bill_date"/>
+                                <field name="product_of"/>
+                                <field name="amount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <menuitem id="menu_med_main"
                   name="Pharmacy Management"
                   sequence="1"/>
@@ -621,6 +665,9 @@
         <menuitem action="action_invoice_tree2" id="menu_med_main_supplier_invoice"
                   name="Supplier Invoices" parent="menu_med_main_supp"
                   sequence="1"/>
+        <menuitem action="action_supplier_bill_details" id="menu_med_main_supplier_invoice_bill_details"
+                  name="Supplier Bill Details" parent="menu_med_main_supp"
+                  sequence="2"/>
 
         <menuitem id="menu_med_main_customer_invoice_1"
                   name="Customer Invoices"

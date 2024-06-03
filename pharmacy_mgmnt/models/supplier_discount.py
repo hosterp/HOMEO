@@ -161,3 +161,22 @@ class SupplierDiscounts2(models.Model):
 #     @api.one
 #     def save_discount(self):
 #         pass
+
+
+
+class SupplierBillDetails(models.Model):
+    _name = 'supplier.bill.details'
+    _rec_name = 'inv_sup_no'
+
+
+
+    invoice_date=fields.Date('Invoice Date')
+    bill_date=fields.Date('Bill Date')
+    supplier = fields.Many2one('res.partner', 'Supplier')
+    product_of = fields.Many2one('product.medicine.responsible', 'Company')
+    amount=fields.Float('Amount')
+    inv_sup_no = fields.Char('Invoice No')
+
+
+
+
