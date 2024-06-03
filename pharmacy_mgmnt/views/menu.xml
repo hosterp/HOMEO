@@ -1395,6 +1395,20 @@
             </field>
         </record>
 
+        <record id="partner_payment_view_search" model="ir.ui.view">
+            <field name="name">partner.payment.search</field>
+            <field name="model">partner.payment</field>
+            <field name="arch" type="xml">
+                <search string="Payment Search">
+                    <field name="date" filter_domain="[('date', '>=', self)]"/>
+                    <!-- Add other fields if needed -->
+                    <filter string="This Month" name="date_filter"
+                            domain="[('date', '>=', context_today().strftime('%%Y-%%m-01'))]"
+                            context="{'group_by':'date'}"/>
+                </search>
+            </field>
+        </record>
+
 
         <record id="action_payment" model="ir.actions.act_window">
             <field name="name">Payments</field>
@@ -1402,6 +1416,8 @@
             <field name="res_model">partner.payment</field>
             <field name="view_mode">form,tree</field>
             <field name="domain">[('reference_number', '!=', '0')]</field>
+             <field name="context">{'search_default_date_filter': 1}</field>
+            <field name="search_view_id" ref="partner_payment_view_search"/>
         </record>
 
         <record model="ir.ui.view" id="customer_inherit_tree">
