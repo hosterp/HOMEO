@@ -9,14 +9,23 @@
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='reference']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='amount']" position="attributes">
                     <attribute name="string">Payment Amount</attribute>
                 </xpath>
                 <xpath expr="//field[@name='payment_option']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='amount']" position="after">
-                    <field name="pay_mode" string="Payment Mode" readonly="1"/>
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="pay_mode" string="Payment Mode" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='pay_mode']" position="after">
+                    <field name="res_person" string="Responsible Person" widget="selection"/>
                 </xpath>
             </field>
         </record>
