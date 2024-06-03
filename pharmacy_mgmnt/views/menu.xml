@@ -592,17 +592,35 @@
             <field name="arch" type="xml">
                 <form string="Supplier Bill Details">
                     <sheet>
-                        <group col="2">
+                        <group col="3">
                             <group>
                                 <field name="invoice_date"/>
+                                <field name="sl_no"/>
                                 <field name="inv_sup_no"/>
                                 <field name="supplier"/>
+
+
                             </group>
                             <group>
                                 <field name="bill_date"/>
                                 <field name="product_of"/>
                                 <field name="amount"/>
+                                <field name="delivery_charge"/>
+
                             </group>
+                            <group>
+                                <field name="discount1"/>
+                                <field name="discount2"/>
+                                <field name="GST"/>
+                                <field name="freight"/>
+
+                            </group>
+                        </group>
+                        <group>
+                            <field name="pay_mode" style="width:13%%"/>
+                            <field name="cheque_date"/>
+                            <field name="bank_name" style="width:13%%"/>
+                            <field name="cheque_no" style="width:13%%"/>
                         </group>
                     </sheet>
                 </form>

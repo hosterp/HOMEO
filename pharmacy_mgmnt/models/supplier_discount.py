@@ -176,6 +176,17 @@ class SupplierBillDetails(models.Model):
     product_of = fields.Many2one('product.medicine.responsible', 'Company')
     amount=fields.Float('Amount')
     inv_sup_no = fields.Char('Invoice No')
+    sl_no=fields.Char('SL No')
+    discount1=fields.Integer('Discount1')
+    discount2=fields.Integer('Discount2')
+    GST=fields.Char('GST')
+    delivery_charge=fields.Integer('Deliver Charge')
+    freight=fields.Integer('Freight To Deduct')
+    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI'),('cheque','Cheque')], 'Cash Or Credit',
+                                default='cash')
+    bank_name=fields.Char('Bank Name')
+    cheque_no=fields.Char('Chq.No/Transfer No')
+    cheque_date=fields.Date('Chq Date')
 
 
 
