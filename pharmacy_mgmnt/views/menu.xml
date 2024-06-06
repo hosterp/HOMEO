@@ -597,8 +597,7 @@
                                 <field name="invoice_date"/>
                                 <field name="sl_no"/>
                                 <field name="inv_sup_no"/>
-                                <field name="supplier"/>
-
+                                <field name="supplier" domain="[('supplier','=',True)]"/>
 
                             </group>
                             <group>

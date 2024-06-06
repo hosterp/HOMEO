@@ -189,5 +189,13 @@ class SupplierBillDetails(models.Model):
     cheque_date=fields.Date('Chq Date')
 
 
-
+    @api.onchange('supplier')
+    def gst_no_onchange(self):
+        if self.supplier:
+            self.GST = self.supplier.gst_number
+            print(self.GST,'gst.............')
+            # last = self.env['res.partner'].search([('supplier', '=', True)])
+            # for i in last:
+            #     self.GST = i.gst_number
+            #     print(i.name,i.gst_number,'hello')
 

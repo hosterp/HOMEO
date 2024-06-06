@@ -468,13 +468,13 @@
                                     </tr>
 
 
-                                        <td>
-                                            <strong>Advance Amount</strong>
-                                        </td>
-                                        <td class="text-right">
-                                            <span t-field="o.advance_amount"
-                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>
-                                        </td>
+<!--                                        <td>-->
+<!--                                            <strong>Advance Amount</strong>-->
+<!--                                        </td>-->
+<!--                                        <td class="text-right">-->
+<!--                                            <span t-field="o.advance_amount"-->
+<!--                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+<!--                                        </td>-->
 
                                 </table>
                                 <div t-if="o.amount_in_words">

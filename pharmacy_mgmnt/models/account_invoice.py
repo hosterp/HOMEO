@@ -2617,7 +2617,7 @@ class AccountInvoice(models.Model):
     password = fields.Char(Required=True, )
     create_bool = fields.Boolean(Default=False)
     paid_bool = fields.Boolean('Invoice Paid?')
-    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode',
+    pay_mode = fields.Selection([('credit', 'Credit'),('cash', 'Cash'), ('upi', 'UPI'),('card','Card')], 'Payment Mode',
                                 default='cash')
 
     amount_in_words = fields.Char('Amount in Words', compute='_compute_amount_in_words')

@@ -19,7 +19,7 @@ import datetime
 class AccountVoucher(models.Model):
     _inherit = 'account.voucher'
 
-    pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI'), ('cheque', 'Cheque')], 'Payment Mode')
+    pay_mode = fields.Selection([('credit', 'Credit'),('cash', 'Cash'),('upi', 'UPI'), ('card', 'Card')], 'Payment Mode')
     res_person = fields.Many2one('res.partner', string="Responsible Person", domain=[('res_person_id', '=', True)])
 
     def onchange_amount(self, cr, uid, ids, amount, rate, partner_id, journal_id, currency_id, ttype, date,
