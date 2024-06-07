@@ -78,9 +78,9 @@
                     <attribute name="domain">[('res_person_id','=',False),('customer','=',True)]</attribute>
                     <!--                    <attribute name="options">{"no_open": True}</attribute>-->
                 </xpath>
-                <xpath expr="//field[@name='invoice_line']" position="attributes">
-                    <attribute name="readonly">[('packing_invoice', '=', True)]</attribute>
-                </xpath>
+<!--                <xpath expr="//field[@name='invoice_line']" position="attributes">-->
+<!--                    <attribute name="readonly">[('packing_invoice', '=', True)]</attribute>-->
+<!--                </xpath>-->
                 <!--                <xpath expr="//field[@name='discount']" position="attributes">-->
                 <!--                    <attribute name="digits">(16, 2)</attribute>-->
                 <!--                </xpath>-->

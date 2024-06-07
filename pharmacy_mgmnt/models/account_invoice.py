@@ -2671,7 +2671,7 @@ class AccountInvoice(models.Model):
             total_tax_amount = abs(amount_total_w_tax - amount_untaxed)
             total_discount = total_price_amount - amount_untaxed
             self.amount_untaxed = total_price_amount
-            self.amount_tax = round(total_products_tax)
+            self.amount_tax = total_products_tax
             self.amount_tax_custom = total_products_tax
             self.amount_discount = total_discount
             # if self.advance_amount:
