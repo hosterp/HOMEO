@@ -7,3 +7,7 @@ box-sizing: border-box;
 .openerp.css_wizard_button{
 box-sizing: border-box;
 }
+.custom-group .oe_form_group_cell {
+    padding: 5px;
+}
+

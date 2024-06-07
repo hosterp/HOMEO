@@ -100,3 +100,6 @@ input[type=text] {
     padding: 3px;
     border: none;
 }
+span.oe_form_field.oe_datepicker_root.oe_form_field_date.custom-field {
+    margin-left: -800px;
+}

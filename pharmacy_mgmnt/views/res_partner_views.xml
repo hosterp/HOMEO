@@ -89,7 +89,7 @@
                 <!--                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>-->
                 <!--                    </xpath>-->
                 <xpath expr="//field[@name='account_id']" position="after">
-                    <field name="date_invoices" />
+                    <field name="phone_number" widget="phone"/>
                     <field name="address_new" style="height:50%%"/>
                 </xpath>
                  <xpath expr="//field[@name='date_invoice']" position="attributes">

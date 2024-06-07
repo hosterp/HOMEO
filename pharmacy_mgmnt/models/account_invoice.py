@@ -2619,8 +2619,22 @@ class AccountInvoice(models.Model):
     paid_bool = fields.Boolean('Invoice Paid?')
     pay_mode = fields.Selection([('credit', 'Credit'),('cash', 'Cash'), ('upi', 'UPI'),('card','Card')], 'Payment Mode',
                                 default='cash')
-
     amount_in_words = fields.Char('Amount in Words', compute='_compute_amount_in_words')
+    phone_number = fields.Char('Phone No',size=10)
+
+    @api.onchange('phone_number')
+    def onchange_phone_number(self):
+            partner_id = self.env['res.partner'].search([('mobile', '=', self.phone_number)], limit=1)
+            if partner_id and  self.partner_id != partner_id.id:
+                self.partner_id = partner_id.id
+            else:
+                return {
+                    'warning': {
+                        'title': _('Warning'),
+                        'message': _('Check the number. No partner found with this phone number.'),
+                    },
+                }
+
 
     @api.depends('amount_total')
     def _compute_amount_in_words(self):
