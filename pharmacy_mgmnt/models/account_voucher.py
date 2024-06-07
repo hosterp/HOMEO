@@ -42,14 +42,18 @@ class AccountVoucher(models.Model):
     @api.onchange('pay_mode')
     def onchange_paymode(self):
         cus_invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
-        if self.pay_mode == 'credit':
-            journal = self.env['account.journal'].search([('code','=','BNK2')],limit=1)
+        if self.pay_mode in ['credit', 'upi', 'card']:
+            journal = self.env['account.journal'].search([('code', '=', 'BNK2')], limit=1)
             self.journal_id = journal.id
+            self.account_id = journal.default_debit_account_id
         else:
             journal = self.env['account.journal'].search([('code', '=', 'BNK1')], limit=1)
             self.journal_id = journal.id
+            self.account_id = journal.default_debit_account_id
+
         if self.amount < cus_invoice.residual and self.pay_mode != 'credit':
-            raise ValidationError("Amount less than the invoice amount only paid through the Credit Payment Mode")
+            raise ValidationError(
+                "Amount less than the invoice amount can only be paid through the Credit Payment Mode")
 
 
     @api.model
@@ -60,7 +64,6 @@ class AccountVoucher(models.Model):
             doc = etree.XML(res['arch'])
             for node in doc.xpath("//field[@name='res_person']"):
                 modifiers = json.loads(node.get("modifiers", "{}"))
-                modifiers['invisible'] = [('pay_mode', '!=', 'credit')]
                 modifiers['required'] = [('pay_mode', '=', 'credit')]
                 node.set("modifiers", json.dumps(modifiers))
             res['arch'] = etree.tostring(doc, encoding='unicode')
@@ -79,7 +82,7 @@ class AccountVoucher(models.Model):
                     pass
             else:
                 cus_invoice.pay_mode = self.pay_mode
-                cus_invoice.res_person = False
+                cus_invoice.res_person = self.res_person or False
 
     @api.multi
     def button_proforma_voucher(self):
