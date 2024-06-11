@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="action_invoice_tree3" model="ir.actions.act_window">
+            <field name="name">Modified Customer Refunds</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_refund')]</field>
+            <field name="context">{'default_type':'out_refund', 'type':'out_refund', 'journal_type': 'sale_refund', 'show_draft': False}</field>
+        </record>
+
+
+        <menuitem action="action_invoice_tree3" id="menu_med_main_customer_refund" name="Customer Refunds" parent="menu_med_main_cust" sequence="6"/>
+    </data>
+</openerp>

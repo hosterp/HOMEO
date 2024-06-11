@@ -60,6 +60,8 @@
         'views/expense_book.xml',
         'views/template.xml',
         'views/account_voucher.xml',
+        'views/custom_refunds_views.xml',
+        'views/custom_supplier_refunds_views.xml',
     ],
     'js': [
             "static/src/js/widget.js",
