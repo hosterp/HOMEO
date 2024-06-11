@@ -47,6 +47,9 @@
                         True),('state', '!=' , 'open')]}
                     </attribute>
                 </xpath>
+                <xpath expr="//button[@name='invoice_pay_customer']" position="attributes">
+                    <attribute name="class">invoice_pay_customer</attribute>
+                </xpath>
                 <xpath expr="//button[@name='action_invoice_sent']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
