@@ -31,8 +31,16 @@ openerp.pharmacy_mgmnt = function (instance) {
             var self = this;
             this.$buttons.find('.oe_form_button_save').click(function() {
                 var validateButton = document.querySelector('.cus_validate');
+                var payButton = document.querySelector('.invoice_pay_customer');
+
                 if (validateButton) {
                     validateButton.click();
+                }
+
+                if (payButton) {
+                    setTimeout(function() {
+                        payButton.click();
+                    }, 1000);
                 }
             });
         },
