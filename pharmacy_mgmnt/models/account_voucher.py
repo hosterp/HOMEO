@@ -33,7 +33,7 @@ class AccountVoucher(models.Model):
         if active_id:
             cus_invoice = self.pool.get('account.invoice').browse(cr, uid, active_id, context=context)
             if cus_invoice:
-                if amount < cus_invoice.residual:
+                if amount < cus_invoice.residual and cus_invoice.type == 'out_invoice':
                     default['value'].update({'pay_mode': 'credit'})
                 else:
                     default['value'].update({'pay_mode': cus_invoice.pay_mode})
@@ -51,7 +51,7 @@ class AccountVoucher(models.Model):
             self.journal_id = journal.id
             self.account_id = journal.default_debit_account_id
 
-        if self.amount < cus_invoice.residual and self.pay_mode != 'credit':
+        if self.amount < cus_invoice.residual and self.pay_mode != 'credit' and cus_invoice.type == 'out_invoice' :
             raise ValidationError(
                 "Amount less than the invoice amount can only be paid through the Credit Payment Mode")
 

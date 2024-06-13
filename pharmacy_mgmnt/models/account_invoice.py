@@ -408,9 +408,9 @@ class AccountInvoiceLine(models.Model):
     @api.model
     def move_line_get_item(self, line):
         total_price = 0
-        if line.invoice_id.type == 'out_invoice':
-            # total_price = line.amt_w_tax
+        if line.invoice_id.type in ('out_invoice'):
             total_price = round(line.price_subtotal)
+            # total_price = line.amt_w_tax
             if line.invoice_id.advance_amount:
                 if line.invoice_id.advance_amount > total_price:
                     if line.invoice_id.advance_amount == total_price:
@@ -422,7 +422,9 @@ class AccountInvoiceLine(models.Model):
                 else:
                     total_price -= line.invoice_id.advance_amount
                     line.invoice_id.partner_id.advance_amount = 0
-        if line.invoice_id.type != 'out_invoice':
+            else:
+                pass
+        if line.invoice_id.type != ('out_invoice', 'out_refund'):
             # total_price = line.amount_w_tax
             discount = line.quantity * line.price_unit * (line.discount / 100)
             amount = (line.quantity * line.price_unit) - discount
@@ -434,7 +436,7 @@ class AccountInvoiceLine(models.Model):
             'name': line.name,
             'price_unit': line.price_unit,
             'quantity': line.quantity,
-            'price': total_price,
+            'price': total_price or line.price_subtotal,
             'account_id': line.account_id.id,
             'product_id': line.product_id.id,
             'uos_id': line.uos_id.id,
@@ -1718,7 +1720,6 @@ class AccountInvoice(models.Model):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
             base_url, self.cus_invoice_id.id)
-        print(redirect_url, '.......>')
         return {
             'type': 'ir.actions.act_url',
             'url': redirect_url,

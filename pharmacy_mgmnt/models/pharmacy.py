@@ -313,13 +313,16 @@ class NewStockEntry(models.Model):
 
     @api.onchange('quantity_selected')
     def quantity_selected_onchage(self):
-        if self.quantity_selected != 0:
+        if self.quantity_selected != 0 :
             if self.qty < self.quantity_selected:
                 raise ValidationError("Selected Quantity not Available")
             else:
-                self.qty -= self.quantity_selected
                 cus_invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
                 if cus_invoice:
+                    if cus_invoice.type == 'out_invoice':
+                        self.qty -= self.quantity_selected
+                    else:
+                        pass
                     new_lines = []
                     for rec in self:
                         new_lines.append((0, 0, {
