@@ -161,7 +161,7 @@
                             <field name="discount_rate" widget="float_no_default" style="width:20%%"/>
                             <field name="amount_in_words" readonly="1" invisible="1"/>
                             <button name="print_e_way_report" type="object" string="E-WayReport"/>
-                            <button name="%(pharmacy_mgmnt.action_account_invoice_view_wizard)d" type="action" string="Customer Invoice Wizard" class="oe_highlight"/>
+                            <button name="%(pharmacy_mgmnt.action_account_invoice_view_wizard)d" type="action" string="Search" class="oe_highlight"/>
                         </group>
                         <group class="oe_subtotal_footer oe_right">1
                             <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>

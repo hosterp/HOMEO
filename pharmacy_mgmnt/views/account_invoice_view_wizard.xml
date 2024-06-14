@@ -6,13 +6,14 @@
             <field name="arch" type="xml">
                 <form string="">
                     <group col="4">
-                        <field name="partner_id" required="1" domain="[('customer','=',True)]"/>
+                        <field name="partner_id"  domain="[('customer','=',True)]"/>
                         <field name="type"/>
                     </group>
                     <group col="4">
                         <field name="date_from" required="1"/>
                         <field name="date_to" required="1"/>
                     </group>
+                       <button name="get_details" type="object" string="Fetch Details" class="oe_highlight"/>
                     <notebook>
                         <page string="Products">
                             <field name="invoice_wizard_ids" readonly="1">
@@ -36,7 +37,7 @@
                         </page>
                     </notebook>
                     <footer>
-                        <button name="get_details" type="object" string="View Details" class="oe_highlight"/>
+<!--                        <button name="get_details" type="object" string="View Details" class="oe_highlight"/>-->
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
