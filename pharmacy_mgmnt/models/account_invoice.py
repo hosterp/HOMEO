@@ -1,4 +1,7 @@
 # import dateutil.utils
+import json
+
+from lxml import etree
 from num2words import num2words
 
 from openerp import api, models, fields
@@ -1893,6 +1896,21 @@ class AccountInvoice(models.Model):
         #                                                      limit=1).id
         # else:
         #     pass
+
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+        res = super(AccountInvoice, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
+                                                          submenu=submenu)
+        if view_type == 'form':
+            set_invoice_line_readonly = self.env.context.get('set_invoice_line_readonly')
+            if set_invoice_line_readonly:
+                doc = etree.XML(res['arch'])
+                for node in doc.xpath("//field[@name='invoice_line']"):
+                    modifiers = json.loads(node.get("modifiers", "{}"))
+                    modifiers['readonly'] = True
+                    node.set("modifiers", json.dumps(modifiers))
+                res['arch'] = etree.tostring(doc, encoding='unicode')
+        return res
 
     @api.multi
     def name_get(self):
