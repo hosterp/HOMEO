@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from openerp import models, fields, api
 
 
-class CustomerInvoiceWizard(models.TransientModel):
+class CustomerInvoiceWizard(models.Model):
     _name = 'customer.wizard'
 
     partner_id = fields.Many2one('res.partner', 'Customer')
@@ -43,7 +43,9 @@ class CustomerInvoiceWizard(models.TransientModel):
                     'batch':line.batch,
                     'product_of':line.product_of,
                     'medicine_grp':line.medicine_grp,
+                    'medicine_name_packing':line.medicine_name_packing,
                     'quantity':line.quantity,
+                    'unit_price_c':line.unit_price_c,
                     'discount':line.discount,
                     'unit_price':line.unit_price,
                     'invoice_line_tax_id4':line.invoice_line_tax_id4,
@@ -53,7 +55,7 @@ class CustomerInvoiceWizard(models.TransientModel):
 
                 }))
             self.update({'invoice_wizard_ids': line_values})
-            print(line_values, 'product')
+            # print(line_values, 'product')
             return {
                 'type': 'ir.actions.act_window',
                 'res_model': 'customer.wizard',
@@ -62,7 +64,61 @@ class CustomerInvoiceWizard(models.TransientModel):
                 'res_id': self.id,
                 'target': 'new',
             }
-class AccountInvoiceLineWizhard(models.TransientModel):
+
+    @api.multi
+    def add_selected_lines(self):
+        print("Starting add_selected_lines function")
+
+        # Check input values
+        print("self.invoice_wizard_ids:", self.invoice_wizard_ids)
+        print("self._context.get('active_id'):", self._context.get('active_id'))
+
+        self.invoice_wizard_ids = [(5, 0, 0)] + [(0, 0, values) for values in
+                                                 self.invoice_wizard_ids.filtered(lambda x: x.exists()).read()]
+        print("Updated self.invoice_wizard_ids:", self.invoice_wizard_ids)
+
+        selected_lines = self.invoice_wizard_ids.filtered(lambda x: x.selected)
+        print("Selected lines:", selected_lines)
+
+        if selected_lines:
+            invoice_id = self.env['account.invoice'].browse(self._context.get('active_id'))
+            print("Invoice ID:", invoice_id)
+
+            for line in selected_lines:
+                print("Processing line:", line)
+                if line.exists():  # Check if the record exists
+                    try:
+                        self.env['account.invoice.line'].create({
+                            'product_id': line.product_id.id,
+                            'quantity': line.quantity or 0.0,
+                            'price_unit': line.price_unit or 0.0,
+                            'medicine_name_subcat': line.medicine_name_subcat.id if line.medicine_name_subcat else False,
+                            'batch': line.batch,
+                            'medicine_name_packing': line.medicine_name_packing,
+                            'product_of': line.product_of,
+                            'medicine_grp': line.medicine_grp,
+                            'quantity': line.quantity,
+                            'unit_price_c': line.unit_price_c,
+                            'discount': line.discount,
+                            'unit_price': line.unit_price,
+                            'invoice_line_tax_id4': line.invoice_line_tax_id4,
+                            'product_tax': line.product_tax,
+                            'price_subtotal': line.price_subtotal,
+                            'hsn_code': line.hsn_code,
+                        })
+                    except Exception as e:
+                        print("Error creating invoice line:", e)
+                else:
+                    print("Record does not exist:", line)
+
+            self.invoice_wizard_ids.write({'select': False})
+            print("Select field reset for all lines.")
+
+        print("Returning True")
+        return True
+
+
+class AccountInvoiceLineWizhard(models.Model):
     _name = "account.invoice.wizard"
     _rec_name = 'id'
 
@@ -79,8 +135,8 @@ class AccountInvoiceLineWizhard(models.TransientModel):
     stock_transfer_id = fields.Many2one('stock.transfer')
     quantity=fields.Integer('Qty')
     price_unit = fields.Float(string='Mrp')
-    unit_price_c = fields.Float(string='Unit price', default=False)
-    unit_price = fields.Float(string='Unit price')
+    unit_price_c = fields.Float(string='Unit TP', default=False)
+    unit_price = fields.Float(string='Unit P')
     invoice_line_tax_id4 = fields.Float(string='Tax')
     # amount_amount = fields.Float('TAX_AMOUNT', compute="_compute_amount_amount")
     amount_amount = fields.Float('TAX_AMOUNT')
@@ -96,6 +152,7 @@ class AccountInvoiceLineWizhard(models.TransientModel):
     product_tax = fields.Float('Tax Amt')
     price_subtotal = fields.Float(string='Grand Total',)
     hsn_code = fields.Char('Hsn')
+    selected=fields.Boolean('selected')
 
 
 

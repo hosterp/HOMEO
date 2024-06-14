@@ -11,12 +11,13 @@
     'company': 'Hiworth Solutions',
     'website': "https://www.hiworthsolutions.com",
     'category': 'Accounting',
-    'depends': ['base', 'account', 'stock', 'purchase', 'sale','report',
-                'report_xlsx','report_custom_filename',
-                'account_accountant', 'product_expiry', 'product_expiry_simple', 'Key_shortcuts','account_cancel'],
+    'depends': ['base', 'account', 'stock', 'purchase', 'sale', 'report',
+                'report_xlsx', 'report_custom_filename',
+                'account_accountant', 'product_expiry', 'product_expiry_simple', 'Key_shortcuts', 'account_cancel'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/account_invoice_view_wizard.xml',
         'views/res_partner_views.xml',
         'views/menu.xml',
         'views/rack_transfer.xml',
@@ -62,12 +63,12 @@
         'views/account_voucher.xml',
         'views/custom_refunds_views.xml',
         'views/custom_supplier_refunds_views.xml',
-        'views/account_invoice_view_wizard.xml',
+
     ],
     'js': [
-            "static/src/js/widget.js",
-            "static/src/js/cursor_movement.js",
-        ],
+        "static/src/js/widget.js",
+        "static/src/js/cursor_movement.js",
+    ],
     'qweb': [
         "static/src/xml/save_and_create_button.xml",
     ],

@@ -6,38 +6,41 @@
             <field name="arch" type="xml">
                 <form string="">
                     <group col="4">
-                        <field name="partner_id"  domain="[('customer','=',True)]"/>
+                        <field name="partner_id" domain="[('customer','=',True)]"/>
                         <field name="type"/>
                     </group>
                     <group col="4">
                         <field name="date_from" required="1"/>
                         <field name="date_to" required="1"/>
                     </group>
-                       <button name="get_details" type="object" string="Fetch Details" class="oe_highlight"/>
+                    <button name="get_details" type="object" string="Fetch Details" class="oe_highlight"/>
                     <notebook>
                         <page string="Products">
-                            <field name="invoice_wizard_ids" readonly="1">
+                            <field name="invoice_wizard_ids">
                                 <tree editable="bottom">
                                     <field name="customer_id" invisible="1"/>
-                                    <field name="product_id"/>
-                                    <field name="medicine_name_subcat"/>
-                                    <field name="batch"/>
-                                    <field name="product_of"/>
-                                    <field name="medicine_grp"/>
-                                    <field name="quantity"/>
-                                    <field name="price_unit"/>
-                                    <field name="discount"/>
-                                    <field name="unit_price"/>
-                                    <field name="invoice_line_tax_id4"/>
-                                    <field name="product_tax"/>
-                                    <field name="price_subtotal"/>
-                                    <field name="hsn_code"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="medicine_name_subcat" readonly="1"/>
+                                    <field name="medicine_name_packing" readonly="1"/>
+                                    <field name="batch" readonly="1"/>
+                                    <field name="product_of" readonly="1"/>
+                                    <field name="medicine_grp" readonly="1"/>
+                                    <field name="quantity" readonly="1"/>
+                                    <field name="price_unit" readonly="1"/>
+                                    <field name="unit_price_c" readonly="1"/>
+                                    <field name="discount" readonly="1"/>
+                                    <field name="unit_price" readonly="1"/>
+                                    <field name="invoice_line_tax_id4" readonly="1"/>
+                                    <field name="product_tax" readonly="1"/>
+                                    <field name="price_subtotal" readonly="1"/>
+                                    <field name="hsn_code" readonly="1"/>
+                                    <field name="selected"/>
                                 </tree>
                             </field>
                         </page>
                     </notebook>
                     <footer>
-<!--                        <button name="get_details" type="object" string="View Details" class="oe_highlight"/>-->
+                        <button name="add_selected_lines" string="Add Selected Lines" type="object"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
