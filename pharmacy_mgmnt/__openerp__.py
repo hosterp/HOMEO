@@ -17,6 +17,7 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/account_invoice_view_wizard.xml',
         'views/res_partner_views.xml',
         'views/menu.xml',
         'views/rack_transfer.xml',
@@ -62,7 +63,6 @@
         'views/account_voucher.xml',
         'views/custom_refunds_views.xml',
         'views/custom_supplier_refunds_views.xml',
-        'views/account_invoice_view_wizard.xml',
     ],
     'js': [
             "static/src/js/widget.js",
