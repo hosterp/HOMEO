@@ -62,6 +62,7 @@
         'views/account_voucher.xml',
         'views/custom_refunds_views.xml',
         'views/custom_supplier_refunds_views.xml',
+        'views/account_invoice_view_wizard.xml',
     ],
     'js': [
             "static/src/js/widget.js",

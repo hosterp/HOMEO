@@ -15,3 +15,4 @@ from . import master_bank
 from . import cash_and_expense_book
 from . import expense_book
 from . import account_voucher
+from . import customer_invoice_wizard
