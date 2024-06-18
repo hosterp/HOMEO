@@ -81,29 +81,28 @@ class AccountInvoiceLine(models.Model):
 
     @api.model
     def create(self, vals):
-        cus_invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
-        if cus_invoice.type == "out_invoice":
-            existing_record = self.search([
-                ('invoice_id', '=', vals['invoice_id']),
-                ('product_id', '=', vals['product_id']),
-                ('expiry_date', '=', vals['expiry_date']),
-                ('medicine_rack', '=', vals['medicine_rack']),
-                ('product_of', '=', vals['product_of']),
-                ('medicine_grp', '=', vals['medicine_grp']),
-                ('medicine_name_packing', '=', vals['medicine_name_packing']),
-                ('invoice_line_tax_id4', '=', vals['invoice_line_tax_id4']),
-                ('medicine_name_subcat', '=', vals['medicine_name_subcat']),
-                ('price_unit', '=', vals['price_unit']),
-            ], limit=1)
+        existing_record = self.search([
+            ('invoice_id', '=', vals['invoice_id']),
+            ('product_id', '=', vals['product_id']),
+            ('expiry_date', '=', vals['expiry_date']),
+            ('medicine_rack', '=', vals['medicine_rack']),
+            ('product_of', '=', vals['product_of']),
+            ('medicine_grp', '=', vals['medicine_grp']),
+            ('medicine_name_packing', '=', vals['medicine_name_packing']),
+            ('invoice_line_tax_id4', '=', vals['invoice_line_tax_id4']),
+            ('medicine_name_subcat', '=', vals['medicine_name_subcat']),
+            ('price_unit', '=', vals['price_unit']),
+        ], limit=1)
 
-            if existing_record:
-                # If similar record exist full_cleared_dbs, update the quantity field instead of creating a new record
-                existing_record.write({
-                    'quantity': existing_record.quantity + vals.get('quantity', 0)
-                })
-                # print(existing_record,'exist')
-                return existing_record
-
+        if existing_record:
+            # If similar record exist full_cleared_dbs, update the quantity field instead of creating a new record
+            existing_record.write({
+                'quantity': existing_record.quantity + vals.get('quantity', 0)
+            })
+            # print(existing_record,'exist')
+            return existing_record
+        else:
+            pass
         # If no similar record found or incomplete data, create a new record
         result = super(AccountInvoiceLine, self).create(vals)
         # if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.medicine_rack and result.price_unit:
@@ -1574,6 +1573,23 @@ class AccountInvoice(models.Model):
     _inherit = "account.invoice"
     _rec_name = "number2"
     _order = "number2 desc"
+
+    @api.multi
+    def open_wizard_action(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Invoice Wizard',
+            'res_model': 'customer.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_invoice_id': self.id,
+                'default_partner_id': self.partner_id.id,
+                'invoice_id': self.id,
+                'active_model': self._name,
+            },
+        }
 
     packing_invoice = fields.Boolean("Packing Slip?")
     hold_invoice = fields.Boolean("Holding Invoice?")

@@ -3,6 +3,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from openerp import models, fields, api
+from openerp.exceptions import MissingError
 
 
 class CustomerInvoiceWizard(models.Model):
@@ -11,8 +12,9 @@ class CustomerInvoiceWizard(models.Model):
     partner_id = fields.Many2one('res.partner', 'Customer')
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
-    type=fields.Selection([('out_invoice','Sales Invoice'),('packing_slip','Packing Slip'),('holding_invoice','Holding Invoice')])
-    invoice_wizard_ids=fields.One2many('account.invoice.wizard','customer_id')
+    type = fields.Selection([('out_invoice','Sales Invoice'),('packing_slip','Packing Slip'),('holding_invoice','Holding Invoice')])
+    invoice_wizard_ids = fields.One2many('account.invoice.wizard','customer_id')
+    invoice_id = fields.Many2one('account.invoice','invoice_id')
 
     @api.multi
     def get_details(self):
@@ -34,27 +36,31 @@ class CustomerInvoiceWizard(models.Model):
 
             invoice_lines = self.env['account.invoice.line'].search(domain)
             line_values = []
-            for line in invoice_lines:
+            for rec in invoice_lines:
                 line_values.append((0, 0, {
-                    'product_id': line.product_id.id,
-                    'quantity': line.quantity or 0.0,
-                    'price_unit': line.price_unit or 0.0,
-                    'medicine_name_subcat': line.medicine_name_subcat.id if line.medicine_name_subcat else False,
-                    'batch':line.batch,
-                    'product_of':line.product_of,
-                    'medicine_grp':line.medicine_grp,
-                    'medicine_name_packing':line.medicine_name_packing,
-                    'quantity':line.quantity,
-                    'unit_price_c':line.unit_price_c,
-                    'discount':line.discount,
-                    'unit_price':line.unit_price,
-                    'invoice_line_tax_id4':line.invoice_line_tax_id4,
-                    'product_tax':line.product_tax,
-                    'price_subtotal':line.price_subtotal,
-                    'hsn_code':line.hsn_code,
+                    'id_for_ref': rec.id_for_ref,
+                    'stock_entry_id': rec.stock_entry_id.id,
+                    'name': rec.name,
+                    'product_id': rec.product_id.id,
+                    'medicine_name_subcat': rec.medicine_name_subcat.id,
+                    'medicine_name_packing': rec.medicine_name_packing.id,
+                    'product_of': rec.product_of.id,
+                    'medicine_grp': rec.medicine_grp.id,
+                    'batch_2': rec.batch_2.id,
+                    'batch': rec.batch,
+                    'hsn_code': rec.hsn_code,
+                    'price_unit': rec.price_unit,
+                    'discount': rec.discount or 0,
+                    'manf_date': rec.manf_date,
+                    'expiry_date': rec.expiry_date,
+                    'medicine_rack': rec.medicine_rack.id,
+                    'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+                    'rack_qty': rec.rack_qty,
+                    'quantity': rec.quantity,
+                    'invoice_id': rec.invoice_id.id,
 
                 }))
-            self.update({'invoice_wizard_ids': line_values})
+            self.invoice_wizard_ids = line_values
             # print(line_values, 'product')
             return {
                 'type': 'ir.actions.act_window',
@@ -67,62 +73,43 @@ class CustomerInvoiceWizard(models.Model):
 
     @api.multi
     def add_selected_lines(self):
-        print("Starting add_selected_lines function")
-
-        # Check input values
-        print("self.invoice_wizard_ids:", self.invoice_wizard_ids)
-        print("self._context.get('active_id'):", self._context.get('active_id'))
-
-        self.invoice_wizard_ids = [(5, 0, 0)] + [(0, 0, values) for values in
-                                                 self.invoice_wizard_ids.filtered(lambda x: x.exists()).read()]
-        print("Updated self.invoice_wizard_ids:", self.invoice_wizard_ids)
-
         selected_lines = self.invoice_wizard_ids.filtered(lambda x: x.selected)
-        print("Selected lines:", selected_lines)
-
         if selected_lines:
-            invoice_id = self.env['account.invoice'].browse(self._context.get('active_id'))
-            print("Invoice ID:", invoice_id)
-
-            for line in selected_lines:
-                print("Processing line:", line)
-                if line.exists():  # Check if the record exists
-                    try:
-                        self.env['account.invoice.line'].create({
-                            'product_id': line.product_id.id,
-                            'quantity': line.quantity or 0.0,
-                            'price_unit': line.price_unit or 0.0,
-                            'medicine_name_subcat': line.medicine_name_subcat.id if line.medicine_name_subcat else False,
-                            'batch': line.batch,
-                            'medicine_name_packing': line.medicine_name_packing,
-                            'product_of': line.product_of,
-                            'medicine_grp': line.medicine_grp,
-                            'quantity': line.quantity,
-                            'unit_price_c': line.unit_price_c,
-                            'discount': line.discount,
-                            'unit_price': line.unit_price,
-                            'invoice_line_tax_id4': line.invoice_line_tax_id4,
-                            'product_tax': line.product_tax,
-                            'price_subtotal': line.price_subtotal,
-                            'hsn_code': line.hsn_code,
-                        })
-                    except Exception as e:
-                        print("Error creating invoice line:", e)
-                else:
-                    print("Record does not exist:", line)
-
-            self.invoice_wizard_ids.write({'select': False})
-            print("Select field reset for all lines.")
-
-        print("Returning True")
-        return True
+            new_lines = []
+            for rec in selected_lines:
+                new_lines.append((0, 0, {
+                    'id_for_ref': rec.id_for_ref,
+                    'stock_entry_id': rec.stock_entry_id.id,
+                    'name': rec.name,
+                    'product_id': rec.product_id.id,
+                    'medicine_name_subcat': rec.medicine_name_subcat.id,
+                    'medicine_name_packing': rec.medicine_name_packing.id,
+                    'product_of': rec.product_of.id,
+                    'medicine_grp': rec.medicine_grp.id,
+                    'batch_2': rec.batch_2.id,
+                    'batch': rec.batch,
+                    'hsn_code': rec.hsn_code,
+                    'price_unit': rec.price_unit,
+                    'discount': rec.discount or 0,
+                    'manf_date': rec.manf_date,
+                    'expiry_date': rec.expiry_date,
+                    'medicine_rack': rec.medicine_rack.id,
+                    'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+                    'rack_qty': rec.rack_qty,
+                    'quantity': rec.quantity,
+                    'invoice_id': rec.invoice_id.id,
+                }))
+            invoice_id = self.env['account.invoice'].browse([(self.invoice_id.id)])
+            if invoice_id:
+                invoice_id.write({'invoice_line': new_lines})
 
 
 class AccountInvoiceLineWizhard(models.Model):
     _name = "account.invoice.wizard"
     _rec_name = 'id'
 
-    customer_id=fields.Many2one('customer.wizard')
+    customer_id = fields.Many2one('customer.wizard')
+    invoice_id = fields.Many2one('account.invoice.line')
     name = fields.Text(string="Description", required=False)
     stock_entry_id = fields.Many2one('entry.stock')
     stock_entry_qty = fields.Float()
@@ -133,7 +120,7 @@ class AccountInvoiceLineWizhard(models.Model):
     product_of = fields.Many2one('product.medicine.responsible', 'Company')
     medicine_grp = fields.Many2one('product.medicine.group', 'Grp', )
     stock_transfer_id = fields.Many2one('stock.transfer')
-    quantity=fields.Integer('Qty')
+    quantity = fields.Integer('Qty')
     price_unit = fields.Float(string='Mrp')
     unit_price_c = fields.Float(string='Unit TP', default=False)
     unit_price = fields.Float(string='Unit P')
@@ -152,7 +139,14 @@ class AccountInvoiceLineWizhard(models.Model):
     product_tax = fields.Float('Tax Amt')
     price_subtotal = fields.Float(string='Grand Total',)
     hsn_code = fields.Char('Hsn')
-    selected=fields.Boolean('selected')
+    selected = fields.Boolean('selected')
+    batch_2 = fields.Many2one('med.batch', "Batch")
+    expiry_date = fields.Date(string='Exp')
+    manf_date = fields.Date(string='Mfd')
+    medicine_rack = fields.Many2one('product.medicine.types', 'Rack')
+    rack_qty = fields.Float(string="stock",)
+
+
 
 
 
