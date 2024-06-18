@@ -111,10 +111,11 @@
                                         <th>Expiry</th>
                                         <th>Quantity</th>
                                         <th class="text-right">MRP</th>
-                                        <th class="text-right">GST</th>
-                                        <th class="text-right">Unit Price</th>
                                         <th class="text-right">GST%</th>
-                                        <!--                        <th class="text-right">Gross Amount</th>-->
+                                        <th class="text-right">Unit Price</th>
+
+                                        <th class="text-right">GST</th>
+                                        <th class="text-right">Gross Amount</th>
                                         <!--                        <th class="text-right">GST</th>-->
                                         <th class="text-right">Net</th>
 
@@ -125,6 +126,7 @@
                                     <t t-set="tax5_tax" t-value="0"/>
                                     <t t-set="tax12_tax" t-value="0"/>
                                     <t t-set="tax18_tax" t-value="0"/>
+                                    <t t-set="gross_amount" t-value="0"/>
                                     <tr t-foreach="o.invoice_line" t-as="l">
                                         <td>
                                             <span t-esc="sl_no"/>
@@ -152,12 +154,7 @@
                                         <td class="text-right">
                                             <span t-field="l.price_unit"/>
                                         </td>
-                                        <td>
-                                            <span t-field="l.product_tax"/>
-                                        </td>
-                                        <td>
-                                            <span t-field="l.price_subtotal"/>
-                                        </td>
+
                                         <td>
                                             <t t-if="l.invoice_line_tax_id4 == 5">
                                                 <t t-set="tax5_tax" t-value="tax5_tax+l.product_tax"/>
@@ -169,6 +166,16 @@
                                                 <t t-set="tax18_tax" t-value="tax18_tax+l.product_tax"/>
                                             </t>
                                             <span t-field="l.invoice_line_tax_id4"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.unit_price_c"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="l.product_tax"/>
+                                        </td>
+                                        <td>
+                                            <t t-set="gross_amount" t-value="int(l.quantity) * l.unit_price"/>
+                                            <span t-esc="gross_amount"/>
                                         </td>
                                         <!--                        <td><span t-field="l.amt_tax"/></td>-->
                                         <!--                        <td><span t-field="l.amt_w_tax"/></td>-->
@@ -468,13 +475,13 @@
                                     </tr>
 
 
-<!--                                        <td>-->
-<!--                                            <strong>Advance Amount</strong>-->
-<!--                                        </td>-->
-<!--                                        <td class="text-right">-->
-<!--                                            <span t-field="o.advance_amount"-->
-<!--                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
-<!--                                        </td>-->
+                                    <!--                                        <td>-->
+                                    <!--                                            <strong>Advance Amount</strong>-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <td class="text-right">-->
+                                    <!--                                            <span t-field="o.advance_amount"-->
+                                    <!--                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
+                                    <!--                                        </td>-->
 
                                 </table>
                                 <div t-if="o.amount_in_words">
