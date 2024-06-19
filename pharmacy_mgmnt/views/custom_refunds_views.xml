@@ -16,7 +16,7 @@
         </record>
 
 
-        <menuitem action="action_invoice_tree3" id="menu_med_main_customer_refund" name="Customer Refunds"
+        <menuitem action="action_invoice_tree3" id="menu_med_main_customer_refund" name="Credit Note"
                   parent="menu_med_main_cust" sequence="6"/>
     </data>
 </openerp>
