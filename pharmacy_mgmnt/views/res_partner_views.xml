@@ -44,13 +44,15 @@
                 <xpath expr="//field[@name='parent_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                 <xpath expr="//field[@name='phone']" position="attributes">
-                        <attribute name="invisible">1</attribute>
-                 </xpath>
+                <xpath expr="//field[@name='phone']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='phone']" position="after">
-                       <field name="gst_number_c"
-                           attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}" style="width:100px;"/>
-                    <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}" style="width:50px;"/>
+                    <field name="gst_number_c"
+                           attrs="{'invisible': [('customer','=',False)],'required':[('b2b','=',True)]}"
+                           style="width:100px;"/>
+                    <field name="drug_license_number" attrs="{'invisible': [('customer','=',False)]}"
+                           style="width:50px;"/>
 
                 </xpath>
                 <xpath expr="//field[@name='title']" position="attributes">
@@ -67,7 +69,7 @@
                     </group>
                     <field name="local_area_customer" attrs="{'invisible': [('customer','=',False)]}"/>
                     <field name="select_state" attrs="{'invisible': [('interstate_customer','=',False)]}"/>
-                      <field name="address_new"/>
+                    <field name="address_new"/>
                     <field name="advance_amount" invisible="0" widget="float_no_default"/>
                     <field name="local_customer" invisible="1"/>
                 </xpath>
@@ -89,17 +91,17 @@
                 <!--                          <field name="advance_amount" string="Advance Amount" style="height:20%%" readonly="1"/>-->
                 <!--                    </xpath>-->
                 <xpath expr="//field[@name='account_id']" position="after">
+                    <field name="address_new" style="height:50px"/>
                     <field name="phone_number" widget="phone"/>
-                    <field name="address_new" style="height:50%%"/>
                 </xpath>
-                 <xpath expr="//field[@name='date_invoice']" position="attributes">
+                <xpath expr="//field[@name='date_invoice']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="after">
                     <field name="pay_mode" attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
                     <field name="res_person" domain="[('res_person_id', '=', True)]"
                            attrs="{'required': [('pay_mode','=', 'credit')]}"/>
-<!--                    <field name="account_id" required="False" invisible="1"/>-->
+                    <!--                    <field name="account_id" required="False" invisible="1"/>-->
 
                 </xpath>
 
@@ -109,7 +111,8 @@
                 </xpath>
                 <xpath expr="//field[@name='journal_id']" position="after">
                     <field name="doctor_name_1" class="doctor" string="Doctor" required="0"
-                           domain="[('res_person_id','=',False),('customer','=',True)]" attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
+                           domain="[('res_person_id','=',False),('customer','=',True)]"
+                           attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
                     <field name="gst_type" attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
                     <!--                        <field name="financial_year" placeholder="Financial Year" style="width:50%%" invisible="1"/>-->
 
