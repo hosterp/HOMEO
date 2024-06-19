@@ -1621,6 +1621,14 @@ class AccountInvoice(models.Model):
     #         action = self.env.ref('pharmacy_mgmnt.action_holding_invoice', raise_if_not_found=False)
     #         if action:
     #             record.action_invoice_tree_id = action.id
+    @api.constrains('pay_mode', 'partner_id')
+    @api.onchange('pay_mode', 'partner_id')
+    def _check_credit_eligibility(self):
+        for rec in self:
+            if rec.pay_mode == 'credit' and not rec.partner_id.limit_amt:
+                raise ValidationError(_('Customer not eligible for credit payment'))
+
+
     @api.depends('partner_id')
     def get_advance_amount(self):
         for rec in self:
