@@ -31,20 +31,32 @@ openerp.pharmacy_mgmnt = function (instance) {
             var self = this;
             this.$buttons.find('.oe_form_button_save').click(function() {
                 var validateButton = document.querySelector('.cus_validate');
+                var recordDelete = document.querySelector('.record_delete');
                 var payButton = document.querySelector('.invoice_pay_customer');
 
-                if (validateButton) {
-                    validateButton.click();
+                function clickElement(element, delay) {
+                    return new Promise(function(resolve, reject) {
+                        if (element) {
+                            setTimeout(function() {
+                                element.click();
+                                resolve();
+                            }, delay);
+                        } else {
+                            resolve();
+                        }
+                    });
                 }
-
-                if (payButton) {
-                    setTimeout(function() {
-                        payButton.click();
-                    }, 1000);
-                }
+                clickElement(recordDelete, 200)
+                    .then(function() {
+                        return clickElement(validateButton, 1000);
+                    })
+                    .then(function() {
+                        return clickElement(payButton, 1000);
+                    });
             });
         },
     });
+
     instance.web.FormView.include({
         load_form: function() {
             this._super.apply(this, arguments);

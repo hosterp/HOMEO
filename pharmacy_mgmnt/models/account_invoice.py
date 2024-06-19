@@ -79,31 +79,15 @@ class AccountInvoiceLine(models.Model):
             else:
                 pass
 
+
+
     @api.model
     def create(self, vals):
-        existing_record = self.search([
-            ('invoice_id', '=', vals['invoice_id']),
-            ('product_id', '=', vals['product_id']),
-            ('expiry_date', '=', vals['expiry_date']),
-            ('medicine_rack', '=', vals['medicine_rack']),
-            ('product_of', '=', vals['product_of']),
-            ('medicine_grp', '=', vals['medicine_grp']),
-            ('medicine_name_packing', '=', vals['medicine_name_packing']),
-            ('invoice_line_tax_id4', '=', vals['invoice_line_tax_id4']),
-            ('medicine_name_subcat', '=', vals['medicine_name_subcat']),
-            ('price_unit', '=', vals['price_unit']),
-        ], limit=1)
-
-        if existing_record:
-            # If similar record exist full_cleared_dbs, update the quantity field instead of creating a new record
-            existing_record.write({
-                'quantity': existing_record.quantity + vals.get('quantity', 0)
-            })
-            # print(existing_record,'exist')
-            return existing_record
+        if 'product_id' not in vals:
+            vals.clear()
         else:
-            pass
-        # If no similar record found or incomplete data, create a new record
+            print(vals,'vals')
+
         result = super(AccountInvoiceLine, self).create(vals)
         # if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.medicine_rack and result.price_unit:
         #     vals = {
@@ -1088,7 +1072,7 @@ class AccountInvoiceLine(models.Model):
 
     medicine_rack = fields.Many2one('product.medicine.types', 'Rack')
     product_of = fields.Many2one('product.medicine.responsible', 'Company',
-                                 default=lambda self: self._compute_default_target_field(),)
+                                 )
 
     @api.model
     def _compute_default_target_field(self):
@@ -1096,7 +1080,7 @@ class AccountInvoiceLine(models.Model):
         return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
 
 
-    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
+    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency')
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack', )
 
     # medicine_grp = fields.Many2one('product.medicine.group', 'GROUP',compute='_compute_taxes',readonly="0")
@@ -1573,6 +1557,7 @@ class AccountInvoice(models.Model):
     _inherit = "account.invoice"
     _rec_name = "number2"
     _order = "number2 desc"
+
 
     @api.multi
     def open_wizard_action(self):
@@ -3129,5 +3114,9 @@ class AccountInvoice(models.Model):
                             data.qty += res.quantity
                             data.write({'qty': data.qty})
                         res.unlink()
+                    elif not res.product_id:
+                        res.unlink()
+                    else:
+                        pass
             else:
                 raise ValidationError("No invoice Lines")

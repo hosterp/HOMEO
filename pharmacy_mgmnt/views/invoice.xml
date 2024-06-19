@@ -115,31 +115,41 @@
                     <attribute name="required">0</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="replace">
-                    <field name="product_id" string="Product" required="1" options='{"no_open": True}'/>
+                    <field name="product_id" string="Product" attrs="{'required': [('product_id', '!=', False)]}" options="{'no_open': True}"/>
+
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
-                    <field name="medicine_name_subcat" options='{"no_open": True}'/>
+                    <field name="medicine_name_subcat" options='{"no_open": True}'
+                           attrs="{'required': [('product_id', '!=', False)]}"/>
                     <field name="batch"/>
                     <field name="medicine_name_packing" options='{"no_open": True}'/>
                     <field name="product_of" options='{"no_open": True}'/>
-                    <field name="medicine_grp" string="Group" required="1" options='{"no_open": True}'/>
+                    <field name="medicine_grp" string="Group" attrs="{'required': [('product_id', '!=', False)]}"
+                           options='{"no_open": True}'/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>
                     <attribute name="widget">float_no_default</attribute>
+                    <attribute name="attrs">{'required': [('product_id', '!=', False)]}</attribute>
+
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Mrp</attribute>
                     <attribute name="widget">float_no_default</attribute>
+                    <attribute name="attrs">{'required': [('product_id', '!=', False)]}</attribute>
+
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="replace">
                     <field name="discount" string="Dis" widget="float_no_default"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="after">
-                    <field name="unit_price_c" widget="float_no_default" onchange="_onchange_unit_price_c(unit_price_c)" string="Unit TP" options='{"no_open": True}' readonly="0"/>
-                    <field name="unit_price" widget="float_no_default" string="Unit P" options='{"no_open": True}' readonly="1"/>
+                    <field name="unit_price_c" widget="float_no_default" onchange="_onchange_unit_price_c(unit_price_c)"
+                           string="Unit TP" options='{"no_open": True}' readonly="0"/>
+                    <field name="unit_price" widget="float_no_default" string="Unit P" options='{"no_open": True}'
+                           readonly="1"/>
                     <field name="invoice_line_tax_id4" readonly="1" widget="float_no_default"/>
-                    <field name="product_tax" string="Tax Amt" readonly="1"  widget="float_no_default" options='{"no_open": True}'/>
+                    <field name="product_tax" string="Tax Amt" readonly="1" widget="float_no_default"
+                           options='{"no_open": True}'/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="attributes">
                     <attribute name="string">Grand Total</attribute>
@@ -200,7 +210,7 @@
 
                 <xpath expr="//field[@name='invoice_line']" position="before">
                     <button name="delete_line" string="Delete Line" type="object" class="oe_highlight record_delete"
-                     attrs="{'invisible':[('state', 'in', ['paid','open'])]}"/>
+                            attrs="{'invisible':[('state', 'in', ['paid','open'])]}"/>
                     <button name="%(wiz_tree)d" type="action" string="Search Stock" class="css_hiworth oe_highlight"/>
                     <field name="search_items" class="flexdatalist-json" invisible="1"/>
 
@@ -228,7 +238,7 @@
                     <attribute name="required">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="before">
-                    <field name="product_of" options='{"no_open": True}' required="1" />
+                    <field name="product_of" options='{"no_open": True}' required="1"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='sequence']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -238,7 +248,7 @@
                     <field name="medicine_name_packing" required="1" options='{"no_open": True}'/>
 
                     <field name="medicine_grp" string="Group" required="1" options='{"no_open": True}'/>
-                     <field name="batch" string="Batch"/>
+                    <field name="batch" string="Batch"/>
                     <field name="test3" invisible="1"/>
 
                     <field name="batch_2" options='{"no_open": True}' invisible="1"/>
@@ -253,7 +263,8 @@
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="before">
                     <field name="discount2" invisible="1" widget="float_no_default"/>
                     <field name="discount3" widget="float_no_default" onchange="_onchange_discount3(discount3)"/>
-                    <field name="unit_price_s" string="U Price" widget="float_no_default" onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>
+                    <field name="unit_price_s" string="U Price" widget="float_no_default"
+                           onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>
                     <field name="rate_amt" widget="float_no_default" string="total unit_price_s" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
