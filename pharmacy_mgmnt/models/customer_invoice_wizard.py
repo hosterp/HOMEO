@@ -44,6 +44,7 @@ class CustomerInvoiceWizard(models.Model):
         for i in invoices:
             line_values.append((0, 0, {
                 'partner_id': i.partner_id.id,
+                'invoice_id': i.id,
                 'date_invoice': i.date_invoice,
                 'res_person': i.res_person.id,
                 'cus_inv_number': i.cus_inv_number,
@@ -154,12 +155,45 @@ class CustomerInvoiceWizard(models.Model):
             if invoice_id:
                 invoice_id.write({'invoice_line': new_lines})
 
+    @api.multi
+    def add_all_lines(self):
+        if self.invoice_wizard_ids:
+            new_lines = []
+            for rec in self.invoice_wizard_ids:
+                new_line = {
+                    'id_for_ref': rec.id_for_ref,
+                    'stock_entry_id': rec.stock_entry_id.id,
+                    'name': rec.name,
+                    'product_id': rec.product_id.id,
+                    'medicine_name_subcat': rec.medicine_name_subcat.id,
+                    'medicine_name_packing': rec.medicine_name_packing.id,
+                    'product_of': rec.product_of.id,
+                    'medicine_grp': rec.medicine_grp.id,
+                    'batch_2': rec.batch_2.id,
+                    'batch': rec.batch,
+                    'hsn_code': rec.hsn_code,
+                    'price_unit': rec.price_unit,
+                    'discount': rec.discount or 0,
+                    'manf_date': rec.manf_date,
+                    'expiry_date': rec.expiry_date,
+                    'medicine_rack': rec.medicine_rack.id,
+                    'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+                    'rack_qty': rec.rack_qty,
+                    'quantity': rec.quantity,
+                    'invoice_id': rec.invoice_id.id,
+                }
+                new_lines.append((0, 0, new_line))
+
+            if self.invoice_id:
+                self.invoice_id.write({'invoice_line': new_lines})
+
 
 class AccountInvoiceLineWizhard(models.Model):
     _name = "account.invoice.wizard"
     _rec_name = 'id'
 
     customer_id = fields.Many2one('customer.wizard')
+    wizard_id = fields.Many2one('wizard.invoice')
     invoice_id = fields.Many2one('account.invoice.line')
     name = fields.Text(string="Description", required=False)
     stock_entry_id = fields.Many2one('entry.stock')
@@ -202,13 +236,56 @@ class AccountWizhardInvoice(models.Model):
     _name = "wizard.invoice"
     _rec_name = 'id'
 
-    customer_wizard=fields.Many2one('customer.wizard')
+    customer_wizard = fields.Many2one('customer.wizard')
     partner_id = fields.Many2one('res.partner', create=True)
     date_invoice = fields.Date(string="Invoice Date")
     res_person = fields.Many2one('res.partner', string="Responsible Person")
-    cus_inv_number = fields.Char('account.invoice')
-    residual = fields.Float('account.invoice')
-    amount_untaxed = fields.Float('account.invoice')
-    amount_total = fields.Float('account.invoice')
+    cus_inv_number = fields.Char()
+    residual = fields.Float()
+    amount_untaxed = fields.Float()
+    amount_total = fields.Float()
+    invoice_id = fields.Many2one('account.invoice')
+    invoice_wizard_ids = fields.One2many('account.invoice.wizard','wizard_id')
+
+
+    @api.multi
+    def get_details(self):
+        self.ensure_one()
+        self.customer_wizard.invoice_wizard_ids = [(5, 0, 0)]
+        invoice = self.env['account.invoice'].browse([(self.invoice_id.id)])
+        line_values = []
+        for rec in invoice.invoice_line:
+            line_values.append((0, 0, {
+                'id_for_ref': rec.id_for_ref,
+                'stock_entry_id': rec.stock_entry_id.id,
+                'name': rec.name,
+                'product_id': rec.product_id.id,
+                'medicine_name_subcat': rec.medicine_name_subcat.id,
+                'medicine_name_packing': rec.medicine_name_packing.id,
+                'product_of': rec.product_of.id,
+                'medicine_grp': rec.medicine_grp.id,
+                'batch_2': rec.batch_2.id,
+                'batch': rec.batch,
+                'hsn_code': rec.hsn_code,
+                'price_unit': rec.price_unit,
+                'discount': rec.discount or 0,
+                'manf_date': rec.manf_date,
+                'expiry_date': rec.expiry_date,
+                'medicine_rack': rec.medicine_rack.id,
+                'invoice_line_tax_id4': rec.invoice_line_tax_id4,
+                'rack_qty': rec.rack_qty,
+                'quantity': rec.quantity,
+                'invoice_id': rec.invoice_id.id,
+
+            }))
+        self.customer_wizard.invoice_wizard_ids = line_values
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'customer.wizard',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': self.customer_wizard.id,
+            'target': 'new',
+        }
 
 

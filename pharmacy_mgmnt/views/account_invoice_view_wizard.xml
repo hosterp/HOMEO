@@ -13,7 +13,7 @@
                         <field name="date_from" required="1"/>
                         <field name="date_to" required="1"/>
                     </group>
-                    <button name="get_details" type="object" string="Fetch Details" class="oe_highlight"/>
+                    <button name="get_details" type="object" string="Product Details" class="oe_highlight"/>
                     <button name="get_invoice_details" type="object" string="invoice Details" class="oe_highlight"/>
                     <notebook>
                         <page string="Invoices">
@@ -26,6 +26,8 @@
                                     <field name="residual" string="Balance"/>
                                     <field name="amount_untaxed" string="SubTotal"/>
                                     <field name="amount_total" string="Total"/>
+                                    <button name="get_details" type="object" string="Get Products"
+                                            class="oe_highlight"/>
                                 </tree>
                             </field>
                         </page>
@@ -54,7 +56,8 @@
                         </page>
                     </notebook>
                     <footer>
-                        <button name="add_selected_lines" string="Add Selected Lines" type="object"/>
+                        <button name="add_selected_lines" string="Add Selected Lines" type="object" class="oe_highlight"/>
+                        <button name="add_all_lines" string="Add All Lines" type="object" class="oe_highlight"/>
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
