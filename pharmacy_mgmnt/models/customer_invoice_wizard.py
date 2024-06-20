@@ -25,37 +25,43 @@ class CustomerInvoiceWizard(models.Model):
         if self.date_from and self.date_to:
             invoice_domain = [('date_invoice', '>=', self.date_from),
                               ('date_invoice', '<=', self.date_to)]
-            if self.partner_id:
-                invoice_domain.append(('partner_id', '=', self.partner_id.id))
-            if self.type == 'out_invoice':
-                invoice_domain.append(('type', '=', 'out_invoice'))
+        if self.partner_id:
+            invoice_domain.append(('partner_id', '=', self.partner_id.id))
+        if self.type == 'out_invoice':
+            invoice_domain.append(('type', '=', 'out_invoice'))
+        if self.type == 'packing_slip':
+            invoice_domain.append(('packing_invoice', '=', True))
 
-            invoices = self.env['account.invoice'].search(invoice_domain)
-            line_values = []
-            for i in invoices:
-                line_values.append((0, 0, {
-                    'partner_id': i.partner_id.id,
-                    'date_invoice': i.date_invoice,
-                    'res_person': i.res_person.id,
-                    'cus_inv_number': i.cus_inv_number,
-                    'residual': i.residual,
-                    'amount_untaxed': i.amount_untaxed,
-                    'amount_total': i.amount_total,
-                    'type': 'invoice'
-                }))
-            self.cus_invoice_ids = line_values
+        if self.type == 'holding_invoice':
+            invoice_domain.append(('holding_invoice', '=', True))
+        if self.type == 'out_refund':
+            invoice_domain.append(('type', '=', 'out_refund'))
+        if self.type == 'in_refund':
+            invoice_domain.append(('type', '=', 'in_refund'))
 
-            # for i in invoices:
-            #     print(i.partner_id.name, i.date_invoice, i.res_person.name, 'invoice')
+        invoices = self.env['account.invoice'].search(invoice_domain)
+        line_values = []
+        for i in invoices:
+            line_values.append((0, 0, {
+                'partner_id': i.partner_id.id,
+                'date_invoice': i.date_invoice,
+                'res_person': i.res_person.id,
+                'cus_inv_number': i.cus_inv_number,
+                'residual': i.residual,
+                'amount_untaxed': i.amount_untaxed,
+                'amount_total': i.amount_total,
+                'type': 'invoice'
+            }))
+        self.cus_invoice_ids = line_values
 
-            return {
-                'type': 'ir.actions.act_window',
-                'res_model': 'customer.wizard',
-                'view_mode': 'form',
-                'view_type': 'form',
-                'res_id': self.id,
-                'target': 'new',
-            }
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'customer.wizard',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'res_id': self.id,
+            'target': 'new',
+        }
 
     @api.multi
     def get_details(self):
