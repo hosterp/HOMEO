@@ -143,10 +143,10 @@
                 <xpath expr="//field[@name='number']" position="replace">
                     <group>
                         <group col="1">
-                            <field name="number2" string="Invoice" readonly="1" nolabel="0"/>
+                            <h1><field name="number2" string="Invoice" readonly="1" nolabel="0" style="color:red;"/></h1>
                         </group>
                         <group col="1">
-                            <field name="financial_year" string="Financial Year" readonly="1" nolabel="0"/>
+                            <h1><field name="financial_year" string="Financial Year" readonly="1" nolabel="0" class="supplier-inline-field"/></h1>
                         </group>
                     </group>
                 </xpath>

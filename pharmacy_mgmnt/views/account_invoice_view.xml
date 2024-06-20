@@ -42,8 +42,11 @@
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='number']" position="before">
-                    <h1 class="container" style="color:red; margin-left: 327px;" attrs="{'invisible': [('type', '!=', 'in_invoice')]}">SUPPLIER INVOICE</h1>
-                    <h1 class="container" style="color:red; margin-left: 327px;" attrs="{'invisible': [('type', '!=', 'in_refund')]}">
+                    <h1 class="container" style="color:red; margin-left: 327px;"
+                        attrs="{'invisible': [('type', '!=', 'in_invoice')]}">SUPPLIER INVOICE
+                    </h1>
+                    <h1 class="container" style="color:red; margin-left: 327px;"
+                        attrs="{'invisible': [('type', '!=', 'in_refund')]}">
                         DEBIT NOTE
                     </h1>
                 </xpath>
@@ -92,29 +95,26 @@
                 <!--                    <attribute name="readonly">0</attribute>-->
                 <!--                </xpath>-->
                 <xpath expr="//field[@name='number']" position="before">
-                    <h1 class="container" style="color:red; margin-left: 327px;" attrs="{'invisible': [('cus_invoice', '!=', True)]}">
+                    <h1 class="container" style="color:red; margin-left: 327px;"
+                        attrs="{'invisible': [('cus_invoice', '!=', True)]}">
                         CASH/CREDIT TAX INVOICE
                     </h1>
                     <h1 class="container" style="color:MediumSeaGreen; margin-left: 327px;"
                         attrs="{'invisible': [('packing_invoice', '!=', True)]}">PACKING SLIP
                     </h1>
                     <h1 class="container" attrs="{'invisible': [('hold_invoice', '!=', True)]}">HOLDING INVOICE</h1>
-                    <h1 class="container" style="color:red; margin-left: 327px;" attrs="{'invisible': [('type', '!=', 'out_refund')]}">
+                    <h1 class="container" style="color:red; margin-left: 327px;"
+                        attrs="{'invisible': [('type', '!=', 'out_refund')]}">
                         CREDIT NOTE
                     </h1>
                 </xpath>
                 <xpath expr="//field[@name='number']" position="before">
-                    <group class="custom-group">
-                        <group>
-                            <h1>
-                                <field name="cus_inv_number" nolabel="1" readonly="1" colspan="2" class="custom-field"/>
-                            </h1>
-                        </group>
-                        <group>
-                            <h1>
-                                <field name="date_invoices" nolabel="1" readonly="1" colspan="2" class="custom-field"/>
-                            </h1>
-                        </group>
+                    <group class="custom-inline-group">
+                        <h1>
+                            <field name="cus_inv_number" nolabel="1" readonly="1" style="color:red;" />
+                            <field name="date_invoices" nolabel="1" readonly="1" class="custom-inline-field"/>
+                            <field name="financial_year" nolabel="1" readonly="1" class="custom-inline-field"/>
+                        </h1>
                     </group>
                 </xpath>
                 <xpath expr="//group[@class='oe_subtotal_footer oe_right']" position="replace">

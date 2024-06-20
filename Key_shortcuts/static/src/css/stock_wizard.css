@@ -17,6 +17,16 @@
 .openerp .oe_form .oe_form_field_text textarea.field_text {
     height: 70px !important;
 }
+.custom-inline-group h1 {
+    display: flex;
+    align-items: center;
+}
+.custom-inline-field{
+        margin-left: -1200px;
+}
+.supplier-inline-field{
+        margin-left: -600px;
+}
 
 text.input[type="text"]{
 max-width: 182px
