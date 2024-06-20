@@ -14,7 +14,21 @@
                         <field name="date_to" required="1"/>
                     </group>
                     <button name="get_details" type="object" string="Fetch Details" class="oe_highlight"/>
+                    <button name="get_invoice_details" type="object" string="invoice Details" class="oe_highlight"/>
                     <notebook>
+                        <page string="Invoices">
+                            <field name="cus_invoice_ids" widget="tree">
+                                <tree editable="bottom">
+                                    <field name="cus_inv_number" string="Invoice"/>
+                                    <field name="partner_id" string="Customer"/>
+                                    <field name="date_invoice"/>
+                                    <field name="res_person"/>
+                                    <field name="residual" string="Balance"/>
+                                    <field name="amount_untaxed" string="SubTotal"/>
+                                    <field name="amount_total" string="Total"/>
+                                </tree>
+                            </field>
+                        </page>
                         <page string="Products">
                             <field name="invoice_wizard_ids">
                                 <tree editable="bottom">
