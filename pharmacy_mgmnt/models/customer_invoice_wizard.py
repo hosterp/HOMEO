@@ -12,9 +12,50 @@ class CustomerInvoiceWizard(models.Model):
     partner_id = fields.Many2one('res.partner', 'Customer')
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
-    type = fields.Selection([('out_invoice','Sales Invoice'),('packing_slip','Packing Slip'),('holding_invoice','Holding Invoice')])
+    type = fields.Selection([('out_invoice','Sales Invoice'),('packing_slip','Packing Slip'),('holding_invoice','Holding Invoice'),('out_refund','Credit Note'),('in_refund','Debit Note')])
     invoice_wizard_ids = fields.One2many('account.invoice.wizard','customer_id')
     invoice_id = fields.Many2one('account.invoice','invoice_id')
+    cus_invoice_ids = fields.One2many('wizard.invoice', 'customer_wizard', 'Invoices')
+
+    @api.multi
+    def get_invoice_details(self):
+        self.ensure_one()
+        self.cus_invoice_ids = [(5, 0, 0)]  
+
+        if self.date_from and self.date_to:
+            invoice_domain = [('date_invoice', '>=', self.date_from),
+                              ('date_invoice', '<=', self.date_to)]
+            if self.partner_id:
+                invoice_domain.append(('partner_id', '=', self.partner_id.id))
+            if self.type == 'out_invoice':
+                invoice_domain.append(('type', '=', 'out_invoice'))
+
+            invoices = self.env['account.invoice'].search(invoice_domain)
+            line_values = []
+            for i in invoices:
+                line_values.append((0, 0, {
+                    'partner_id': i.partner_id.id,
+                    'date_invoice': i.date_invoice,
+                    'res_person': i.res_person.id,
+                    'cus_inv_number': i.cus_inv_number,
+                    'residual': i.residual,
+                    'amount_untaxed': i.amount_untaxed,
+                    'amount_total': i.amount_total,
+                    'type': 'invoice'
+                }))
+            self.cus_invoice_ids = line_values
+
+            # for i in invoices:
+            #     print(i.partner_id.name, i.date_invoice, i.res_person.name, 'invoice')
+
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'customer.wizard',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'res_id': self.id,
+                'target': 'new',
+            }
 
     @api.multi
     def get_details(self):
@@ -33,6 +74,10 @@ class CustomerInvoiceWizard(models.Model):
 
             if self.type =='holding_invoice':
                 domain.append(('invoice_id.holding_invoice','=',True))
+            if self.type =='out_refund':
+                domain.append(('invoice_id.type','=','out_refund'))
+            if self.type =='in_refund':
+                domain.append(('invoice_id.type','=','in_refund'))
 
             invoice_lines = self.env['account.invoice.line'].search(domain)
             line_values = []
@@ -147,7 +192,17 @@ class AccountInvoiceLineWizhard(models.Model):
     rack_qty = fields.Float(string="stock",)
 
 
+class AccountWizhardInvoice(models.Model):
+    _name = "wizard.invoice"
+    _rec_name = 'id'
 
-
+    customer_wizard=fields.Many2one('customer.wizard')
+    partner_id = fields.Many2one('res.partner', create=True)
+    date_invoice = fields.Date(string="Invoice Date")
+    res_person = fields.Many2one('res.partner', string="Responsible Person")
+    cus_inv_number = fields.Char('account.invoice')
+    residual = fields.Float('account.invoice')
+    amount_untaxed = fields.Float('account.invoice')
+    amount_total = fields.Float('account.invoice')
 
 
