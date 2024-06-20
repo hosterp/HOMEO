@@ -14,18 +14,9 @@
 .oe_form_container > .oe_form .oe_form_nosheet > h1 > label.oe_form_label {
     font-size: 17px;
 }
-.customer_creation textarea.field_text[name="address_new"]{
-    height: 114px;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    resize: vertical;
+.openerp .oe_form .oe_form_field_text textarea.field_text {
+    height: 70px !important;
 }
-textarea.field_text[name="address_new"]{
-
-   max-height: 30px;
-
-}
-
 
 text.input[type="text"]{
 max-width: 182px
