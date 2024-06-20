@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
                 <form string="">
                     <group col="4">
-                        <field name="partner_id" domain="[('customer','=',True)]"/>
+                        <field name="partner_id" domain="['|',('res_person_id','=',True),('customer','=',True)]"/>
                         <field name="type"/>
                     </group>
                     <group col="4">
@@ -20,7 +20,7 @@
                             <field name="cus_invoice_ids" widget="tree">
                                 <tree editable="bottom">
                                     <field name="cus_inv_number" string="Invoice"/>
-                                    <field name="partner_id" string="Customer"/>
+                                    <field name="partner_id" string="Customer" domain="['|',('res_person_id','=',True),('customer','=',True)]"/>
                                     <field name="date_invoice"/>
                                     <field name="res_person"/>
                                     <field name="residual" string="Balance"/>
