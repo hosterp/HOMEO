@@ -442,7 +442,7 @@
             <field name="name">Customer Invoices</field>
             <field name="res_model">account.invoice</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="view_mode">form,tree,calendar,graph</field>
             <field eval="False" name="view_id"/>
             <field name="domain">[('type','=','out_invoice'),('hold_invoice','=',False),('packing_invoice','=',False)]]
             </field>
@@ -463,12 +463,13 @@
             </field>
         </record>
         <record id="action_invoice_tree1_view1" model="ir.actions.act_window.view">
-            <field eval="1" name="sequence"/>
+            <field eval="2" name="sequence"/>
             <field name="view_mode">tree</field>
+            <field name="view_id" ref="account.invoice_tree"/>
             <field name="act_window_id" ref="action_invoice_tree1"/>
         </record>
         <record id="action_invoice_tree1_view2" model="ir.actions.act_window.view">
-            <field eval="2" name="sequence"/>
+            <field eval="1" name="sequence"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="account.invoice_form"/>
             <field name="act_window_id" ref="action_invoice_tree1"/>
@@ -1415,7 +1416,7 @@
             <field name="res_model">partner.payment</field>
             <field name="view_mode">form,tree</field>
             <field name="domain">[('reference_number', '!=', '0')]</field>
-             <field name="context">{'search_default_date_filter': 1}</field>
+            <field name="context">{'search_default_date_filter': 1}</field>
             <field name="search_view_id" ref="partner_payment_view_search"/>
         </record>
 

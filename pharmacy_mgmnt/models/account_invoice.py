@@ -2666,6 +2666,7 @@ class AccountInvoice(models.Model):
 
     @api.onchange('phone_number')
     def onchange_phone_number(self):
+        if self.phone_number:
             partner_id = self.env['res.partner'].search([('mobile', '=', self.phone_number)], limit=1)
             if partner_id and  self.partner_id != partner_id.id:
                 self.partner_id = partner_id.id
