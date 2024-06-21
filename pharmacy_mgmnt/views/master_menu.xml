@@ -181,7 +181,7 @@
                   sequence="4" parent="menu_med_configurations"/>
         <menuitem action="action_rack_detail_entry" id="menu_rack_detail_entry_id"
                   name="Rack"
-                  sequence="5" parent="menu_med_configurations"/> 
+                  sequence="5" parent="menu_med_configurations"/>
         <menuitem action="action_grp_config_detail_entry" id="menu_med_config_child_3"
                   name="Group-Product-Potency Link"
                   sequence="6" parent="menu_med_configurations"/>
@@ -192,13 +192,13 @@
                   name="Suppliers"
                   sequence="8" parent="menu_med_configurations"/>
         <menuitem action="action_partner_form" id="menu_customers"
-                  name="Customers"
+                  name="Customers and Responsible Persons"
                   sequence="9" parent="menu_med_configurations"/>
-        <menuitem action="action_inv_responsible"
-                  id="menu_responsible_persons"
-                  name="Responsible Persons"
-                  sequence="10"
-                  parent="menu_med_configurations"/>
+<!--        <menuitem action="action_inv_responsible"-->
+<!--                  id="menu_responsible_persons"-->
+<!--                  name="Responsible Persons"-->
+<!--                  sequence="10"-->
+<!--                  parent="menu_med_configurations"/>-->
         <menuitem id="menu_main_financial_year"
                   name="Financial Year"
                   sequence="13" parent="menu_med_configurations"/>
