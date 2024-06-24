@@ -1581,7 +1581,7 @@ class AccountInvoice(models.Model):
             'res_model': 'customer.wizard',
             'view_type': 'form',
             'view_mode': 'form',
-            'target': 'new',
+            'target': 'current',
             'context': {
                 'default_invoice_id': self.id,
                 'default_partner_id': self.partner_id.id,
