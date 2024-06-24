@@ -24,8 +24,8 @@
             </field>
         </record>
         <menuitem action="action_invoice_tree4" id="menu_med_main_supplier_refunds"
-                  name="Debit Note" parent="menu_med_main_supp"
-                  sequence="3"/>
+                  name="Debit Note" parent="menu_med_main_cust"
+                  sequence="7"/>
 
         <!--        <menuitem action="action_invoice_tree4" id="menu_action_invoice_tree4" parent="menu_finance_payables" sequence="6"/>-->
     </data>

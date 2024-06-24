@@ -31,6 +31,7 @@ class PartialTransfer1(models.TransientModel):
             for rec in stock_obj:
                 new_lines.append((0, 0, {
                     'qty': round(rec.qty, 0),
+                    'pysical_qty': round(rec.qty, 0),
                     'name': rec.medicine_1.name,
                     'medicine_1': rec.medicine_1.id,
                     'potency': rec.potency.id,
@@ -64,6 +65,7 @@ class PartialTransfer1(models.TransientModel):
                 print("rec.id",rec.id)
                 new_lines.append((0, 0, {
                     'qty': round(rec.qty, 0),
+                    'pysical_qty': round(rec.qty, 0),
                     'name': rec.medicine_1.name,
                     'medicine_1': rec.medicine_1.id,
                     'potency': rec.potency.id,
@@ -97,6 +99,7 @@ class PartialTransfer1(models.TransientModel):
                 print("rec.id", rec.id)
                 new_lines.append((0, 0, {
                     'qty': round(rec.qty, 0),
+                    'pysical_qty': round(rec.qty, 0),
                     'name': rec.medicine_1.name,
                     'medicine_1': rec.medicine_1.id,
                     'potency': rec.potency.id,
@@ -123,6 +126,7 @@ class PartialTransfer1(models.TransientModel):
                         item.entry_stock_id.write({'qty': balance_qty})
                         vals={
                             'qty': item.qty_transfer,
+                            'pysical_qty': item.qty_transfer,
                             'name': item.medicine_1.name,
                             'medicine_1': item.medicine_1.id,
                             'potency': item.potency.id,
@@ -190,6 +194,7 @@ class PartTranserNew1(models.TransientModel):
     batch_2 = fields.Many2one('med.batch', "Batch")
     rack = fields.Many2one('product.medicine.types', 'Rack')
     qty = fields.Float('Stock')
+    pysical_qty = fields.Float('Pysical Quantity')
     company = fields.Many2one('product.medicine.responsible', 'Company')
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Packing', )
     medicine_1 = fields.Many2one('product.product', string="Medicine")
@@ -208,6 +213,7 @@ class stockTransferto(models.TransientModel):
     batch_2 = fields.Many2one('med.batch', "Batch")
     rack = fields.Many2one('product.medicine.types', 'Rack')
     qty = fields.Float('Stock')
+    pysical_qty = fields.Float('Pysical Quantity')
     company = fields.Many2one('product.medicine.responsible', 'Company')
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Packing', )
     medicine_1 = fields.Many2one('product.product', string="Medicine")
