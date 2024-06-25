@@ -31,38 +31,42 @@ openerp.pharmacy_mgmnt = function (instance) {
             var self = this;
             this.$buttons.find('.oe_form_button_save').click(function() {
                 self.save().done(function() {
-                var invoiceLine = self.datarecord.invoice_line;
-                    if (invoiceLine.length > 0) {
-                        var validateButton = document.querySelector('.cus_validate');
-                        var recordDelete = document.querySelector('.record_delete');
-                        var payButton = document.querySelector('.invoice_pay_customer');
+                    var validateButton = document.querySelector('.cus_validate');
+                    if (validateButton) {
+                        var invoiceLine = self.datarecord.invoice_line;
+                        if (invoiceLine.length > 0) {
+                            var recordDelete = document.querySelector('.record_delete');
+                            var payButton = document.querySelector('.invoice_pay_customer');
 
-                        function clickElement(element, delay) {
-                            return new Promise(function(resolve, reject) {
-                                if (element) {
-                                    setTimeout(function() {
-                                        element.click();
+                            function clickElement(element, delay) {
+                                return new Promise(function(resolve, reject) {
+                                    if (element) {
+                                        setTimeout(function() {
+                                            element.click();
+                                            resolve();
+                                        }, delay);
+                                    } else {
                                         resolve();
-                                    }, delay);
-                                } else {
-                                    resolve();
-                                }
-                            });
-                        }
+                                    }
+                                });
+                            }
 
-                        clickElement(recordDelete, 200)
-                            .then(function() {
-                                return clickElement(validateButton, 1000);
-                            })
-                            .then(function() {
-                                return clickElement(payButton, 1000);
-                            });
+                            clickElement(recordDelete, 200)
+                                .then(function() {
+                                    return clickElement(validateButton, 1000);
+                                })
+                                .then(function() {
+                                    return clickElement(payButton, 1000);
+                                });
+                        } else {
+                            self.do_warn('Warning', 'No invoice line');
+                        }
                     } else {
-                        self.do_warn('Warning', 'No invoice line');
+                        console.log("hello");
                     }
                 });
             });
-        },
+        }
     });
 
     instance.web.FormView.include({

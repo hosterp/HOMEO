@@ -63,6 +63,7 @@
         'views/account_voucher.xml',
         'views/custom_refunds_views.xml',
         'views/custom_supplier_refunds_views.xml',
+        'views/create_order.xml',
 
     ],
     'js': [
