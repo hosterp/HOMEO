@@ -1581,7 +1581,7 @@ class AccountInvoice(models.Model):
             'res_model': 'customer.wizard',
             'view_type': 'form',
             'view_mode': 'form',
-            'target': 'new',
+            'target': 'current',
             'context': {
                 'default_invoice_id': self.id,
                 'default_partner_id': self.partner_id.id,
@@ -1640,22 +1640,12 @@ class AccountInvoice(models.Model):
             invoice_url = "http://0.0.0.0:8069/web#page=0&limit=80&view_type=list&model=account.invoice&action={}".format(
                 self.env.ref('pharmacy_mgmnt.action_holding_invoice', raise_if_not_found=False).id)
             record.hold_invoice_link = invoice_url
-    # @api.model
-    # def default_get(self, fields):
-    #     res = super(AccountInvoice, self).default_get(fields)
-    #
-    #     # Check if the invoice type is 'in_invoice'
-    #     if res.get('type') == 'in_invoice':
-    #         records = [(5, 0, 0)]  # Remove existing records, if any
-    #
-    #         # Create the first line without the default value for 'product_of'
-    #         first_line = (0, 0, {'product_of': False})
-    #         records.append(first_line)
-    #
-    #         if 'invoice_line' in fields:
-    #             res.update({'invoice_line': records})
-    #
-    #     return res
+    @api.model
+    def default_get(self, fields):
+        res = super(AccountInvoice, self).default_get(fields)
+        if res.get('type') == 'out_invoice':
+            res.update({'partner_id': 23})
+        return res
 
     @api.onchange("bill_discount")
     def onchange_bill_discount(self):

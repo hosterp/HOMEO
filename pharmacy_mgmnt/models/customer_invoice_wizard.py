@@ -31,7 +31,6 @@ class CustomerInvoiceWizard(models.Model):
             invoice_domain.append(('type', '=', 'out_invoice'))
         if self.type == 'packing_slip':
             invoice_domain.append(('packing_invoice', '=', True))
-
         if self.type == 'holding_invoice':
             invoice_domain.append(('holding_invoice', '=', True))
         if self.type == 'out_refund':
@@ -44,6 +43,7 @@ class CustomerInvoiceWizard(models.Model):
         for i in invoices:
             line_values.append((0, 0, {
                 'partner_id': i.partner_id.id,
+                'active_invoice_id': self.invoice_id.id,
                 'invoice_id': i.id,
                 'date_invoice': i.date_invoice,
                 'res_person': i.res_person.id,
@@ -55,14 +55,14 @@ class CustomerInvoiceWizard(models.Model):
             }))
         self.cus_invoice_ids = line_values
 
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'customer.wizard',
-            'view_mode': 'form',
-            'view_type': 'form',
-            'res_id': self.id,
-            'target': 'new',
-        }
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'res_model': 'customer.wizard',
+        #     'view_mode': 'form',
+        #     'view_type': 'form',
+        #     'res_id': self.id,
+        #     'target': 'new',
+        # }
 
     @api.multi
     def get_details(self):
@@ -244,6 +244,7 @@ class AccountWizhardInvoice(models.Model):
     residual = fields.Float()
     amount_untaxed = fields.Float()
     amount_total = fields.Float()
+    active_invoice_id = fields.Many2one('account.invoice')
     invoice_id = fields.Many2one('account.invoice')
     invoice_wizard_ids = fields.One2many('account.invoice.wizard','wizard_id')
 
@@ -251,7 +252,6 @@ class AccountWizhardInvoice(models.Model):
     @api.multi
     def get_details(self):
         self.ensure_one()
-        self.customer_wizard.invoice_wizard_ids = [(5, 0, 0)]
         invoice = self.env['account.invoice'].browse([(self.invoice_id.id)])
         line_values = []
         for rec in invoice.invoice_line:
@@ -278,14 +278,32 @@ class AccountWizhardInvoice(models.Model):
                 'invoice_id': rec.invoice_id.id,
 
             }))
-        self.customer_wizard.invoice_wizard_ids = line_values
+        if self.active_invoice_id:
+            self.active_invoice_id.write({'invoice_line': line_values})
+            base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+            redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
+                base_url, self.active_invoice_id.id)
+            return {
+                'type': 'ir.actions.act_url',
+                'url': redirect_url,
+                'target': 'self',
+            }
+
+    @api.multi
+    def open_invoice(self):
         return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'customer.wizard',
             'view_mode': 'form',
             'view_type': 'form',
-            'res_id': self.customer_wizard.id,
+            'res_id': self.invoice_id.id,
+            'res_model': 'account.invoice',
+            'view_id': self.env.ref('account.invoice_form').id,
+            'type': 'ir.actions.act_window',
+            'flags': {'action_buttons': True},
             'target': 'new',
         }
+
+
+
+
 
 
