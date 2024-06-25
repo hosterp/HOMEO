@@ -35,6 +35,8 @@
                 <form string="Medicines">
                     <header>
                         <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
+                        <button name="create_order_button" string="Create Order"
+                                attrs="{'invisible': [('state', '!=','draft')]}" type="object" class="oe_highlight"/>
                         <field name="state" string="Status" widget="statusbar"/>
                     </header>
                     <group col="9">
@@ -75,7 +77,7 @@
                                     <field name="manf_date" invisible="1"/>
                                     <field name="expiry_date" invisible="1"/>
                                     <field name="get_purchase"/>
-                                    <field name="number_of_order" colors="blue;"/>
+                                    <field name="number_of_order" widget="float_no_default" colors="blue;"/>
                                 </tree>
                             </field>
                         </page>

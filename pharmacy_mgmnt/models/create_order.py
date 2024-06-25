@@ -112,44 +112,46 @@ class CreateOrder(models.Model):
 
             if stock_items:
                 for line in stock_items:
-                    found_duplicate = False
-
-                    for item in list:
-                        if (
-                                line.medicine_1.id == item[2]['medicine_id'] and
-                                line.potency.id == item[2]['potency'] and
-                                line.medicine_name_packing.id == item[2]['medicine_name_packing'] and
-                                line.medicine_grp1.id == item[2]['medicine_grp1'] and
-                                line.company.id == item[2]['company']
-                        ):
-                            item[2]['qty'] += line.qty
-                            found_duplicate = True
-                            if line.expiry_date <= fields.Date.today():
-                                item[2]['ex_qty'] += line.qty
-                            break
-
-                    if not found_duplicate:
+                    ex_qty = 0
+                    # found_duplicate = False
+                    #
+                    # for item in list:
+                    #     if (
+                    #             line.medicine_1.id == item[2]['medicine_id'] and
+                    #             line.potency.id == item[2]['potency'] and
+                    #             line.medicine_name_packing.id == item[2]['medicine_name_packing'] and
+                    #             line.medicine_grp1.id == item[2]['medicine_grp1'] and
+                    #             line.company.id == item[2]['company']
+                    #     ):
+                    #         item[2]['qty'] += line.qty
+                    #         found_duplicate = True
+                    #         if line.expiry_date <= fields.Date.today():
+                    #             item[2]['ex_qty'] += line.qty
+                    #         break
+                    #
+                    # if not found_duplicate:
+                    if line.expiry_date:
                         if line.expiry_date <= fields.Date.today():
                             ex_qty = line.qty
-                        else:
-                            ex_qty = 0
-                        list.append([0, 0, {
-                            'medicine_id': line.medicine_1.id,
-                            'rack': line.rack.id,
-                            'company': line.company.id,
-                            'potency': line.potency.id,
-                            'medicine_name_packing': line.medicine_name_packing.id,
-                            'medicine_grp1': line.medicine_grp1.id,
-                            'qty': line.qty,
-                            'ex_qty': ex_qty,
-                            'mrp': line.mrp,
-                            'batch_2': line.batch_2,
-                            'manf_date': line.manf_date,
-                            'expiry_date': line.expiry_date,
-                        }])
+                    else:
+                        ex_qty = 0
+                    list.append([0, 0, {
+                        'medicine_id': line.medicine_1.id,
+                        'rack': line.rack.id,
+                        'company': line.company.id,
+                        'potency': line.potency.id,
+                        'medicine_name_packing': line.medicine_name_packing.id,
+                        'medicine_grp1': line.medicine_grp1.id,
+                        'qty': line.qty,
+                        'ex_qty': ex_qty,
+                        'mrp': line.mrp,
+                        'batch_2': line.batch_2,
+                        'manf_date': line.manf_date,
+                        'expiry_date': line.expiry_date,
+                    }])
 
-            rec.stock_view_ids = list
-            domain = []
+        rec.stock_view_ids = list
+        domain = []
 
 class StockOrderLine(models.Model):
     _name = "create.order.lines"
