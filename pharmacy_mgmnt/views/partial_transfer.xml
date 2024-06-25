@@ -46,6 +46,8 @@
                                                 <field name="potency"/>
                                                 <field name="medicine_name_packing"/>
                                                 <field name="company"/>
+                                                <field name="manf_date"  string="Manf Date"/>
+                                                <field name="expiry_date"/>
                                                 <field name="batch_2"/>
                                                 <field name="qty_transfer"/>
                                             </tree>
@@ -61,6 +63,8 @@
                                                 <field name="potency"/>
                                                 <field name="medicine_name_packing"/>
                                                 <field name="company"/>
+                                                 <field name="manf_date" string="Manf Date"/>
+                                                <field name="expiry_date"/>
                                                 <field name="batch_2"/>
                                             </tree>
                                         </field>
