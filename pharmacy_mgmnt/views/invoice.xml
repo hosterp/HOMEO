@@ -263,17 +263,17 @@
 
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_subtotal']" position="before">
                     <field name="discount2" invisible="1" widget="float_no_default"/>
-                    <!--                    <field name="discount3" widget="float_no_default" onchange="_onchange_discount3(discount3)"/>-->
-                    <!--                    <field name="unit_price_s" string="U Price" widget="float_no_default"-->
-                    <!--                           onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>-->
+                    <field name="discount3" widget="float_no_default" onchange="_onchange_discount3(discount3)"/>
+                    <field name="unit_price_s" string="U Price" widget="float_no_default"
+                           onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>
                     <field name="rate_amt" widget="float_no_default" string="total unit_price_s" invisible="1"/>
                 </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
                     <attribute name="string">Qty</attribute>
                     <attribute name="widget">float_no_default</attribute>
                     <attribute name="default_focus">false</attribute>
                 </xpath>
-                <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='price_unit']" position="attributes">
                     <attribute name="string">Mrp</attribute>
                     <attribute name="widget">float_no_default</attribute>
                 </xpath>
@@ -290,9 +290,6 @@
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='batch']" position="after">
                     <field name="manf_date" required="1"/>
                     <field name="expiry_date"/>
-                    <field name="discount3" widget="float_no_default" onchange="_onchange_discount3(discount3)"/>
-                    <field name="unit_price_s" string="U Price" widget="float_no_default"
-                           onchange="_onchange_unit_price_s(unit_price_s)" readonly="0"/>
                 </xpath>
             </field>
         </record>
