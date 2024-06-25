@@ -84,7 +84,7 @@
                                     <field name="medicine_grp1" string="Group" readonly="1"/>
                                     <field name="qty" type="char" string="Qty" readonly="1"/>
                                     <field name="ex_qty" type="char" readonly="1"/>
-                                    <field name="mrp" string="Mrp" type="char" readonly="1"/>
+                                    <field name="mrp" string="Mrp"  readonly="1" sum="Stock Value"/>
                                     <field name="manf_date" invisible="1"/>
                                     <field name="expiry_date" invisible="1"/>
                                     <field name="get_purchase"/>
