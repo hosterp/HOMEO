@@ -203,6 +203,13 @@ class PartTranserNew1(models.TransientModel):
     qty_transfer = fields.Char('Transfer_Qty')
     entry_stock_id = fields.Many2one('entry.stock')
 
+    @api.onchange('pysical_qty')
+    def _onchange_pysical_qty(self):
+        if self.pysical_qty:
+            self.qty = self.pysical_qty
+            self.entry_stock_id.sudo().write({'qty': self.qty})
+
+
 class stockTransferto(models.TransientModel):
     _name = 'stock.transferto'
 #
@@ -220,3 +227,10 @@ class stockTransferto(models.TransientModel):
     qty_received = fields.Float('Qty Transfer')
     qty_transfer = fields.Char('Transfer_Qty')
     entry_stock_id = fields.Many2one('entry.stock')
+
+
+    @api.onchange('pysical_qty')
+    def _onchange_pysical_qty(self):
+        if self.pysical_qty:
+            self.qty=self.pysical_qty
+            self.entry_stock_id.sudo().write({'qty': self.qty})
