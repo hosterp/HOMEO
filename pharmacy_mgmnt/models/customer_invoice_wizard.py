@@ -280,6 +280,7 @@ class AccountWizhardInvoice(models.Model):
             }))
         if self.active_invoice_id:
             self.active_invoice_id.write({'invoice_line': line_values})
+            self.active_invoice_id.write({'partner_id': self.invoice_id.partner_id.id})
             base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
             redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
                 base_url, self.active_invoice_id.id)
