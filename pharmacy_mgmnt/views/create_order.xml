@@ -37,6 +37,9 @@
                         <button name="stock_load" string="Stock Load" type="object" class="oe_highlight"/>
                         <button name="create_order_button" string="Create Order"
                                 attrs="{'invisible': [('state', '!=','draft')]}" type="object" class="oe_highlight"/>
+                        <button name="print_stock_order_report" string="Print Pdf" type="object" class="oe_highlight"/>
+                        <button name="print_stock_order_report_excel" string="Print Excel" type="object"
+                                class="oe_highlight"/>
                         <field name="state" string="Status" widget="statusbar"/>
                     </header>
                     <group col="9">
@@ -86,12 +89,12 @@
                                 <tree editable="bottom">
                                     <!--                                    <field name="medicine_1" invisible="1"/>-->
                                     <field name="medicine_id" readonly="1"/>
-                                    <field name="rack" readonly="1"/>
-                                    <field name="potency" readonly="1"/>
-                                    <field name="company" readonly="1"/>
-                                    <field name="medicine_grp1" readonly="1"/>
-                                    <field name="qty" type="char" invisible="1"/>
-                                    <field name="mrp" type="char" invisible="1"/>
+                                    <field name="rack" string="Rack" readonly="1"/>
+                                    <field name="potency" string="Potency" readonly="1"/>
+                                    <field name="company" string="Company" readonly="1"/>
+                                    <field name="medicine_grp1" string="Group" readonly="1"/>
+                                    <field name="qty" type="char" string="Qty" invisible="1"/>
+                                    <field name="mrp" type="char" string="Mrp" invisible="1"/>
                                     <field name="manf_date" invisible="1"/>
                                     <field name="expiry_date" invisible="1"/>
                                     <field name="new_order"/>
@@ -111,6 +114,16 @@
             <field name="domain">[]</field>
             <field name="context">{}</field>
         </record>
+        <report
+                id="print_create_order_report_xlsx_id"
+                string="create order Report"
+                model="create.order"
+                report_type="xlsx"
+                name="pharmacy_mgmnt.print_create_order_report_xlsx.xlsx"
+                file="pharmacy_mgmnt.print_create_order_report_xlsx.xlsx"
+                attachment_use="False"
+
+        />
         <menuitem id="menu_create_order"
                   action="action_stock_create_order"
                   name="Create Order"

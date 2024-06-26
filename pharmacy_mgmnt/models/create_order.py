@@ -27,6 +27,62 @@ class CreateOrder(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('order', 'Order'), ('purchased', 'Purchased')]
                              , required=True, default='draft')
 
+    @api.multi
+    def print_stock_order_report_excel(self):
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        return {'type': 'ir.actions.report.xml',
+                'report_name': 'pharmacy_mgmnt.print_create_order_report_xlsx.xlsx',
+                'datas': datas
+                }
+
+    @api.multi
+    def print_stock_order_report(self):
+        if self.stock_view_ids:
+            new_lines = []
+            for rec in self.stock_view_ids:
+                if rec.number_of_order != 0:
+                    new_lines.append((0, 0, {
+
+                        'medicine_id': rec.medicine_id.id,
+                        'rack': rec.rack.id,
+                        'potency': rec.potency.id,
+                        # 'company': rec.company.id,
+                        'medicine_name_packing': rec.medicine_name_packing.id,
+                        'medicine_grp1': rec.medicine_grp1.id,
+                        'qty': rec.qty,
+                        'mrp': rec.mrp,
+                        'batch_2': rec.batch_2,
+                        'manf_date': rec.manf_date,
+                        'expiry_date': rec.expiry_date,
+                        'new_order': rec.number_of_order,
+                    }))
+                    # self.write({'order_ids': new_lines})
+                    rec.number_of_order = 0
+            self.order_ids = new_lines
+        if self.state == "draft":
+            self.state = "order"
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        data = self.env['ir.actions.report.xml'].search(
+            [('model', '=', 'create.order'), ('report_name', '=', 'pharmacy_mgmnt.report_create_order_template',)])
+        data.download_filename = 'Order Report.pdf'
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'pharmacy_mgmnt.report_create_order_template',
+            'file': 'filename',
+            'datas': datas,
+            'report_type': 'qweb-pdf',
+        }
+
     @api.model
     def create(self, vals):
         if vals.get('sl_no', 'New') == 'New':

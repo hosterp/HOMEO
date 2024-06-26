@@ -53,6 +53,7 @@
         'report/tax_b2c_hsn.xml',
         'report/sales_report.xml',
         'report/sale_report.xml',
+        'report/create_order_report.xml',
         'views/account_invoice_view.xml',
         'views/invoice_report.xml',
         'views/master_bank.xml',
