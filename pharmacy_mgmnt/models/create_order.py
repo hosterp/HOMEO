@@ -19,13 +19,17 @@ class CreateOrder(models.Model):
     company_id = fields.Many2one("product.medicine.responsible", string="Company")
     date_from = fields.Date(string="Date From")
     date_to = fields.Date(string="Date To")
-    stock_view_ids = fields.One2many("stock.view.order.lines", "stock_view_line_id")
+    stock_view_ids = fields.One2many("stock.create.order.lines", "stock_view_line_id")
     order_ids = fields.One2many("create.order.lines", "stock_order_line_id")
     sales_order_ids = fields.One2many("sales.order.lines", "sales_order_line_id")
     purchase_order_ids = fields.One2many("stock.purchase.order.lines", "purchase_order_line_id")
     date_field = fields.Date(string='Date', default=fields.Date.today)
     state = fields.Selection([('draft', 'Draft'), ('order', 'Order'), ('purchased', 'Purchased')]
                              , required=True, default='draft')
+    @api.multi
+    def order_purchased(self):
+        if self.state == "order":
+            self.state = "purchased"
 
     @api.multi
     def print_stock_order_report_excel(self):
@@ -35,6 +39,8 @@ class CreateOrder(models.Model):
             'form': self.read(),
             'context': self._context,
         }
+        if self.state == "draft":
+            self.state = "order"
         return {'type': 'ir.actions.report.xml',
                 'report_name': 'pharmacy_mgmnt.print_create_order_report_xlsx.xlsx',
                 'datas': datas
@@ -227,3 +233,35 @@ class StockOrderLine(models.Model):
     batch_2 = fields.Many2one('med.batch', string="batch_2")
     manf_date = fields.Date()
     expiry_date = fields.Date()
+
+class StockCreateOrderLine(models.Model):
+    _name = "stock.create.order.lines"
+    _description = 'Stock View Line'
+
+    stock_view_line_id = fields.Many2one("create.order", string="Medicine Entry")
+    number_of_order = fields.Integer("New Order")
+    get_purchase = fields.Boolean(default=False, string="Purchase Details")
+    expiry_alert_date = fields.Date(compute='_compute_expiry_alert_date', string='Expiry Alert Date', store=True)
+    ex_qty = fields.Integer(string="Expired Qty")
+
+
+    medicine_id = fields.Many2one('product.product', string="Medicine")
+    rack = fields.Many2one('product.medicine.types', string="rack")
+    company = fields.Many2one('product.medicine.responsible', string="company")
+    potency = fields.Many2one('product.medicine.subcat', string="potency")
+    medicine_name_packing = fields.Many2one('product.medicine.packing', string="medicine_name_packing")
+    medicine_grp1 = fields.Many2one('product.medicine.group', string="medicine_grp1")
+    qty = fields.Integer(string="qty")
+    mrp = fields.Float(string="mrp")
+    batch_2 = fields.Many2one('med.batch', string="batch_2")
+    manf_date = fields.Date()
+    expiry_date = fields.Date()
+
+    @api.depends('expiry_date')
+    def _compute_expiry_alert_date(self):
+        for record in self:
+            if record.expiry_date:
+                expiry_date = datetime.strptime(record.expiry_date, '%Y-%m-%d').date()
+                record.expiry_alert_date = expiry_date - timedelta(days=180)
+            else:
+                record.expiry_alert_date = False
