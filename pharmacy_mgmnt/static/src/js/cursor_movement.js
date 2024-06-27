@@ -40,19 +40,11 @@ var clickedStates = {};
 $(document).on('focus', '.oe_form_field_many2one', function(event) {
     var tableRow = $(this).closest('tr');
     var label = tableRow.find('label');
-
-
     if (label.text().trim() === "Customer") {
-
-
-        var $ul = $("ul.ui-autocomplete:eq(5)");
+        var $ul = $("ul.ui-autocomplete:eq(0)");
         var $firstItem = $ul.find("li:first");
-
         if ($firstItem.length && !$firstItem.data('clicked')) {
-        // Trigger a click event on the first item of the autocomplete dropdown
             $firstItem.trigger("click");
-
-        // Remove the click event listener after it's been triggered once
             $firstItem.data('clicked', true);
             $firstItem.off('click');
     }
@@ -68,17 +60,26 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
 
 });
 
+$(document).on('focus', '.oe_form_field_many2one', function(event) {
+    var tableRow = $(this).closest('tr');
+    var label = tableRow.find('label');
+        if (label.text().trim() === "To") {
+            var $ul = $("ul.ui-autocomplete:eq(1)");
+            var $firstItem = $ul.find("li:first");
+            if ($firstItem.length && !$firstItem.data('clicked')) {
+                $firstItem.trigger("click");
+                $firstItem.data('clicked', true);
+                $firstItem.off('click');
+        }
+    }
+});
+
 $(document).on('focus', '.oe_form_field_many2one[data-fieldname="product_id"]', function(event) {
     var $productField = $(this);
-
     var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(22)");
     var $firstItem = $ul.find("li:first");
-
     if ($firstItem.length && !$firstItem.data('clicked')) {
-        // Trigger a click event on the first item of the autocomplete dropdown
         $firstItem.trigger("click");
-
-        // Remove the click event listener after it's been triggered once
         $firstItem.data('clicked', true);
         $firstItem.off('click');
     }
@@ -98,6 +99,8 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
         $firstItem.off('click');
     }
 });
+
+
 
 });
  $(document).ready(function() {
