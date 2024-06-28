@@ -212,7 +212,7 @@
                 <xpath expr="//field[@name='invoice_line']" position="before">
                     <button name="delete_line" string="Delete Line" type="object" class="oe_highlight record_delete"
                             attrs="{'invisible':[('state', 'in', ['paid','open'])]}"/>
-                    <button name="%(wiz_tree)d" type="action" string="Search Stock" class="css_hiworth oe_highlight"/>
+                    <button name="%(wiz_tree)d" type="action" string="Search Stock" class="css_hiworth oe_highlight" attrs="{'invisible':[('state', 'not in', ['draft'])]}"/>
                     <field name="search_items" class="flexdatalist-json" invisible="1"/>
 
                 </xpath>
