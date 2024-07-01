@@ -77,6 +77,7 @@ class StockViewOrder(models.Model):
                             'date_invoice': line.invoice_id.date_invoice,
                             'quantity': line.quantity,
                             'product_id': line.product_id.id,
+                            'packing_id': line.medicine_name_packing.id,
                             'product_of': line.product_of.id,
                             'medicine_grp': line.medicine_grp.id,
                             'medicine_name_subcat': line.medicine_name_subcat.id,
@@ -125,6 +126,7 @@ class StockViewOrder(models.Model):
                                 'date_invoice': line.invoice_id.date_invoice,
                                 'quantity': line.quantity,
                                 'product_id': line.product_id.id,
+                                'packing_id': line.medicine_name_packing.id,
                                 'batch': line.batch,
                                 'product_of': line.product_of.id,
                                 'medicine_grp': line.medicine_grp.id,
@@ -149,9 +151,9 @@ class StockPurchaseOrderLine(models.Model):
     product_of = fields.Many2one("product.medicine.responsible")
     medicine_grp = fields.Many2one("product.medicine.group")
     medicine_name_subcat = fields.Many2one("product.medicine.subcat")
-    batch_2 = fields.Many2one('med.batch','Batch')
+    packing_id = fields.Many2one("product.medicine.packing", string="Packing")
+    batch_2 = fields.Many2one('med.batch', 'Batch')
     batch = fields.Char('Batch')
-
 
     @api.multi
     def open_invoice(self):
@@ -176,6 +178,7 @@ class StockPurchaseOrderLine(models.Model):
         #     'target': 'self',
         # }
 
+
 class SalesOrderLine(models.Model):
     _name = "sales.order.lines"
     _description = 'Sales Order Line'
@@ -188,6 +191,7 @@ class SalesOrderLine(models.Model):
     quantity = fields.Integer("quantity")
     product_id = fields.Many2one("product.product")
     product_of = fields.Many2one("product.medicine.responsible")
+    packing_id = fields.Many2one("product.medicine.packing", string="Packing")
     medicine_grp = fields.Many2one("product.medicine.group")
     medicine_name_subcat = fields.Many2one("product.medicine.subcat")
 
@@ -213,7 +217,3 @@ class SalesOrderLine(models.Model):
         #     'url': redirect_url,
         #     'target': 'self',
         # }
-
-
-
-
