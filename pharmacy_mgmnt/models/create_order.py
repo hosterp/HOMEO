@@ -162,7 +162,7 @@ class CreateOrder(models.Model):
 
                 # Calculate expired quantity if applicable
                 if line.expiry_date and line.expiry_date <= fields.Date.today():
-                    ex_qty += 1
+                    ex_qty += line.quantity
 
                 # Calculate sales quantity for the batch
                 if line.batch:

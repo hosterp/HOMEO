@@ -76,14 +76,14 @@
                                     <field name="potency" string="Potency" readonly="1"/>
                                     <field name="company" string="Company" readonly="1"/>
                                     <field name="medicine_grp1" string="Group" readonly="1"/>
+                                    <field name="medicine_name_packing" string="Packing" readonly="1"/>
                                     <field name="batch" string="Batch" readonly="1"/>
-                                    <field name="qty" type="char" string="Qty" readonly="1"/>
+                                    <field name="qty" type="char" string="In Stock" readonly="1"/>
                                     <field name="sale_qty" type="char" string="Sale Qty" readonly="1"/>
                                     <field name="ex_qty" type="char" readonly="1"/>
                                     <field name="mrp" string="Mrp" type="char" readonly="1"/>
                                     <field name="manf_date" invisible="1"/>
                                     <field name="expiry_date" invisible="1"/>
-                                    <field name="get_purchase"/>
                                     <field name="number_of_order" widget="float_no_default" colors="blue;"/>
                                 </tree>
                             </field>
