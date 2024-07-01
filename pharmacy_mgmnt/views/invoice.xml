@@ -249,7 +249,7 @@
                     <field name="medicine_name_packing" required="1" options='{"no_open": True}'/>
 
                     <field name="medicine_grp" string="Group" required="1" options='{"no_open": True}'/>
-                    <field name="batch" string="Batch"/>
+                    <field name="batch" string="Batch" required="1"/>
                     <field name="test3" invisible="1"/>
 
                     <field name="batch_2" options='{"no_open": True}' invisible="1"/>

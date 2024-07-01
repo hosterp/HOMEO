@@ -124,96 +124,80 @@ class CreateOrder(models.Model):
 
     @api.multi
     def stock_load(self):
-        if self.stock_view_ids:
-            new_lines = []
-            for rec in self.stock_view_ids:
-                if rec.number_of_order != 0:
-                    new_lines.append((0, 0, {
-
-                        'medicine_id': rec.medicine_id.id,
-                        'rack': rec.rack.id,
-                        'potency': rec.potency.id,
-                        # 'company': rec.company.id,
-                        'medicine_name_packing': rec.medicine_name_packing.id,
-                        'medicine_grp1': rec.medicine_grp1.id,
-                        'qty': rec.qty,
-                        'mrp': rec.mrp,
-                        'batch_2': rec.batch_2,
-                        'manf_date': rec.manf_date,
-                        'expiry_date': rec.expiry_date,
-                        'new_order': rec.number_of_order,
-                    }))
-                    # self.write({'order_ids': new_lines})
-            self.order_ids = new_lines
-
-        domain = []
-        if self.name:
-            domain += [('supplier_id', '=', self.name.id)]
-        if self.med_category:
-            domain += [('medicine_1.made_in', '=', self.med_category)]
-        if self.group_id:
-            domain += [('medicine_grp1', '=', self.group_id.id)]
-        if self.potency_id:
-            domain += [('potency', '=', self.potency_id.id)]
-        if self.packing_id:
-            domain += [('medicine_name_packing', '=', self.packing_id.id)]
-        if self.company_id:
-            domain += [('company', '=', self.company_id.id)]
-        if self.medicine_id:
-            domain += [('medicine_1', '=', self.medicine_id.id)]
-        if self.date_from:
-            domain += [('stock_date', '>=', self.date_from)]
-        if self.date_to:
-            domain += [('stock_date', '<=', self.date_to)]
         for rec in self:
+            # Clear existing stock view lines if present
             if rec.stock_view_ids:
                 rec.stock_view_ids = [(5, 0, 0)]
 
-            list = []
+            # Prepare domain filter based on UI inputs
+            domain = []
+            if rec.name:
+                domain += [('supplier_id', '=', rec.name.id)]
+            if rec.med_category:
+                domain += [('medicine_1.made_in', '=', rec.med_category)]
+            if rec.group_id:
+                domain += [('medicine_grp1', '=', rec.group_id.id)]
+            if rec.potency_id:
+                domain += [('potency', '=', rec.potency_id.id)]
+            if rec.packing_id:
+                domain += [('medicine_name_packing', '=', rec.packing_id.id)]
+            if rec.company_id:
+                domain += [('company', '=', rec.company_id.id)]
+            if rec.medicine_id:
+                domain += [('medicine_1', '=', rec.medicine_id.id)]
+            if rec.date_from:
+                domain += [('stock_date', '>=', rec.date_from)]
+            if rec.date_to:
+                domain += [('stock_date', '<=', rec.date_to)]
+
+            # Search for stock items based on domain
             stock_items = self.env['entry.stock'].search(domain)
 
-            if stock_items:
-                for line in stock_items:
-                    ex_qty = 0
-                    # found_duplicate = False
-                    #
-                    # for item in list:
-                    #     if (
-                    #             line.medicine_1.id == item[2]['medicine_id'] and
-                    #             line.potency.id == item[2]['potency'] and
-                    #             line.medicine_name_packing.id == item[2]['medicine_name_packing'] and
-                    #             line.medicine_grp1.id == item[2]['medicine_grp1'] and
-                    #             line.company.id == item[2]['company']
-                    #     ):
-                    #         item[2]['qty'] += line.qty
-                    #         found_duplicate = True
-                    #         if line.expiry_date <= fields.Date.today():
-                    #             item[2]['ex_qty'] += line.qty
-                    #         break
-                    #
-                    # if not found_duplicate:
-                    if line.expiry_date:
-                        if line.expiry_date <= fields.Date.today():
-                            ex_qty = line.qty
-                    else:
-                        ex_qty = 0
-                    list.append([0, 0, {
-                        'medicine_id': line.medicine_1.id,
-                        'rack': line.rack.id,
-                        'company': line.company.id,
-                        'potency': line.potency.id,
-                        'medicine_name_packing': line.medicine_name_packing.id,
-                        'medicine_grp1': line.medicine_grp1.id,
-                        'qty': line.qty,
-                        'ex_qty': ex_qty,
-                        'mrp': line.mrp,
-                        'batch_2': line.batch_2,
-                        'manf_date': line.manf_date,
-                        'expiry_date': line.expiry_date,
-                    }])
+            # Prepare list to store stock view lines
+            stock_view_lines = []
 
-        rec.stock_view_ids = list
-        domain = []
+            for line in stock_items:
+                ex_qty = 0
+                sale_qty = 0
+
+                # Calculate expired quantity if applicable
+                if line.expiry_date and line.expiry_date <= fields.Date.today():
+                    ex_qty += line.quantity
+
+                # Calculate sales quantity for the batch
+                if line.batch:
+                    sale_domain = [
+                        ('invoice_id.type', '=', 'out_invoice'),
+                        ('invoice_id.state', 'in', ['paid', 'open']),
+                        ('batch', '=', line.batch)
+                    ]
+                    if rec.date_from:
+                        sale_domain += [('create_date', '>=', rec.date_from)]
+                    if rec.date_to:
+                        sale_domain += [('create_date', '<=', rec.date_to)]
+
+                    sales_orders = self.env['account.invoice.line'].search(sale_domain)
+                    for qty in sales_orders:
+                        sale_qty += qty.quantity
+
+                stock_view_lines.append((0, 0, {
+                    'medicine_id': line.medicine_1.id,
+                    'rack': line.rack.id,
+                    'company': line.company.id,
+                    'potency': line.potency.id,
+                    'medicine_name_packing': line.medicine_name_packing.id,
+                    'medicine_grp1': line.medicine_grp1.id,
+                    'qty': line.qty,
+                    'ex_qty': ex_qty,
+                    'sale_qty': sale_qty,
+                    'mrp': line.mrp,
+                    'batch': line.batch,
+                    'manf_date': line.manf_date,
+                    'expiry_date': line.expiry_date,
+                }))
+
+            rec.stock_view_ids = stock_view_lines
+
 
 class StockOrderLine(models.Model):
     _name = "create.order.lines"
@@ -231,6 +215,7 @@ class StockOrderLine(models.Model):
     qty = fields.Integer(string="qty")
     mrp = fields.Float(string="mrp")
     batch_2 = fields.Many2one('med.batch', string="batch_2")
+    batch = fields.Char( string="Batch")
     manf_date = fields.Date()
     expiry_date = fields.Date()
 
@@ -243,7 +228,7 @@ class StockCreateOrderLine(models.Model):
     get_purchase = fields.Boolean(default=False, string="Purchase Details")
     expiry_alert_date = fields.Date(compute='_compute_expiry_alert_date', string='Expiry Alert Date', store=True)
     ex_qty = fields.Integer(string="Expired Qty")
-
+    sale_qty = fields.Integer(string="Sale Qty")
 
     medicine_id = fields.Many2one('product.product', string="Medicine")
     rack = fields.Many2one('product.medicine.types', string="rack")
@@ -254,6 +239,7 @@ class StockCreateOrderLine(models.Model):
     qty = fields.Integer(string="qty")
     mrp = fields.Float(string="mrp")
     batch_2 = fields.Many2one('med.batch', string="batch_2")
+    batch = fields.Char( string="Batch")
     manf_date = fields.Date()
     expiry_date = fields.Date()
 
