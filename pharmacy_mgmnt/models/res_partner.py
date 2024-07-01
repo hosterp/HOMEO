@@ -91,7 +91,7 @@ class ResPartner(models.Model):
     interstate_customer = fields.Boolean()
     b2b = fields.Boolean()
     # b2b = fields.Boolean(compute="_change_boolean_status")
-    b2c = fields.Boolean()
+    b2c = fields.Boolean(default=True)
     gst_number = fields.Char('GST No')
     gst_number_c = fields.Char('GST No')
     drug_license_number = fields.Char(string='DL/REG NO')
