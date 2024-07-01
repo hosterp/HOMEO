@@ -9,6 +9,12 @@
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='date']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='period_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
                 <xpath expr="//field[@name='reference']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>
