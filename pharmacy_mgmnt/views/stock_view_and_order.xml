@@ -80,6 +80,7 @@
                                     <field name="medicine_id" readonly="1"/>
                                     <field name="rack" invisible="1"/>
                                     <field name="potency" string="Potency" readonly="1"/>
+                                    <field name="medicine_name_packing" string="Packing" readonly="1"/>
                                     <field name="company" string="Company" readonly="1"/>
                                     <field name="medicine_grp1" string="Group" readonly="1"/>
                                     <field name="qty" type="char" string="Qty" readonly="1"/>

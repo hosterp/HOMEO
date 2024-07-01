@@ -1140,7 +1140,7 @@ class AccountInvoiceLine(models.Model):
             name_pattern = '100ML'
             default_pack = self.env['account.invoice.line'].search([('medicine_name_packing', 'ilike', name_pattern)], limit=1)
             return default_pack.medicine_name_packing if default_pack else ''
-    
+
 
     # @api.onchange('price_unit')
     # def _compute_manf_expiry_date_display(self):
