@@ -192,13 +192,13 @@
                   name="Suppliers"
                   sequence="8" parent="menu_med_configurations"/>
         <menuitem action="action_partner_form" id="menu_customers"
-                  name="Customers and Responsible Persons"
+                  name="Customers"
                   sequence="9" parent="menu_med_configurations"/>
-<!--        <menuitem action="action_inv_responsible"-->
-<!--                  id="menu_responsible_persons"-->
-<!--                  name="Responsible Persons"-->
-<!--                  sequence="10"-->
-<!--                  parent="menu_med_configurations"/>-->
+        <menuitem action="action_inv_responsible"
+                  id="menu_responsible_persons"
+                  name="Responsible Persons"
+                  sequence="10"
+                  parent="menu_med_configurations"/>
         <menuitem id="menu_main_financial_year"
                   name="Financial Year"
                   sequence="13" parent="menu_med_configurations"/>
