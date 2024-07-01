@@ -200,6 +200,7 @@ class AccountInvoiceLine(models.Model):
                     'medicine_name_packing': result.medicine_name_packing.id,
                     'medicine_grp1': result.medicine_grp.id,
                     'batch_2': result.batch_2.id,
+                    'batch': result.batch,
                     'mrp': result.price_unit,
                     'qty': result.quantity,
                     'rack': result.medicine_rack.id,
@@ -1101,7 +1102,7 @@ class AccountInvoiceLine(models.Model):
     medicine_grp = fields.Many2one('product.medicine.group', 'Grp', )
 
     # medicine_group = fields.Char('Group', related="product_id.medicine_group")
-    batch = fields.Char("BATCH", related="product_id.batch")
+    batch = fields.Char("BATCH",)
     batch_2 = fields.Many2one('med.batch', "Batch", )
     # test = fields.Float('Test', compute="_get_sup_discount_amt")
     test = fields.Float('Test')
