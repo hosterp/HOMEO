@@ -1095,8 +1095,8 @@ class AccountInvoiceLine(models.Model):
         return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
 
 
-    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True)
-    medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack', )
+    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True,)
+    medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack',default=lambda self: self._get_default_medicine_pack())
 
     # medicine_grp = fields.Many2one('product.medicine.group', 'GROUP',compute='_compute_taxes',readonly="0")
     medicine_grp = fields.Many2one('product.medicine.group', 'Grp', )
@@ -1135,6 +1135,12 @@ class AccountInvoiceLine(models.Model):
 
     price_subtotal = fields.Float(string='Amount', digits=dp.get_precision('Account'),
                                   store=True, readonly=True, compute='_compute_price', inverse='_inverse_compute_price')
+
+    @api.model
+    def _get_default_medicine_pack(self):
+            name_pattern = '100ML'
+            default_pack = self.env['account.invoice.line'].search([('medicine_name_packing', 'ilike', name_pattern)], limit=1)
+            return default_pack.medicine_name_packing if default_pack else ''
 
 
     # @api.onchange('price_unit')
