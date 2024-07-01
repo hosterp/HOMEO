@@ -335,6 +335,7 @@ class NewStockEntry(models.Model):
                             'product_of': rec.company.id,
                             'medicine_grp': rec.medicine_grp1.id,
                             'batch_2': rec.batch_2.id,
+                            'batch': rec.batch,
                             'hsn_code': rec.hsn_code,
                             'price_unit': rec.mrp,
                             'discount': cus_invoice.discount_rate or 0,
