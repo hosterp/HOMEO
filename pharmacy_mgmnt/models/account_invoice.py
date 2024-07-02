@@ -1131,7 +1131,7 @@ class AccountInvoiceLine(models.Model):
     doctor_name = fields.Many2one('res.partner', 'Doctor Name')
     doctor_name_1 = fields.Char('Doctor Name')
     address_new = fields.Text('Address')
-    product_id = fields.Many2one('product.product', 'Medicine')
+    product_id = fields.Many2one('product.product', 'Medicine',defualt=False, domain=[('visible_in', '=', 'true')])
 
     price_subtotal = fields.Float(string='Amount', digits=dp.get_precision('Account'),
                                   store=True, readonly=True, compute='_compute_price', inverse='_inverse_compute_price')

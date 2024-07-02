@@ -25,7 +25,15 @@ class Medicines(models.Model):
     tax_ids = fields.Many2many('account.tax', 'name', 'Tax')
     hsn_code = fields.Char('HSN', )
     made_in = fields.Selection([('indian', 'Indian'), ('german', 'German')], default='indian', string="Made In")
+    visible_in = fields.Selection([('true', 'True'), ('false', 'False')], default='false', string="Visible")
     # tax_combo = fields.Many2one('tax.combo', 'Tax')
+
+    @api.onchange('name')
+    def onchange_name_product(self):
+        if self.name:
+            self.visible_in == 'true'
+        else:
+            self.visible_in == 'false'
 
     @api.constrains('name')
     def _check_name_product(self):
