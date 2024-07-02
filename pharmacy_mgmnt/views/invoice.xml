@@ -145,7 +145,7 @@
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='discount']" position="after">
                     <field name="unit_price_c" widget="float_no_default" onchange="_onchange_unit_price_c(unit_price_c)"
-                           string="Unit TP" options='{"no_open": True}' readonly="0"/>
+                           string="Unit TP" options='{"no_open": True}' readonly="0" class="next_line"/>
                     <field name="unit_price" widget="float_no_default" string="Unit P" options='{"no_open": True}'
                            readonly="1"/>
                     <field name="invoice_line_tax_id4" readonly="1" widget="float_no_default"/>
