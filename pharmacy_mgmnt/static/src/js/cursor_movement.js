@@ -1,7 +1,7 @@
 $(document).ready(function(){
     var isHandlingFocus = false;
 
-    $(document).on('keydown', ".oe_form_required", function (event) {
+    $(document).on('keydown', ".oe_form_required, .required_class", function (event) {
         var $this = $(this);
         var value = event.target.value;
 

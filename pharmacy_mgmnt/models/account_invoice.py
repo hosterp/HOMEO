@@ -1095,7 +1095,7 @@ class AccountInvoiceLine(models.Model):
         return latest_entry_stock.company.id if latest_entry_stock and latest_entry_stock.company else False
 
 
-    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency', required=True,)
+    medicine_name_subcat = fields.Many2one('product.medicine.subcat', 'Potency')
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack',default=lambda self: self._get_default_medicine_pack())
 
     # medicine_grp = fields.Many2one('product.medicine.group', 'GROUP',compute='_compute_taxes',readonly="0")
@@ -3134,7 +3134,7 @@ class AccountInvoice(models.Model):
                             data.qty += res.quantity
                             data.write({'qty': data.qty})
                         res.unlink()
-                    elif not res.product_id:
+                    elif not res.product_id or not res.medicine_name_subcat or not res.medicine_grp or not res.price_unit or not res.quantity:
                         res.unlink()
                     else:
                         pass
