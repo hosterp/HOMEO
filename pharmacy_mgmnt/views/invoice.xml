@@ -247,7 +247,7 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
-                    <field name="medicine_name_subcat" options='{"no_open": True}'/>
+                    <field name="medicine_name_subcat"  options='{"no_open": True}'/>
                     <field name="medicine_name_packing" required="1" options='{"no_open": True}'/>
 
                     <field name="medicine_grp" string="Group" required="1" options='{"no_open": True}'/>
