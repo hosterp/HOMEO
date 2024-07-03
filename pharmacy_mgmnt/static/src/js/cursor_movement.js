@@ -128,9 +128,7 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
     });
 });
 
-$(document).ready(function() {
-    $(document).on('click', '.oe_button.oe_form_button_edit', function() {
-          alert('clicked');
-    });
-  
-});
+
+
+
+
