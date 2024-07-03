@@ -116,15 +116,15 @@ class PartialTransfer1(models.TransientModel):
     def part_transfer(self):
         # stock_obj = self.env['entry.stock'].search([('rack', '=', self.racks_id_1.id)])
         # if stock_obj:
-        if self.stock_part_id and self.racks_id_2:
+        if self.stock_part_id:
             for item in self.stock_part_id:
-                if item.qty_transfer != 0:
+                if item.qty_transfer != 0 and item.rack:
                     if item.qty == float(item.qty_transfer):
-                        item.entry_stock_id.rack = self.racks_id_2.id
+                        item.entry_stock_id.rack = item.rack.id
                     else:
                         balance_qty = item.qty - float(item.qty_transfer)
                         item.entry_stock_id.write({'qty': balance_qty})
-                        vals={
+                        vals = {
                             'qty': item.qty_transfer,
                             'pysical_qty': item.qty_transfer,
                             'name': item.medicine_1.name,
@@ -134,16 +134,19 @@ class PartialTransfer1(models.TransientModel):
                             'company': item.company.id,
                             'batch_2': item.batch_2.id,
                             'entry_stock_id': item.id,
-                            'medicine_grp1':item.entry_stock_id.medicine_grp1.id,
-                            'mrp':item.entry_stock_id.mrp,
-                            'manf_date':item.entry_stock_id.manf_date,
-                            'expiry_date':item.entry_stock_id.expiry_date,
-                            'invoice_line_tax_id4':item.entry_stock_id.invoice_line_tax_id4,
-                            'rack':self.racks_id_2.id,
-                            'hsn_code':item.entry_stock_id.hsn_code
+                            'medicine_grp1': item.entry_stock_id.medicine_grp1.id,
+                            'mrp': item.entry_stock_id.mrp,
+                            'manf_date': item.entry_stock_id.manf_date,
+                            'expiry_date': item.entry_stock_id.expiry_date,
+                            'invoice_line_tax_id4': item.entry_stock_id.invoice_line_tax_id4,
+                            'rack': item.rack.id,
+                            'hsn_code': item.entry_stock_id.hsn_code
 
                         }
                         self.env['entry.stock'].create(vals)
+                # else:
+                #     if item.qty_transfer != 0 or item.rack:
+                #         raise ValidationError("Select Rack and Quantity")
         else:
             raise ValidationError("Select Rack or Stock Item!")
         for rec in self:

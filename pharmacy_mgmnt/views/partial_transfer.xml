@@ -19,7 +19,7 @@
                             </group>
                             <group col="2">
                                 <field name="racks_id_1" placeholder="From"/>
-                                <field name="racks_id_2" placeholder="To"/>
+                                <field name="racks_id_2" placeholder="To" attrs="{'invisible': [('full_trans', '!=', True )]}"/>
                             </group>
                         </group>
                         <notebook>
@@ -54,7 +54,7 @@
                                             </tree>
                                         </field>
                                     </page>
-                                    <page string="Rack To">
+                                    <page string="Rack To" attrs="{'invisible': [('full_trans', '!=', True )]}">
                                         <field name="stock_trasferto_ids" style="width: 20%">
                                             <tree editable="bottom">
                                                 <field name="entry_stock_id" invisible="1"/>
