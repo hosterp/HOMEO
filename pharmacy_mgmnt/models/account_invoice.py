@@ -3134,7 +3134,7 @@ class AccountInvoice(models.Model):
                             data.qty += res.quantity
                             data.write({'qty': data.qty})
                         res.unlink()
-                    elif not res.product_id:
+                    elif not res.product_id or not res.medicine_name_subcat or not res.medicine_grp or not res.price_unit or not res.quantity:
                         res.unlink()
                     else:
                         pass
