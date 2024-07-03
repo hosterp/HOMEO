@@ -149,7 +149,7 @@
                            string="Unit TP" options='{"no_open": True}' readonly="0" class="next_line"/>
                     <field name="unit_price" widget="float_no_default" string="Unit P" options='{"no_open": True}'
                            readonly="1"/>
-                    <field name="invoice_line_tax_id4" readonly="1" widget="float_no_default"/>
+                    <field name="invoice_line_tax_id4" readonly="0" widget="float_no_default"/>
                     <field name="product_tax" string="Tax Amt" readonly="1" widget="float_no_default"
                            options='{"no_open": True}'/>
                 </xpath>
