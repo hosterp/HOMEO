@@ -36,6 +36,9 @@
                 <xpath expr="//field[@name='pay_mode']" position="after">
                     <field name="res_person" string="Responsible Person" widget="selection"/>
                 </xpath>
+                <xpath expr="//button[@string='Register Payment']" position="attributes">
+                    <attribute name="class">custom_register_payment</attribute>
+                </xpath>
             </field>
         </record>
         <record model="ir.ui.view" id="custom_view_voucher_form">

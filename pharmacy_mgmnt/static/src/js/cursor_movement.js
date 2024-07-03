@@ -128,3 +128,7 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
     });
 });
 
+
+
+
+
