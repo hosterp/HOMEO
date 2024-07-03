@@ -127,8 +127,25 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
 //        alert('Element in the first row of the modal body clicked!');
     });
 });
-
-
-
-
-
+$(document).ready(function() {
+   $(document).on("shown.bs.modal", function () {
+        setTimeout(function(){
+            var firstButton = $('.modal-footer .custom_register_payment');
+            if(firstButton.length) {
+                console.log("First button found, triggering click...");
+                firstButton.on('click', function() {
+                    console.log("First button was clicked, triggering the second button...");
+                    var secondButton = $('.css_print');
+                    if(secondButton.length) {
+                        console.log("Second button found, triggering click...");
+                        secondButton.trigger('click');
+                    } else {
+                        console.log("Second button not found");
+                    }
+                });
+            } else {
+                console.log("First button not found");
+            }
+        }, 500);
+    });
+});
