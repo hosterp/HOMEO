@@ -56,6 +56,9 @@ max-width: 182px
     top:235px;
 
 }
+.openerp .oe_list .oe_form_container .oe_form .oe_form_container.oe_form_nosheet span.oe_form_field.required_class input {
+    background-color: #D2D2FF !important;
+}
 .oe_form_uri{
      font-size: 16px;
 }
