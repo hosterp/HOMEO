@@ -19,7 +19,8 @@
                             </group>
                             <group col="2">
                                 <field name="racks_id_1" placeholder="From"/>
-                                <field name="racks_id_2" placeholder="To" attrs="{'invisible': [('full_trans', '!=', True )]}"/>
+                                <field name="racks_id_2" placeholder="To"
+                                       attrs="{'invisible': [('full_trans', '!=', True )]}"/>
                             </group>
                         </group>
                         <notebook>
@@ -42,15 +43,15 @@
                                                 <field name="entry_stock_id" invisible="1"/>
                                                 <field name="pysical_qty" type="char"/>
                                                 <field name="qty" type="char" string="System Stock"/>
-                                                <field name="medicine_1"/>
-                                                <field name="potency"/>
-                                                <field name="medicine_name_packing"/>
-                                                <field name="company"/>
-                                                <field name="manf_date"  string="Manf Date"/>
-                                                <field name="expiry_date"/>
-                                                <field name="batch_2"/>
-                                                <field name="qty_transfer"/>
+                                                <field name="medicine_1" readonly="1"/>
+                                                <field name="potency"  readonly="1"/>
+                                                <field name="medicine_name_packing"  readonly="1"/>
+                                                <field name="company"  readonly="1"/>
+                                                <field name="manf_date" string="Manf Date"  readonly="1"/>
+                                                <field name="expiry_date"  readonly="1"/>
+                                                <field name="batch_2"  readonly="1"/>
                                                 <field name="rack"/>
+                                                <field name="qty_transfer"/>
                                             </tree>
                                         </field>
                                     </page>
@@ -58,16 +59,16 @@
                                         <field name="stock_trasferto_ids" style="width: 20%">
                                             <tree editable="bottom">
                                                 <field name="entry_stock_id" invisible="1"/>
-                                                 <field name="pysical_qty" type="char"/>
+                                                <field name="pysical_qty" type="char"/>
                                                 <field name="qty" type="char" string="System Stock"/>
-                                                <field name="medicine_1"/>
-                                                <field name="potency"/>
-                                                <field name="medicine_name_packing"/>
+                                                <field name="medicine_1"  readonly="1"/>
+                                                <field name="potency"  readonly="1"/>
+                                                <field name="medicine_name_packing" readonly="1"/>
                                                 <field name="company"/>
-                                                 <field name="manf_date" string="Manf Date"/>
-                                                <field name="expiry_date"/>
-                                                <field name="batch_2"/>
-                                                <field name="rack"/>
+                                                <field name="manf_date" string="Manf Date" readonly="1"/>
+                                                <field name="expiry_date" readonly="1"/>
+                                                <field name="batch_2" readonly="1"/>
+                                                <field name="rack" readonly="1"/>
                                             </tree>
                                         </field>
                                     </page>
