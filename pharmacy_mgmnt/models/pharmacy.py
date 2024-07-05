@@ -273,7 +273,7 @@ class NewStockEntry(models.Model):
     batch = fields.Char('Batch')
     batch_2 = fields.Many2one('med.batch', "Batch")
     rack = fields.Many2one('product.medicine.types', 'Rack')
-    qty = fields.Float('Stock',digits=(16,0))
+    qty = fields.Float('Stock', store=True, digits=(16, 0))
     # racks_id = fields.Many2one('med.rack', string='Racks')
     company = fields.Many2one('product.medicine.responsible', 'Company')
     mrp = fields.Float('Mrp')

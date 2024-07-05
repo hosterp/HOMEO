@@ -158,7 +158,7 @@
                     <field name="invoice_line_tax_id4" readonly="1" widget="float_no_default"/>
                     <field name="qty_received" readonly="1" widget="float_no_default"/>
                     <field name="discount" invisible="1" readonly="1"/>
-                    <field name="invoice_line_id" readonly="0"/>
+                    <field name="invoice_line_id" readonly="1"/>
                 </tree>
                 <!--                </div>-->
             </field>
