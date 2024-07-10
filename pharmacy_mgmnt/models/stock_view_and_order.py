@@ -111,12 +111,12 @@ class StockViewOrder(models.Model):
                 if purchase_order.batch:
                     order_domain += [('batch', '=', purchase_order.batch)]
                 if rec.date_from:
-                    order_domain += [('invoice_id.date_invoice', '>=', rec.date_to)]
+                    order_domain += [('invoice_id.date_invoice', '>=', rec.date_from)]
                 if rec.date_to:
-                    order_domain += [('invoice_id.date_invoice', '<=', rec.date_from)]
+                    order_domain += [('invoice_id.date_invoice', '<=', rec.date_to)]
 
                 sales_orders = self.env['account.invoice.line'].search(order_domain)
-
+                print(sales_orders,'sales_orders..................................')
                 if sales_orders:
                     for line in sales_orders:
                         if line.invoice_id.state in ['paid', 'open']:
