@@ -12,7 +12,7 @@ class CustomerInvoiceWizard(models.Model):
     partner_id = fields.Many2one('res.partner', 'Customer')
     date_from = fields.Date('Date From')
     date_to = fields.Date('Date To')
-    type = fields.Selection([('out_invoice','Sales Invoice'),('packing_slip','Packing Slip'),('holding_invoice','Holding Invoice'),('out_refund','Credit Note'),('in_refund','Debit Note')])
+    type = fields.Selection([('out_invoice','Sales Invoice'),('packing_slip','Packing Slip'),('holding_invoice','Holding Invoice'),('out_refund','Credit Note')])
     invoice_wizard_ids = fields.One2many('account.invoice.wizard','customer_id')
     invoice_id = fields.Many2one('account.invoice','invoice_id')
     cus_invoice_ids = fields.One2many('wizard.invoice', 'customer_wizard', 'Invoices')
