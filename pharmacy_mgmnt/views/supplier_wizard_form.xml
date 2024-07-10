@@ -1,0 +1,47 @@
+<openerp>
+    <data>
+        <!-- Define the view for the supplier wizard -->
+        <record model="ir.ui.view" id="supplier_invoice_view_wizard_id">
+            <field name="name">Supplier Product Details</field>
+            <field name="model">supplier.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Supplier Product Details">
+                    <group col="8">
+                        <field name="partner_id" domain="[('supplier','=',True)]"/>
+                        <field name="type"/>
+                        <field name="date_from" required="1"/>
+                        <field name="date_to" required="1"/>
+                    </group>
+                    <button name="get_invoice_details" type="object" string="Get Invoice Details" class="oe_highlight" style="color:red;"/>
+                    <notebook>
+                        <page string="Invoices">
+                            <field name="cus_invoice_ids" widget="one2many_list">
+                                <tree editable="bottom">
+                                    <field name="cus_inv_number" string="Invoice Number"/>
+                                    <field name="partner_id" string="Customer" domain="[('supplier','=',True)]"/>
+                                    <field name="date_invoice"/>
+                                    <field name="residual" string="Balance"/>
+                                    <field name="amount_untaxed" string="SubTotal"/>
+                                    <field name="amount_total" string="Total"/>
+                                    <button name="open_invoice" type="object" string="View Invoice" class="oe_highlight" style="color:red;"/>
+                                    <button name="add_all_lines" type="object" string="Add All Lines" class="oe_highlight" style="color:red;"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_supplier_invoice_view_wizard" model="ir.actions.act_window">
+            <field name="name">Supplier Product Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">supplier.wizard</field>
+            <field name="target">new</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="supplier_invoice_view_wizard_id"/>
+        </record>
+    </data>
+</openerp>

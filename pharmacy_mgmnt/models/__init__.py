@@ -17,3 +17,4 @@ from . import expense_book
 from . import account_voucher
 from . import customer_invoice_wizard
 from . import create_order
+from .import supplier_invoice_wizard_form

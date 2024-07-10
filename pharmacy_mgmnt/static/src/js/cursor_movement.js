@@ -45,8 +45,24 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
         var $firstItem = $ul.find("li:first");
         if ($firstItem.length && !$firstItem.data('clicked')) {
             $firstItem.trigger("click");
-            $firstItem.data('clicked', true);
-            $firstItem.off('click');
+             $firstItem.off('click');
+           if ($firstItem.data('clicked') === true) {
+                console.log('triggered');
+                var $nextField = tableRow.next('tr').find('.oe_form_field');
+                if ($nextField.length) {
+                    setTimeout(function() {
+                        console.log('triggered');
+                        $nextField.focus();
+                    }, 1000);
+                } else {
+                    console.log('No next field to focus');
+                }
+            } else {
+                // Optionally, set the 'clicked' data attribute here if needed
+                $firstItem.data('clicked', true);
+            }
+
+
     }
 
 
@@ -59,7 +75,16 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
     }
 
 });
-
+//$(document).on('keydown', '#oe-field-input-2', function(event) {
+//    if (event.key === 'Enter') {
+//        var $ul = $("ul.ui-autocomplete:eq(0)");
+//        var $selectedItem = $ul.find("li.ui-state-focus");
+//        if ($selectedItem) {
+//            $selectedItem.trigger("click");
+//            $('#oe-field-input-6').focus();
+//        }
+//    }
+//});
 $(document).on('focus', '.oe_form_field_many2one', function(event) {
     var tableRow = $(this).closest('tr');
     var label = tableRow.find('label');

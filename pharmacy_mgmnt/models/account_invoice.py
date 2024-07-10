@@ -1582,10 +1582,27 @@ class AccountInvoice(models.Model):
 
     @api.multi
     def open_wizard_action(self):
-        return {
+        return ({
             'type': 'ir.actions.act_window',
             'name': 'Invoice Wizard',
             'res_model': 'customer.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'current',
+            'context': {
+                'default_invoice_id': self.id,
+                'default_partner_id': self.partner_id.id,
+                'invoice_id': self.id,
+                'active_model': self._name,
+            },
+        } )
+
+    @api.multi
+    def open_wizard_action_sup(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Invoice Wizard',
+            'res_model': 'supplier.wizard',
             'view_type': 'form',
             'view_mode': 'form',
             'target': 'current',

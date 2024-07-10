@@ -65,6 +65,8 @@
         'views/custom_refunds_views.xml',
         'views/custom_supplier_refunds_views.xml',
         'views/create_order.xml',
+        'views/supplier_wizard_form.xml',
+
 
     ],
     'js': [
