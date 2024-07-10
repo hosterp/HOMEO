@@ -42,7 +42,7 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
     var label = tableRow.find('label');
     if (label.text().trim() === "Customer") {
         var $ul = $("ul.ui-autocomplete:eq(0)");
-        var $firstItem = $ul.find("li:first");
+        var $firstItem = $ul.find("li:eq(-2)");
         if ($firstItem.length && !$firstItem.data('clicked')) {
             $firstItem.trigger("click");
              $firstItem.off('click');

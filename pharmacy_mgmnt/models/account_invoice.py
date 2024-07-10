@@ -214,7 +214,61 @@ class AccountInvoiceLine(models.Model):
                 stock_entry = self.env['entry.stock'].create(vals)
                 result.stock_entry_id = stock_entry.id
 
+    @api.model
+    def create(self, vals):
+        record = super(AccountInvoiceLine, self).create(vals)
+        record._create_stock_entry()
+        return record
 
+    def write(self, vals):
+        res = super(AccountInvoiceLine, self).write(vals)
+        self._create_stock_entry()
+        return res
+
+    def _create_stock_entry(self):
+        for result in self:
+            if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.price_unit and result.amount_w_tax and result.medicine_rack:
+                rec = {
+                    'expiry_date': result.expiry_date,
+                    'manf_date': result.manf_date,
+                    'product_of': result.product_of.id,
+                    'product_id': result.product_id.id,
+                    'medicine_name_subcat': result.medicine_name_subcat.id,
+                    'medicine_name_packing': result.medicine_name_packing.id,
+                    'medicine_grp': result.medicine_grp.id,
+                    'batch': result.batch,
+                    'manf_date': result.manf_date,
+                    'expiry_date': result.expiry_date,
+                    'price_unit': result.price_unit,
+                    'quantity': result.quantity,
+                    'medicine_rack': result.medicine_rack.id,
+                    'hsn_code': result.hsn_code,
+                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
+                }
+                line_entry = self.env['account.invoice.line'].create(rec)
+                vals = {
+                    'supplier_id': result.invoice_id.partner_id.id,
+                    'expiry_date': result.expiry_date,
+                    'manf_date': result.manf_date,
+                    'company': result.product_of.id,
+                    'medicine_1': result.product_id.id,
+                    'potency': result.medicine_name_subcat.id,
+                    'medicine_name_packing': result.medicine_name_packing.id,
+                    'medicine_grp1': result.medicine_grp.id,
+                    'batch_2': result.batch_2.id,
+                    'batch': result.batch,
+                    'mrp': result.price_unit,
+                    'qty': result.quantity,
+                    'rack': result.medicine_rack.id,
+                    'hsn_code': result.hsn_code,
+                    'discount': result.discount,
+                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
+                    'stock_date': date.today(),
+                    'invoice_line_id': line_entry.id,
+                }
+
+                stock_entry = self.env['entry.stock'].create(vals)
+                result.stock_entry_id = stock_entry.id
 
     @api.multi
     def write(self, vals):
