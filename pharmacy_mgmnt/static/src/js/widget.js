@@ -95,6 +95,23 @@ openerp.pharmacy_mgmnt = function (instance) {
             }
         },
     });
+    instance.web.FormView.include({
+        load_form: function() {
+            this._super.apply(this, arguments);
+            var self = this;
+            var invoiceCancelButton = document.querySelector('.oe_form_button_edit');
+            if (invoiceCancelButton) {
+                invoiceCancelButton.addEventListener('click', function() {
+                    var cancelButton = document.querySelector('.button_invoice_cancel');
+                    if (cancelButton) {
+                        setTimeout(function() {
+                            cancelButton.click();
+                        }, 500);
+                    }
+                });
+            }
+        },
+    });
 };
 
 
