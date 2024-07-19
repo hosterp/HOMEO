@@ -34,7 +34,7 @@ openerp.pharmacy_mgmnt = function (instance) {
         function performActions() {
             var validateButton = document.querySelector('.cus_validate');
             if (validateButton) {
-                var invoiceLine = self.datarecord.invoice_line;
+                var invoiceLine = $('tr[data-id]');
                 console.log(invoiceLine);
                 if (invoiceLine && invoiceLine.length > 0) {
                     var recordDelete = document.querySelector('.record_delete');
