@@ -1153,7 +1153,7 @@ class AccountInvoiceLine(models.Model):
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack',default=lambda self: self._get_default_medicine_pack())
 
     # medicine_grp = fields.Many2one('product.medicine.group', 'GROUP',compute='_compute_taxes',readonly="0")
-    medicine_grp = fields.Many2one('product.medicine.group', 'Grp', )
+    medicine_grp = fields.Many2one('product.medicine.group', 'Grp', default=lambda self: self.env['product.medicine.group'].search([], limit=1).id)
 
     # medicine_group = fields.Char('Group', related="product_id.medicine_group")
     batch = fields.Char("BATCH",)
