@@ -118,12 +118,14 @@ $.shortcut('121', function() {
                 $(this).trigger('click');
 		}
 	});
-	$('.css_print').each(function() {
-		if($(this).parents('div:hidden').length == 0){
-			$(this).trigger('click');
+	    setTimeout(function() {
+            $('.css_print').each(function() {
+                if($(this).parents('div:hidden').length == 0){
+                    $(this).trigger('click');
 
-		}
-	});
+                }
+            });
+        }, 3000)
 });
 $(document).ready(function(){
     $(document).on('blur', "input[type=text],textarea", function () {

@@ -2105,7 +2105,7 @@ class AccountInvoice(models.Model):
                 self.action_date_assign()
                 self.action_move_create()
                 self.action_number()
-                self.invoice_validate()
+                # self.invoice_validate()
         return super(AccountInvoice, self).invoice_print()
 
     @api.multi
