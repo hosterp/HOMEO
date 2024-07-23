@@ -127,7 +127,7 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
         $element.on('click', function(e) {
             e.preventDefault();
             var newWindow = window.open(href, '_blank');
-              if (newWindow) {
+            if (newWindow) {
                 newWindow.addEventListener('beforeunload', function(event) {
                     event.returnValue = "Are you sure you want to leave this page?";
                 });
