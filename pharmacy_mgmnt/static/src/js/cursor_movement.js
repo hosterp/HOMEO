@@ -122,19 +122,13 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
 
 });
  $(document).ready(function() {
-    function addNewTabBehavior($element) {
+     function addNewTabBehavior($element) {
         var href = $element.attr('href');
         $element.on('click', function(e) {
-            e.preventDefault();
-            var newWindow = window.open(href, '_blank');
-            if (newWindow) {
-                newWindow.addEventListener('beforeunload', function(event) {
-                    event.returnValue = "Are you sure you want to leave this page?";
-                });
-            }
+          e.preventDefault();
+          window.open(href, '_blank');
         });
-    }
-
+     }
     $('.oe_menu_leaf').each(function() {
         var $mainMenuItem = $(this);
         var menuId = $mainMenuItem.data('menu');
