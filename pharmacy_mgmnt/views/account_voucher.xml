@@ -39,6 +39,14 @@
                 <xpath expr="//button[@string='Register Payment']" position="attributes">
                     <attribute name="class">custom_register_payment</attribute>
                 </xpath>
+                <xpath expr="//button[@string='Register Payment']" position="after">
+                    <button
+                            name="action_print_button"
+                            type="object"
+                            string="Print"
+                            class="oe_highlight"
+                    />
+                </xpath>
             </field>
         </record>
         <record model="ir.ui.view" id="custom_view_voucher_form">

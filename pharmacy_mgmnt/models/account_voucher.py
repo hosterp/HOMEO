@@ -21,7 +21,7 @@ class AccountVoucher(models.Model):
 
     pay_mode = fields.Selection([('credit', 'Credit'),('cash', 'Cash'),('upi', 'UPI'), ('card', 'Card')], 'Payment Mode')
     res_person = fields.Many2one('res.partner', string="Responsible Person", domain=[('res_person_id', '=', True)])
-
+    invoice_ids = fields.Many2many('account.invoice', string="Select Invoices", )
     def onchange_amount(self, cr, uid, ids, amount, rate, partner_id, journal_id, currency_id, ttype, date,
                         payment_rate_currency_id, company_id, context=None):
         if not context:
@@ -39,6 +39,11 @@ class AccountVoucher(models.Model):
                     default['value'].update({'pay_mode': cus_invoice.pay_mode})
         return default
 
+    @api.multi
+    def action_print_button(self):
+        # Example: Call the print method from the account.invoice model
+        invoice_ids = self.env['account.invoice'].search([('id', 'in', self.invoice_ids.ids)])
+        return self.env['report'].get_action(invoice_ids, 'account.report_invoice')
     @api.onchange('pay_mode')
     def onchange_paymode(self):
         cus_invoice = self.env['account.invoice'].browse(self.env.context.get('active_id'))
