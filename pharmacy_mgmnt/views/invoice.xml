@@ -247,7 +247,7 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
-                    <field name="medicine_name_subcat" required="1"  options='{"no_open": True}'/>
+                    <field name="medicine_name_subcat" required="1" options='{"no_open": True}'/>
                     <field name="medicine_name_packing" required="1" options='{"no_open": True}'/>
 
                     <field name="medicine_grp" string="Group" required="1" options='{"no_open": True}'/>
@@ -323,7 +323,11 @@
                 if (location.pathname.includes('/report/html/account.report_invoice/')) {
                 window.print();
                 }
-
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                    window.close();
+                    }
+                });
             </script>
             <t t-call="report.external_layout">
                 <div class="page">
