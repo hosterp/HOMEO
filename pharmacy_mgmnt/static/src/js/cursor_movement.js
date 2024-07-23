@@ -42,27 +42,10 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
     var label = tableRow.find('label');
     if (label.text().trim() === "Customer") {
         var $ul = $("ul.ui-autocomplete:eq(0)");
-        var $firstItem = $ul.find("li:eq(-2)");
+        var $firstItem = $ul.find("li:first");
         if ($firstItem.length && !$firstItem.data('clicked')) {
             $firstItem.trigger("click");
              $firstItem.off('click');
-           if ($firstItem.data('clicked') === true) {
-                console.log('triggered');
-                var $nextField = tableRow.next('tr').find('.oe_form_field');
-                if ($nextField.length) {
-                    setTimeout(function() {
-                        console.log('triggered');
-                        $nextField.focus();
-                    }, 1000);
-                } else {
-                    console.log('No next field to focus');
-                }
-            } else {
-                // Optionally, set the 'clicked' data attribute here if needed
-                $firstItem.data('clicked', true);
-            }
-
-
     }
 
 
@@ -139,6 +122,37 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
 
 });
  $(document).ready(function() {
+    function addNewTabBehavior($element) {
+        var href = $element.attr('href');
+        $element.on('click', function(e) {
+            e.preventDefault();
+            var newWindow = window.open(href, '_blank');
+              if (newWindow) {
+                newWindow.addEventListener('beforeunload', function(event) {
+                    event.returnValue = "Are you sure you want to leave this page?";
+                });
+            }
+        });
+    }
+
+    $('.oe_menu_leaf').each(function() {
+        var $mainMenuItem = $(this);
+        var menuId = $mainMenuItem.data('menu');
+        var $submenu = $('[data-parent-menu-id="' + menuId + '"]');
+
+        if ($submenu.length > 0) {
+            $submenu.find('a').each(function() {
+                addNewTabBehavior($(this));
+            });
+        } else {
+            addNewTabBehavior($mainMenuItem);
+        }
+    });
+
+    $('.oe_menu_leaf').next('ul').find('a').each(function() {
+        addNewTabBehavior($(this));
+    });
+
     $(document).on('click', 'div.modal.in div.modal-header h3:contains("Payment History")', function() {
     });
 
