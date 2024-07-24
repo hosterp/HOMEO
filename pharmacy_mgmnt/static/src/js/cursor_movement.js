@@ -209,9 +209,9 @@ $(document).ready(function() {
     $(document).on('shown.bs.modal', function (event) {
         var modal = $(event.target);
         var modalTitle = modal.find('.modal-title').text().trim();
-        var modalBody = modal.find('.modal-body').text().trim(); 
+        var modalBody = modal.find('.modal-body').text().trim(); // Get the text content of the modal body
 
-        var titlesToCheck = ["Hiworth Warning", "Warning",];
+        var titlesToCheck = ["Hiworth Warning", "Warning","Hiworth Client Error","Hiworth"];
 
 
         if (titlesToCheck.includes(modalTitle) || modalBody.includes("Odoo Server Error")) {
@@ -220,14 +220,6 @@ $(document).ready(function() {
                     modal.find('.close').click();
                 }
             });
-
-
-//            if (modalBody.includes("Odoo Server Error")) {
-//                modal.find('.close').click();
-//            }
         }
     });
-
-
-
 });
