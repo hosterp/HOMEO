@@ -2,7 +2,7 @@ $(document).on("shown.bs.modal", function () {
 setTimeout(function(){
 $('.tree_class table').DataTable();
   $('input[type="search"]').focus();
-  resetFieldValue();
+//  resetFieldValue();
 //$('419').DataTable();
 }, 500)
 });

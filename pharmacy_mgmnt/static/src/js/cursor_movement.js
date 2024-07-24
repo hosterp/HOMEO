@@ -191,4 +191,18 @@ $(document).ready(function() {
             }
         }, 500);
     });
+   $(document).on('shown.bs.modal', function (event) {
+        var modal = $(event.target);
+        var modalTitle = modal.find('.modal-title').text().trim();
+
+        if (modalTitle !== "Search Stock In Tree") {
+            $(document).on('keydown', function (event) {
+                if (event.keyCode === 13) {
+                    modal.find('.close').click();
+                }
+            });
+        }
+   });
+
+
 });
