@@ -198,7 +198,7 @@ $(document).ready(function() {
         var modal = $(event.target);
         var modalTitle = modal.find('.modal-title').text().trim();
 
-        if (modalTitle === "Hiworth Warning") {
+        if (modalTitle === "Hiworth Warning"||modalTitle === "Warning"||modalTitle === "Hiworth") {
             $(document).on('keydown', function (event) {
                 if (event.keyCode === 13) {
                     modal.find('.close').click();
