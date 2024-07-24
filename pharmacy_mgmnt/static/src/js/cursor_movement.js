@@ -149,7 +149,16 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
     $('.oe_menu_leaf').next('ul').find('a').each(function() {
         addNewTabBehavior($(this));
     });
+    var shouldWarn = true;
 
+    window.addEventListener('beforeunload', function (e) {
+        if (shouldWarn) {
+            var confirmationMessage = 'You have unsaved changes or are leaving the page.';
+            e.preventDefault();
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
+        }
+    });
     $(document).on('click', 'div.modal.in div.modal-header h3:contains("Payment History")', function() {
     });
 
