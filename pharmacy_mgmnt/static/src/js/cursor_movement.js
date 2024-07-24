@@ -126,7 +126,10 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
         var href = $element.attr('href');
         $element.on('click', function(e) {
           e.preventDefault();
+          e.stopPropagation();
+
           window.open(href, '_blank');
+          return false;
         });
      }
     $('.oe_menu_leaf').each(function() {
