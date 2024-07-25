@@ -2,7 +2,7 @@ $(document).on("shown.bs.modal", function () {
 setTimeout(function(){
 $('.tree_class table').DataTable();
   $('input[type="search"]').focus();
-//  resetFieldValue();
+  resetFieldValue();
 //$('419').DataTable();
 }, 500)
 });
@@ -16,7 +16,7 @@ function resetFieldValue() {
                 console.log(response);
             },
             error: function (xhr, status, error) {
-//                alert('Error resetting quantity: ' + error);
+                alert('Error resetting quantity: ' + error);
             }
      });
     var field = $('td[data-field="quantity_selected"]');
@@ -24,7 +24,7 @@ function resetFieldValue() {
         field.text('0');
 //        console.log('Resetting field value...');
     } else {
-//        console.error('Field not found.');
+        console.error('Field not found.');
     }
 }
 
