@@ -58,7 +58,7 @@ openerp.pharmacy_mgmnt = function (instance) {
                             return clickElement(validateButton, 1000);
                         })
                         .then(function() {
-                            return clickElement(payButton, 1000);
+                            return clickElement(payButton, 1500);
                         });
                 } else {
                     self.do_warn('Warning', 'No invoice line');
@@ -72,7 +72,7 @@ openerp.pharmacy_mgmnt = function (instance) {
         this.$buttons.find('.oe_form_button_save').click(function() {
              setTimeout(function() {
                  performActions();
-            }, 100);
+            }, 500);
         });
     }
 });
