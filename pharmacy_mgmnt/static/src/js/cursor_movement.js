@@ -53,7 +53,7 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
         });
         var $ul = $("ul.ui-autocomplete");
         var $firstItem = $ul.find("li:first");
-        if ($firstItem.length &&!$firstItem.data('clicked')) {
+        if ($firstItem.length && !$firstItem.data('clicked')) {
             $firstItem.trigger("click");
             $firstItem.data('clicked', true);
             $firstItem.off('click');
