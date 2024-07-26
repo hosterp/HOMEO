@@ -26,17 +26,17 @@ openerp.pharmacy_mgmnt = function (instance) {
         },
     });
     instance.web.FormView.include({
-    load_form: function(data) {
-        this._super(data);
-        var self = this;
+        load_form: function(data) {
+            this._super(data);
+            var self = this;
 
-        // Define a function to perform the actions
+            // Define a function to perform the actions
         function performActions() {
             var validateButton = document.querySelector('.cus_validate');
             if (validateButton) {
                 var invoiceLine = $('tr[data-id]');
-                console.log(invoiceLine);
-                if (invoiceLine && invoiceLine.length > 0) {
+                console.log(invoiceLine.length);
+                if (invoiceLine.length > 0) {
                     var recordDelete = document.querySelector('.record_delete');
                     var payButton = document.querySelector('.invoice_pay_customer');
 
@@ -53,9 +53,9 @@ openerp.pharmacy_mgmnt = function (instance) {
                         });
                     }
 
-                    clickElement(recordDelete, 2000)
+                    clickElement(recordDelete,1000 )
                         .then(function() {
-                            return clickElement(validateButton, 1000);
+                            return clickElement(validateButton, 2000);
                         })
                         .then(function() {
                             return clickElement(payButton, 1500);
@@ -72,10 +72,10 @@ openerp.pharmacy_mgmnt = function (instance) {
         this.$buttons.find('.oe_form_button_save').click(function() {
              setTimeout(function() {
                  performActions();
-            }, 500);
+            }, 100);
         });
     }
-});
+  });
 
 
     instance.web.FormView.include({

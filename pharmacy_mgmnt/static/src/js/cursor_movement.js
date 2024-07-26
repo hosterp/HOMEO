@@ -15,11 +15,15 @@ $(document).ready(function(){
             $this.prop('selectionStart', $this.val().length);
         }
     });
-    $(document).on('focus', '.oe_form_field_many2one', function(event) {
+   $(document).on('focus', '.oe_form_field_many2one', function(event) {
         var inputValue = $(this).find('input').val().trim();
         if (!$(this).data('clicked') && inputValue === '') {
             $(this).data('clicked', true);
             $(this).find('.oe_m2o_drop_down_button').click();
+            console.log('visible');
+        } else if (inputValue!== '') {
+            console.log('hide');
+            $(this).find('ul.ui-autocomplete').hide();
         }
     });
 
@@ -38,15 +42,24 @@ $(document).ready(function(){
 
 var clickedStates = {};
 $(document).on('focus', '.oe_form_field_many2one', function(event) {
+    var $productField = $(this);
     var tableRow = $(this).closest('tr');
     var label = tableRow.find('label');
     if (label.text().trim() === "Customer") {
-        var $ul = $("ul.ui-autocomplete:eq(0)");
+       $productField.find('input').one('autocompleteopen', function() {
+            setTimeout(function() {
+                $productField.find('input').select();
+            }, 200); // Increase timeout value
+        });
+        var $ul = $("ul.ui-autocomplete");
         var $firstItem = $ul.find("li:first");
-        if ($firstItem.length && !$firstItem.data('clicked')) {
+        if ($firstItem.length &&!$firstItem.data('clicked')) {
             $firstItem.trigger("click");
-             $firstItem.off('click');
+            $firstItem.data('clicked', true);
+            $firstItem.off('click');
+        }
     }
+});
 
 
 //        if ($ul.find("li").length === 2) {
@@ -55,9 +68,8 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
 //                clickedStates.customer = true;
 //            }
 //        }
-    }
 
-});
+
 //$(document).on('keydown', '#oe-field-input-2', function(event) {
 //    if (event.key === 'Enter') {
 //        var $ul = $("ul.ui-autocomplete:eq(0)");
@@ -90,6 +102,7 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="product_id"]', 
         $firstItem.trigger("click");
         $firstItem.data('clicked', true);
         $firstItem.off('click');
+        $productField.find('input').select();
     }
 });
 $(document).on('focus', '.oe_form_field_many2one[data-fieldname="rack"]', function(event) {
@@ -109,10 +122,7 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
     var $firstItem = $ul.find("li:first");
 
     if ($firstItem.length && !$firstItem.data('clicked')) {
-        // Trigger a click event on the first item of the autocomplete dropdown
         $firstItem.trigger("click");
-
-        // Remove the click event listener after it's been triggered once
         $firstItem.data('clicked', true);
         $firstItem.off('click');
     }
@@ -185,7 +195,7 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
 $(document).ready(function() {
    $(document).on("shown.bs.modal", function () {
         setTimeout(function(){
-            var firstButton = $('.modal-footer .custom_register_payment');
+            var firstButton = $('.custom_register_payment');
             if(firstButton.length) {
                 console.log("First button found, triggering click...");
                 firstButton.on('click', function() {

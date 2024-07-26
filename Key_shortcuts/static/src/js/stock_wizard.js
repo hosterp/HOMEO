@@ -16,7 +16,7 @@ function resetFieldValue() {
                 console.log(response);
             },
             error: function (xhr, status, error) {
-                alert('Error resetting quantity: ' + error);
+//                alert('Error resetting quantity: ' + error);
             }
      });
     var field = $('td[data-field="quantity_selected"]');
