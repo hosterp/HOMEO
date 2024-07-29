@@ -16,6 +16,7 @@ $(document).ready(function(){
         }
     });
    $(document).on('focus', '.oe_form_field_many2one', function(event) {
+        var $this = $(this);
         var inputValue = $(this).find('input').val().trim();
         if (!$(this).data('clicked') && inputValue === '') {
             $(this).data('clicked', true);

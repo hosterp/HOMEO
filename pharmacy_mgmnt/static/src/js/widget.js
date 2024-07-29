@@ -53,9 +53,9 @@ openerp.pharmacy_mgmnt = function (instance) {
                         });
                     }
 
-                    clickElement(recordDelete,1000 )
+                    clickElement(recordDelete,500 )
                         .then(function() {
-                            return clickElement(validateButton, 2000);
+                            return clickElement(validateButton,1000);
                         })
                         .then(function() {
                             return clickElement(payButton, 1500);
