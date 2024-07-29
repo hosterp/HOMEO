@@ -25,57 +25,78 @@ openerp.pharmacy_mgmnt = function (instance) {
             }
         },
     });
-    instance.web.FormView.include({
+   instance.web.FormView.include({
         load_form: function(data) {
             this._super(data);
             var self = this;
 
-            // Define a function to perform the actions
-        function performActions() {
-            var validateButton = document.querySelector('.cus_validate');
-            if (validateButton) {
-                var invoiceLine = $('tr[data-id]');
-                console.log(invoiceLine.length);
-                if (invoiceLine.length > 0) {
-                    var recordDelete = document.querySelector('.record_delete');
-                    var payButton = document.querySelector('.invoice_pay_customer');
 
-                    function clickElement(element, delay) {
-                        return new Promise(function(resolve, reject) {
-                            if (element) {
-                                setTimeout(function() {
-                                    element.click();
+            function performActions(isBulkData) {
+                var validateButton = document.querySelector('.cus_validate');
+                if (validateButton) {
+                    var invoiceLine = $('tr[data-id]');
+                    console.log(invoiceLine.length);
+
+                   
+                    var delays = isBulkData ? { delete: 1000, validate: 2000, pay: 3000 } : { delete: 500, validate: 1000, pay: 1500 };
+
+                    if (invoiceLine.length > 0) {
+                        var recordDelete = document.querySelector('.record_delete');
+                        var payButton = document.querySelector('.invoice_pay_customer');
+
+                        function clickElement(element, delay) {
+                            return new Promise(function(resolve, reject) {
+                                if (element) {
+                                    setTimeout(function() {
+                                        element.click();
+                                        resolve();
+                                    }, delay);
+                                } else {
                                     resolve();
-                                }, delay);
-                            } else {
-                                resolve();
-                            }
-                        });
+                                }
+                            });
+                        }
+
+                        clickElement(recordDelete, delays.delete)
+                            .then(function() {
+                                return clickElement(validateButton, delays.validate);
+                            })
+                            .then(function() {
+                                return clickElement(payButton, delays.pay);
+                            })
+                            .catch(function(error) {
+                                console.error("Error during actions:", error);
+                            });
+                    } else {
+                        self.do_warn('Warning', 'No invoice line');
                     }
-
-                    clickElement(recordDelete,500 )
-                        .then(function() {
-                            return clickElement(validateButton,1000);
-                        })
-                        .then(function() {
-                            return clickElement(payButton, 1500);
-                        });
                 } else {
-                    self.do_warn('Warning', 'No invoice line');
+                    console.log("validateButton not found");
                 }
-            } else {
-                console.log("validateButton not found");
             }
-        }
 
-        // Attach the performActions function to the save button click event
-        this.$buttons.find('.oe_form_button_save').click(function() {
-             setTimeout(function() {
-                 performActions();
-            }, 100);
-        });
-    }
-  });
+            // Determine if the data is bulk
+            function isBulkData() {
+                var invoiceLineCount = $('tr[data-id]').length;
+                return invoiceLineCount > 10; // Define the threshold for bulk data
+            }
+
+            // Flag to prevent multiple event bindings
+            var isHandlingSave = false;
+
+            // Attach the performActions function to the save button click event
+            this.$buttons.find('.oe_form_button_save').click(function() {
+                if (!isHandlingSave) {
+                    isHandlingSave = true;
+                    setTimeout(function() {
+                        performActions(isBulkData());
+                        isHandlingSave = false;
+                    }, 100);
+                }
+            });
+        }
+   });
+
 
 
     instance.web.FormView.include({
