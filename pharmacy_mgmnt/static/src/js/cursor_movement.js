@@ -46,21 +46,32 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
     var $productField = $(this);
     var tableRow = $(this).closest('tr');
     var label = tableRow.find('label');
+
     if (label.text().trim() === "Customer") {
-       $productField.find('input').one('autocompleteopen', function() {
-            setTimeout(function() {
-                $productField.find('input').select();
-            }, 200); // Increase timeout value
-        });
+        var $input = $productField.find('input');
+
+
+        if (!$input.data('autocomplete-opened')) {
+            $input.data('autocomplete-opened', true);
+
+            $input.one('autocompleteopen', function() {
+                setTimeout(function() {
+                    $input.select();
+                }, 200);
+            });
+        }
+
         var $ul = $("ul.ui-autocomplete");
-        var $firstItem = $ul.find("li:first");
+        var $firstItem = $ul.find('a.ui-corner-all:contains("Create")');
         if ($firstItem.length && !$firstItem.data('clicked')) {
-            $firstItem.trigger("click");
             $firstItem.data('clicked', true);
-            $firstItem.off('click');
+            setTimeout(function() {
+                $firstItem.trigger("click");
+            }, 100);
         }
     }
 });
+
 
 
 //        if ($ul.find("li").length === 2) {
