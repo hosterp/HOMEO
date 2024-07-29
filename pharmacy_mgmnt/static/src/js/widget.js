@@ -37,7 +37,7 @@ openerp.pharmacy_mgmnt = function (instance) {
                     var invoiceLine = $('tr[data-id]');
                     console.log(invoiceLine.length);
 
-                   
+
                     var delays = isBulkData ? { delete: 1000, validate: 2000, pay: 3000 } : { delete: 500, validate: 1000, pay: 1500 };
 
                     if (invoiceLine.length > 0) {

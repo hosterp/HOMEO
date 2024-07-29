@@ -115,17 +115,17 @@
                     <attribute name="required">0</attribute>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="replace">
-                    <field name="product_id" string="Product" class="required_class"
+                    <field name="product_id" string="Product" class="required_class product"
                            options="{'no_open': True}"/>
 
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='product_id']" position="after">
                     <field name="medicine_name_subcat" options='{"no_open": True}'
-                           class="required_class"/>
+                           class="required_class potency"/>
                     <field name="batch"/>
-                    <field name="medicine_name_packing" options='{"no_open": True}' class="required_class"/>
+                    <field name="medicine_name_packing" options='{"no_open": True}' class="required_class packing"/>
                     <field name="product_of" options='{"no_open": True}'/>
-                    <field name="medicine_grp" string="Group" class="required_class"
+                    <field name="medicine_grp" string="Group" class="required_class grp"
                            options='{"no_open": True}'/>
                 </xpath>
                 <xpath expr="//field[@name='invoice_line']/tree/field[@name='quantity']" position="attributes">

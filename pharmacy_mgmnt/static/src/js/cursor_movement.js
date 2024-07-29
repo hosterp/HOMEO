@@ -247,7 +247,7 @@ $(document).ready(function() {
 
     $(document).on('focus', '.oe_form_field_many2one', debounce(function(event) {
         checkAndHandleConditions($(this));
-    }, 300)); 
+    }, 200));
 });
 
 function checkAndHandleConditions($this) {
