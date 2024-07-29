@@ -42,54 +42,25 @@ $(document).ready(function(){
 
 
 var clickedStates = {};
-//$(document).on('focus', '.oe_form_field_many2one', function(event) {
-//    var $productField = $(this);
-//    var tableRow = $(this).closest('tr');
-//    var label = tableRow.find('label');
-//    if (label.text().trim() === "Customer") {
-//       $productField.find('input').one('autocompleteopen', function() {
-//            setTimeout(function() {
-//                $productField.find('input').select();
-//            }, 100); // Increase timeout value
-//        });
-//        var $ul = $("ul.ui-autocomplete");
-//        var $firstItem = $ul.find("li:first");
-//        if ($firstItem.length && !$firstItem.data('clicked')) {
-//            $firstItem.trigger("click");
-//            $firstItem.data('clicked', true);
-//            $firstItem.off('click');
-//        }
-//    }
-//});
-        $(document).on('focus', '.oe_form_field_many2one', function(event) {
-            var $productField = $(this);
-            var tableRow = $(this).closest('tr');
-            var label = tableRow.find('label');
-
-            if (label.text().trim() === "Customer") {
-                // Ensure that the input field is fully rendered
-                setTimeout(function() {
-                    var $input = $productField.find('input');
-
-                    // Ensure that the input field is visible and focusable
-                    if ($input.is(':visible') && $input.is(':focus')) {
-                        // Select input value
-                        $input.select();
-                        console.log('Input value selected');
-                    } else {
-                        console.log('Input field is not visible or not focused');
-                    }
-                }, 100); // Increase the timeout value if needed
-
-                var $ul = $("ul.ui-autocomplete");
-                var $firstItem = $ul.find("li:first");
-                if ($firstItem.length && !$firstItem.data('clicked')) {
-                    $firstItem.trigger("click");
-                    $firstItem.data('clicked', true);
-                    $firstItem.off('click');
-                }
-            }
+$(document).on('focus', '.oe_form_field_many2one', function(event) {
+    var $productField = $(this);
+    var tableRow = $(this).closest('tr');
+    var label = tableRow.find('label');
+    if (label.text().trim() === "Customer") {
+       $productField.find('input').one('autocompleteopen', function() {
+            setTimeout(function() {
+                $productField.find('input').select();
+            }, 200); // Increase timeout value
         });
+        var $ul = $("ul.ui-autocomplete");
+        var $firstItem = $ul.find("li:first");
+        if ($firstItem.length && !$firstItem.data('clicked')) {
+            $firstItem.trigger("click");
+            $firstItem.data('clicked', true);
+            $firstItem.off('click');
+        }
+    }
+});
 
 
 //        if ($ul.find("li").length === 2) {
@@ -273,34 +244,67 @@ $(document).ready(function() {
     });
 });
 $(document).ready(function() {
-    checkAndHandleConditions();
+
+    $(document).on('focus', '.oe_form_field_many2one', debounce(function(event) {
+        checkAndHandleConditions($(this));
+    }, 300)); 
 });
 
-function checkAndHandleConditions() {
-    // Check the condition and perform actions
-    $('.oe_form_field_many2one').each(function() {
-        var $this = $(this);
-        var inputValue = $this.find('input').val().trim();
-        var dropdownButton = $this.find('.oe_m2o_drop_down_button');
-        var isDropdownVisible = dropdownButton.is(':visible');
+function checkAndHandleConditions($this) {
+    var inputValue = $this.find('input').val().trim();
+    var dropdownButton = $this.find('.oe_m2o_drop_down_button');
 
-        if (inputValue === '') {
-            if (!$(this).data('clicked')) {
-                $(this).data('clicked', true);
+
+    console.log('Input Value:', inputValue);
+    console.log('Dropdown Button Visible:', dropdownButton.is(':visible'));
+
+
+    if (inputValue === '') {
+        if (!$this.data('clicked')) {
+            $this.data('clicked', true);
+            setTimeout(() => {
+                console.log('Attempting to click dropdown button...');
+                dropdownButton.click();
+
+                // Wait for dropdown to appear
                 setTimeout(() => {
-                    dropdownButton.click();
-                    console.log('Dropdown button clicked');
-                }, 100); // Adjust delay as needed
-            }
-        } else {
-            if (isDropdownVisible) {
-                setTimeout(() => {
-                    dropdownButton.hide();
-                    console.log('Dropdown hidden');
-                }, 100); // Adjust delay as needed
-            } else {
-                console.log('Dropdown already hidden');
-            }
+                    var $ulAfterClick = $("ul.ui-autocomplete");
+                    console.log('Dropdown List Visible After Click:', $ulAfterClick.is(':visible'));
+
+                    if (!$ulAfterClick.is(':visible')) {
+                        console.log('Dropdown not visible after clicking. There might be an issue.');
+                    }
+                }, 500);
+            }, 100);
         }
-    });
+    } else {
+        if (dropdownButton.is(':visible')) {
+            console.log('Input Value Present - Attempting to hide dropdown...');
+            setTimeout(() => {
+                dropdownButton.hide();
+                $this.find('input').select();
+
+                setTimeout(() => {
+                    var $ulAfterHide = $("ul.ui-autocomplete");
+                    console.log('Dropdown List Visible After Hide:', $ulAfterHide.is(':visible'));
+
+                    if ($ulAfterHide.is(':visible')) {
+                        console.log('Dropdown still visible after hiding. There might be an issue.');
+                    }
+                }, 500);
+            }, 100);
+        } else {
+            console.log('Dropdown already hidden or never shown');
+        }
+    }
+}
+
+
+function debounce(func, wait) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
 }
