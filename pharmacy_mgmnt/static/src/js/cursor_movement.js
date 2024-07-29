@@ -15,18 +15,18 @@ $(document).ready(function(){
             $this.prop('selectionStart', $this.val().length);
         }
     });
-   $(document).on('focus', '.oe_form_field_many2one', function(event) {
-        var $this = $(this);
-        var inputValue = $(this).find('input').val().trim();
-        if (!$(this).data('clicked') && inputValue === '') {
-            $(this).data('clicked', true);
-            $(this).find('.oe_m2o_drop_down_button').click();
-            console.log('visible');
-        } else if (inputValue!== '') {
-            console.log('hide');
-            $(this).find('ul.ui-autocomplete').hide();
-        }
-    });
+//   $(document).on('focus', '.oe_form_field_many2one', function(event) {
+//        var $this = $(this);
+//        var inputValue = $(this).find('input').val().trim();
+//        if (!$(this).data('clicked') && inputValue === '') {
+//            $(this).data('clicked', true);
+//            $(this).find('.oe_m2o_drop_down_button').click();
+//            console.log('visible');
+//        } else if (inputValue!== '') {
+//            console.log('hide');
+//            $(this).find('.oe_m2o_drop_down_button').hide();
+//        }
+//    });
 
 //    $(document).on('focus', '.oe_form_field_many2one', function(event) {
 //        if (!$(this).data('clicked')) {
@@ -42,25 +42,53 @@ $(document).ready(function(){
 
 
 var clickedStates = {};
-$(document).on('focus', '.oe_form_field_many2one', function(event) {
-    var $productField = $(this);
-    var tableRow = $(this).closest('tr');
-    var label = tableRow.find('label');
-    if (label.text().trim() === "Customer") {
-       $productField.find('input').one('autocompleteopen', function() {
-            setTimeout(function() {
-                $productField.find('input').select();
-            }, 200); // Increase timeout value
-        });
-        var $ul = $("ul.ui-autocomplete");
-        var $firstItem = $ul.find("li:first");
-        if ($firstItem.length && !$firstItem.data('clicked')) {
-            $firstItem.trigger("click");
-            $firstItem.data('clicked', true);
-            $firstItem.off('click');
-        }
-    }
-});
+//$(document).on('focus', '.oe_form_field_many2one', function(event) {
+//    var $productField = $(this);
+//    var tableRow = $(this).closest('tr');
+//    var label = tableRow.find('label');
+//    if (label.text().trim() === "Customer") {
+//       $productField.find('input').one('autocompleteopen', function() {
+//            setTimeout(function() {
+//                $productField.find('input').select();
+//            }, 100); // Increase timeout value
+//        });
+//        var $ul = $("ul.ui-autocomplete");
+//        var $firstItem = $ul.find("li:first");
+//        if ($firstItem.length && !$firstItem.data('clicked')) {
+//            $firstItem.trigger("click");
+//            $firstItem.data('clicked', true);
+//            $firstItem.off('click');
+//        }
+//    }
+//});
+            $(document).on('focus', '.oe_form_field_many2one', function(event) {
+                var $productField = $(this);
+                var tableRow = $(this).closest('tr');
+                var label = tableRow.find('label');
+
+                if (label.text().trim() === "Customer") {
+
+                        var $input = $productField.find('input');
+
+
+                        if ($input.is(':visible') && $input.is(':focus')) {
+                            // Select input value
+                            $input.select();
+                            console.log('Input value selected');
+                        } else {
+                            console.log('Input field is not visible or not focused');
+                        }
+                    }, 100); 
+
+                    var $ul = $("ul.ui-autocomplete");
+                    var $firstItem = $ul.find("li:first");
+                    if ($firstItem.length && !$firstItem.data('clicked')) {
+                        $firstItem.trigger("click");
+                        $firstItem.data('clicked', true);
+                        $firstItem.off('click');
+                    }
+                }
+            });
 
 
 //        if ($ul.find("li").length === 2) {
@@ -243,3 +271,35 @@ $(document).ready(function() {
         }
     });
 });
+$(document).ready(function() {
+    checkAndHandleConditions();
+});
+
+function checkAndHandleConditions() {
+    // Check the condition and perform actions
+    $('.oe_form_field_many2one').each(function() {
+        var $this = $(this);
+        var inputValue = $this.find('input').val().trim();
+        var dropdownButton = $this.find('.oe_m2o_drop_down_button');
+        var isDropdownVisible = dropdownButton.is(':visible');
+
+        if (inputValue === '') {
+            if (!$(this).data('clicked')) {
+                $(this).data('clicked', true);
+                setTimeout(() => {
+                    dropdownButton.click();
+                    console.log('Dropdown button clicked');
+                }, 100); // Adjust delay as needed
+            }
+        } else {
+            if (isDropdownVisible) {
+                setTimeout(() => {
+                    dropdownButton.hide();
+                    console.log('Dropdown hidden');
+                }, 100); // Adjust delay as needed
+            } else {
+                console.log('Dropdown already hidden');
+            }
+        }
+    });
+}
