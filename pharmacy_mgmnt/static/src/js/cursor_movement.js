@@ -61,34 +61,35 @@ var clickedStates = {};
 //        }
 //    }
 //});
-            $(document).on('focus', '.oe_form_field_many2one', function(event) {
-                var $productField = $(this);
-                var tableRow = $(this).closest('tr');
-                var label = tableRow.find('label');
+        $(document).on('focus', '.oe_form_field_many2one', function(event) {
+            var $productField = $(this);
+            var tableRow = $(this).closest('tr');
+            var label = tableRow.find('label');
 
-                if (label.text().trim() === "Customer") {
+            if (label.text().trim() === "Customer") {
+                // Ensure that the input field is fully rendered
+                setTimeout(function() {
+                    var $input = $productField.find('input');
 
-                        var $input = $productField.find('input');
-
-
-                        if ($input.is(':visible') && $input.is(':focus')) {
-                            // Select input value
-                            $input.select();
-                            console.log('Input value selected');
-                        } else {
-                            console.log('Input field is not visible or not focused');
-                        }
-                    }, 100); 
-
-                    var $ul = $("ul.ui-autocomplete");
-                    var $firstItem = $ul.find("li:first");
-                    if ($firstItem.length && !$firstItem.data('clicked')) {
-                        $firstItem.trigger("click");
-                        $firstItem.data('clicked', true);
-                        $firstItem.off('click');
+                    // Ensure that the input field is visible and focusable
+                    if ($input.is(':visible') && $input.is(':focus')) {
+                        // Select input value
+                        $input.select();
+                        console.log('Input value selected');
+                    } else {
+                        console.log('Input field is not visible or not focused');
                     }
+                }, 100); // Increase the timeout value if needed
+
+                var $ul = $("ul.ui-autocomplete");
+                var $firstItem = $ul.find("li:first");
+                if ($firstItem.length && !$firstItem.data('clicked')) {
+                    $firstItem.trigger("click");
+                    $firstItem.data('clicked', true);
+                    $firstItem.off('click');
                 }
-            });
+            }
+        });
 
 
 //        if ($ul.find("li").length === 2) {
