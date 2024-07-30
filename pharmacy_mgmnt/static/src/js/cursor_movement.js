@@ -44,12 +44,11 @@ $(document).ready(function(){
 var clickedStates = {};
 $(document).on('focus', '.oe_form_field_many2one', function(event) {
     var $productField = $(this);
-    var tableRow = $(this).closest('tr');
-    var label = tableRow.find('label');
+    var tableRow = $productField.closest('tr');
+    var label = tableRow.find('label').text().trim();
 
-    if (label.text().trim() === "Customer") {
+    if (label === "Customer") {
         var $input = $productField.find('input');
-
 
         if (!$input.data('autocomplete-opened')) {
             $input.data('autocomplete-opened', true);
@@ -61,17 +60,17 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
             });
         }
 
-        var $ul = $("ul.ui-autocomplete");
-        var $firstItem = $ul.find('a.ui-corner-all:contains("Create")');
-        if ($firstItem.length && !$firstItem.data('clicked')) {
-            $firstItem.data('clicked', true);
-            setTimeout(function() {
+        setTimeout(function() {
+            var $ul = $("ul.ui-autocomplete");
+            var $firstItem = $ul.find('li:first');
+
+            if ($firstItem.length && !$firstItem.data('clicked')) {
+                $firstItem.data('clicked', true);
                 $firstItem.trigger("click");
-            }, 100);
-        }
+            }
+        }, 100);
     }
 });
-
 
 
 //        if ($ul.find("li").length === 2) {
