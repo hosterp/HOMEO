@@ -1192,7 +1192,7 @@ class AccountInvoiceLine(models.Model):
 
     @api.model
     def _default_product_id(self):
-        first_product = self.env['product.product'].search([], limit=1)
+        first_product = self.env['product.product'].search([('visible_in', '=', 'true')], limit=1)
         return first_product.id if first_product else False
     @api.model
     def _get_default_medicine_pack(self):
