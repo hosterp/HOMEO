@@ -1,11 +1,20 @@
-$(document).on("shown.bs.modal", function () {
-setTimeout(function(){
-$('.tree_class table').DataTable();
-  $('input[type="search"]').focus();
-//  resetFieldValue();
-//$('419').DataTable();
-}, 500)
+$(document).on("shown.bs.modal", function (e) {
+    var $modal = $(e.target);
+    var modalTitle = $modal.find('.modal-title').text().trim();
+
+    if (modalTitle === "Search Stock In Tree") {
+        resetFieldValue();
+
+        setTimeout(function(){
+            // Initialize DataTable
+            $('.tree_class table').DataTable();
+
+            // Focus the search input
+            $('input[type="search"]').focus();
+        }, 500);
+    }
 });
+
 //libiya.....................
 function resetFieldValue() {
      $.ajax({
