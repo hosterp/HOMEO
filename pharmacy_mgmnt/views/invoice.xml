@@ -325,7 +325,23 @@
                 }
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter') {
-                    window.close();
+                        // Ensure that the opener window and buttons are available
+                        if (window.opener) {
+                            const listAddButton = window.opener.document.querySelector('.oe_list_add');
+                            const createButton = window.opener.document.querySelector('.oe_form_button_create');
+
+                            // Click the buttons if they exist
+                            if (listAddButton) listAddButton.click();
+                            if (createButton) createButton.click();
+
+                            // Delay the window closing to ensure button clicks are processed
+                            setTimeout(function() {
+                                window.close();
+                            }, 100);
+                        } else {
+                            // If no opener window, just close the current window
+                            window.close();
+                        }
                     }
                 });
             </script>

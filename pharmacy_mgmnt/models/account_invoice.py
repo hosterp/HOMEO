@@ -1185,11 +1185,15 @@ class AccountInvoiceLine(models.Model):
     doctor_name = fields.Many2one('res.partner', 'Doctor Name')
     doctor_name_1 = fields.Char('Doctor Name')
     address_new = fields.Text('Address')
-    product_id = fields.Many2one('product.product', 'Medicine',defualt=False, domain=[('visible_in', '=', 'true')])
+    product_id = fields.Many2one('product.product', 'Medicine', default=lambda self: self._default_product_id(), domain=[('visible_in', '=', 'true')])
 
     price_subtotal = fields.Float(string='Amount', digits=dp.get_precision('Account'),
                                   store=True, readonly=True, compute='_compute_price', inverse='_inverse_compute_price')
 
+    @api.model
+    def _default_product_id(self):
+        first_product = self.env['product.product'].search([], limit=1)
+        return first_product.id if first_product else False
     @api.model
     def _get_default_medicine_pack(self):
             name_pattern = '100ML'
