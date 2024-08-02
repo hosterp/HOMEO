@@ -168,52 +168,107 @@ class AccountInvoiceLine(models.Model):
 
         return result
 
+    # @api.onchange('medicine_rack')
+    # def onchange_medicine_rack(self):
+    #     for result in self:
+    #         if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.price_unit and result.amount_w_tax and result.medicine_rack:
+    #             rec = {
+    #                 'expiry_date': result.expiry_date,
+    #                 'manf_date': result.manf_date,
+    #                 'product_of': result.product_of.id,
+    #                 'product_id': result.product_id.id,
+    #                 'medicine_name_subcat': result.medicine_name_subcat.id,
+    #                 'medicine_name_packing': result.medicine_name_packing.id,
+    #                 'medicine_grp': result.medicine_grp.id,
+    #                 'batch': result.batch,
+    #                 'manf_date': result.manf_date,
+    #                 'expiry_date': result.expiry_date,
+    #                 'price_unit': result.price_unit,
+    #                 'quantity': result.quantity,
+    #                 'medicine_rack': result.medicine_rack.id,
+    #                 'hsn_code': result.hsn_code,
+    #                 'invoice_line_tax_id4': result.invoice_line_tax_id4,
+    #             }
+    #             line_entry = self.env['account.invoice.line'].create(rec)
+    #             vals = {
+    #                 'supplier_id': result.invoice_id.partner_id.id,
+    #                 'expiry_date': result.expiry_date,
+    #                 'manf_date': result.manf_date,
+    #                 'company': result.product_of.id,
+    #                 'medicine_1': result.product_id.id,
+    #                 'potency': result.medicine_name_subcat.id,
+    #                 'medicine_name_packing': result.medicine_name_packing.id,
+    #                 'medicine_grp1': result.medicine_grp.id,
+    #                 'batch_2': result.batch_2.id,
+    #                 'batch': result.batch,
+    #                 'mrp': result.price_unit,
+    #                 'qty': result.quantity,
+    #                 'rack': result.medicine_rack.id,
+    #                 'hsn_code': result.hsn_code,
+    #                 'discount': result.discount,
+    #                 'invoice_line_tax_id4': result.invoice_line_tax_id4,
+    #                 'stock_date': date.today(),
+    #                 'invoice_line_id': line_entry.id,
+    #             }
+    #
+    #             stock_entry = self.env['entry.stock'].create(vals)
+    #             result.stock_entry_id = stock_entry.id
     @api.onchange('medicine_rack')
     def onchange_medicine_rack(self):
+        # Perform necessary updates or field adjustments here
         for result in self:
-            if result.invoice_id.type == 'in_invoice' and result.quantity != 0 and result.price_unit and result.amount_w_tax and result.medicine_rack:
+            if result.invoice_id.type == 'in_invoice' and result.quantity and result.price_unit and result.amount_w_tax and result.medicine_rack:
+                # Example of an update that doesn't create new records
+                # You can modify the logic here based on your needs
+                pass
+
+    def write(self, vals):
+        result = super(AccountInvoiceLine, self).write(vals)
+        for record in self:
+            if record.invoice_id.type == 'in_invoice' and record.quantity and record.price_unit and record.amount_w_tax and record.medicine_rack:
+                # Create account.invoice.line record
                 rec = {
-                    'expiry_date': result.expiry_date,
-                    'manf_date': result.manf_date,
-                    'product_of': result.product_of.id,
-                    'product_id': result.product_id.id,
-                    'medicine_name_subcat': result.medicine_name_subcat.id,
-                    'medicine_name_packing': result.medicine_name_packing.id,
-                    'medicine_grp': result.medicine_grp.id,
-                    'batch': result.batch,
-                    'manf_date': result.manf_date,
-                    'expiry_date': result.expiry_date,
-                    'price_unit': result.price_unit,
-                    'quantity': result.quantity,
-                    'medicine_rack': result.medicine_rack.id,
-                    'hsn_code': result.hsn_code,
-                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
+                    'expiry_date': record.expiry_date,
+                    'manf_date': record.manf_date,
+                    'product_of': record.product_of.id,
+                    'product_id': record.product_id.id,
+                    'medicine_name_subcat': record.medicine_name_subcat.id,
+                    'medicine_name_packing': record.medicine_name_packing.id,
+                    'medicine_grp': record.medicine_grp.id,
+                    'batch': record.batch,
+                    'price_unit': record.price_unit,
+                    'quantity': record.quantity,
+                    'medicine_rack': record.medicine_rack.id,
+                    'hsn_code': record.hsn_code,
+                    'invoice_line_tax_id4': record.invoice_line_tax_id4,
                 }
                 line_entry = self.env['account.invoice.line'].create(rec)
-                vals = {
-                    'supplier_id': result.invoice_id.partner_id.id,
-                    'expiry_date': result.expiry_date,
-                    'manf_date': result.manf_date,
-                    'company': result.product_of.id,
-                    'medicine_1': result.product_id.id,
-                    'potency': result.medicine_name_subcat.id,
-                    'medicine_name_packing': result.medicine_name_packing.id,
-                    'medicine_grp1': result.medicine_grp.id,
-                    'batch_2': result.batch_2.id,
-                    'batch': result.batch,
-                    'mrp': result.price_unit,
-                    'qty': result.quantity,
-                    'rack': result.medicine_rack.id,
-                    'hsn_code': result.hsn_code,
-                    'discount': result.discount,
-                    'invoice_line_tax_id4': result.invoice_line_tax_id4,
+
+                # Create entry.stock record
+                vals_stock = {
+                    'supplier_id': record.invoice_id.partner_id.id,
+                    'expiry_date': record.expiry_date,
+                    'manf_date': record.manf_date,
+                    'company': record.product_of.id,
+                    'medicine_1': record.product_id.id,
+                    'potency': record.medicine_name_subcat.id,
+                    'medicine_name_packing': record.medicine_name_packing.id,
+                    'medicine_grp1': record.medicine_grp.id,
+                    'batch': record.batch,
+                    'mrp': record.price_unit,
+                    'qty': record.quantity,
+                    'rack': record.medicine_rack.id,
+                    'hsn_code': record.hsn_code,
+                    'discount': record.discount,
+                    'invoice_line_tax_id4': record.invoice_line_tax_id4,
                     'stock_date': date.today(),
                     'invoice_line_id': line_entry.id,
                 }
+                stock_entry = self.env['entry.stock'].create(vals_stock)
 
-                stock_entry = self.env['entry.stock'].create(vals)
-                result.stock_entry_id = stock_entry.id
-
+                # Update the stock_entry_id field
+                record.write({'stock_entry_id': stock_entry.id})
+        return result
     @api.model
     def create(self, vals):
         record = super(AccountInvoiceLine, self).create(vals)
@@ -1199,6 +1254,7 @@ class AccountInvoiceLine(models.Model):
             name_pattern = '100ML'
             default_pack = self.env['account.invoice.line'].search([('medicine_name_packing', 'ilike', name_pattern)], limit=1)
             return default_pack.medicine_name_packing if default_pack else ''
+
 
 
     # @api.onchange('price_unit')
