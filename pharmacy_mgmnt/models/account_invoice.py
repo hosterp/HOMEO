@@ -1258,38 +1258,40 @@ class AccountInvoiceLine(models.Model):
     @api.onchange('product_id', 'medicine_name_subcat', 'medicine_name_packing','product_of')
     def _onchange_fields(self):
         default_value=lambda self: self.env['product.medicine.group'].search([], limit=1).id
-        if self.product_id and self.medicine_name_subcat and self.medicine_name_packing and self.product_of :
-            previous_line = self.env['account.invoice.line'].search([
-                ('product_id', '=', self.product_id.id),
-                ('medicine_name_subcat', '=', self.medicine_name_subcat.id),
-                ('medicine_name_packing', '=', self.medicine_name_packing.id),
-                ('product_of', '=', self.product_of.id)
-            ], limit=1, order='id desc')
+        for rec in self:
+            if rec.invoice_id.type == 'out_invoice':
+                if self.product_id and self.medicine_name_subcat and self.medicine_name_packing and self.product_of :
+                    previous_line = self.env['account.invoice.line'].search([
+                        ('product_id', '=', self.product_id.id),
+                        ('medicine_name_subcat', '=', self.medicine_name_subcat.id),
+                        ('medicine_name_packing', '=', self.medicine_name_packing.id),
+                        ('product_of', '=', self.product_of.id)
+                    ], limit=1, order='id desc')
 
-            if previous_line:
+                    if previous_line:
 
-                self.medicine_grp = previous_line.medicine_grp.id
-                self.product_id = previous_line.product_id.id
-                self.medicine_name_subcat = previous_line.medicine_name_subcat.id
-                self.medicine_name_packing = previous_line.medicine_name_packing.id
-                self.product_of = previous_line.product_of.id
+                        self.medicine_grp = previous_line.medicine_grp.id
+                        self.product_id = previous_line.product_id.id
+                        self.medicine_name_subcat = previous_line.medicine_name_subcat.id
+                        self.medicine_name_packing = previous_line.medicine_name_packing.id
+                        self.product_of = previous_line.product_of.id
 
 
-                self.write({
-                    'medicine_grp': self.medicine_grp.id,
-                    'product_id': self.product_id.id,
-                    'medicine_name_subcat': self.medicine_name_subcat.id,
-                    'medicine_name_packing': self.medicine_name_packing.id,
-                    'product_of': self.product_of.id
-                })
-            else:
-                self.medicine_grp = default_value
-        else:
-            self.medicine_grp =default_value
+                        self.write({
+                            'medicine_grp': self.medicine_grp.id,
+                            'product_id': self.product_id.id,
+                            'medicine_name_subcat': self.medicine_name_subcat.id,
+                            'medicine_name_packing': self.medicine_name_packing.id,
+                            'product_of': self.product_of.id
+                        })
+                    else:
+                        self.medicine_grp = default_value
+                else:
+                    self.medicine_grp =default_value
 
-        # Update create_bool based on field presence
-        self.create_bool = bool(self.product_id and self.medicine_name_subcat and self.medicine_name_packing and self.product_of)
-    # @api.onchange('price_unit')
+                # Update create_bool based on field presence
+                self.create_bool = bool(self.product_id and self.medicine_name_subcat and self.medicine_name_packing and self.product_of)
+        # @api.onchange('price_unit')
     # def _compute_manf_expiry_date_display(self):
     #     for record in self:
     #         if record.manf_date:
