@@ -40,15 +40,19 @@ $(document).ready(function(){
         $(this).data('clicked', false);
     });
 
-$(document).on('focus', '.oe_form_field_many2one', function(event) {
-    var $productField = $(this);
-    var tableRow = $productField.closest('tr');
-    var label = tableRow.find('label').text().trim();
+  $(document).on('focus', '.oe_form_field_many2one, .phone_customer input', function (event) {
+        var $productField = $(this);
+        var tableRow = $productField.closest('tr');
+        var label = tableRow.find('label').text().trim();
 
-    if (label === "Customer") {
-        $productField.find('input').addClass('css_customer');
-    }
-});
+        if (label === "Customer") {
+            $productField.find('input').addClass('css_customer');
+
+        } else if (label === "Phone No") {
+            $productField.addClass('css_phone');
+        }
+
+    });
 var clickedStates = {};
 
 
@@ -118,8 +122,6 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
         $firstItem.off('click');
     }
 });
-
-
 
 });
  $(document).ready(function() {
@@ -298,37 +300,43 @@ function debounce(func, wait) {
     };
     }
 
-$(document).on('focus', '.css_customer', function(event) {
-    var $productField = $(this);
-    var tableRow = $productField.closest('tr');
-    var label = tableRow.find('label').text().trim();
+$(document).ready(function () {
+    $(document).on('keypress', '.css_customer', function (event) {
+        if (event.which === 13) {
+            var $productField = $(this);
+            var tableRow = $productField.closest('tr');
+            var label = tableRow.find('label').text().trim();
 
-    if (label === "Customer" && !$productField.data('autocomplete-handled')) {
-        $productField.data('autocomplete-handled', true);
+            if (label === "Customer" && !$productField.data('autocomplete-handled')) {
+                $productField.data('autocomplete-handled', true);
 
-        var $input = $productField.find('input');
+                var $input = $productField.find('input');
 
-        if (!$input.data('autocomplete-opened')) {
-            $input.data('autocomplete-opened', true);
+                if (!$input.data('autocomplete-opened')) {
+                    $input.data('autocomplete-opened', true);
 
-            $input.one('autocompleteopen', function() {
-                setTimeout(function() {
-                    $input.select();
-                }, 200);
-            });
-        }
+                    $input.one('autocompleteopen', function () {
+                        setTimeout(function () {
+                            $input.select();
+                        }, 200);
+                    });
+                }
 
-        setTimeout(function() {
-            var $ul = $("ul.ui-autocomplete");
-//            var $firstItem = $ul.find('li:first');
-            var $firstItem = $ul.find('a.ui-corner-all:contains("Create")');
-            if ($firstItem.length > 0 && !$firstItem.data('clicked')) {
-                $firstItem.trigger("click");
-                $firstItem.data('clicked', true);
-                $firstItem.off('click');
+                setTimeout(function () {
+                    var $ul = $("ul.ui-autocomplete");
+                               var $firstItem = $ul.find('li:eq(-2)');
+                    // var $firstItem = $ul.find('a.ui-corner-all:contains("Create")');
+                    if ($firstItem.length > 0) {
+                        $firstItem[0].click();
+                         setTimeout(function () {
+                            $('.css_phone').focus();
+                        }, 200);
+                        // $firstItem.data('clicked', true);
+                    }
+                }, 100);
             }
-        }, 100);
-    }
+        }
+    });
 });
 //$(document).ready(function() {
 //    // Function to save the value of a specific field to local storage
