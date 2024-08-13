@@ -38,6 +38,7 @@
                 </xpath>
                 <xpath expr="//button[@string='Register Payment']" position="attributes">
                     <attribute name="class">custom_register_payment</attribute>
+                    <attribute name="attrs">{'invisible': [('pay_mode', '=', 'credit')]}</attribute>
                 </xpath>
                 <xpath expr="//button[@string='Register Payment']" position="after">
                     <button
@@ -45,7 +46,7 @@
                             type="object"
                             string="Print"
                             class="oe_highlight"
-                    />
+                    attrs="{'invisible': [('pay_mode', '=', 'cash')]}"/>
                 </xpath>
             </field>
         </record>
