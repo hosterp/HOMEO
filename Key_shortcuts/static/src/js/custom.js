@@ -81,16 +81,16 @@ $.shortcut('16', function() {
 //	});
 //});
 $.shortcut('123', function() {
-     $('.cus_validate').each(function() {
-        if($(this).parents('div:hidden').length == 0){
-			$(this).trigger('click');
-        }
-    });
-    $('.supplier_validate').each(function() {
-        if($(this).parents('div:hidden').length == 0){
-            $(this).trigger('click');
-        }
-    });
+//     $('.cus_validate').each(function() {
+//        if($(this).parents('div:hidden').length == 0){
+//			$(this).trigger('click');
+//        }
+//    });
+//    $('.supplier_validate').each(function() {
+//        if($(this).parents('div:hidden').length == 0){
+//            $(this).trigger('click');
+//        }
+//    });
 
     $('.oe_form_button_save').each(function() {
         if($(this).parents('div:hidden').length == 0){
@@ -113,11 +113,11 @@ $.shortcut('123', function() {
 });
 
 $.shortcut('121', function() {
-	$('.oe_form_button_save').each(function() {
-		if($(this).parents('div:hidden').length == 0){
-                $(this).trigger('click');
-		}
-	});
+//	$('.oe_form_button_save').each(function() {
+//		if($(this).parents('div:hidden').length == 0){
+//                $(this).trigger('click');
+//		}
+//	});
 	    setTimeout(function() {
             $('.css_print').each(function() {
                 if($(this).parents('div:hidden').length == 0){
@@ -127,6 +127,24 @@ $.shortcut('121', function() {
             });
         }, 3000)
 });
+
+$.shortcut('123', function() {
+	$('.oe_form_button_save').each(function() {
+	    console.log("working f12")
+		if($(this).parents('div:hidden').length == 0){
+                $(this).trigger('click');
+		}
+	});
+//	    setTimeout(function() {
+//            $('.css_print').each(function() {
+//                if($(this).parents('div:hidden').length == 0){
+//                    $(this).trigger('click');
+//
+//                }
+//            });
+//        }, 3000)
+});
+
 $(document).ready(function(){
     $(document).on('blur', "input[type=text],textarea", function () {
         $(this).val(function (_, val) {
@@ -246,20 +264,26 @@ $(document).ready(function() {
     }
 
      let lastKeyPressTime = 0;
-    const doubleClickInterval = 500; // Time interval to consider as a double click (in milliseconds)
+//    const doubleClickInterval = 500; // Time interval to consider as a double click (in milliseconds)
+     $(document).on('keyup', quantity, function (event) {
+        if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]')) {
+            $('.close').click();
+    }
+});
 
-    quantity = $('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]');
-    $(document).on('keyup', quantity, function (event) {
-        if (event.keyCode === 13)  {
-            const currentKeyPressTime = new Date().getTime();
-            const timeSinceLastKeyPress = currentKeyPressTime - lastKeyPressTime;
-            lastKeyPressTime = currentKeyPressTime;
-             if (timeSinceLastKeyPress < doubleClickInterval) {
-                    $('.close').click();
-                }
-            }
-
-    });
+//    quantity = $('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]');
+//    $(document).on('keyup', quantity, function (event) {
+//        if (event.keyCode === 32)  {
+//            $('.close').click();
+////            const currentKeyPressTime = new Date().getTime();
+////            const timeSinceLastKeyPress = currentKeyPressTime - lastKeyPressTime;
+////            lastKeyPressTime = currentKeyPressTime;
+////             if (timeSinceLastKeyPress < doubleClickInterval) {
+////                    $('.close').click();
+////                }
+//            }
+//
+//    });
 
     var quantitySelectedField = '[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]';
 
