@@ -325,21 +325,33 @@
                 }
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter') {
-                        // Ensure that the opener window and buttons are available
                         if (window.opener) {
                             const listAddButton = window.opener.document.querySelector('.oe_list_add');
                             const createButton = window.opener.document.querySelector('.oe_form_button_create');
 
-                            // Click the buttons if they exist
                             if (listAddButton) listAddButton.click();
                             if (createButton) createButton.click();
 
-                            // Delay the window closing to ensure button clicks are processed
+                            const modalTitle = window.opener.document.querySelector('.modal-title');
+                            if (modalTitle &amp;&amp; modalTitle.textContent.includes('Pay Invoice')) {
+                                console.log('Pay Invoice modal found');
+                                const closeButton = window.opener.document.querySelector('button.close[data-dismiss="modal"]');
+                                if (closeButton) {
+                                    console.log('Clicking closeButton');
+                                    closeButton.click();
+                                } else {
+                                    console.warn('Close button not found in Pay Invoice modal');
+                                }
+                            } else {
+                                console.warn('Pay Invoice modal not found or title does not match');
+                            }
+
+
                             setTimeout(function() {
                                 window.close();
                             }, 100);
                         } else {
-                            // If no opener window, just close the current window
+
                             window.close();
                         }
                     }
