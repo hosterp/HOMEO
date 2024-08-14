@@ -99,7 +99,7 @@
                 <xpath expr="//field[@name='date_invoice']" position="after">
                     <field name="pay_mode" attrs="{'invisible': [('packing_invoice', '=', True)]}"/>
                     <field name="res_person" domain="[('res_person_id', '=', True)]"
-                           attrs="{'required': [('pay_mode','=', 'credit')]}"/>
+                           attrs="{'required': [('pay_mode','=', 'credit')]}" widget="selection"/>
                     <!--                    <field name="account_id" required="False" invisible="1"/>-->
 
                 </xpath>
