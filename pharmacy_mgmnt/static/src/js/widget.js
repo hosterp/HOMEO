@@ -84,16 +84,34 @@ openerp.pharmacy_mgmnt = function (instance) {
             // Flag to prevent multiple event bindings
             var isHandlingSave = false;
 
-            // Attach the performActions function to the save button click event
-            this.$buttons.find('.oe_form_button_save').click(function() {
+           this.$buttons.find('.oe_form_button_save').click(function() {
                 if (!isHandlingSave) {
                     isHandlingSave = true;
-                    setTimeout(function() {
-                        performActions(isBulkData());
+
+
+                    var packingInvoice = self.datarecord ? self.datarecord.packing_invoice : false;
+
+                    if (!packingInvoice) {
+                        console.log("Packing invoice is false, performing actions");
+                        setTimeout(function() {
+                            performActions(isBulkData());
+                            isHandlingSave = false;
+                        }, 100);
+                    } else {
+                         var printButton = document.querySelector('.css_print');
+                        if (printButton) {
+                            printButton.click();
+                            console.log("css_print button clicked");
+                        } else {
+                            console.warn("css_print button not found");
+                        }
+
+                        console.log("Packing invoice is true, skipping actions");
                         isHandlingSave = false;
-                    }, 100);
+                    }
                 }
-            });
+           });
+
         }
    });
 
