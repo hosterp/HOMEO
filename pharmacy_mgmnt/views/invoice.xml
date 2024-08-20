@@ -108,7 +108,7 @@
             <field name="res_model">entry.stock</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
-            <field name="domain">[('qty','>=','50')]</field>
+            <field name="domain">[('qty','&lt;=','50')]</field>
             <field name="view_id" ref="new_stock_entry_tree_id_stock_count"/>
             <field name="current">new</field>
         </record>
