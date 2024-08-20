@@ -294,7 +294,7 @@ class NewStockEntry(models.Model):
     quantity_selected = fields.Float(string="Item Qty",store="False")
     stock_date = fields.Date(string="stock date")
     med_category = fields.Selection([('indian', 'Indian'), ('german', 'German')], default='indian', string="Made In")
-
+    name=fields.Char('Name')
 
     @api.model
     def create(self, vals):

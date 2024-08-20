@@ -93,7 +93,25 @@
             <field name="current">new</field>
         </record>
 
-
+        <record model="ir.actions.act_window" id="action_product_search_id_home_page">
+            <field name="name">Stock Expired Items</field>
+            <field name="res_model">entry.stock</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('expiry_date', '&lt;=', current_date)]</field>
+            <field name="view_id" ref="new_stock_entry_tree_id_home"/>
+            <field name="search_view_id" ref="pharmacy_mgmnt.view_entry_stock_filter"/>
+            <field name="current">new</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_product_search_id_count_stock">
+            <field name="name">Stock count Items</field>
+            <field name="res_model">entry.stock</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('qty','>=','50')]</field>
+            <field name="view_id" ref="new_stock_entry_tree_id_stock_count"/>
+            <field name="current">new</field>
+        </record>
         <record id="view_invoice_cust_inherit_line" model="ir.ui.view">
             <field name="name">account.invoice.form</field>
             <field name="model">account.invoice</field>

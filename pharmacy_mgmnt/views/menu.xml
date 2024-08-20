@@ -123,7 +123,81 @@
                 </tree>
             </field>
         </record>
-
+        <record model="ir.ui.view" id="view_entry_stock_filter">
+            <field name="name">entry.stock.search.filter</field>
+            <field name="model">entry.stock</field>
+            <field name="arch" type="xml">
+                <search string="Stock Entry">
+                    <field name="expiry_date"/>
+                    <filter string="Expired" name="filter_expired" domain="[('expiry_date', '&lt;=', current_date)]"/>
+                </search>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="new_stock_entry_tree_id_home">
+            <field name="name">Medicine stock expiry items</field>
+            <field name="model">entry.stock</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Entry" editable="bottom"
+                      colors="black:expiry_date == False;red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;"
+                      domain="[('expiry_date', '&lt;=', current_date)]">
+                    <button name="call_function" string="Add" type="object" class="css_wizard_button oe_highlight"
+                            help="calls python function" id="focushere"/>
+                    <field name="s_no" invisible="1"/>
+                    <field name="expiry_alert_date" invisible="1"/>
+                    <field name="medicine_1"/>
+                    <field name="potency"/>
+                    <field name="medicine_name_packing"/>
+                    <field name="company"/>
+                    <field name="medicine_grp" invisible="1"/>
+                    <field name="medicine_grp1"/>
+                    <field name="quantity_selected" store="False" widget="float_no_default"/>
+                    <field name="qty" type="char"/>
+                    <field name="mrp" type="char" widget="float_no_default"/>
+                    <field name="batch_2" invisible="1"/>
+                    <field name="batch"/>
+                    <field name="manf_date"/>
+                    <field name="expiry_date"/>
+                    <field name="custom_qty" type="char" invisible="1"/>
+                    <field name="rack"/>
+                    <field name="hsn_code"/>
+                    <field name="invoice_line_tax_id4" widget="float_no_default"/>
+                    <field name="qty_received" widget="float_no_default"/>
+                    <field name="discount" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="new_stock_entry_tree_id_stock_count">
+            <field name="name">Medicine stock count</field>
+            <field name="model">entry.stock</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Entry" editable="bottom"
+                      colors="black:expiry_date == False;red:expiry_date &lt;= current_date;green:expiry_alert_date&lt;= current_date;">
+                    <button name="call_function" string="Add" type="object" class="css_wizard_button oe_highlight"
+                            help="calls python function" id="focushere"/>
+                    <field name="s_no" invisible="1"/>
+                    <field name="expiry_alert_date" invisible="1"/>
+                    <field name="medicine_1"/>
+                    <field name="potency"/>
+                    <field name="medicine_name_packing"/>
+                    <field name="company"/>
+                    <field name="medicine_grp" invisible="1"/>
+                    <field name="medicine_grp1"/>
+                    <field name="quantity_selected" store="False" widget="float_no_default"/>
+                    <field name="qty" type="char"/>
+                    <field name="mrp" type="char" widget="float_no_default"/>
+                    <field name="batch_2" invisible="1"/>
+                    <field name="batch"/>
+                    <field name="manf_date"/>
+                    <field name="expiry_date"/>
+                    <field name="custom_qty" type="char" invisible="1"/>
+                    <field name="rack"/>
+                    <field name="hsn_code"/>
+                    <field name="invoice_line_tax_id4" widget="float_no_default"/>
+                    <field name="qty_received" widget="float_no_default"/>
+                    <field name="discount" invisible="1"/>
+                </tree>
+            </field>
+        </record>
         <!--        HTML TREE VIEW FOR ENTRY.STOCK-->
 
 
@@ -744,9 +818,17 @@
                   parent="r2"/>
 
 
+        <menuitem id="menu_med_home_page"
+                  name="Home"
+                  sequence="1" parent="menu_med_main"/>
+        <menuitem id="menu_med_home_page_child"
+                  name="Home Page"
+                  sequence="1" parent="menu_med_home_page"/>
+
+
         <menuitem id="menu_med_features_1"
                   name="Suppliers and Invoices"
-                  sequence="1" parent="menu_med_main"/>
+                  sequence="2" parent="menu_med_main"/>
         <menuitem id="menu_med_features_1_child"
                   name="Supplier Invoices and Stock Entry"
                   sequence="1" parent="menu_med_features_1"/>
@@ -908,12 +990,51 @@
                 </tree>
             </field>
         </record>
+        <record model="ir.ui.view" id="cheque_transaction_details_view_tree_count">
+            <field name="name">Cheque Transaction Details count</field>
+            <field name="model">cheque.entry</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree colors="red:state=='bounce'" string="Cheque Transaction Details" version="7.0">
+                    <field name="s_no"/>
+                    <field name="t_date"/>
+                    <field name="cheque_no"/>
+                    <field name="cheque_date"/>
+                    <field name="deposit_date"/>
+                    <field name="clearance_date"/>
+                    <field name="cheque_amount" sum="Total Amount"/>
+                    <field name="balance" sum="Total Amount"/>
+                    <field name="bank"/>
+                    <field name="branch"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
 
         <record id="action_cheque_detail_entry" model="ir.actions.act_window">
             <field name="name">PDC Details</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">cheque.entry</field>
             <field name="view_mode">tree,form</field>
+        </record>
+        <record id="view_entry_stock_filter_cheque_collection" model="ir.ui.view">
+            <field name="name">entry.stock.search.cheque</field>
+            <field name="model">entry.stock</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="current_date" string="Current Date"
+                            domain="[('deposit_date', '=', context_today())]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_count_of_check_collection" model="ir.actions.act_window">
+            <field name="name">PDC Details count</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cheque.entry</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_entry_stock_filter_cheque_collection"/>
+            <field name="view_id" ref="cheque_transaction_details_view_tree_count"/>
         </record>
 
         <menuitem id="menu_med_transaction"
@@ -1292,8 +1413,8 @@
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
                             <!--                            <field name="chekbox" string="Use Advance Amount?" style="width:40%;"/>-->
                             <button name="action_payment_all" string="Pay Bills" type="object" class="oe_highlight"
-                                attrs="{'invisible':[('state', '=', 'paid')]}"
-                        />
+                                    attrs="{'invisible':[('state', '=', 'paid')]}"
+                            />
 
                         </group>
                         <group>
