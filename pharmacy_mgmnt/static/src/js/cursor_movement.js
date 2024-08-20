@@ -337,4 +337,35 @@ $(document).ready(function () {
             }
         }
     });
+  $(document).on('keydown', '.required_class.grp', function(event) {
+            if (event.which === 13 || event.which === 9) {  // Enter or Tab key
+                event.preventDefault();
+
+                console.log('Keydown event detected:', event.which);
+
+                // Find the current input element
+                var $currentInput = $(this).find('input');
+
+                // Log current input for debugging
+                console.log('Current input:', $currentInput);
+
+                // Find the next input field
+               var $inputField = $('.oe_form_field.oe_form_field_float.required_class.qty input');
+//                    .nextAll('.oe_form_field')
+//                    .find('input')
+//                    .first();
+
+                // Log next input for debugging
+                console.log('Next input:', $inputField);
+
+                if ($inputField.length) {
+                    setTimeout(function() {
+                        $inputField.focus();
+                        console.log('Focused on next input field.');
+                    }, 500);
+                } else {
+                    console.warn('Next input element not found.');
+                }
+            }
+        });
 });
