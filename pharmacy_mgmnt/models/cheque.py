@@ -32,6 +32,11 @@ class ChequeTransactions(models.Model):
     state = fields.Selection([('draft', 'Draft'), ('post', 'Posted'), ('bounce', 'Bounced'),('paid', 'Paid'),]
                              , required=True, default='draft')
     invoice_ids = fields.Many2many('account.invoice', string="Select Invoices",)
+    current_date = fields.Date(default=fields.date.today())
+
+    @staticmethod
+    def get_current_date():
+        return fields.date.today()
 
 
     @api.depends('invoice_ids')
