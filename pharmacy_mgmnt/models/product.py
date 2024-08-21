@@ -1,4 +1,5 @@
 from openerp import models, fields, api
+from openerp.exceptions import ValidationError
 
 
 class ProductVariantInherit(models.Model):
@@ -35,12 +36,26 @@ class Medicines(models.Model):
         else:
             self.visible_in == 'false'
 
+    @api.model
+    def create(self, vals):
+        # Search for existing product with the same name
+        existing_product = self.search([('name', '=', vals.get('name'))], limit=1)
+
+        if existing_product:
+            # Update existing product if found
+            existing_product.write(vals)
+            return existing_product
+        else:
+            # Create new product if no existing product found
+            return super(Medicines, self).create(vals)
+
     @api.constrains('name')
     def _check_name_product(self):
         for record in self:
-            old_record = self.search([('name', '=', record.name)])
-            if len(old_record.ids)>1:
-                raise models.ValidationError('Product Already Created')
+            # Search for records with the same name excluding the current record
+            existing_records = self.search([('name', '=', record.name), ('id', '!=', record.id)])
+            if existing_records:
+                raise ValidationError('Product with this name already exists.')
 
 
 
