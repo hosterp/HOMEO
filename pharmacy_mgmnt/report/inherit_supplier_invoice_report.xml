@@ -81,14 +81,30 @@
                             </div>
 
                             <div class="right-aligned-div">
+                                <t t-if="not o.packing_invoice">
                                 <div>
                                     <strong>Invoice No:</strong>
                                     <span t-field="o.number2"/>
                                 </div>
+                                </t>
+                                <t t-if="o.packing_invoice">
+                                <div>
+                                    <strong>Packing Slip No:</strong>
+                                    <span t-field="o.number2"/>
+                                </div>
+                                </t>
+                                <t t-if="not o.packing_invoice">
                                 <div t-if="o.date_invoice">
                                     <strong>Invoice Date:</strong>
                                     <span t-field="o.date_invoice"/>
                                 </div>
+                                </t>
+                                 <t t-if="o.packing_invoice">
+                                <div t-if="o.date_invoice" >
+                                    <strong>Date:</strong>
+                                    <span t-field="o.date_invoice"/>
+                                </div>
+                                </t>
 
                                 <div t-if="o.partner_id.drug_license_number">
                                     <strong>Drug License Number:</strong>
@@ -105,19 +121,37 @@
                                 <thead>
                                     <tr>
                                         <th>SL NO</th>
+                                        <t t-if=" not o.packing_invoice">
                                         <th>HSN</th>
+                                        </t>
                                         <th>Product/Service</th>
                                         <th>Batch</th>
                                         <th>Expiry</th>
                                         <th>Quantity</th>
                                         <th class="text-right">MRP</th>
-                                        <th class="text-right">GST%</th>
-                                        <th class="text-right">Unit Price</th>
+                                    <!--     packing slip          -->
+                                        <t t-if="o.packing_invoice">
+                                            <th class="text-right">RACK</th>
+                                        </t>
+                                        <t t-if="o.packing_invoice">
+                                            <th class="text-right">NEW RACK</th>
+                                        </t>
+                                        <t t-if="not o.packing_invoice">
+                                            <th class="text-right">GST%</th>
+                                            <th class="text-right">Unit Price</th>
+                                            <th class="text-right">GST</th>
+                                            <th class="text-right">Gross Amount</th>
+                                            <!-- <th class="text-right">GST</th> -->
+                                            <th class="text-right">Net</th>
+                                        </t>
 
-                                        <th class="text-right">GST</th>
-                                        <th class="text-right">Gross Amount</th>
-                                        <!--                        <th class="text-right">GST</th>-->
-                                        <th class="text-right">Net</th>
+<!--                                        <th class="text-right">GST%</th>-->
+<!--                                        <th class="text-right">Unit Price</th>-->
+
+<!--                                        <th class="text-right">GST</th>-->
+<!--                                        <th class="text-right">Gross Amount</th>-->
+<!--                                        &lt;!&ndash;                        <th class="text-right">GST</th>&ndash;&gt;-->
+<!--                                        <th class="text-right">Net</th>-->
 
                                     </tr>
                                 </thead>
@@ -132,9 +166,11 @@
                                             <span t-esc="sl_no"/>
                                             <t t-set="sl_no" t-value="sl_no+1"/>
                                         </td>
+                                        <t t-if="not o.packing_invoice">
                                         <td>
                                             <span t-field="l.hsn_code"/>
                                         </td>
+                                        </t>
                                         <td>
                                             <span t-field="l.name"/>
                                             <span t-field="l.medicine_name_subcat.medicine_rack_subcat"/>
@@ -154,16 +190,22 @@
                                         <td class="text-right">
                                             <span t-field="l.price_unit"/>
                                         </td>
-
+                                        <!--packing slip-->
+                                         <t t-if="o.packing_invoice">
+                                            <td>
+                                                <span t-field="l.medicine_rack"/>
+                                            </td>
+                                        </t>
+                                        <t t-if="not o.packing_invoice">
                                         <td>
                                             <t t-if="l.invoice_line_tax_id4 == 5">
-                                                <t t-set="tax5_tax" t-value="tax5_tax+l.product_tax"/>
+                                                <t t-set="tax5_tax" t-value="tax5_tax + l.product_tax"/>
                                             </t>
                                             <t t-if="l.invoice_line_tax_id4 == 12">
-                                                <t t-set="tax12_tax" t-value="tax12_tax+l.product_tax"/>
+                                                <t t-set="tax12_tax" t-value="tax12_tax + l.product_tax"/>
                                             </t>
                                             <t t-if="l.invoice_line_tax_id4 == 18">
-                                                <t t-set="tax18_tax" t-value="tax18_tax+l.product_tax"/>
+                                                <t t-set="tax18_tax" t-value="tax18_tax + l.product_tax"/>
                                             </t>
                                             <span t-field="l.invoice_line_tax_id4"/>
                                         </td>
@@ -177,10 +219,10 @@
                                             <t t-set="gross_amount" t-value="int(l.quantity) * l.unit_price"/>
                                             <span t-esc="gross_amount"/>
                                         </td>
-                                        <!--                        <td><span t-field="l.amt_tax"/></td>-->
-                                        <!--                        <td><span t-field="l.amt_w_tax"/></td>-->
+                                        <!-- Uncomment if needed -->
+                                        <!-- <td><span t-field="l.amt_tax"/></td> -->
+                                        <!-- <td><span t-field="l.amt_w_tax"/></td> -->
                                         <t t-if="o.type == 'out_invoice'">
-                                            <!--                            <td><span t-esc="l.price_subtotal + (l.price_subtotal * (l.invoice_line_tax_id4/100))"/></td>-->
                                             <td>
                                                 <span t-esc="l.amt_w_tax"/>
                                             </td>
@@ -190,6 +232,43 @@
                                                 <span t-esc="l.amount_w_tax"/>
                                             </td>
                                         </t>
+                                    </t>
+
+<!--                                        <td>-->
+<!--                                            <t t-if="l.invoice_line_tax_id4 == 5">-->
+<!--                                                <t t-set="tax5_tax" t-value="tax5_tax+l.product_tax"/>-->
+<!--                                            </t>-->
+<!--                                            <t t-if="l.invoice_line_tax_id4 == 12">-->
+<!--                                                <t t-set="tax12_tax" t-value="tax12_tax+l.product_tax"/>-->
+<!--                                            </t>-->
+<!--                                            <t t-if="l.invoice_line_tax_id4 == 18">-->
+<!--                                                <t t-set="tax18_tax" t-value="tax18_tax+l.product_tax"/>-->
+<!--                                            </t>-->
+<!--                                            <span t-field="l.invoice_line_tax_id4"/>-->
+<!--                                        </td>-->
+<!--                                        <td>-->
+<!--                                            <span t-field="l.unit_price_c"/>-->
+<!--                                        </td>-->
+<!--                                        <td>-->
+<!--                                            <span t-field="l.product_tax"/>-->
+<!--                                        </td>-->
+<!--                                        <td>-->
+<!--                                            <t t-set="gross_amount" t-value="int(l.quantity) * l.unit_price"/>-->
+<!--                                            <span t-esc="gross_amount"/>-->
+<!--                                        </td>-->
+<!--                                        &lt;!&ndash;                        <td><span t-field="l.amt_tax"/></td>&ndash;&gt;-->
+<!--                                        &lt;!&ndash;                        <td><span t-field="l.amt_w_tax"/></td>&ndash;&gt;-->
+<!--                                        <t t-if="o.type == 'out_invoice'">-->
+<!--                                            &lt;!&ndash;                            <td><span t-esc="l.price_subtotal + (l.price_subtotal * (l.invoice_line_tax_id4/100))"/></td>&ndash;&gt;-->
+<!--                                            <td>-->
+<!--                                                <span t-esc="l.amt_w_tax"/>-->
+<!--                                            </td>-->
+<!--                                        </t>-->
+<!--                                        <t t-if="o.type != 'out_invoice'">-->
+<!--                                            <td>-->
+<!--                                                <span t-esc="l.amount_w_tax"/>-->
+<!--                                            </td>-->
+<!--                                        </t>-->
                                     </tr>
                                     <t t-set="qty_total" t-value="0"/>
                                     <p t-foreach="o.invoice_line" t-as="line">
@@ -201,18 +280,31 @@
                                     </p>
                                     <tr>
                                         <!--            <td colspan="6" style="width: 10%;" align="center"><center><h3><b>Grand Total</b></h3></center></td>-->
+                                      <t t-if="not o.packing_invoice">
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td>
-                                            <b>
-                                                <strong>
-                                                    <span t-esc="int(qty_total)"/>
-                                                </strong>
-                                            </b>
-                                        </td>
+                                      </t>
+                                        <t t-if="not o.packing_invoice">
+                                            <td>
+                                                <b>
+                                                    <strong>
+                                                        <span t-esc="int(qty_total)"/>
+                                                    </strong>
+                                                </b>
+                                            </td>
+                                        </t>
+
+<!--                                        <td>-->
+<!--                                            <b>-->
+<!--                                                <strong>-->
+<!--                                                    <span t-esc="int(qty_total)"/>-->
+<!--                                                </strong>-->
+<!--                                            </b>-->
+<!--                                        </td>-->
+                                        <t t-if="not o.packing_invoice">
                                         <td>
                                             <b>
                                                 <center>
@@ -222,12 +314,13 @@
                                                 </center>
                                             </b>
                                         </td>
+                                        </t>
                                     </tr>
                                 </tbody>
                             </div>
                         </table>
                         <div class="row">
-                            <t t-if="not o.partner_id.interstate_customer">
+                            <t t-if="not o.partner_id.interstate_customer and not o.packing_slip ">
                                 <div class="col-xs-4 pull-left">
                                     <table class="table table-condensed">
                                         <t t-set="found_5" t-value="False"/>
@@ -326,7 +419,7 @@
                                     <!--                                    </td>-->
                                 </div>
                             </t>
-                            <t t-if="o.partner_id.interstate_customer">
+                            <t t-if="o.partner_id.interstate_customer and not o.packing_slip ">
                                 <div class="col-xs-4 pull-left">
                                     <table class="table table-condensed">
                                         <t t-set="found_5" t-value="False"/>
@@ -418,6 +511,7 @@
                             </t>
                             <div class="col-xs-4 pull-right">
                                 <table class="table table-condensed">
+                                    <t t-if="not o.packing_invoice">
                                     <tr class="border-black">
                                         <td>
                                             <strong>Gross Amount</strong>
@@ -482,12 +576,14 @@
                                     <!--                                            <span t-field="o.advance_amount"-->
                                     <!--                                                  t-field-options='{"widget": "monetary", "display_currency": "o.currency_id"}'/>-->
                                     <!--                                        </td>-->
-
+                                    </t>
                                 </table>
+                                <t t-if="not o.packing_invoice">
                                 <div t-if="o.amount_in_words">
                                     <strong>Amount in words:</strong>
                                     <span t-field="o.amount_in_words"/>
                                 </div>
+                                </t>
                             </div>
                         </div>
 
