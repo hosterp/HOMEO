@@ -45,7 +45,7 @@
                             name="action_print_button"
                             type="object"
                             string="Print"
-                            class="oe_highlight"
+                            class="oe_highlight custom_print"
                     attrs="{'invisible': [('pay_mode', '=', 'cash')]}"/>
                 </xpath>
             </field>
