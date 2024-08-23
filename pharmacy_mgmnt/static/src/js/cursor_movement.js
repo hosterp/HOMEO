@@ -300,44 +300,78 @@ function debounce(func, wait) {
     };
     }
 
-$(document).ready(function () {
-    $(document).on('keypress', '.css_customer', function (event) {
-        if (event.which === 13) {
-            var $productField = $(this);
-            var tableRow = $productField.closest('tr');
-            var label = tableRow.find('label').text().trim();
+//$(document).ready(function () {
+//    $(document).on('keypress', '.css_customer', function (event) {
+//        if (event.which === 13) {
+//            var $productField = $(this);
+//            var tableRow = $productField.closest('tr');
+//            var label = tableRow.find('label').text().trim();
+//
+//            if (label === "Customer" && !$productField.data('autocomplete-handled')) {
+//                $productField.data('autocomplete-handled', true);
+//
+//                var $input = $productField.find('input');
+//
+//                if (!$input.data('autocomplete-opened')) {
+//                    $input.data('autocomplete-opened', true);
+//
+//                    $input.one('autocompleteopen', function () {
+//                        setTimeout(function () {
+//                            $input.select();
+//                        }, 200);
+//                    });
+//                }
+//
+//                setTimeout(function () {
+//                    var $ul = $("ul.ui-autocomplete");
+//                               var $firstItem = $ul.find('li:eq(-2)');
+//                    // var $firstItem = $ul.find('a.ui-corner-all:contains("Create")');
+//                    if ($firstItem.length > 0) {
+//                        $firstItem[0].click();
+//                         setTimeout(function () {
+//                            $('.css_phone').focus();
+//                        }, 200);
+//                        // $firstItem.data('clicked', true);
+//                    }
+//                }, 100);
+//            }
+//        }
+//    });
+//  $(document).on('keydown', '.required_class.grp', function(event) {
+//            if (event.which === 13 || event.which === 9) {
+//                event.preventDefault();
+//
+//                console.log('Keydown event detected:', event.which);
+//
+//
+//                var $currentInput = $(this).find('input');
+//
+//
+//                console.log('Current input:', $currentInput);
+//
+//
+//               var $inputField = $('.oe_form_field.oe_form_field_float.required_class.qty input');
+////                    .nextAll('.oe_form_field')
+////                    .find('input')
+////                    .first();
+//
+//
+//                console.log('Next input:', $inputField);
+//
+//                if ($inputField.length) {
+//                    setTimeout(function() {
+//                        $inputField.focus();
+//                        console.log('Focused on next input field.');
+//                    }, 100);
+//                } else {
+//                    console.warn('Next input element not found.');
+//                }
+//            }
+//        });
+//});
 
-            if (label === "Customer" && !$productField.data('autocomplete-handled')) {
-                $productField.data('autocomplete-handled', true);
-
-                var $input = $productField.find('input');
-
-                if (!$input.data('autocomplete-opened')) {
-                    $input.data('autocomplete-opened', true);
-
-                    $input.one('autocompleteopen', function () {
-                        setTimeout(function () {
-                            $input.select();
-                        }, 200);
-                    });
-                }
-
-                setTimeout(function () {
-                    var $ul = $("ul.ui-autocomplete");
-                               var $firstItem = $ul.find('li:eq(-2)');
-                    // var $firstItem = $ul.find('a.ui-corner-all:contains("Create")');
-                    if ($firstItem.length > 0) {
-                        $firstItem[0].click();
-                         setTimeout(function () {
-                            $('.css_phone').focus();
-                        }, 200);
-                        // $firstItem.data('clicked', true);
-                    }
-                }, 100);
-            }
-        }
-    });
-  $(document).on('keydown', '.required_class.grp', function(event) {
+//group single press on enter button
+$(document).on('keydown', '.required_class.grp', function(event) {
             if (event.which === 13 || event.which === 9) {
                 event.preventDefault();
 
@@ -368,4 +402,92 @@ $(document).ready(function () {
                 }
             }
         });
+
+
+
+// ashik new
+// customer name field  starts here
+$(document).ready(function () {
+    $(document).on('keydown', '.css_customer', function (event) {
+        if (event.which === 13) { // Enter key
+            var $productField = $(this);
+            var tableRow = $productField.closest('tr');
+            var label = tableRow.find('label').text().trim();
+
+            if (label === "Customer" && !$productField.data('autocomplete-handled')) {
+                $productField.data('autocomplete-handled', true);
+
+                var $input = $productField.find('input');
+                console.log('Input field:', $input);
+
+                // Ensure the input field is found
+                if ($input.length === 0) {
+//                    console.error('Input field not found.');
+                        console.log("input value is zero")
+//                    return;
+                }
+
+                var inputValue = $input.val() ? $input.val().trim() : "";
+                console.log('Detected input value:',inputValue);
+
+                // Ensure autocomplete is opened
+                if (!$input.data('autocomplete-opened')) {
+                    $input.data('autocomplete-opened', true);
+
+                    $input.one('autocompleteopen', function () {
+                        setTimeout(function () {
+                            $input.select();
+                        }, 200);
+                    });
+                }
+
+                setTimeout(function () {
+                    var $ul = $("ul.ui-autocomplete");
+                    var $items = $ul.find('li');
+                    console.log('Dropdown items:', $items);
+
+                    // Look for "Create" option matching the input value
+                    var $createItem = $items.filter(function() {
+                        var text = $(this).text().trim();
+                        return text.startsWith('Create "') && text.endsWith('"') && text.includes(inputValue);
+                    }).first();
+
+                    if ($createItem.length > 0) {
+                        console.log('Clicking Create item:', $createItem.text());
+                        $createItem[0].click();
+                    } else {
+                        // Optionally handle other cases
+                        var $highlightedItem = $items.filter('.ui-state-highlight').first();
+                        if ($highlightedItem.length > 0) {
+                            console.log('Clicking highlighted item:', $highlightedItem.text());
+                            $highlightedItem[0].click();
+                        } else {
+                            console.log('No matching items found.');
+                        }
+                    }
+
+                    // Optionally focus on another element after selecting
+                    setTimeout(function () {
+                        $('.css_phone').focus();
+                    }, 200);
+                }, 100);
+            }
+        }
+    });
+
+    // Handle item click in the autocomplete list
+    $(document).on('click', 'ul.ui-autocomplete li', function () {
+        var selectedItemText = $(this).text().trim();
+        console.log('Item clicked:', selectedItemText);
+    });
 });
+
+// customer name field  ends here
+
+
+
+
+
+
+
+

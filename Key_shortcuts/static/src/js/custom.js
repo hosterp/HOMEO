@@ -265,11 +265,61 @@ $(document).ready(function() {
 
      let lastKeyPressTime = 0;
 //    const doubleClickInterval = 500; // Time interval to consider as a double click (in milliseconds)
-     $(document).on('keyup', quantity, function (event) {
-        if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]')) {
-            $('.close').click();
-    }
-});
+//     $(document).on('keyup', quantity, function (event) {
+//        if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]')) {
+//            $('.close').click();
+//    }
+//});
+
+//new ashik
+//$(document).on('keydown', quantity, function (event) {
+//    if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]')) {
+//        // Close the current dialog or modal
+//        $('.close').click();
+//
+//        // Add a delay before triggering the click and setting focus
+//        setTimeout(function() {
+//            // Trigger the click on the add row button
+//            $('.oe_form_field_one2many_list_row_add a').trigger('click');
+//
+//            // Set focus to the product_id field after the row is added
+//            $('.oe_form_field_many2one[data-fieldname="product_id"]').focus();
+//
+//            console.log('clicked...............');
+//        }, 1000); // 200ms delay
+//    }
+//});
+
+//var addRowTriggered = false;
+//
+//$(document).on('keydown', function (event) {
+//  if (event.keyCode === 32 && !$(document.activeElement).hasClass('dataTables_filter') && !addRowTriggered) {
+//    // Close any open dialogs/modals
+//    $('.modal').modal('hide');
+//
+//    // Set the flag to true to prevent multiple triggers
+//    addRowTriggered = true;
+//
+//    // Add a delay before triggering the click and setting focus
+//    setTimeout(function() {
+//      // Trigger the click on the add row button
+//      $('.oe_form_field_one2many_list_row_add a')[0].click();
+//
+//      // Set focus back to the product_id field after a short delay
+//      setTimeout(function() {
+//        $('#product_id_field').focus();
+//      }, 100); // 100ms delay
+//
+//      console.log('clicked...............');
+//
+//      // Reset the flag after the timeout
+//      setTimeout(function() {
+//        addRowTriggered = false;
+//      }, 500); // 500ms delay
+//    }, 1000); // 200ms delay
+//  }
+//});
+
 
 //    quantity = $('[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]');
 //    $(document).on('keyup', quantity, function (event) {
@@ -287,12 +337,12 @@ $(document).ready(function() {
 
     var quantitySelectedField = '[id^="DataTables_Table_"] tbody td[data-field="quantity_selected"]';
 
-    $(document).on('keyup', quantitySelectedField, function (event) {
-        if (event.keyCode === 32) {
-            $(this).trigger('change');
-//            $('.close').click(); //
-        }
-    });
+//    $(document).on('keyup', quantitySelectedField, function (event) {
+//        if (event.keyCode === 32) {
+//            $(this).trigger('change');
+////            $('.close').click(); //
+//        }
+//    });
 
 
 
@@ -402,3 +452,122 @@ $(document).ready(function() {
 //
 //});
 
+//new ashik
+//$(document).on('keydown', quantity, function (event) {
+//    if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]')) {
+//        // Close the current dialog or modal
+//        $('.close').click();
+//
+//        // Add a delay before triggering the click and setting focus
+//        setTimeout(function() {
+//            // Trigger the click on the add row button
+//            $('.oe_form_field_one2many_list_row_add a').trigger('click');
+//
+//            // Set focus to the product_id field after the row is added
+//            $('.oe_form_field_many2one[data-fieldname="product_id"]').focus();
+//
+//            console.log('clicked...............');
+//        }, 1000); // 200ms delay
+//    }
+//});
+
+
+// working code
+//var addRowTriggered = false;
+//
+//$(document).on('keydown', function (event) {
+//  if (event.keyCode === 32 && !$(document.activeElement).hasClass('dataTables_filter') && !addRowTriggered) {
+//    // Close any open dialogs/modals
+//    $('.modal').modal('hide');
+//
+//    // Set the flag to true to prevent multiple triggers
+//    addRowTriggered = true;
+//
+//    // Add a delay before triggering the click and setting focus
+//    setTimeout(function() {
+//      // Trigger the click on the add row button
+//      $('.oe_form_field_one2many_list_row_add a')[0].click();
+//
+//      // Set focus back to the product_id field after a short delay
+//      setTimeout(function() {
+//        $('#product_id_field').focus();
+//      }, 100); // 100ms delay
+//
+//      console.log('clicked...............');
+//
+//      // Reset the flag after the timeout
+//      setTimeout(function() {
+//        addRowTriggered = false;
+//      }, 500); // 500ms delay
+//    }, 1000); // 200ms delay
+//  }
+//});
+// end here
+
+
+var addRowTriggered = false;
+
+$(document).on('keydown', function (event) {
+  if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]') && !addRowTriggered) {
+    // Close any open dialogs/modals
+    $('.modal').modal('hide');
+
+    // Set the flag to true to prevent multiple triggers
+    addRowTriggered = true;
+
+    console.log('Spacebar pressed, initiating row check and addition.');
+
+    // Add a delay before triggering the click and setting focus
+    setTimeout(function() {
+      // Find all rows in the one2many list
+      var rows = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row');
+      console.log('All rows found:', rows);
+
+      // Get the last row and the previous row
+      var lastRow = rows.last();
+      var previousRow = lastRow.prev();
+      console.log('Last row found:', lastRow);
+      console.log('Previous row found:', previousRow);
+
+      // Check if previousRow exists and has a product_id field
+      if (previousRow.length) {
+        var previousProductField = previousRow.find('.oe_form_field #product_id_field');
+        console.log('Previous product_id field value:', previousProductField.val());
+
+        // Check if the product_id field in the previous row is empty
+        if (previousProductField.val() === '') {
+          console.log('Previous product_id field is empty. Focusing on it.');
+          previousProductField.focus();
+        } else {
+          // Trigger the click on the add row button
+          console.log('Previous product_id field is not empty. Adding a new row.');
+          $('.oe_form_field_one2many_list_row_add a').first().click();
+
+          // Set focus back to the product_id field of the new row after a short delay
+          setTimeout(function() {
+            var newProductField = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row').last().find('#product_id_field');
+            newProductField.focus();
+            console.log('Focused on the new product_id field.');
+          }, 100); // 100ms delay
+        }
+      } else {
+        // If no previous row, add a new row and set focus
+        console.log('No previous row found. Adding a new row.');
+        $('.oe_form_field_one2many_list_row_add a').first().click();
+
+        // Set focus back to the product_id field of the new row after a short delay
+        setTimeout(function() {
+          var newProductField = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row').last().find('#product_id_field');
+          newProductField.focus();
+          console.log('Focused on the new product_id field.');
+        }, 100); // 100ms delay
+      }
+
+      // Reset the flag after the timeout
+      setTimeout(function() {
+        addRowTriggered = false;
+        console.log('Add row triggered flag reset.');
+      }, 500); // 500ms delay
+    }, 1000); // 1000ms delay
+  }
+});
