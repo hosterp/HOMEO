@@ -2301,35 +2301,78 @@ class AccountInvoice(models.Model):
     #         record.number2 = self.env['ir.sequence'].next_by_code('packing.slip.invoice')
     #     return
 
+    # @api.multi
+    # def import_to_invoice(self):
+    #     # for record in self:
+    #     #     for line in record.invoice_line:
+    #     #         domain = [('medicine_1','=',line.product_id.name),
+    #     #             ('potency','=',line.medicine_name_subcat.id),
+    #     #             ('medicine_name_packing','=',line.medicine_name_packing.id),
+    #     #             ('company','=',line.product_of.id),
+    #     #             ('medicine_grp1','=',line.medicine_grp.id),
+    #     #             ('mrp','=',line.price_unit),
+    #     #             ('manf_date','=',line.manf_date),
+    #     #             ('expiry_date','=',line.expiry_date),
+    #     #             ('rack','=',line.medicine_rack.id),
+    #     #             ('hsn_code','=',line.hsn_code)]
+    #     #         stock = self.env['entry.stock'].search(domain)
+    #     #         stock.qty_received -= line.quantity
+    #     #         if stock.qty_received < 0:
+    #     #             stock.qty_received = 0
+    #     for record in self:
+    #         res = self.env['account.invoice'].search(
+    #             [('type', '=', 'out_invoice'), ('cus_invoice', '=', True)], limit=1)
+    #         last_index = int(res.number2.split('/')[0]) + 1
+    #         record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+    #         record.cus_inv_number = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+    #         record.seq = res.seq + 1
+    #         record.packing_invoice = False
+    #         record.hold_invoice = False
+    #         record.cus_invoice = True
+    #         record.state = "draft"
+    #     base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+    #     invoice_id = self.id
+    #     redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
+    #         base_url, invoice_id)
+    #     return {
+    #         'type': 'ir.actions.act_url',
+    #         'url': redirect_url,
+    #         'target': 'self',
+    #     }
     @api.multi
     def import_to_invoice(self):
-        # for record in self:
-        #     for line in record.invoice_line:
-        #         domain = [('medicine_1','=',line.product_id.name),
-        #             ('potency','=',line.medicine_name_subcat.id),
-        #             ('medicine_name_packing','=',line.medicine_name_packing.id),
-        #             ('company','=',line.product_of.id),
-        #             ('medicine_grp1','=',line.medicine_grp.id),
-        #             ('mrp','=',line.price_unit),
-        #             ('manf_date','=',line.manf_date),
-        #             ('expiry_date','=',line.expiry_date),
-        #             ('rack','=',line.medicine_rack.id),
-        #             ('hsn_code','=',line.hsn_code)]
-        #         stock = self.env['entry.stock'].search(domain)
-        #         stock.qty_received -= line.quantity
-        #         if stock.qty_received < 0:
-        #             stock.qty_received = 0
         for record in self:
+            # Search for the latest customer invoice
             res = self.env['account.invoice'].search(
                 [('type', '=', 'out_invoice'), ('cus_invoice', '=', True)], limit=1)
             last_index = int(res.number2.split('/')[0]) + 1
-            record.number2 = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
-            record.cus_inv_number = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+            new_invoice_number = str(last_index).zfill(4) + "/" + res.number2.split('/')[1]
+
+            # Update the current record with new customer invoice details
+            record.number2 = new_invoice_number
+            record.cus_inv_number = new_invoice_number
             record.seq = res.seq + 1
             record.packing_invoice = False
             record.hold_invoice = False
             record.cus_invoice = True
             record.state = "draft"
+
+            # Update or create the related packing slip entry with the same invoice number
+            packing_slip = self.env['account.invoice'].search( [('type', '=', 'out_invoice'), ('packing_invoice', '=', True)], limit=1)
+            if  packing_slip:
+                self.env['account.invoice'].create({
+                    'invoice_id':self.id,
+                    'invoice_number': new_invoice_number,
+                    'state': 'draft',
+
+                })
+            else:
+                packing_slip.write({
+                    'invoice_number': new_invoice_number,
+                    'state': 'draft',
+                })
+
+
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         invoice_id = self.id
         redirect_url = "%s/web#id=%d&view_type=form&model=account.invoice&menu_id=331&action=400" % (
