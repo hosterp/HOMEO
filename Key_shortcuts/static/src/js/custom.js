@@ -36,8 +36,13 @@ $.shortcut('113', function() {
 //            }
 //        });
 });
+$.shortcut('117', function() {
+      window.location.assign("/web#view_type=form&model=account.invoice&action=408");
+        $('.oe_list_add').trigger('click');
+        $('.oe_form_button_create').trigger('click');
+});
 $.shortcut('116', function() {
-    window.location.assign("/web#view_type=form&model=account.invoice&menu_id=348&action=409");
+      window.location.assign("/web#view_type=form&model=account.invoice&action=409");
         $('.oe_list_add').trigger('click');
         $('.oe_form_button_create').trigger('click');
 });
