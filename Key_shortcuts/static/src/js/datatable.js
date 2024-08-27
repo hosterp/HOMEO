@@ -190,3 +190,5 @@ null},_fnNodeToColumnIndex:function(a,b,c){return l.inArray(c,a.aoData[b].anCell
 _fnFilterCreateSearch:nb,_fnEscapeRegex:ob,_fnFilterData:Yb,_fnFeatureHtmlInfo:Rb,_fnUpdateInfo:ac,_fnInfoMacros:bc,_fnInitialise:Aa,_fnInitComplete:Ra,_fnLengthChange:pb,_fnFeatureHtmlLength:Nb,_fnFeatureHtmlPaginate:Sb,_fnPageChange:Ta,_fnFeatureHtmlProcessing:Pb,_fnProcessingDisplay:V,_fnFeatureHtmlTable:Qb,_fnScrollDraw:Ja,_fnApplyToChildren:da,_fnCalculateColumnWidths:db,_fnThrottle:mb,_fnConvertToWidth:cc,_fnGetWidestNode:dc,_fnGetMaxLenString:ec,_fnStringToCss:K,_fnSortFlatten:oa,_fnSort:Lb,
 _fnSortAria:gc,_fnSortListener:rb,_fnSortAttachListener:kb,_fnSortingClasses:Va,_fnSortData:fc,_fnSaveState:Da,_fnLoadState:hc,_fnImplementState:tb,_fnSettingsFromNode:Wa,_fnLog:ea,_fnMap:Y,_fnBindAction:sb,_fnCallbackReg:R,_fnCallbackFire:F,_fnLengthOverflow:qb,_fnRenderer:lb,_fnDataSource:Q,_fnRowAttributes:jb,_fnExtend:ub,_fnCalculateEnd:function(){}});l.fn.dataTable=u;u.$=l;l.fn.dataTableSettings=u.settings;l.fn.dataTableExt=u.ext;l.fn.DataTable=function(a){return l(this).dataTable(a).api()};
 l.each(u,function(a,b){l.fn.DataTable[a]=b});return u});
+
+

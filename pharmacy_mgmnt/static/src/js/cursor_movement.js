@@ -189,12 +189,7 @@ $(document).ready(function() {
    $(document).on("shown.bs.modal", function () {
         setTimeout(function(){
             var firstButton = $('.custom_register_payment');
-            var printbutton = $('.custom_print');
-            if(printbutton.length){
-                printbutton.focus();
-            }
             if(firstButton.length) {
-                  firstButton.focus();
 //                console.log("First button found, triggering click...");
                 firstButton.on('click', function() {
 //                    console.log("First button was clicked, triggering the second button...");

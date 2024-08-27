@@ -219,8 +219,10 @@
                     <field name="company" readonly="1"/>
                     <field name="medicine_grp" invisible="1" readonly="1"/>
                     <field name="medicine_grp1" readonly="1"/>
-                    <field name="quantity_selected" store="False" widget="float_no_default"/>
-                    <field name="qty" type="char" readonly="0"/>
+                    <field name="quantity_selected" store="False" widget="float_no_default" class="quantity_selected"/>
+<!--                    <field name="qty" type="char" readonly="0" class="qty_class" />-->
+                    <field name="qty" type="char" class="qty_class" style="pointer-events: none; background-color: #f0f0f0;" />
+
                     <field name="mrp" type="char" readonly="1" widget="float_no_default"/>
                     <field name="batch_2" invisible="1"/>
                     <field name="batch" readonly="1"/>

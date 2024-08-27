@@ -50,6 +50,7 @@ $.shortcut('114', function() {
 	});
 });
 
+
 $.shortcut('107', function() {
 	$('.btn_txt').first().each(function() {
 		if($(this).parents('div:hidden').length == 0){
@@ -135,6 +136,21 @@ $.shortcut('123', function() {
                 $(this).trigger('click');
 		}
 	});
+
+//ashik new stock
+$(document).ready(function() {
+    $('input[name="quantity_selected"]').keydown(function(event) {
+        console.log("Key pressed: " + event.key);
+        if (event.key === "Enter") {
+            console.log("Enter key pressed in quantity_selected field");
+            event.preventDefault();    // Prevent the default Enter key behavior
+            event.stopPropagation();   // Stop the event from bubbling up
+            return false;              // Ensure that no further action is taken
+        }
+    });
+});
+
+//end
 //	    setTimeout(function() {
 //            $('.css_print').each(function() {
 //                if($(this).parents('div:hidden').length == 0){
@@ -571,3 +587,54 @@ $(document).on('keydown', function (event) {
     }, 1000); // 1000ms delay
   }
 });
+
+
+
+//prevent qty field to be edited starts here
+$(document).ready(function() {
+    // Function to disable all buttons
+    function disableButtons() {
+        $('button').each(function() {
+            $(this).data('enabled', !$(this).is(':disabled')); // Save current state
+            $(this).prop('disabled', true); // Disable button
+        });
+    }
+
+    // Function to restore buttons to their previous state
+    function restoreButtons() {
+        $('button').each(function() {
+            if ($(this).data('enabled') !== undefined) {
+                $(this).prop('disabled', !$(this).data('enabled')); // Restore previous state
+            }
+        });
+    }
+
+    // When focusing on qty field
+    $('.qty_class input').on('focus', function() {
+        disableButtons(); // Disable all buttons
+    });
+
+    // When leaving the qty field
+    $('.qty_class input').on('blur', function() {
+        restoreButtons(); // Restore all buttons
+    });
+
+    // Handle keydown events
+    $(document).on('keydown', function(e) {
+        if ($('.qty_class input').is(':focus') && e.key === 'Enter') {
+            restoreButtons(); // Restore buttons if Enter key is pressed
+        } else if ($('.qty_class input').is(':focus')) {
+            e.preventDefault(); // Prevent all other keys
+        }
+    });
+});
+//prevent qty field to be edited ends here
+
+
+
+
+
+
+
+
+
