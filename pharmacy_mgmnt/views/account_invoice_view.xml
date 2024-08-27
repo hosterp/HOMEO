@@ -109,6 +109,7 @@
                         attrs="{'invisible': [('packing_invoice', '!=', True)]}">PACKING SLIP
                     </h1>
                     <h1 class="container" attrs="{'invisible': [('hold_invoice', '!=', True)]}">HOLDING INVOICE</h1>
+                    <h1 class="container" attrs="{'invisible': [('quotation_invoice','!=',True)]}">QUOTATION</h1>
                     <h1 class="container" style="color:red; margin-left: 327px;"
                         attrs="{'invisible': [('type', '!=', 'out_refund')]}">
                         CREDIT NOTE

@@ -67,6 +67,7 @@
         'views/create_order.xml',
         'views/supplier_wizard_form.xml',
         'views/home_page.xml',
+        'views/quotation.xml',
 
 
     ],

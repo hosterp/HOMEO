@@ -1765,6 +1765,7 @@ class AccountInvoice(models.Model):
     packing_invoice = fields.Boolean("Packing Slip?")
     hold_invoice = fields.Boolean("Holding Invoice?")
     cus_invoice = fields.Boolean("Customer Invoice?")
+    quotation_invoice = fields.Boolean("quotation Invoice?")
     hold_invoice_id = fields.Many2one("account.invoice",
                                       domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
     partner_id = fields.Many2one('res.partner',create=True)

@@ -1559,6 +1559,7 @@
                     <field name="holding_invoice" string="Holding Invoice?" invisible="1"/>
                     <field name="hold_invoice" string="Holding Invoice?"/>
                     <field name="packing_invoice" string="Packing Invoice?"/>
+                    <field name="quotation_invoice" string="Qutation Invoice?"/>
                 </xpath>
             </field>
         </record>

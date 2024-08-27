@@ -13,6 +13,7 @@
                     <field name="picking_transfer_id"/>
                     <field name="invoice_picking_id" invisible="1"/>
                     <field name="packing_slip"/>
+                    <field name="quotation_invoice"/>
                     <!--                <field name="packing_invoice" />-->
                     <field name="holding_invoice"/>
                 </xpath>
