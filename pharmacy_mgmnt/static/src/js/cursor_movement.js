@@ -89,17 +89,17 @@ $(document).on('focus', '.oe_form_field_many2one', function(event) {
     }
 });
 
-$(document).on('focus', '.oe_form_field_many2one[data-fieldname="product_id"]', function(event) {
-    var $productField = $(this);
-    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(21)");
-    var $firstItem = $ul.find("li:first");
-    if ($firstItem.length && !$firstItem.data('clicked')) {
-        $firstItem.trigger("click");
-        $firstItem.data('clicked', true);
-        $firstItem.off('click');
-        $productField.find('input').select();
-    }
-});
+//$(document).on('focus', '.oe_form_field_many2one[data-fieldname="product_id"]', function(event) {
+//    var $productField = $(this);
+//    var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(21)");
+//    var $firstItem = $ul.find("li:first");
+//    if ($firstItem.length && !$firstItem.data('clicked')) {
+//        $firstItem.trigger("click");
+//        $firstItem.data('clicked', true);
+//        $firstItem.off('click');
+//        $productField.find('input').select();
+//    }
+//});
 $(document).on('focus', '.oe_form_field_many2one[data-fieldname="rack"]', function(event) {
     var $productField = $(this);
     var $ul = $productField.closest('tr').find("ul.ui-autocomplete:eq(3)");
@@ -481,6 +481,55 @@ $(document).ready(function () {
             }
         }
     });
+$(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]', function (event) {
+    if (event.which === 13) { // Enter key
+        var $productField = $(this);
+        var $input = $productField.find('input');
+
+        console.log('Input field:', $input);
+
+
+        if ($input.length === 0) {
+            console.log("Input field not found.");
+            return;
+        }
+
+        var inputValue = $input.val() ? $input.val().trim() : "";
+        console.log('Detected input value:', inputValue);
+
+        setTimeout(function () {
+            var $ul = $("ul.ui-autocomplete");
+            var $items = $ul.find('li');
+            console.log('Dropdown items:', $items);
+
+
+            var $createItem = $items.filter(function () {
+                var text = $(this).text().trim();
+                return text.startsWith('Create "') && text.endsWith('"') && text.includes(inputValue);
+            }).first();
+
+            if ($createItem.length > 0) {
+                console.log('Clicking Create item:', $createItem.text());
+                $createItem[0].click();
+            } else {
+
+                var $highlightedItem = $items.filter('.ui-state-highlight').first();
+                if ($highlightedItem.length > 0) {
+                    console.log('Clicking highlighted item:', $highlightedItem.text());
+                    $highlightedItem[0].click();
+                } else {
+                    console.log('No matching items found.');
+                }
+            }
+
+
+            setTimeout(function () {
+                $('.potency').focus();
+            }, 200);
+        }, 100);
+    }
+});
+
 
     // Handle item click in the autocomplete list
     $(document).on('click', 'ul.ui-autocomplete li', function () {
