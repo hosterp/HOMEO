@@ -410,8 +410,6 @@ $(document).on('keydown', '.required_class.grp', function(event) {
         });
 
 
-
-// ashik new
 // customer name field  starts here
 $(document).ready(function () {
     $(document).on('keydown', '.css_customer', function (event) {
@@ -420,63 +418,66 @@ $(document).ready(function () {
             var tableRow = $productField.closest('tr');
             var label = tableRow.find('label').text().trim();
 
-            if (label === "Customer" && !$productField.data('autocomplete-handled')) {
-                $productField.data('autocomplete-handled', true);
+            if (label === "Customer") {
+                // Remove the autocomplete-handled flag on every keydown to ensure it runs each time
+                $productField.data('autocomplete-handled', false);
 
-                var $input = $productField.find('input');
-                console.log('Input field:', $input);
+                if (!$productField.data('autocomplete-handled')) {
+                    $productField.data('autocomplete-handled', true);
 
-                // Ensure the input field is found
-                if ($input.length === 0) {
-//                    console.error('Input field not found.');
-                        console.log("input value is zero")
-//                    return;
-                }
+                    var $input = $productField.find('input');
+                    console.log('Input field:', $input);
 
-                var inputValue = $input.val() ? $input.val().trim() : "";
-                console.log('Detected input value:',inputValue);
-
-                // Ensure autocomplete is opened
-                if (!$input.data('autocomplete-opened')) {
-                    $input.data('autocomplete-opened', true);
-
-                    $input.one('autocompleteopen', function () {
-                        setTimeout(function () {
-                            $input.select();
-                        }, 200);
-                    });
-                }
-
-                setTimeout(function () {
-                    var $ul = $("ul.ui-autocomplete");
-                    var $items = $ul.find('li');
-                    console.log('Dropdown items:', $items);
-
-                    // Look for "Create" option matching the input value
-                    var $createItem = $items.filter(function() {
-                        var text = $(this).text().trim();
-                        return text.startsWith('Create "') && text.endsWith('"') && text.includes(inputValue);
-                    }).first();
-
-                    if ($createItem.length > 0) {
-                        console.log('Clicking Create item:', $createItem.text());
-                        $createItem[0].click();
-                    } else {
-                        // Optionally handle other cases
-                        var $highlightedItem = $items.filter('.ui-state-highlight').first();
-                        if ($highlightedItem.length > 0) {
-                            console.log('Clicking highlighted item:', $highlightedItem.text());
-                            $highlightedItem[0].click();
-                        } else {
-                            console.log('No matching items found.');
-                        }
+                    // Ensure the input field is found
+                    if ($input.length === 0) {
+                        console.log("Input field not found.");
                     }
 
-                    // Optionally focus on another element after selecting
+                    var inputValue = $input.val() ? $input.val().trim() : "";
+                    console.log('Detected input value:', inputValue);
+
+                    // Ensure autocomplete is opened
+                    if (!$input.data('autocomplete-opened')) {
+                        $input.data('autocomplete-opened', true);
+
+                        $input.one('autocompleteopen', function () {
+                            setTimeout(function () {
+                                $input.select();
+                            }, 200);
+                        });
+                    }
+
                     setTimeout(function () {
-                        $('.css_phone').focus();
-                    }, 200);
-                }, 100);
+                        var $ul = $("ul.ui-autocomplete");
+                        var $items = $ul.find('li');
+                        console.log('Dropdown items:', $items);
+
+                        // Look for "Create" option matching the input value
+                        var $createItem = $items.filter(function () {
+                            var text = $(this).text().trim();
+                            return text.startsWith('Create "') && text.endsWith('"') && text.includes(inputValue);
+                        }).first();
+
+                        if ($createItem.length > 0) {
+                            console.log('Clicking Create item:', $createItem.text());
+                            $createItem[0].click();
+                        } else {
+                            // Optionally handle other cases
+                            var $highlightedItem = $items.filter('.ui-state-highlight').first();
+                            if ($highlightedItem.length > 0) {
+                                console.log('Clicking highlighted item:', $highlightedItem.text());
+                                $highlightedItem[0].click();
+                            } else {
+                                console.log('No matching items found.');
+                            }
+                        }
+
+                        // Optionally focus on another element after selecting
+                        setTimeout(function () {
+                            $('.css_phone').focus();
+                        }, 200);
+                    }, 100);
+                }
             }
         }
     });
@@ -486,11 +487,14 @@ $(document).ready(function () {
         var selectedItemText = $(this).text().trim();
         console.log('Item clicked:', selectedItemText);
     });
+
+    // Reset the autocomplete-handled flag when the input value changes
+    $(document).on('input', '.css_customer input', function () {
+        $(this).closest('.css_customer').data('autocomplete-handled', false);
+    });
 });
 
 // customer name field  ends here
-
-
 
 
 
