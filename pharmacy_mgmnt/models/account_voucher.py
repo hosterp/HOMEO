@@ -22,6 +22,13 @@ class AccountVoucher(models.Model):
     pay_mode = fields.Selection([('credit', 'Credit'),('cash', 'Cash'),('upi', 'UPI'), ('card', 'Card')], 'Payment Mode')
     res_person = fields.Many2one('res.partner', string="Responsible Person", domain=[('res_person_id', '=', True)])
     invoice_ids = fields.Many2many('account.invoice', string="Select Invoices", )
+    amount_given=fields.Integer('Given Amount')
+    balance=fields.Integer('Balance',compute='_compute_cash')
+
+    @api.depends('amount_given')
+    def _compute_cash(self):
+        self.balance=self.amount_given-self.amount
+
     def onchange_amount(self, cr, uid, ids, amount, rate, partner_id, journal_id, currency_id, ttype, date,
                         payment_rate_currency_id, company_id, context=None):
         if not context:
