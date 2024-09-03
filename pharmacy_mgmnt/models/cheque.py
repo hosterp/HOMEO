@@ -13,7 +13,7 @@ from openerp import models, fields, api, tools, _
 class ChequeTransactions(models.Model):
     _name = 'cheque.entry'
     _rec_name = 's_no'
-    _order = 's_no desc'
+    _order = 'deposit_date asc'
 
     s_no = fields.Char('Serial Number', readonly=True, required=False, copy=False, default='New')
     name = fields.Many2one('res.partner', 'Name')

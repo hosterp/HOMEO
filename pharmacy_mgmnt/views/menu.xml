@@ -998,7 +998,7 @@
             <field name="model">cheque.entry</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree colors="red:state=='bounce'" string="Cheque Transaction Details" version="7.0">
+                <tree colors="red:state=='bounce';blue:deposit_date==current_date" string="Cheque Transaction Details" version="7.0">
                     <field name="s_no"/>
                     <field name="t_date"/>
                     <field name="cheque_no"/>
@@ -1021,24 +1021,24 @@
             <field name="res_model">cheque.entry</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <!--        <record id="view_entry_stock_filter_cheque_collection" model="ir.ui.view">-->
-        <!--            <field name="name">entry.stock.search.cheque</field>-->
-        <!--            <field name="model">cheque.entry</field>-->
-        <!--            <field name="arch" type="xml">-->
-        <!--                <search>-->
-        <!--                    <filter name="current_date" string="Current Date"-->
-        <!--                          domain="[('deposit_date', '=', current_date)]"/>-->
-        <!--                </search>-->
-        <!--            </field>-->
-        <!--        </record>-->
+<!--                <record id="view_entry_stock_filter_cheque_collection" model="ir.ui.view">-->
+<!--                    <field name="name">entry.stock.search.cheque</field>-->
+<!--                    <field name="model">cheque.entry</field>-->
+<!--                    <field name="arch" type="xml">-->
+<!--                        <search>-->
+<!--                            <filter name="current_date" string="Current Date"-->
+<!--                                  domain="[('deposit_date', '=', current_date)]"/>-->
+<!--                        </search>-->
+<!--                    </field>-->
+<!--                </record>-->
 
         <record id="action_count_of_check_collection" model="ir.actions.act_window">
-            <field name="name">PDC Details count</field>
+            <field name="name">PDC Details</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">cheque.entry</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('deposit_date', '=', context_today)]</field>
-            <field name="context">{'context_today': current_date}</field>
+<!--            <field name="domain">[('deposit_date', '=', context_today)]</field>-->
+<!--            <field name="context">{'context_today': current_date,'search_default_today': 1, 'order': 'deposit_date desc'}</field>-->
             <!--            <field name="search_view_id" ref="view_entry_stock_filter_cheque_collection"/>-->
             <field name="view_id" ref="cheque_transaction_details_view_tree_count"/>
         </record>
