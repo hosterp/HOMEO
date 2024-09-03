@@ -27,7 +27,8 @@ class AccountVoucher(models.Model):
 
     @api.depends('amount_given')
     def _compute_cash(self):
-        self.balance=self.amount_given-self.amount
+        if self.amount_given:
+            self.balance=self.amount_given-self.amount
 
     def onchange_amount(self, cr, uid, ids, amount, rate, partner_id, journal_id, currency_id, ttype, date,
                         payment_rate_currency_id, company_id, context=None):
