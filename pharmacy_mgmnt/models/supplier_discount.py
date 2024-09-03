@@ -187,7 +187,9 @@ class SupplierBillDetails(models.Model):
     bank_name=fields.Char('Bank Name')
     cheque_no=fields.Char('Chq.No/Transfer No')
     cheque_date=fields.Date('Chq Date')
-
+    delivery_date=fields.Date('Delivery Date')
+    total_box=fields.Integer('Total Box')
+    remark=fields.Char('Remarks')
 
     @api.onchange('supplier')
     def gst_no_onchange(self):
