@@ -1,0 +1,62 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="new_stock_entry_form_id_search_stock">
+            <field name="name">Medicine Search Stock Form</field>
+            <field name="model">search.stock.expiry</field>
+            <field name="arch" type="xml">
+                <form string="Search Stock Expiry">
+                    <sheet>
+                        <group>
+                            <field name="type"/>
+                            <!--                            <field name="batch_number"/>-->
+                            <!--                            <field name="expiry_date"/>-->
+                            <!--                            <field name="quantity"/>-->
+                        </group>
+                        <notebook>
+                            <page string="Filtered Stocks">
+                                <field name="stock_ids">
+                                    <tree>
+                                        <field name="medicine_1"/>
+                                        <field name="potency"/>
+                                        <field name="medicine_name_packing"/>
+                                        <field name="company"/>
+                                        <field name="medicine_grp" invisible="1"/>
+                                        <field name="medicine_grp1"/>
+                                        <field name="quantity_selected" store="False" widget="float_no_default"/>
+                                        <field name="qty" type="char"/>
+                                        <field name="mrp" type="char" widget="float_no_default"/>
+                                        <field name="batch_2" invisible="1"/>
+                                        <field name="batch"/>
+                                        <field name="manf_date"/>
+                                        <field name="expiry_date"/>
+                                        <field name="custom_qty" type="char" invisible="1"/>
+                                        <field name="rack"/>
+                                        <field name="hsn_code"/>
+                                        <field name="invoice_line_tax_id4" widget="float_no_default"/>
+                                        <field name="qty_received" widget="float_no_default"/>
+                                        <field name="discount" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_stock_search_expiry" model="ir.actions.act_window">
+            <field name="name">Stock Search</field>
+            <field name="res_model">search.stock.expiry</field>
+            <field name="view_mode">form</field>
+            <!--            <field name="view_id" ref="new_stock_entry_tree_id_search_stock"/>-->
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_stock_search_expiry"
+                  action="action_stock_search_expiry"
+                  name="Stock Search"
+                  parent="r2"
+                  sequence="12"/>
+    </data>
+</openerp>

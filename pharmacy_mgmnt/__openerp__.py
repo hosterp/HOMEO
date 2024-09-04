@@ -68,6 +68,7 @@
         'views/supplier_wizard_form.xml',
         'views/home_page.xml',
         'views/quotation.xml',
+        'views/stock_search.xml',
 
 
     ],

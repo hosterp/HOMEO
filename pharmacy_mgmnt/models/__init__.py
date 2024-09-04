@@ -19,3 +19,4 @@ from . import customer_invoice_wizard
 from . import create_order
 from .import supplier_invoice_wizard_form
 from . import home_page
+from . import stock_search_expiry

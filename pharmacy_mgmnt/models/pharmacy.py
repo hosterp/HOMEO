@@ -295,7 +295,7 @@ class NewStockEntry(models.Model):
     stock_date = fields.Date(string="stock date")
     med_category = fields.Selection([('indian', 'Indian'), ('german', 'German')], default='indian', string="Made In")
     name=fields.Char('Name')
-
+    expiry_id=fields.Many2one('search.stock.expiry')
     @api.model
     def create(self, vals):
         if vals.get('s_no', 'New') == 'New':
