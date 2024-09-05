@@ -341,6 +341,40 @@
                 if (location.pathname.includes('/report/html/account.report_invoice/')) {
                 window.print();
                 }
+              window.onafterprint = function() {
+
+                if (window.opener) {
+
+                    setTimeout(function() {
+                        console.log("Interacting with the parent window...");
+                        const listAddButton = window.opener.document.querySelector('.oe_list_add');
+                        const createButton = window.opener.document.querySelector('.oe_form_button_create');
+
+                        if (listAddButton) {
+                            console.log("Clicking the 'Add' button...");
+                            listAddButton.click();
+                        } else {
+                            console.log("'Add' button not found.");
+                        }
+
+                        if (createButton) {
+                            console.log("Clicking the 'Create' button...");
+                            createButton.click();
+                        } else {
+                            console.log("'Create' button not found.");
+                        }
+
+
+                        setTimeout(function() {
+                            console.log("Closing the window...");
+                            window.close();
+                        }, 100);
+                    }, 200);
+                } else {
+                    console.log("No parent window found.");
+                }
+            };
+
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter') {
                         if (window.opener) {
