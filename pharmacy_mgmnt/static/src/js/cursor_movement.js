@@ -410,8 +410,15 @@ $(document).on('keydown', '.required_class.grp', function(event) {
         });
 
 
-// customer name field  starts here
+
 $(document).ready(function () {
+     $(document).on('mouseenter', '.save_as_holding_invoice', function (event) {
+//        console.log('clicked.................');
+        $('.oe_form_button_save').trigger('click');
+     });
+
+
+
     $(document).on('keydown', '.css_customer', function (event) {
         if (event.which === 13) { // Enter key
             var $productField = $(this);
