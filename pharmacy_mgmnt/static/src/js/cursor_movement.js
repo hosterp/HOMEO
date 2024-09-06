@@ -412,7 +412,7 @@ $(document).on('keydown', '.required_class.grp', function(event) {
 
 
 $(document).ready(function () {
-     $(document).on('mouseenter', '.save_as_holding_invoice', function (event) {
+     $(document).on('mousedown', '.save_as_holding_invoice', function (event) {
 //        console.log('clicked.................');
         $('.oe_form_button_save').trigger('click');
      });
