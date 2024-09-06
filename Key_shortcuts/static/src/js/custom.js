@@ -525,73 +525,73 @@ $(document).ready(function() {
 //});
 // end here
 
-
-var addRowTriggered = false;
-
-$(document).on('keydown', function (event) {
-  if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]') && !addRowTriggered) {
-    // Close any open dialogs/modals
-    $('.modal').modal('hide');
-
-    // Set the flag to true to prevent multiple triggers
-    addRowTriggered = true;
-
-    console.log('Spacebar pressed, initiating row check and addition.');
-
-    // Add a delay before triggering the click and setting focus
-    setTimeout(function() {
-      // Find all rows in the one2many list
-      var rows = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row');
-      console.log('All rows found:', rows);
-
-      // Get the last row and the previous row
-      var lastRow = rows.last();
-      var previousRow = lastRow.prev();
-      console.log('Last row found:', lastRow);
-      console.log('Previous row found:', previousRow);
-
-      // Check if previousRow exists and has a product_id field
-      if (previousRow.length) {
-        var previousProductField = previousRow.find('.oe_form_field #product_id_field');
-        console.log('Previous product_id field value:', previousProductField.val());
-
-        // Check if the product_id field in the previous row is empty
-        if (previousProductField.val() === '') {
-          console.log('Previous product_id field is empty. Focusing on it.');
-          previousProductField.focus();
-        } else {
-          // Trigger the click on the add row button
-          console.log('Previous product_id field is not empty. Adding a new row.');
-          $('.oe_form_field_one2many_list_row_add a').first().click();
-
-          // Set focus back to the product_id field of the new row after a short delay
-          setTimeout(function() {
-            var newProductField = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row').last().find('#product_id_field');
-            newProductField.focus();
-            console.log('Focused on the new product_id field.');
-          }, 100); // 100ms delay
-        }
-      } else {
-        // If no previous row, add a new row and set focus
-        console.log('No previous row found. Adding a new row.');
-        $('.oe_form_field_one2many_list_row_add a').first().click();
-
-        // Set focus back to the product_id field of the new row after a short delay
-        setTimeout(function() {
-          var newProductField = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row').last().find('#product_id_field');
-          newProductField.focus();
-          console.log('Focused on the new product_id field.');
-        }, 100); // 100ms delay
-      }
-
-      // Reset the flag after the timeout
-      setTimeout(function() {
-        addRowTriggered = false;
-        console.log('Add row triggered flag reset.');
-      }, 500); // 500ms delay
-    }, 1000); // 1000ms delay
-  }
-});
+//  old space
+//var addRowTriggered = false;
+//
+//$(document).on('keydown', function (event) {
+//  if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]') && !addRowTriggered) {
+//    // Close any open dialogs/modals
+//    $('.modal').modal('hide');
+//
+//    // Set the flag to true to prevent multiple triggers
+//    addRowTriggered = true;
+//
+//    console.log('Spacebar pressed, initiating row check and addition.');
+//
+//    // Add a delay before triggering the click and setting focus
+//    setTimeout(function() {
+//      // Find all rows in the one2many list
+//      var rows = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row');
+//      console.log('All rows found:', rows);
+//
+//      // Get the last row and the previous row
+//      var lastRow = rows.last();
+//      var previousRow = lastRow.prev();
+//      console.log('Last row found:', lastRow);
+//      console.log('Previous row found:', previousRow);
+//
+//      // Check if previousRow exists and has a product_id field
+//      if (previousRow.length) {
+//        var previousProductField = previousRow.find('.oe_form_field #product_id_field');
+//        console.log('Previous product_id field value:', previousProductField.val());
+//
+//        // Check if the product_id field in the previous row is empty
+//        if (previousProductField.val() === '') {
+//          console.log('Previous product_id field is empty. Focusing on it.');
+//          previousProductField.focus();
+//        } else {
+//          // Trigger the click on the add row button
+//          console.log('Previous product_id field is not empty. Adding a new row.');
+//          $('.oe_form_field_one2many_list_row_add a').first().click();
+//
+//          // Set focus back to the product_id field of the new row after a short delay
+//          setTimeout(function() {
+//            var newProductField = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row').last().find('#product_id_field');
+//            newProductField.focus();
+//            console.log('Focused on the new product_id field.');
+//          }, 100); // 100ms delay
+//        }
+//      } else {
+//        // If no previous row, add a new row and set focus
+//        console.log('No previous row found. Adding a new row.');
+//        $('.oe_form_field_one2many_list_row_add a').first().click();
+//
+//        // Set focus back to the product_id field of the new row after a short delay
+//        setTimeout(function() {
+//          var newProductField = $('.oe_form_field_one2many_list .oe_form_field_one2many_list_row').last().find('#product_id_field');
+//          newProductField.focus();
+//          console.log('Focused on the new product_id field.');
+//        }, 100); // 100ms delay
+//      }
+//
+//      // Reset the flag after the timeout
+//      setTimeout(function() {
+//        addRowTriggered = false;
+//        console.log('Add row triggered flag reset.');
+//      }, 500); // 500ms delay
+//    }, 1000); // 1000ms delay
+//  }
+//});
 
 
 
@@ -642,4 +642,79 @@ $(document).ready(function() {
 
 
 
+//working sapcebar to exit search wizard
+
+
+var addRowTriggered = false;
+
+$(document).on('keydown', function (event) {
+  if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]') && !addRowTriggered) {
+    // Close any open dialogs/modals
+    $('.modal').modal('hide');
+
+    // Set the flag to true to prevent multiple triggers
+    addRowTriggered = true;
+
+    console.log('Spacebar pressed, initiating row check and addition.');
+
+    // Add a delay before triggering the click and setting focus
+    setTimeout(function() {
+      // Find all rows in the one2many list containing product_id field
+      var rows = $('.openerp .oe_list .oe_form_container .oe_form .oe_form_container.oe_form_nosheet span.oe_form_field.required_class input');
+      console.log('All rows found:', rows);
+
+      // Get the last row and the previous row
+      var lastRow = rows.first();
+//      var previousRow = lastRow.prev();
+      console.log('Last row found:', lastRow);
+
+      // Check if previousRow exists and has a product_id field
+      if (lastRow.length) {
+        previousProductField=lastRow
+//        var previousProductField = lastRow.find('input[name="product_id"]');
+        console.log('Previous product_id field value:', previousProductField.val());
+        // Check if the product_id field in the previous row is empty
+        if (previousProductField.val() === '') {
+        var quantityField = $('[id^="DataTables_Table_"] tbody tr:first-child td[data-field="quantity_selected"]');
+        var t=$('.oe_list_content tbody td[data-field="product_id"]')
+          console.log('Previous product_id field is empty. Focusing on it.');
+          t.click()
+//          lastRow.focus();
+//          $('.openerp .oe_list .oe_form_container .oe_form .oe_form_container.oe_form_nosheet span.oe_form_field.required_class input').slice(0, 1).click();
+
+        } else {
+          // Trigger the click on the add row button
+          console.log('Previous product_id field is not empty. Adding a new row.');
+          $('.oe_form_field_one2many_list_row_add a').first().click();
+
+          // Set focus back to the product_id field of the new row after a short delay
+          setTimeout(function() {
+            var newProductField = $('tr:has(td:has(input[name="product_id"]))').last().find('input[name="product_id"]');
+            newProductField.focus();
+            console.log('Focused on the new product_id field.');
+          }, 100); // 100ms delay
+        }
+      } else {
+        // If no previous row, add a new row and set focus
+        console.log('No previous row found. Adding a new row.');
+        $('.oe_form_field_one2many_list_row_add a').first().click();
+
+        // Set focus back to the product_id field of the new row after a short delay
+        setTimeout(function() {
+          var newProductField = $('tr:has(td:has(input[name="product_id"]))').last().find('input[name="product_id"]');
+          newProductField.focus();
+          console.log('Focused on the new product_id field.');
+        }, 100); // 100ms delay
+      }
+
+      // Reset the flag after the timeout
+      setTimeout(function() {
+        addRowTriggered = false;
+        console.log('Add row triggered flag reset.');
+      }, 500); // 500ms delay
+    }, 1000); // 1000ms delay
+  }
+});
+
+//ends here
 
