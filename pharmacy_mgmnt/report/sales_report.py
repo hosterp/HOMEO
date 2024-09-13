@@ -65,6 +65,20 @@ class SalesReport(models.TransientModel):
              ('report_name', '=', 'pharmacy_mgmnt.sales_report_id',)])
         data.download_filename = 'Sales report.pdf'
         return self.env['report'].get_action(self, 'pharmacy_mgmnt.sales_report_id')
+
+    @api.multi
+    def print_sales_report_xlsx_report(self):
+        datas = {
+            'ids': self._ids,
+            'model': self._name,
+            'form': self.read(),
+            'context': self._context,
+        }
+        return {'type': 'ir.actions.report.xml',
+                'report_name': 'pharmacy_mgmnt.sales_report_excel.xlsx',
+                'datas': datas
+                }
+
     @api.multi
     @api.model
     def get_all_sales(self):

@@ -10,6 +10,15 @@
                 name="pharmacy_mgmnt.sales_report_id"
                 attachment_use="True"
         />
+        <report
+            id="sales_report_excel"
+            model="sales.report"
+            string="Sales Report (Excel)"
+            report_type="xlsx"
+            name="pharmacy_mgmnt.sales_report_excel.xlsx"
+            file="pharmacy_mgmnt.sales_report_excel.xlsx"
+            attachment_use="False"
+        />
         <!--        <record id="pharmacy_mgmnt.action_customer_payment_report"-->
         <!--                model="ir.actions.report.xml">-->
         <!--            <field name="paperformat_id" ref="report_paperformat"/>-->

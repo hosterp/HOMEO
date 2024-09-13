@@ -29,6 +29,8 @@
                                 class="oe_highlight"/>
                         <button name="print_sale_report" type="object" string="Print"
                                 class="oe_highlight"/>
+                        <button name="print_sales_report_xlsx_report" type="object" string="Excel"
+                                class="oe_highlight"/>
                     </header>
 
                     <group col="3">
