@@ -10,6 +10,7 @@ from . import invoice_report
 from . import sales_report
 from . import btob_date_excel_report
 from . import b2c_date_excel
+from . import purchase_report_excel
 
 from . import enquiry_report_excel
 

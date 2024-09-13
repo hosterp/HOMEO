@@ -20,6 +20,7 @@
 					</group>
 					<footer>
 						<button name="action_purchase_report_open_window" type="object" string="Print" class="oe_highlight" />
+						<button name="print_purchase_report_xlsx_report" type="object" string="Excel" class="oe_highlight" />
 						<button type="object" name="view_purchase_report" string="View" class="oe_highlight" />
 						<button string="Cancel" class="oe_link" special="cancel" />
 					</footer>
@@ -29,6 +30,16 @@
 		<report id="report_purchase_report_id" string="Purchase Report"
 			model="purchase.invoice.report" report_type="qweb-pdf"
 			name="pharmacy_mgmnt.purchase_report_template_new"/>
+
+		<report
+            id="purchase_report_excel"
+            model="purchase.invoice.report"
+            string="Purchase Report (Excel)"
+            report_type="xlsx"
+            name="pharmacy_mgmnt.purchase_report_excel.xlsx"
+            file="pharmacy_mgmnt.purchase_report_excel.xlsx"
+            attachment_use="False"
+        />
 		<record id="pharmacy_mgmnt.report_purchase_report_id" model="ir.actions.report.xml">
 			<field name="paperformat_id" ref="report_paperformat"/>
 		</record>
