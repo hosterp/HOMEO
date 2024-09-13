@@ -3349,3 +3349,9 @@ class AccountInvoice(models.Model):
                         pass
             else:
                 raise ValidationError("No invoice Lines")
+
+
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    is_quotation = fields.Boolean('Is Quotation')

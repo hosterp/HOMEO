@@ -69,6 +69,7 @@
         'views/home_page.xml',
         'views/quotation.xml',
         'views/stock_search.xml',
+        'views/quotation_default.xml',
 
 
     ],
