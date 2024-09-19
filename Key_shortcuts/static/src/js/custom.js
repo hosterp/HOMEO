@@ -654,13 +654,18 @@ $(document).ready(function() {
 
 
 
-//working sapcebar to exit search wizard
-
+// sapcebar to exit search wizard
 
 var addRowTriggered = false;
 
 $(document).on('keydown', function (event) {
   if (event.keyCode === 32 && !$(':focus').is('.dataTables_filter input[type="search"]') && !addRowTriggered) {
+    // Check if the specific modal is open
+    var modalTitle = $('.modal .modal-title').text().trim();
+    if (modalTitle !== "Search Stock In Tree") {
+      return; // Exit if the modal title doesn't match
+    }
+
     // Close any open dialogs/modals
     $('.modal').modal('hide');
 
@@ -677,23 +682,19 @@ $(document).on('keydown', function (event) {
 
       // Get the last row and the previous row
       var lastRow = rows.first();
-//      var previousRow = lastRow.prev();
       console.log('Last row found:', lastRow);
 
       // Check if previousRow exists and has a product_id field
       if (lastRow.length) {
-        previousProductField=lastRow
-//        var previousProductField = lastRow.find('input[name="product_id"]');
+        var previousProductField = lastRow;
         console.log('Previous product_id field value:', previousProductField.val());
+
         // Check if the product_id field in the previous row is empty
         if (previousProductField.val() === '') {
-        var quantityField = $('[id^="DataTables_Table_"] tbody tr:first-child td[data-field="quantity_selected"]');
-        var t=$('.oe_list_content tbody td[data-field="product_id"]')
+          var quantityField = $('[id^="DataTables_Table_"] tbody tr:first-child td[data-field="quantity_selected"]');
+          var t = $('.oe_list_content tbody td[data-field="product_id"]');
           console.log('Previous product_id field is empty. Focusing on it.');
-          t.click()
-//          lastRow.focus();
-//          $('.openerp .oe_list .oe_form_container .oe_form .oe_form_container.oe_form_nosheet span.oe_form_field.required_class input').slice(0, 1).click();
-
+          t.click();
         } else {
           // Trigger the click on the add row button
           console.log('Previous product_id field is not empty. Adding a new row.');
@@ -729,4 +730,3 @@ $(document).on('keydown', function (event) {
 });
 
 //ends here
-
