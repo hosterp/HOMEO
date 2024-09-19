@@ -9,6 +9,18 @@ openerp.Key_shortcuts = function (jQuery) {
 //}, 4000)
 //    });
 
+$(document).ready(function () {
+  $(document).on('focus', '.qty_class', function (e) {
+        var target = e.target;
+        setTimeout(function () {
+            var keyPressEvent = $.Event('keypress');
+            keyPressEvent.which = 13;
+            keyPressEvent.keyCode = 13;
+            $(target).trigger(keyPressEvent);
+        }, 100);
+    });
+
+});
 //    HARSHA'S CODE
 $.shortcut = function(key, callback, args) {
     $(document).keydown(function(e) {
