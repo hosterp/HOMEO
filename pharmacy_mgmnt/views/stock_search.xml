@@ -14,7 +14,7 @@
                         </group>
                         <notebook>
                             <page string="Filtered Stocks">
-                                <field name="stock_ids">
+                                <field name="stock_ids" readonly="1">
                                     <tree>
                                         <field name="medicine_1"/>
                                         <field name="potency"/>
