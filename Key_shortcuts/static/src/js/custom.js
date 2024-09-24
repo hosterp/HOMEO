@@ -665,11 +665,17 @@ $(document).on('keydown', function (event) {
     if (modalTitle !== "Search Stock In Tree") {
       return; // Exit if the modal title doesn't match
     }
+     var target = event.target;
+     var keyPressEvent = $.Event('keypress');
+            keyPressEvent.which = 13;
+            keyPressEvent.keyCode = 13;
+            $(target).trigger(keyPressEvent);
 
-    // Close any open dialogs/modals
-    $('.modal').modal('hide');
 
-    // Set the flag to true to prevent multiple triggers
+        setTimeout(function() {
+            $('.modal').modal('hide');
+            console.log('Modal is now closed');
+        }, 300);
     addRowTriggered = true;
 
     console.log('Spacebar pressed, initiating row check and addition.');
