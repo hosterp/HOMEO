@@ -486,14 +486,16 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
 
             setTimeout(function () {
                 $('.potency').focus();
-            }, 200);
+            }, 500);
         }, 100);
     }
 });
 $(document).on('keydown', '.potency', function (event) {
     if (event.which === 13) {
         event.preventDefault();
-        $('span.custom_batch input').focus();
+        setTimeout(function() {
+            $('span.custom_batch input').focus();
+        }, 500);
     }
 });
 
