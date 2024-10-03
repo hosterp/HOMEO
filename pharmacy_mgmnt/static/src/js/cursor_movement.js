@@ -536,7 +536,13 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
         }, 100);
     }
 });
-
+$(document).on('keydown','.potency', function (event) {
+    if (event.which === 13) {
+          setTimeout(function () {
+                $('span.custom_batch input').focus();
+            }, 100);
+    }
+});
 
     // Handle item click in the autocomplete list
     $(document).on('click', 'ul.ui-autocomplete li', function () {
