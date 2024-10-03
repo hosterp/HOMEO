@@ -212,34 +212,58 @@ $(document).ready(function() {
             }
         }, 500);
     });
-//   $(document).on('shown.bs.modal', function (event) {
+
+var currentlyFocusedField = null;
+
+
+$(document).on('focus', 'input, textarea, select', function () {
+    currentlyFocusedField = $(this);
+    console.log("Currently focused field:", currentlyFocusedField);
+});
+
+
+$(document).on('shown.bs.modal', function (event) {
+    var modal = $(event.target);
+    var modalTitle = modal.find('.modal-title').text().trim();
+    var modalBody = modal.find('.modal-body').text().trim();
+
+    var titlesToCheck = ["Hiworth Warning", "Warning", "Hiworth Client Error", "Hiworth"];
+
+    if (titlesToCheck.includes(modalTitle) || modalBody.includes("Odoo Server Error")) {
+          $(document).on('keydown', function (event) {
+                if (event.keyCode === 13) {
+                    modal.find('.close').click();
+                }
+                });
+    }
+});
+
+
+$(document).on('hidden.bs.modal', function () {
+    console.log("Modal is now hidden");
+    if (currentlyFocusedField) {
+        setTimeout(function () {
+            currentlyFocusedField.focus();
+            console.log("Focusing on field:", currentlyFocusedField);
+        }, 100);
+    }
+});
+
+
+//    $(document).on('shown.bs.modal', function (event) {
 //        var modal = $(event.target);
 //        var modalTitle = modal.find('.modal-title').text().trim();
+//        var modalBody = modal.find('.modal-body').text().trim(); // Get the text content of the modal body
 //
-//        if (modalTitle === "Hiworth Warning"||modalTitle === "Warning"||modalTitle === "Hiworth") {
+//        var titlesToCheck = ["Hiworth Warning", "Warning","Hiworth Client Error","Hiworth"];
+//        if (titlesToCheck.includes(modalTitle) || modalBody.includes("Odoo Server Error")) {
 //            $(document).on('keydown', function (event) {
 //                if (event.keyCode === 13) {
 //                    modal.find('.close').click();
 //                }
 //            });
 //        }
-//   });
-    $(document).on('shown.bs.modal', function (event) {
-        var modal = $(event.target);
-        var modalTitle = modal.find('.modal-title').text().trim();
-        var modalBody = modal.find('.modal-body').text().trim(); // Get the text content of the modal body
-
-        var titlesToCheck = ["Hiworth Warning", "Warning","Hiworth Client Error","Hiworth"];
-
-
-        if (titlesToCheck.includes(modalTitle) || modalBody.includes("Odoo Server Error")) {
-            $(document).on('keydown', function (event) {
-                if (event.keyCode === 13) {
-                    modal.find('.close').click();
-                }
-            });
-        }
-    });
+//    });
 });
 $(document).ready(function() {
     $(document).on('focus', '.oe_form_field_many2one', debounce(function(event) {
@@ -306,77 +330,7 @@ function debounce(func, wait) {
     };
     }
 
-//$(document).ready(function () {
-//    $(document).on('keypress', '.css_customer', function (event) {
-//        if (event.which === 13) {
-//            var $productField = $(this);
-//            var tableRow = $productField.closest('tr');
-//            var label = tableRow.find('label').text().trim();
-//
-//            if (label === "Customer" && !$productField.data('autocomplete-handled')) {
-//                $productField.data('autocomplete-handled', true);
-//
-//                var $input = $productField.find('input');
-//
-//                if (!$input.data('autocomplete-opened')) {
-//                    $input.data('autocomplete-opened', true);
-//
-//                    $input.one('autocompleteopen', function () {
-//                        setTimeout(function () {
-//                            $input.select();
-//                        }, 200);
-//                    });
-//                }
-//
-//                setTimeout(function () {
-//                    var $ul = $("ul.ui-autocomplete");
-//                               var $firstItem = $ul.find('li:eq(-2)');
-//                    // var $firstItem = $ul.find('a.ui-corner-all:contains("Create")');
-//                    if ($firstItem.length > 0) {
-//                        $firstItem[0].click();
-//                         setTimeout(function () {
-//                            $('.css_phone').focus();
-//                        }, 200);
-//                        // $firstItem.data('clicked', true);
-//                    }
-//                }, 100);
-//            }
-//        }
-//    });
-//  $(document).on('keydown', '.required_class.grp', function(event) {
-//            if (event.which === 13 || event.which === 9) {
-//                event.preventDefault();
-//
-//                console.log('Keydown event detected:', event.which);
-//
-//
-//                var $currentInput = $(this).find('input');
-//
-//
-//                console.log('Current input:', $currentInput);
-//
-//
-//               var $inputField = $('.oe_form_field.oe_form_field_float.required_class.qty input');
-////                    .nextAll('.oe_form_field')
-////                    .find('input')
-////                    .first();
-//
-//
-//                console.log('Next input:', $inputField);
-//
-//                if ($inputField.length) {
-//                    setTimeout(function() {
-//                        $inputField.focus();
-//                        console.log('Focused on next input field.');
-//                    }, 100);
-//                } else {
-//                    console.warn('Next input element not found.');
-//                }
-//            }
-//        });
-//});
 
-//group single press on enter button
 $(document).on('keydown', '.required_class.grp', function(event) {
             if (event.which === 13 || event.which === 9) {
                 event.preventDefault();
@@ -536,13 +490,14 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
         }, 100);
     }
 });
-$(document).on('keydown','.potency', function (event) {
+$(document).on('keydown', '.potency', function (event) {
     if (event.which === 13) {
-          setTimeout(function () {
-                $('span.custom_batch input').focus();
-            }, 100);
+        event.preventDefault();
+        $('span.custom_batch input').focus();
     }
 });
+
+
 
     // Handle item click in the autocomplete list
     $(document).on('click', 'ul.ui-autocomplete li', function () {
@@ -556,7 +511,7 @@ $(document).on('keydown','.potency', function (event) {
     });
 });
 
-// customer name field  ends here
+
 
 
 
