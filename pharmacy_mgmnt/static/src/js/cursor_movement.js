@@ -374,74 +374,44 @@ $(document).ready(function () {
 
 
     $(document).on('keydown', '.css_customer', function (event) {
-        if (event.which === 13) { // Enter key
-            var $productField = $(this);
-            var tableRow = $productField.closest('tr');
-            var label = tableRow.find('label').text().trim();
+    if (event.which === 13) { // Enter key
+        var $productField = $(this); // .css_customer element
+        var tableRow = $productField.closest('tr');
+        var label = tableRow.find('label').text().trim();
 
-            if (label === "Customer") {
-                // Remove the autocomplete-handled flag on every keydown to ensure it runs each time
-                $productField.data('autocomplete-handled', false);
+        if (label === "Customer") {
+            // Remove the autocomplete-handled flag to ensure fresh execution
+            $productField.data('autocomplete-handled', false);
 
-                if (!$productField.data('autocomplete-handled')) {
-                    $productField.data('autocomplete-handled', true);
+            if (!$productField.data('autocomplete-handled')) {
+                $productField.data('autocomplete-handled', true);
 
-                    var $input = $productField.find('input');
-                    console.log('Input field:', $input);
+                var inputValue = $productField.val() ? $productField.val().trim() : "";
+                console.log('Detected input value:', inputValue);
 
-                    // Ensure the input field is found
-                    if ($input.length === 0) {
-                        console.log("Input field not found.");
+                // Check if autocomplete dropdown is open
+                setTimeout(function () {
+                    var $ul = $("ul.ui-autocomplete");
+                    var $items = $ul.find('li');
+                    console.log('Dropdown items:', $items);
+
+                    if ($items.length > 0) {
+                        // Click the first item in the dropdown
+                        console.log('Clicking first item:', $items.first().text());
+                        $items.first()[0].click();
+                    } else {
+                        console.log('No items in the dropdown.');
                     }
 
-                    var inputValue = $input.val() ? $input.val().trim() : "";
-                    console.log('Detected input value:', inputValue);
-
-                    // Ensure autocomplete is opened
-                    if (!$input.data('autocomplete-opened')) {
-                        $input.data('autocomplete-opened', true);
-
-                        $input.one('autocompleteopen', function () {
-                            setTimeout(function () {
-                                $input.select();
-                            }, 200);
-                        });
-                    }
-
+                    // Optionally focus on another element after selection
                     setTimeout(function () {
-                        var $ul = $("ul.ui-autocomplete");
-                        var $items = $ul.find('li');
-                        console.log('Dropdown items:', $items);
-
-                        // Look for "Create" option matching the input value
-                        var $createItem = $items.filter(function () {
-                            var text = $(this).text().trim();
-                            return text.startsWith('Create "') && text.endsWith('"') && text.includes(inputValue);
-                        }).first();
-
-                        if ($createItem.length > 0) {
-                            console.log('Clicking Create item:', $createItem.text());
-                            $createItem[0].click();
-                        } else {
-                            // Optionally handle other cases
-                            var $highlightedItem = $items.filter('.ui-state-highlight').first();
-                            if ($highlightedItem.length > 0) {
-                                console.log('Clicking highlighted item:', $highlightedItem.text());
-                                $highlightedItem[0].click();
-                            } else {
-                                console.log('No matching items found.');
-                            }
-                        }
-
-                        // Optionally focus on another element after selecting
-                        setTimeout(function () {
-                            $('.css_phone').focus();
-                        }, 200);
-                    }, 100);
-                }
+                        $('.css_phone').focus();
+                    }, 200);
+                }, 100);
             }
         }
-    });
+    }
+});
 $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]', function (event) {
     if (event.which === 13) { // Enter key
         var $productField = $(this);
