@@ -464,8 +464,10 @@ $(document).on('keydown', '.potency', function (event) {
     if (event.which === 13) {
         event.preventDefault();
         setTimeout(function() {
-            $('span.custom_batch input').focus();
-        }, 500);
+            const inputField = $('span.custom_batch input')[0];
+            inputField.focus();
+            inputField.setSelectionRange(inputField.value.length, inputField.value.length);
+        }, 100);
     }
 });
 
