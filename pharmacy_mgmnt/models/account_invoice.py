@@ -1208,7 +1208,7 @@ class AccountInvoiceLine(models.Model):
     medicine_name_packing = fields.Many2one('product.medicine.packing', 'Pack',default=lambda self: self._get_default_medicine_pack())
 
     # medicine_grp = fields.Many2one('product.medicine.group', 'GROUP',compute='_compute_taxes',readonly="0")
-    medicine_grp = fields.Many2one('product.medicine.group', 'Grp', default=lambda self: self.env['product.medicine.group'].search([], limit=1).id)
+    medicine_grp = fields.Many2one('product.medicine.group', 'Grp', default=lambda self: self._get_default_medicine_group())
 
     # medicine_group = fields.Char('Group', related="product_id.medicine_group")
     batch = fields.Char("BATCH",)
@@ -1255,9 +1255,16 @@ class AccountInvoiceLine(models.Model):
             default_pack = self.env['account.invoice.line'].search([('medicine_name_packing', 'ilike', name_pattern)], limit=1)
             return default_pack.medicine_name_packing if default_pack else ''
 
+    @api.model
+    def _get_default_medicine_group(self):
+        name_pattern = 'DIL'
+        default_grp = self.env['account.invoice.line'].search([('medicine_grp', 'ilike', name_pattern)],
+                                                               limit=1)
+        return default_grp.medicine_grp if default_grp else ''
+
     @api.onchange('product_id', 'medicine_name_subcat', 'medicine_name_packing','product_of')
     def _onchange_fields(self):
-        default_value=lambda self: self.env['product.medicine.group'].search([], limit=1).id
+        default_value = lambda self: self.env['product.medicine.group'].search([], limit=1).id
         for rec in self:
             if rec.invoice_id.type == 'out_invoice':
                 if self.product_id and self.medicine_name_subcat and self.medicine_name_packing and self.product_of :
@@ -1285,9 +1292,9 @@ class AccountInvoiceLine(models.Model):
                             'product_of': self.product_of.id
                         })
                     else:
-                        self.medicine_grp = default_value
+                        self._get_default_medicine_group()
                 else:
-                    self.medicine_grp =default_value
+                    self._get_default_medicine_group()
 
                 # Update create_bool based on field presence
                 self.create_bool = bool(self.product_id and self.medicine_name_subcat and self.medicine_name_packing and self.product_of)
