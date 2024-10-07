@@ -462,12 +462,13 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
 });
 $(document).on('keydown', '.potency', function (event) {
     if (event.which === 13) {
-        event.preventDefault();
+        console.log('Enter key pressed');
+//        event.preventDefault();
         setTimeout(function() {
             const inputField = $('span.custom_batch input')[0];
             inputField.focus();
             inputField.setSelectionRange(inputField.value.length, inputField.value.length);
-        }, 100);
+        }, 500);
     }
 });
 
