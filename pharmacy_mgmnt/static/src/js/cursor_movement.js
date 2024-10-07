@@ -412,13 +412,61 @@ $(document).ready(function () {
         }
     }
 });
+//$(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]', function (event) {
+//    if (event.which === 13) { // Enter key
+//        var $productField = $(this);
+//        var $input = $productField.find('input');
+//
+//        console.log('Input field:', $input);
+//
+//
+//        if ($input.length === 0) {
+//            console.log("Input field not found.");
+//            return;
+//        }
+//
+//        var inputValue = $input.val() ? $input.val().trim() : "";
+//        console.log('Detected input value:', inputValue);
+//
+//        setTimeout(function () {
+//            var $ul = $("ul.ui-autocomplete");
+//            var $items = $ul.find('li');
+//            console.log('Dropdown items:', $items);
+//
+//
+//            var $createItem = $items.filter(function () {
+//                var text = $(this).text().trim();
+//                return text.startsWith('Create "') && text.endsWith('"') && text.includes(inputValue);
+//            }).first();
+//
+//            if ($createItem.length > 0) {
+//                console.log('Clicking Create item:', $createItem.text());
+//                $createItem[0].click();
+//            } else {
+//
+//                var $highlightedItem = $items.filter('.ui-state-highlight').first();
+//                if ($highlightedItem.length > 0) {
+//                    console.log('Clicking highlighted item:', $highlightedItem.text());
+//                    $highlightedItem[0].click();
+//                } else {
+//                    console.log('No matching items found.');
+//                }
+//            }
+//
+//
+//            setTimeout(function () {
+//                $('.potency').focus();
+//            }, 500);
+//        }, 100);
+//    }
+//});
+
 $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]', function (event) {
     if (event.which === 13) { // Enter key
         var $productField = $(this);
         var $input = $productField.find('input');
 
         console.log('Input field:', $input);
-
 
         if ($input.length === 0) {
             console.log("Input field not found.");
@@ -433,33 +481,31 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
             var $items = $ul.find('li');
             console.log('Dropdown items:', $items);
 
+            // Directly select the first item in the dropdown
+            if ($items.length > 0) {
+                console.log('Clicking the first item:', $items.first().text());
+                $items.first()[0].click();
+               setTimeout(function() {
+                    const inputField = $('.potency input')[0];
+                    inputField.focus();
+                    inputField.setSelectionRange(inputField.value.length, inputField.value.length);
+                }, 500);
 
-            var $createItem = $items.filter(function () {
-                var text = $(this).text().trim();
-                return text.startsWith('Create "') && text.endsWith('"') && text.includes(inputValue);
-            }).first();
-
-            if ($createItem.length > 0) {
-                console.log('Clicking Create item:', $createItem.text());
-                $createItem[0].click();
             } else {
-
-                var $highlightedItem = $items.filter('.ui-state-highlight').first();
-                if ($highlightedItem.length > 0) {
-                    console.log('Clicking highlighted item:', $highlightedItem.text());
-                    $highlightedItem[0].click();
-                } else {
-                    console.log('No matching items found.');
-                }
+                console.log('No matching items found.');
             }
 
-
-            setTimeout(function () {
-                $('.potency').focus();
-            }, 500);
+//            setTimeout(function () {
+//                $('.potency').focus();
+//            }, 500);
         }, 100);
     }
+
 });
+
+
+
+
 $(document).on('keydown', '.potency', function (event) {
     if (event.which === 13) {
         console.log('Enter key pressed');
