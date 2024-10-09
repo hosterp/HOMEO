@@ -463,6 +463,13 @@ $(document).ready(function () {
 
 $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]', function (event) {
     if (event.which === 13) { // Enter key
+        // Check if the title is not "SUPPLIER INVOICE"
+        var titleText = $('.oe_title h1.container').first().text().trim();
+        if (titleText === "SUPPLIER INVOICE") {
+            console.log('The title is SUPPLIER INVOICE. Exiting.');
+            return; // Exit if the title is "SUPPLIER INVOICE"
+        }
+
         var $productField = $(this);
         var $input = $productField.find('input');
 
@@ -485,23 +492,60 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
             if ($items.length > 0) {
                 console.log('Clicking the first item:', $items.first().text());
                 $items.first()[0].click();
-               setTimeout(function() {
+                setTimeout(function() {
                     const inputField = $('.potency input')[0];
                     inputField.focus();
                     inputField.setSelectionRange(inputField.value.length, inputField.value.length);
                 }, 500);
-
             } else {
                 console.log('No matching items found.');
             }
-
-//            setTimeout(function () {
-//                $('.potency').focus();
-//            }, 500);
         }, 100);
     }
-
 });
+
+
+//$(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]', function (event) {
+//    if (event.which === 13) { // Enter key
+//        var $productField = $(this);
+//        var $input = $productField.find('input');
+//
+//        console.log('Input field:', $input);
+//
+//        if ($input.length === 0) {
+//            console.log("Input field not found.");
+//            return;
+//        }
+//
+//        var inputValue = $input.val() ? $input.val().trim() : "";
+//        console.log('Detected input value:', inputValue);
+//
+//        setTimeout(function () {
+//            var $ul = $("ul.ui-autocomplete");
+//            var $items = $ul.find('li');
+//            console.log('Dropdown items:', $items);
+//
+//            // Directly select the first item in the dropdown
+//            if ($items.length > 0) {
+//                console.log('Clicking the first item:', $items.first().text());
+//                $items.first()[0].click();
+//               setTimeout(function() {
+//                    const inputField = $('.potency input')[0];
+//                    inputField.focus();
+//                    inputField.setSelectionRange(inputField.value.length, inputField.value.length);
+//                }, 500);
+//
+//            } else {
+//                console.log('No matching items found.');
+//            }
+//
+////            setTimeout(function () {
+////                $('.potency').focus();
+////            }, 500);
+//        }, 100);
+//    }
+//
+//});
 
 
 
@@ -531,6 +575,7 @@ $(document).on('keydown', '.potency', function (event) {
         $(this).closest('.css_customer').data('autocomplete-handled', false);
     });
 });
+
 
 
 
