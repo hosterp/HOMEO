@@ -11,3 +11,14 @@ box-sizing: border-box;
     padding: 5px;
 }
 
+@media (max-width: 1450px) {
+  /* CSS rules for 13-inch MacBook Air */
+
+  .oe_form_field.custom-inline-field .oe_form_uri {
+    margin-left: 55px; /* Adjust the value as needed */
+    }
+
+    span.oe_form_field.oe_datepicker_root.oe_form_field_date.custom-inline-field {
+    padding-left: 30px;
+    }
+}

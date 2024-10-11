@@ -41,7 +41,7 @@
             </field>
         </record>
         <record id="action_bank_details" model="ir.actions.act_window">
-            <field name="name">Medicine Enquiry</field>
+            <field name="name">BANK DETAILS</field>
             <field name="res_model">master.bank</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="action_master_bank_tree"/>
