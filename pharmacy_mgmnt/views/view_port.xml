@@ -3,6 +3,8 @@
     <data>
         <template id="assets_backend" name="Custom Backend Assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pharmacy_mgmnt/static/src/js/widget.js"/>
+                <script type="text/javascript" src="/pharmacy_mgmnt/static/src/js/cursor_movement.js"/>
                 <link rel="stylesheet" href="/pharmacy_mgmnt/static/src/css/custom.css"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
             </xpath>
