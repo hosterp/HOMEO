@@ -226,8 +226,10 @@ $(document).ready(function() {
             var inputValue = $(this).val().trim();
             if (inputValue !== "") {
                 $(".supplier_invo").trigger('click');
+                console.log("helloooo")
             } else {
-                $(this).next('input').focus();
+               $(".oe_form_field_one2many_list_row_add a").trigger('click');
+               console.log("product...........")
             }
         }
     });
