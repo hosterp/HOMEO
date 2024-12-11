@@ -1773,6 +1773,7 @@ class AccountInvoice(models.Model):
     hold_invoice = fields.Boolean("Holding Invoice?")
     cus_invoice = fields.Boolean("Customer Invoice?")
     quotation_invoice = fields.Boolean("quotation Invoice?")
+    invoice_color_class = fields.Boolean('Invoice Color Class')
     hold_invoice_id = fields.Many2one("account.invoice",
                                       domain=[('type', '=', 'out_invoice'), ('hold_invoice', '=', True)])
     partner_id = fields.Many2one('res.partner',create=True)
@@ -1800,12 +1801,33 @@ class AccountInvoice(models.Model):
     #         action = self.env.ref('pharmacy_mgmnt.action_holding_invoice', raise_if_not_found=False)
     #         if action:
     #             record.action_invoice_tree_id = action.id
+
+
+
     @api.constrains('pay_mode', 'partner_id')
     @api.onchange('pay_mode', 'partner_id')
     def _check_credit_eligibility(self):
         for rec in self:
             if rec.pay_mode == 'credit' and not rec.partner_id.limit_amt:
                 raise ValidationError(_('Customer not eligible for credit payment'))
+            if rec.pay_mode == 'cash' and  rec.partner_id.limit_amt:
+                rec.invoice_color_class= True
+                print ('haiiiiiiiiiiiiiiiiiiiii.................................')
+
+
+
+    #
+    # @api.onchange('partner_id','pay_mode')
+    # def _compute_invoice_color(self):
+    #     for invoice in self:
+    #
+    #         if invoice.partner_id.limit_amt and invoice.pay_mode == 'cash':
+    #                 invoice.invoice_color_class=True
+    #                 print('condition satisfied.................................................')
+    #         else:
+    #             invoice.invoice_color_class = False
+    #             print ('not satisfied......................................................')
+    #             invoice.invoice_color_class = ''
 
 
     @api.depends('partner_id')

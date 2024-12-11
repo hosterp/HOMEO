@@ -1557,12 +1557,18 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_tree"/>
             <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="colors">red:invoice_color_class == True;blue:state == 'draft';black:state in ('proforma','proforma2','open');gray:state ==
+                        'cancel'
+                    </attribute>
+                </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="after">
                     <field name="packing_slip" string="Packing Slip?" invisible="1"/>
                     <field name="holding_invoice" string="Holding Invoice?" invisible="1"/>
                     <field name="hold_invoice" string="Holding Invoice?"/>
                     <field name="packing_invoice" string="Packing Invoice?"/>
                     <field name="quotation_invoice" string="Qutation Invoice?"/>
+                    <field name="invoice_color_class" string="test Invoice?" invisible="1"/>
                 </xpath>
             </field>
         </record>
