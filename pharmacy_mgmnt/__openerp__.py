@@ -70,7 +70,7 @@
         'views/quotation.xml',
         'views/stock_search.xml',
         'views/quotation_default.xml',
-        'views/view_port.xml',
+        # 'views/view_port.xml',
 
 
     ],

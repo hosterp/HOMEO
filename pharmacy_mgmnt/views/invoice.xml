@@ -141,7 +141,7 @@
                     <field name="medicine_name_subcat" options='{"no_open": True}'
                            class="required_class potency"/>
                     <field name="batch" class="custom_batch"/>
-                    <field name="medicine_name_packing" options='{"no_open": True}' class="required_class packing"/>
+                    <field name="medicine_name_packing" options='{"no_open": True}' class="packing"/>
                     <field name="product_of" options='{"no_open": True}'/>
                     <field name="medicine_grp" string="Group" class="required_class grp"
                            options='{"no_open": True}'/>
