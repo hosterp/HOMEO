@@ -28,7 +28,9 @@
                                                             </center>
                                                             <tr>
                                                                 <b>
-                                                                 <span style="font-size: 18px;text-align: center;margin: 0px 69px 0px 11px;"> <field name="low_stock_count"/></span>
+                                                                    <span style="font-size: 18px;text-align: center;margin: 0px 69px 0px 11px;">
+                                                                        <field name="low_stock_count"/>
+                                                                    </span>
                                                                 </b>
                                                             </tr>
                                                             <tr>
@@ -66,9 +68,11 @@
                                                                     </b>
                                                                 </tr>
                                                             </center>
-                                                             <tr>
+                                                            <tr>
                                                                 <b>
-                                                                 <span style="font-size: 18px;text-align: center;margin: 0px 69px 0px 11px;"> <field name="stock_count_expired"/></span>
+                                                                    <span style="font-size: 18px;text-align: center;margin: 0px 69px 0px 11px;">
+                                                                        <field name="stock_count_expired"/>
+                                                                    </span>
                                                                 </b>
                                                             </tr>
                                                             <tr>
@@ -106,9 +110,11 @@
                                                                     </b>
                                                                 </tr>
                                                             </center>
-                                                             <tr>
+                                                            <tr>
                                                                 <b>
-                                                                 <span style="font-size: 18px;text-align: center;margin: 0px 69px 0px 11px;"> <field name="cheque_count"/></span>
+                                                                    <span style="font-size: 18px;text-align: center;margin: 0px 69px 0px 11px;">
+                                                                        <field name="cheque_count"/>
+                                                                    </span>
                                                                 </b>
                                                             </tr>
                                                             <tr>
@@ -120,6 +126,48 @@
                                                                                 name="call_count_of_cheque_collection"
                                                                                 string="View">View
                                                                         </button>
+                                                                    </left>
+                                                                </div>
+                                                            </tr>
+                                                        </table>
+                                                    </center>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span t-attf-class="#{kanban_color(662)} oe_kanban_card ">
+                                            <div class="o_project_kanban_main"
+                                                 style="font-size:20px;width:300px;height:150px">
+                                                <div class="o_kanban_card_content" style="position:absolute;left:40px;"
+                                                     align="center">
+                                                    <center>
+                                                        <table>
+                                                            <center>
+                                                                <tr>
+                                                                    <b>
+                                                                        <span style="font-size: 16px;text-align: center;margin: 0px 86px 0px 23px;">
+                                                                            PAYMENT HISTORY
+                                                                        </span>
+                                                                    </b>
+                                                                </tr>
+                                                            </center>
+                                                            <tr>
+                                                                <b>
+                                                                    <span style="font-size: 18px;text-align: center;margin: 0px 69px 0px 11px;">
+                                                                        <field name="payment_history_count"/>
+                                                                    </span>
+                                                                </b>
+                                                            </tr>
+                                                            <tr>
+                                                                <div>
+                                                                    <left>
+<!--                                                                        <button class="your_custom_button"-->
+<!--                                                                                style="margin: 31px 0px 0px -51px;"-->
+<!--                                                                                type="object"-->
+<!--                                                                                name="call_count_of_cheque_collection"-->
+<!--                                                                                string="View">View-->
+<!--                                                                        </button>-->
                                                                     </left>
                                                                 </div>
                                                             </tr>

@@ -8,11 +8,21 @@ class HomePage(models.Model):
     stock_count_expired = fields.Integer(string='Stock Count Expired', compute='_compute_stock_count')
     low_stock_count = fields.Integer(string='Low Stock Count', compute='_compute_stock_low_count')
     cheque_count = fields.Integer(string='Cheque Count', compute='_compute_cheque_count')
+    payment_history_count = fields.Integer(string='Payment History Count', compute='_compute_payment_history_count')
+
+
+    @api.depends('payment_history_count')
+    def _compute_payment_history_count(self):
+        stock_model = self.env['account.invoice']
+        count = stock_model.search_count([('invoice_color_class', '=','True')])
+        for record in self:
+            record.payment_history_count = count
+            print(record.payment_history_count, 'count')
 
     @api.depends('stock_count_expired')
     def _compute_stock_count(self):
         stock_model = self.env['entry.stock']
-        count = stock_model.search_count([('expiry_date', '<=', fields.Date.today())])
+        count = stock_model.search_count([('expiry_date', '=', fields.Date.today())])
         for record in self:
             record.stock_count_expired = count
             print(record.stock_count_expired,'count')
