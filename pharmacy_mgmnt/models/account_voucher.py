@@ -19,7 +19,7 @@ import datetime
 class AccountVoucher(models.Model):
     _inherit = 'account.voucher'
 
-    pay_mode = fields.Selection([('credit', 'Credit'),('cash', 'Cash'),('upi', 'UPI'), ('card', 'Card')], 'Payment Mode')
+    pay_mode = fields.Selection([('credit', 'Credit'),('cash', 'Cash'),('upi', 'UPI'), ('card', 'Card'),('cheque','Cheque')], 'Payment Mode')
     res_person = fields.Many2one('res.partner', string="Responsible Person", domain=[('res_person_id', '=', True)])
     invoice_ids = fields.Many2many('account.invoice', string="Select Invoices", )
     amount_given=fields.Integer('Given Amount')
