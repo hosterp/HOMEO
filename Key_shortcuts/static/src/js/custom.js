@@ -675,7 +675,7 @@ $(document).on('keydown', function (event) {
         setTimeout(function() {
             $('.modal').modal('hide');
             console.log('Modal is now closed');
-        }, 300);
+        }, 500);
     addRowTriggered = true;
 
     console.log('Spacebar pressed, initiating row check and addition.');
