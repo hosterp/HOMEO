@@ -66,3 +66,11 @@ class HomePage(models.Model):
         id = result and result[1] or False
         result = act_obj.read(cr, uid, [id], context=context)[0]
         return result
+
+    def call_count_of_payment_history(self, cr, uid, ids, context):
+        mod_obj = self.pool.get('ir.model.data')
+        act_obj = self.pool.get('ir.actions.act_window')
+        result = mod_obj.get_object_reference(cr, uid, 'pharmacy_mgmnt', 'action_payment_history_count')
+        id = result and result[1] or False
+        result = act_obj.read(cr, uid, [id], context=context)[0]
+        return result

@@ -162,12 +162,12 @@
                                                             <tr>
                                                                 <div>
                                                                     <left>
-<!--                                                                        <button class="your_custom_button"-->
-<!--                                                                                style="margin: 31px 0px 0px -51px;"-->
-<!--                                                                                type="object"-->
-<!--                                                                                name="call_count_of_cheque_collection"-->
-<!--                                                                                string="View">View-->
-<!--                                                                        </button>-->
+                                                                        <button class="your_custom_button"
+                                                                                style="margin: 31px 0px 0px -51px;"
+                                                                                type="object"
+                                                                                name="call_count_of_payment_history"
+                                                                                string="View">View
+                                                                        </button>
                                                                     </left>
                                                                 </div>
                                                             </tr>
