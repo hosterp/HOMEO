@@ -22,7 +22,7 @@ class HomePage(models.Model):
     @api.depends('stock_count_expired')
     def _compute_stock_count(self):
         stock_model = self.env['entry.stock']
-        count = stock_model.search_count([('expiry_date', '=', fields.Date.today())])
+        count = stock_model.search_count([('expiry_date', '<=', fields.Date.today())])
         for record in self:
             record.stock_count_expired = count
             print(record.stock_count_expired,'count')
