@@ -1734,6 +1734,21 @@ class AccountInvoice(models.Model):
     _rec_name = "number2"
     _order = "number2 desc"
 
+    @api.multi
+    def open_password_wizard(self):
+        """Opens the Password Wizard."""
+        self.ensure_one()  # Ensure the method is called on a single record
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Invoice Password Wizard',
+            'res_model': 'invoice.password.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_invoice_id': self.id,
+            },
+        }
 
     @api.multi
     def open_wizard_action(self):
