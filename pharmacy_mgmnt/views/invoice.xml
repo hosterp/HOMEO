@@ -252,7 +252,7 @@
                     <button name="move_to_holding_invoice" string="Save As Hold Bill" type="object"
                             attrs="{'invisible':['|','|',('type','=','in_invoice'),('hold_invoice','=',True),('state', '=', 'paid')]}"
                             class="save_as_holding_invoice"/>
-                    <button name="open_password_wizard" type="object" string="password"/>
+                    <button name="open_password_wizard" type="object" string="password" class="password_class" invisible="1"/>
                 </xpath>
             </field>
         </record>

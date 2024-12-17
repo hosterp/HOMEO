@@ -42,7 +42,7 @@ openerp.pharmacy_mgmnt = function (instance) {
 
                     if (invoiceLine.length > 0) {
                         var recordDelete = document.querySelector('.record_delete');
-                        var payButton = document.querySelector('.invoice_pay_customer');
+                        var payButton = document.querySelector('.password_class');
 
                         function clickElement(element, delay) {
                             return new Promise(function(resolve, reject) {
@@ -151,6 +151,53 @@ openerp.pharmacy_mgmnt = function (instance) {
             }
         },
     });
+//   instance.web.FormView.include({
+//    load_form: function() {
+//        this._super.apply(this, arguments);
+//        var self = this;
+//
+//        setTimeout(function() {
+//            var invoicePasswordSubmitButton = document.querySelector('.password_validate');
+//            if (invoicePasswordSubmitButton) {
+//                invoicePasswordSubmitButton.addEventListener('click', function() {
+//                   var password = document.querySelector('.password_value input').value;
+//                    console.log(password);
+//                    $.ajax({
+//                        url: '/password/validate',
+//                        method: 'POST',
+//                        dataType: 'json',
+//                        contentType: 'application/json',
+//                        data: JSON.stringify({
+//                            password: password
+//                        }),
+//                        success: function(response) {
+//                            if (response.password_valid) {
+//
+//                                var RegisterButton = document.querySelector('.invoice_pay_customer');
+//                                if (RegisterButton) {
+//                                    setTimeout(function() {
+//                                        RegisterButton.click();
+//                                    }, 200);
+//                                } else {
+//                                    console.log('RegisterButton not found!');
+//                                }
+//                            } else {
+//
+//                                alert(response.error_message);
+//                            }
+//                        },
+//                        error: function(error) {
+//                            console.log('Error validating password:', error);
+//                        }
+//                    });
+//                });
+//            } else {
+//                console.log('invoicePasswordSubmitButton not found!');
+//            }
+//        }, 200);
+//    },
+//});
+
 };
 
 

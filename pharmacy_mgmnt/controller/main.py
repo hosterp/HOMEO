@@ -1,4 +1,5 @@
 from openerp import http,_
+from openerp.exceptions import ValidationError
 from openerp.http import request
 import json
 
@@ -54,3 +55,23 @@ class PaymentHistory(http.Controller):
         }
 
         return json_response
+
+class CustomPasswordValidationController(http.Controller):
+
+    @http.route('/password/validate', type='json', auth='public', methods=['POST'])
+    def validate_password(self, **kwargs):
+        print("Received request with data:", kwargs)
+        password = kwargs.get('password')
+        print("Password received in controller:", password)
+        users = request.env['res.users'].search([])
+
+        is_password_valid = False
+        for user in users:
+            if user.rec_password == password:
+                is_password_valid = True
+                break
+
+        if is_password_valid:
+            return is_password_valid ,{'password_valid': True}
+        else:
+            raise ValidationError("Incorrect Password!")
