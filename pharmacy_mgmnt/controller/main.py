@@ -67,7 +67,7 @@ class CustomPasswordValidationController(http.Controller):
 
             print("Password received in controller:", password)
 
-            # Example validation logic
+
             users = request.env['res.users'].sudo().search([])
             is_password_valid = any(user.rec_password == password for user in users)
 
