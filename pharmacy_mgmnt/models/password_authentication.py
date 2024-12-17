@@ -26,6 +26,8 @@ class InvoicePasswordWizard(models.Model):
                 break
         if is_password_valid:
             print('Password match successful.')
+            if self.invoice_id:
+                self.invoice_id.write({'validated_by_user': self.user})
             return is_password_valid
 
         else:

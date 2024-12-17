@@ -1784,6 +1784,7 @@ class AccountInvoice(models.Model):
             },
         }
 
+    validated_by_user = fields.Char(string="Validated By", readonly=True)
     packing_invoice = fields.Boolean("Packing Slip?")
     hold_invoice = fields.Boolean("Holding Invoice?")
     cus_invoice = fields.Boolean("Customer Invoice?")
