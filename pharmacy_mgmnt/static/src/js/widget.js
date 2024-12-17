@@ -213,7 +213,68 @@ openerp.pharmacy_mgmnt = function (instance) {
             }, 200);
         },
     });
+    instance.web.FormView.include({
+        load_form: function() {
+            this._super.apply(this, arguments);
 
+            setTimeout(function() {
+                var invoicePasswordSubmitButton = document.querySelector('.payment_password_validate');
+                if (invoicePasswordSubmitButton) {
+                    console.log("Password validate button found!");
+
+                    invoicePasswordSubmitButton.addEventListener('click', function() {
+                        var passwordInput = document.querySelector('.password_value input');
+                        if (!passwordInput) {
+                            console.error("Password input field not found!");
+                            return;
+                        }
+
+                       var password = passwordInput.value.trim();
+                       console.log(password);
+                        if (!password) {
+                            console.error("Password is empty!");
+                            return;
+                        }
+                        invoicePasswordSubmitButton.disabled = true;
+                        $.ajax({
+                            type: 'POST',
+                            url: '/payment/password/validate',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ password: password }),
+
+                            success: function(response) {
+                                console.log("Password validation response:", response);
+
+                                if (response.result.password_valid) {
+                                    console.log("Password is valid!");
+                                    var registerButton = document.querySelector('.payment_button');
+                                    if (registerButton) {
+                                        console.log("Clicking the register button...");
+                                        setTimeout(function() {
+                                            registerButton.click();
+                                        }, 200);
+                                    } else {
+                                        console.error('Register button not found!');
+                                    }
+                                } else {
+//                                    alert(response.error_message || "Incorrect Password!");
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error validating password:", xhr.responseText || error);
+                                alert("Error while validating password. Please try again.");
+                            },
+                            complete: function() {
+                                invoicePasswordSubmitButton.disabled = false;
+                            }
+                        });
+                    });
+                } else {
+                    console.error('Password validate button not found!');
+                }
+            }, 200);
+        },
+    });
 
 };
 

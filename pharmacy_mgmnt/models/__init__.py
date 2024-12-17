@@ -21,3 +21,4 @@ from .import supplier_invoice_wizard_form
 from . import home_page
 from . import stock_search_expiry
 from . import password_authentication
+from . import payment_page_password_validation

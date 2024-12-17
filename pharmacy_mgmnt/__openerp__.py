@@ -71,6 +71,7 @@
         'views/stock_search.xml',
         'views/quotation_default.xml',
         'views/password_authentication.xml',
+        'views/payment_page_password_validation.xml',
         # 'views/view_port.xml',
 
 

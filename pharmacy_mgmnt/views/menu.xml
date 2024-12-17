@@ -1421,7 +1421,10 @@
                             <field name="clearence_date"
                                    attrs="{'invisible': [('payment_method', '!=', 'cheque')], 'required': [('payment_method', '=', 'cheque')]}"/>
                             <!--                            <field name="chekbox" string="Use Advance Amount?" style="width:40%;"/>-->
-                            <button name="action_payment_all" string="Pay Bills" type="object" class="oe_highlight"
+                            <button name="action_payment_all" string="Pay Bills" type="object" class="oe_highlight payment_button"
+                                    attrs="{'invisible':[('state', '=', 'paid')]}" invisible="1"
+                            />
+                            <button name="open_payment_password_wizard" string="Pay Bills" type="object" class="oe_highlight"
                                     attrs="{'invisible':[('state', '=', 'paid')]}"
                             />
 

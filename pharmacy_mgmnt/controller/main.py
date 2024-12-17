@@ -78,3 +78,27 @@ class CustomPasswordValidationController(http.Controller):
 
         except Exception as e:
             return {'password_valid': False, 'error_message': str(e)}
+
+
+class CustomPaymentPasswordValidationController(http.Controller):
+
+    @http.route('/payment/password/validate', type='json', auth='public', methods=['POST'])
+    def validate_password(self,**kw):
+        try:
+            password = request.jsonrequest.get('password')
+            if not password:
+                raise ValidationError("Password is missing!")
+
+            print("Password received in controller:", password)
+
+
+            users = request.env['res.users'].sudo().search([])
+            is_password_valid = any(user.rec_password == password for user in users)
+
+            if is_password_valid:
+                return {'password_valid': True}
+            else:
+                return {'password_valid': False, 'error_message': 'Incorrect Password!'}
+
+        except Exception as e:
+            return {'password_valid': False, 'error_message': str(e)}

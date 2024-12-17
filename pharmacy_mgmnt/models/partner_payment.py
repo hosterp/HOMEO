@@ -185,6 +185,20 @@ class PartnerPayment(models.Model):
     payment_history_ids = fields.One2many('payment.history','payment_id')
 
     @api.multi
+    def open_payment_password_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Invoice Payment Password Wizard',
+            'res_model': 'payment.password.wizard',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_invoice_id': self.id,
+            },
+        }
+    @api.multi
     def unlink(self):
         if self.state == 'paid':
             for rec in self.invoice_ids:
