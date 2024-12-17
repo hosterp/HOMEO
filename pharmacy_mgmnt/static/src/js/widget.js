@@ -99,12 +99,19 @@ openerp.pharmacy_mgmnt = function (instance) {
                         }, 100);
                     } else {
                          var printButton = document.querySelector('.css_print');
-                        if (printButton) {
-                            printButton.click();
-                            console.log("css_print button clicked");
-                        } else {
-                            console.warn("css_print button not found");
-                        }
+                         var passwordButton = document.querySelector('.password_class');
+                         if(passwordButton){
+                            passwordButton.click();
+                            console.log("password_value button clicked");
+                         }else{
+                              console.warn("password_value button not found");
+                         }
+//                        if (printButton) {
+//                            printButton.click();
+//                            console.log("css_print button clicked");
+//                        } else {
+//                            console.warn("css_print button not found");
+//                        }
 
                         console.log("Packing invoice is true, skipping actions");
                         isHandlingSave = false;
@@ -155,6 +162,9 @@ openerp.pharmacy_mgmnt = function (instance) {
         load_form: function() {
             this._super.apply(this, arguments);
 
+
+            var self = this;
+
             setTimeout(function() {
                 var invoicePasswordSubmitButton = document.querySelector('.password_validate');
                 if (invoicePasswordSubmitButton) {
@@ -167,13 +177,15 @@ openerp.pharmacy_mgmnt = function (instance) {
                             return;
                         }
 
-                       var password = passwordInput.value.trim();
-                       console.log(password);
+                        var password = passwordInput.value.trim();
+                        console.log(password);
                         if (!password) {
                             console.error("Password is empty!");
                             return;
                         }
+
                         invoicePasswordSubmitButton.disabled = true;
+
                         $.ajax({
                             type: 'POST',
                             url: '/password/validate',
@@ -185,19 +197,37 @@ openerp.pharmacy_mgmnt = function (instance) {
 
                                 if (response.result.password_valid) {
                                     console.log("Password is valid!");
+
                                     var registerButton = document.querySelector('.invoice_pay_customer');
-                                    if (registerButton) {
-                                        console.log("Clicking the register button...");
-                                        setTimeout(function() {
-                                            registerButton.click();
-                                        }, 200);
+                                    var printButton = document.querySelector('.css_print');
+                                    var packingInvoice = document.querySelector('.container[style="color:MediumSeaGreen; margin-left: 327px;"]');
+
+
+                                    if (packingInvoice && packingInvoice.offsetParent !== null) {
+
+                                        console.log("Packing slip exists and is visible. Clicking the print button...");
+                                        if (printButton) {
+                                            printButton.click();
+                                        } else {
+                                            console.error('Print button not found!');
+                                        }
                                     } else {
-                                        console.error('Register button not found!');
+
+                                        console.log("Packing slip not found or not visible. Clicking the register payment button...");
+                                        if (registerButton) {
+                                            setTimeout(function() {
+                                                registerButton.click();
+                                            }, 200);
+                                        } else {
+                                            console.log('Register button not found!');
+                                        }
                                     }
+
                                 } else {
 //                                    alert(response.error_message || "Incorrect Password!");
                                 }
                             },
+
                             error: function(xhr, status, error) {
                                 console.error("Error validating password:", xhr.responseText || error);
                                 alert("Error while validating password. Please try again.");
@@ -208,11 +238,12 @@ openerp.pharmacy_mgmnt = function (instance) {
                         });
                     });
                 } else {
-                    console.error('Password validate button not found!');
+                    console.log('Password validate button not found!');
                 }
             }, 200);
         },
     });
+
     instance.web.FormView.include({
         load_form: function() {
             this._super.apply(this, arguments);
