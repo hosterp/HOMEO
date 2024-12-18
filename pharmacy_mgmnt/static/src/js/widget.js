@@ -345,7 +345,47 @@ openerp.pharmacy_mgmnt = function (instance) {
             });
         }
     });
+    instance.web.FormView.include({
+        load_form: function(data) {
+            this._super(data);
+            var self = this;
 
+
+            var isHandlingSave = false;
+
+
+            this.$buttons.find('.oe_form_button_save').click(function() {
+                if (!isHandlingSave) {
+                    isHandlingSave = true;
+
+
+                    var typeField = self.datarecord ? self.datarecord.type : null;
+
+                    if (typeField === 'in_refund') {
+                        console.log("Type is 'in_refund', triggering password button.");
+
+
+                        var passwordButton = document.querySelector('.supplier_password_validation');
+
+
+                        if (passwordButton) {
+                            passwordButton.click();
+                            console.log("Password button clicked.");
+                        } else {
+                            console.warn("Password button not found!");
+                        }
+                    } else {
+                        console.log("Type is not 'in_refund', proceeding with default Save actions.");
+                    }
+
+
+                    setTimeout(function() {
+                        isHandlingSave = false;
+                    }, 100);
+                }
+            });
+        }
+    });
 
 };
 
