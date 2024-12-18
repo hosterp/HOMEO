@@ -55,6 +55,7 @@
                         <group class="oe_subtotal_footer oe_left" col="2">
                             <field name="bill_discount" widget="float_no_default"
                                    attrs="{'readonly': [('state', 'in', ['open', 'paid'])]}"/>
+                             <field name="validated_by_user"/>
                             <button name="open_wizard_action_sup"
                                     type="object"
                                     string="Open Search"

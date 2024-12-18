@@ -7,6 +7,7 @@ class InvoicePasswordWizard(models.Model):
     _description = 'Password Authentication Wizard'
 
     password = fields.Char(string="Password", required=True, help="Enter your password", password="True")
+    invoice_id = fields.Many2one('account.invoice', string="Invoice")
     user=fields.Char(string='user')
 
     @api.multi
@@ -20,11 +21,13 @@ class InvoicePasswordWizard(models.Model):
             print(i.rec_password, 'password.......................................................')
             if i.rec_password == self.password:
                 self.user=i.name
-                print(i.name,'user name............................................................')
+                print(i.name,'supplier user name............................................................')
                 is_password_valid = True
                 break
         if is_password_valid:
             print('Password match successful.')
+            if self.invoice_id:
+                self.invoice_id.write({'validated_by_user': self.user})
             return is_password_valid
 
         else:
