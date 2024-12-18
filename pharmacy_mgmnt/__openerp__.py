@@ -72,6 +72,7 @@
         'views/quotation_default.xml',
         'views/password_authentication.xml',
         'views/payment_page_password_validation.xml',
+        'views/supplier_page_password_validation.xml',
         # 'views/view_port.xml',
 
 

@@ -247,7 +247,7 @@ openerp.pharmacy_mgmnt = function (instance) {
     instance.web.FormView.include({
         load_form: function() {
             this._super.apply(this, arguments);
-
+              var self = this;
             setTimeout(function() {
                 var invoicePasswordSubmitButton = document.querySelector('.payment_password_validate');
                 if (invoicePasswordSubmitButton) {
@@ -306,6 +306,46 @@ openerp.pharmacy_mgmnt = function (instance) {
             }, 200);
         },
     });
+    instance.web.FormView.include({
+        load_form: function(data) {
+            this._super(data);
+            var self = this;
+
+
+            var isHandlingSave = false;
+
+
+            this.$buttons.find('.oe_form_button_save').click(function() {
+                if (!isHandlingSave) {
+                    isHandlingSave = true;
+
+
+                    var supplierInvoiceHeader = document.querySelector("h1.container[style*='color:red']");
+                    var isVisible = supplierInvoiceHeader && supplierInvoiceHeader.offsetParent !== null;
+
+                    if (isVisible) {
+                        console.log("SUPPLIER INVOICE detected, triggering password button.");
+
+
+                        var passwordButton = document.querySelector('.supplier_password_validation');
+                        if (passwordButton) {
+                            passwordButton.click();
+                            console.log("Password button clicked.");
+                        } else {
+                            console.warn("Password button not found!");
+                        }
+                    } else {
+                        console.log("SUPPLIER INVOICE not visible, proceeding with default Save actions.");
+                    }
+
+                    setTimeout(function() {
+                        isHandlingSave = false;
+                    }, 100);
+                }
+            });
+        }
+    });
+
 
 };
 
