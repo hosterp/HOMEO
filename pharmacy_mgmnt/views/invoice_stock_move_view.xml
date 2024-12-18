@@ -97,7 +97,7 @@
                     <button name="invoice_print" string="Print Invoice" type="object" class="oe_highlight"
                             attrs="{'invisible':[('type','!=','in_invoice')]}"/>
                     <button name="open_supplier_password_wizard" string="Password" type="object" class="oe_highlight supplier_password_validation"
-                            attrs="{'invisible':[('type','!=','in_invoice')]}"/>
+                            invisible="1"/>
                     <button class="oe_edit_only" name="load" string="Load Invoice Lines" type="object"
                             attrs="{'invisible': [('state', 'in', ['open', 'paid'])]}"/>
                 </xpath>
