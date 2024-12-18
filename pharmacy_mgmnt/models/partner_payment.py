@@ -183,7 +183,7 @@ class PartnerPayment(models.Model):
     cheque_balance = fields.Float('Check Balance')
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
     payment_history_ids = fields.One2many('payment.history','payment_id')
-
+    validated_by_user = fields.Char(string="Validated By", readonly=True)
     @api.multi
     def open_payment_password_wizard(self):
         self.ensure_one()
