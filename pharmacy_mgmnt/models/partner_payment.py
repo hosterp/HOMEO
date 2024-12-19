@@ -155,7 +155,7 @@ class PartnerPayment(models.Model):
     partner_id = fields.Many2one('res.partner', domain=[('customer', '=', True), ('res_person_id', '=', False)])
     reference_number = fields.Integer()
     date = fields.Date(default=fields.Date.today)
-    payment_method = fields.Selection([('cheque', 'Cheque'), ('cash', 'Cash'), ('UPI', 'UPI')],
+    payment_method = fields.Selection([('cheque', 'Cheque'), ('cash', 'Cash'), ('upi', 'UPI')],
                                       string="Mode of Payment", default='cash')
     cheque_no = fields.Char()
     cheque_date = fields.Date(default=date.today())
