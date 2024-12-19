@@ -61,7 +61,7 @@ class CashBookLines(models.Model):
 	amount = fields.Float("Amount")
 	invoice = fields.Char('Invoice')
 	validated_by = fields.Char('Validated By')
-	pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI'),('cheque', 'Cheque')], 'Payment Mode')
+	pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI'),('cheque', 'Cheque'),('card','Card')], 'Payment Mode')
 
 
 
