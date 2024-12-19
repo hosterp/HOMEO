@@ -26,49 +26,25 @@ class CashBook(models.Model):
 
 	@api.multi
 	def view_collection(self):
-		# domain = [('date', '>=', self.date_from), ('date', '<=', self.date_to or fields.Date.today()),('state','!=','cancel')]
-		domain = [('date_invoices', '>=', self.date_from), ('date_invoices', '<=', self.date_to or fields.Date.today()),
-				  ('state', '!=', 'cancel'), ('state', '=', 'paid')]
+		domain = [('date', '>=', self.date_from), ('date', '<=', self.date_to or fields.Date.today()),('state','!=','cancel')]
 		if self.pay_mode:
 			domain.append(('pay_mode', '=', self.pay_mode))
-		# datas = self.env['account.voucher'].search(domain)
-		datas = self.env['account.invoice'].search(domain)
+		datas = self.env['account.voucher'].search(domain)
 		line_records=[]
 		for rec in datas:
-					if rec.amount_total != 0:
+			if rec.line_ids:
+				for line in rec.line_ids:
+					if line.amount != 0:
 						line_records.append((0, 0, {
-							"invoice": rec.number2,
+							"invoice": rec.reference,
 							"partner_id": rec.partner_id.id,
-							"amount": rec.amount_total,
+							"amount": line.amount,
 							"journal_id": rec.journal_id.id,
 							"pay_mode": rec.pay_mode,
-							"validated_by": rec.validated_by_user,
+							"validated_by": rec.validated_by,
 						}))
 
-		payment_domain = [
-			('date', '>=', self.date_from),
-			('date', '<=', self.date_to or fields.Date.today()),
-			('state', '!=', 'cancel')
-		]
 
-
-		if self.pay_mode:
-			payment_domain.append(('payment_method', '=', self.pay_mode))
-
-		payments = self.env['partner.payment'].search(payment_domain)
-		for payment in payments:
-			if payment.amount != 0:
-				if payment.invoice_ids:
-					for rec in payment.invoice_ids:
-
-						line_records.append((0, 0, {
-							"invoice": rec.number2 or "N/A",
-							"partner_id": payment.partner_id.id if payment.partner_id else False,
-							"amount": payment.payment_amount,
-							"journal_id": payment.journal_id.id if payment.journal_id else False,
-							"pay_mode": payment.payment_method,
-							"validated_by": payment.validated_by_user,
-						}))
 		if self.cash_book_ids:
 			self.cash_book_ids = [(5, 0, 0)]
 			self.cash_book_ids = line_records
@@ -85,7 +61,7 @@ class CashBookLines(models.Model):
 	amount = fields.Float("Amount")
 	invoice = fields.Char('Invoice')
 	validated_by = fields.Char('Validated By')
-	pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI')], 'Payment Mode')
+	pay_mode = fields.Selection([('cash', 'Cash'), ('credit', 'Credit'), ('upi', 'UPI'),('cheque', 'Cheque')], 'Payment Mode')
 
 
 
