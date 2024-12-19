@@ -213,7 +213,7 @@ class PartnerPayment(models.Model):
     def cancel_payment(self):
         for rec in self.invoice_ids:
             rec.residual = rec.de_residual
-            rec.advance_amount = rec.pre_advance_amount
+            rec.advance_amount = rec.advance_amount
             rec.state = 'open'
             rec.move_id.state = 'cancel'
         self.state = 'bounced'
