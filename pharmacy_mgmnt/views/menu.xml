@@ -1378,7 +1378,7 @@
                                 class="oe_highlight" states="bounced,paid"/>
                         <button class="oe_highlight" type="object" name="open_tree_view_history" string="Sale History"
                                 states="draft,paid" invisible="1"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,bounced,paid"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,bounced,paid,confirmed"/>
                     </header>
                     <h1>
                         <group>
@@ -1426,6 +1426,9 @@
                             />
                             <button name="open_payment_password_wizard" string="Pay Bills" type="object" class="oe_highlight"
                                     attrs="{'invisible':[('state', '=', 'paid')]}"
+                            />
+                            <button name="confirmed_button" string="Confirmed" type="object" class="oe_highlight"
+                                    attrs="{'invisible':[('state', '!=', 'paid')]}"
                             />
 
                         </group>

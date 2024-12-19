@@ -175,7 +175,7 @@ class PartnerPayment(models.Model):
                                   store=True)
     # invoice_ids = fields.One2many('invoice.details', 'partner_payment_id', compute='generate_lines', readonly=False,
     #                               store=True)
-    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid')],defualt='draft')
+    state = fields.Selection([('new', 'New'), ('draft', 'Draft'), ('bounced', 'Bounced'), ('paid', 'Paid'),('confirmed', 'confirmed')],defualt='draft')
     advance_amount = fields.Float('Advance Amount')
     pre_advance_amount = fields.Float('Advance Amount')
     payment_total_calculation = fields.Float()
@@ -184,6 +184,16 @@ class PartnerPayment(models.Model):
     # chekbox=fields.Selection([('yes','Yes'),('no','No')],default='no')
     payment_history_ids = fields.One2many('payment.history','payment_id')
     validated_by_user = fields.Char(string="Validated By", readonly=True)
+
+    @api.multi
+    def confirmed_button(self):
+        for rec in self:
+            if rec.state == 'paid':
+                print('confirmed.......................................')
+                rec.state = 'confirmed'
+            else:
+                pass
+
     @api.multi
     def open_payment_password_wizard(self):
         self.ensure_one()
