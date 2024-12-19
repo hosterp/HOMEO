@@ -36,6 +36,7 @@
                                 <field name="invoice" string="Invoice"/>
                                 <field name="partner_id"/>
                                 <field name="pay_mode"/>
+                                <field name="validated_by"/>
                                 <field name="amount" string="Credited" sum="Total Amount"/>
                             </tree>
                         </field>

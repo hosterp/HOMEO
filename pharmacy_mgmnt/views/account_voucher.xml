@@ -35,6 +35,7 @@
                 </xpath>
                 <xpath expr="//field[@name='pay_mode']" position="after">
                     <field name="res_person" string="Responsible Person" widget="selection"/>
+                    <field name="validated_by" invisible="1"/>
                     <field name="amount_given" string="Cash Given"  attrs="{'invisible': [('pay_mode', '!=', 'cash')]}"/>
                     <field name="balance"  attrs="{'invisible': [('pay_mode', '!=', 'cash')]}"/>
                 </xpath>

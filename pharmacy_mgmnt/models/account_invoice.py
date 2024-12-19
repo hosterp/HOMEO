@@ -1798,7 +1798,7 @@ class AccountInvoice(models.Model):
             },
         }
 
-    validated_by_user = fields.Char(string="Validated By", readonly=True)
+    validated_by_user = fields.Char(string="Validated By", readonly=True,store=True)
     packing_invoice = fields.Boolean("Packing Slip?")
     hold_invoice = fields.Boolean("Holding Invoice?")
     cus_invoice = fields.Boolean("Customer Invoice?")
@@ -2846,6 +2846,7 @@ class AccountInvoice(models.Model):
                                                                              'view_vendor_receipt_dialog_form')
 
         inv = self.browse(cr, uid, ids[0], context=context)
+        inv.write({'validated_by': inv.validated_by_user})
         # if inv.type == "out_invoice":
         #     inv.residual += inv.amount_discount + inv.amount_tax
         return {
@@ -2869,6 +2870,7 @@ class AccountInvoice(models.Model):
                 'invoice_id': inv.id,
                 'default_pay_mode': inv.pay_mode,
                 'default_res_person': inv.res_person.id,
+                'default_validated_by': inv.validated_by_user,
                 'default_type': inv.type in ('out_invoice', 'out_refund') and 'receipt' or 'payment',
                 'type': inv.type in ('out_invoice', 'out_refund') and 'receipt' or 'payment'
             }

@@ -24,6 +24,12 @@ class AccountVoucher(models.Model):
     invoice_ids = fields.Many2many('account.invoice', string="Select Invoices", )
     amount_given=fields.Integer('Given Amount')
     balance=fields.Integer('Balance',compute='_compute_cash')
+    related_model_id = fields.Many2one("account.invoice", string="Related Model")
+    validated_by = fields.Char(
+        string="Validated By",
+        readonly=True,
+        store=True
+    )
 
     @api.depends('amount_given')
     def _compute_cash(self):
