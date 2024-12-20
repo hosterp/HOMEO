@@ -1453,10 +1453,12 @@ class AccountInvoiceLine(models.Model):
                 #     raise Warning("This Combination not added in Supplier Discount")
 
     ###########    # tax selection-based on group and potency
-    @api.onchange('medicine_grp')
+
+    @api.onchange('medicine_grp','quantity','invoice_line')
     def onchange_group_id(self):
         for rec in self:
             if rec.medicine_grp.id:
+                print('medicine group..............................................................................')
                 # print("medicine group exist")
                 # grp_obj = self.env['product.medicine.group'].search([('med_grp', '=', rec.medicine_grp.med_grp),
                 #                                                     ])
