@@ -278,7 +278,7 @@ $(document).ready(function() {
 });
 
 function checkAndHandleConditions($this) {
-    var inputValue = $this.find('input').val().trim();
+    var inputValue = $this.find('input').val();
     var dropdownButton = $this.find('.oe_m2o_drop_down_button');
 
 
