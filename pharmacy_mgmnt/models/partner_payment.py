@@ -23,6 +23,7 @@ class InvoiceDetails(models.Model):
     paid = fields.Float()
     pay_balance = fields.Float()
     advance_amount = fields.Float(related='partner_payment_id.advance_amount')
+    validated_by_user = fields.Char(related='partner_payment_id.validated_by_user')
     narration = fields.Text('Narration')
     reference_number = fields.Integer('Ref')
     # reference_number = fields.Integer(default=lambda self:self.partner_payment_id.reference_number)
