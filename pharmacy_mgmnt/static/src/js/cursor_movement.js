@@ -567,6 +567,8 @@ $(document).on('keydown', '.potency', function (event) {
         }, 500);
     }
 });
+
+//supplier invoice line fields.................................................
 $(document).on('keydown', '.supplier_company', function (event) {
     if (event.which === 13) {
 //        console.log('Enter key pressed');
