@@ -186,32 +186,38 @@ $(document).on('focus', '.oe_form_field_many2one[data-fieldname="medicine_rack"]
     });
 });
 $(document).ready(function() {
-   $(document).on("shown.bs.modal", function () {
-        setTimeout(function(){
-            var firstButton = $('.custom_register_payment');
-            var printbutton = $('.custom_print');
-            if(printbutton.length){
+   $(document).on("shown.bs.modal", function (e) {
+        var $modal = $(e.target);
+
+        setTimeout(function() {
+            var firstButton = $modal.find('.custom_register_payment');
+            var printbutton = $modal.find('.custom_print');
+            var secondButton = $('.css_print');
+
+            if (printbutton.length) {
                 printbutton.focus();
             }
-            if(firstButton.length) {
-//                console.log("First button found, triggering click...");
+
+            if (firstButton.length) {
                 firstButton.focus();
-                firstButton.on('click', function() {
-                      firstButton.focus();
-//                    console.log("First button was clicked, triggering the second button...");
-                    var secondButton = $('.css_print');
-                    if(secondButton.length) {
-//                        console.log("Second button found, triggering click...");
-                        secondButton.trigger('click');
-                    } else {
-                        console.log("Second button not found");
-                    }
+
+                firstButton.one('click', function() {
+                    firstButton.focus();
+                    console.log("First button was clicked, triggering the second button...");
+                     setTimeout(function() {
+                        if (secondButton.length) {
+                            console.log("Second button found, triggering click...");
+                            secondButton.trigger('click');
+                        } else {
+                            console.log("Second button not found");
+                        }
+                    },200);
                 });
             } else {
                 console.log("First button not found");
             }
         }, 500);
-    });
+   });
 
 var currentlyFocusedField = null;
 
