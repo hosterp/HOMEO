@@ -1454,7 +1454,7 @@ class AccountInvoiceLine(models.Model):
 
     ###########    # tax selection-based on group and potency
 
-    @api.onchange('medicine_grp','quantity','invoice_line')
+    @api.onchange('medicine_grp','quantity','medicine_name_subcat')
     def onchange_group_id(self):
         for rec in self:
             if rec.medicine_grp.id:
