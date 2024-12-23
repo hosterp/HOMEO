@@ -393,11 +393,20 @@ $(document).ready(function() {
         $('.oe_form_field_one2many_list_row_add a').trigger('click');
     }
   });
-  $(document).on('keyup', '.doctor', function (event) {
+$(document).on('keyup', '.doctor', function (event) {
     if (event.keyCode === 13) {
+        event.preventDefault();
         $('.oe_form_field_one2many_list_row_add a').trigger('click');
+        setTimeout(function () {
+            const newRowInput = $('.oe_form_field_one2many_list_row:last input:first');
+            if (newRowInput.length) {
+                newRowInput.focus();
+            }
+        }, 300);
     }
-  });
+});
+
+
   $(document).on('keyup', '.next_line', function (event) {
     if (event.keyCode === 13) {
         $('.oe_form_field_one2many_list_row_add a').trigger('click');
