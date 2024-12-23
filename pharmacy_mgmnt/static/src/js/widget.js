@@ -301,7 +301,7 @@ openerp.pharmacy_mgmnt = function (instance) {
                         });
                     });
                 } else {
-                    console.error('Password validate button not found!');
+                    console.log('Password validate button not found!');
                 }
             }, 200);
         },

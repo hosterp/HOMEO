@@ -569,6 +569,20 @@ $(document).on('keydown', '.potency', function (event) {
 });
 
 //supplier invoice line fields.................................................
+$(document).on('keydown', '.supplier_name', function (event) {
+    if (event.which === 13) {
+        setTimeout(function () {
+           const inputField = $('.supplier_address textarea.field_text')[0];
+            if (inputField) {
+                inputField.focus();
+                inputField.setSelectionRange(inputField.value.length, inputField.value.length);
+            } else {
+                console.error('Input field not found. Check your selector or DOM timing.');
+            }
+        }, 500);
+    }
+});
+
 $(document).on('keydown', '.supplier_company', function (event) {
     if (event.which === 13) {
 //        console.log('Enter key pressed');
