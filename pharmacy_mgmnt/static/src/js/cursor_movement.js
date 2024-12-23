@@ -571,7 +571,10 @@ $(document).on('keydown', '.potency', function (event) {
 //supplier invoice line fields.................................................
 $(document).on('keydown', '.supplier_name', function (event) {
     if (event.which === 13) {
-        setTimeout(function () {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId =setTimeout(function () {
            const inputField = $('.supplier_address textarea.field_text')[0];
             if (inputField) {
                 inputField.focus();
@@ -587,29 +590,43 @@ $(document).on('keydown', '.supplier_company', function (event) {
     if (event.which === 13) {
 //        console.log('Enter key pressed');
 //        event.preventDefault();
-        setTimeout(function() {
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+         timeoutId =setTimeout(function() {
             const inputField = $('span.supplier_product input')[0];
             inputField.focus();
             inputField.setSelectionRange(inputField.value.length, inputField.value.length);
         }, 500);
     }
 });
+let timeoutId;
+
 $(document).on('keydown', '.supplier_product', function (event) {
     if (event.which === 13) {
-//        console.log('Enter key pressed');
-//        event.preventDefault();
-        setTimeout(function() {
+//        event.preventDefault(); // Prevent default Enter behavior
+
+
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        timeoutId = setTimeout(function() {
             const inputField = $('span.supplier_potency input')[0];
             inputField.focus();
             inputField.setSelectionRange(inputField.value.length, inputField.value.length);
         }, 500);
     }
 });
+
 $(document).on('keydown', '.supplier_potency', function (event) {
     if (event.which === 13) {
 //        console.log('Enter key pressed');
 //        event.preventDefault();
-        setTimeout(function() {
+         if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(function() {
             const inputField = $('span.supplier_packing input')[0];
             inputField.focus();
             inputField.setSelectionRange(inputField.value.length, inputField.value.length);
@@ -620,7 +637,10 @@ $(document).on('keydown', '.supplier_packing', function (event) {
     if (event.which === 13) {
 //        console.log('Enter key pressed');
 //        event.preventDefault();
-        setTimeout(function() {
+         if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(function() {
             const inputField = $('span.supplier_grp input')[0];
             inputField.focus();
             inputField.setSelectionRange(inputField.value.length, inputField.value.length);
@@ -631,7 +651,10 @@ $(document).on('keydown', '.supplier_grp', function (event) {
     if (event.which === 13) {
 //        console.log('Enter key pressed');
 //        event.preventDefault();
-        setTimeout(function() {
+         if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(function() {
             const inputField = $('span.supplier_batch input')[0];
             inputField.focus();
             inputField.setSelectionRange(inputField.value.length, inputField.value.length);
