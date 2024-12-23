@@ -336,10 +336,11 @@ function debounce(func, wait) {
     };
     }
 
-
+let timeoutId;
 $(document).on('keydown', '.required_class.grp', function(event) {
             if (event.which === 13 || event.which === 9) {
-                event.preventDefault();
+
+//                event.preventDefault();
 
                 console.log('Keydown event detected:', event.which);
 
@@ -355,11 +356,14 @@ $(document).on('keydown', '.required_class.grp', function(event) {
 //                    .find('input')
 //                    .first();
 
-
+                 if (timeoutId) {
+                        clearTimeout(timeoutId);
+                 }
                 console.log('Next input:', $inputField);
 
                 if ($inputField.length) {
-                    setTimeout(function() {
+
+                    timeoutId=setTimeout(function() {
                         $inputField.focus();
                         console.log('Focused on next input field.');
                     }, 100);
@@ -470,6 +474,9 @@ $(document).ready(function () {
 $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]', function (event) {
     if (event.which === 13) { // Enter key
         // Check if the title is not "SUPPLIER INVOICE"
+         if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
         var titleText = $('.oe_title h1.container').first().text().trim();
         if (titleText === "SUPPLIER INVOICE") {
             console.log('The title is SUPPLIER INVOICE. Exiting.');
@@ -498,7 +505,7 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
             if ($items.length > 0) {
                 console.log('Clicking the first item:', $items.first().text());
                 $items.first()[0].click();
-                setTimeout(function() {
+                timeoutId=setTimeout(function() {
                     const inputField = $('.potency input')[0];
                     inputField.focus();
                     inputField.setSelectionRange(inputField.value.length, inputField.value.length);
@@ -559,8 +566,11 @@ $(document).on('keydown', '.oe_form_field_many2one[data-fieldname="product_id"]'
 $(document).on('keydown', '.potency', function (event) {
     if (event.which === 13) {
         console.log('Enter key pressed');
+         if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
 //        event.preventDefault();
-        setTimeout(function() {
+        timeoutId = setTimeout(function() {
             const inputField = $('span.custom_batch input')[0];
             inputField.focus();
             inputField.setSelectionRange(inputField.value.length, inputField.value.length);
@@ -574,7 +584,7 @@ $(document).on('keydown', '.supplier_name', function (event) {
         if (timeoutId) {
             clearTimeout(timeoutId);
         }
-        timeoutId =setTimeout(function () {
+        timeoutId = setTimeout(function () {
            const inputField = $('.supplier_address textarea.field_text')[0];
             if (inputField) {
                 inputField.focus();
